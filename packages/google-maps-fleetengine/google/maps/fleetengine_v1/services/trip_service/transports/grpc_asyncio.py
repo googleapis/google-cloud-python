@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -227,6 +228,9 @@ class TripServiceGrpcAsyncIOTransport(TripServiceTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -373,7 +377,7 @@ class TripServiceGrpcAsyncIOTransport(TripServiceTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_trip: gapic_v1.method_async.wrap_method(
+            self.create_trip: self._wrap_method(
                 self.create_trip,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -387,7 +391,7 @@ class TripServiceGrpcAsyncIOTransport(TripServiceTransport):
                 default_timeout=15.0,
                 client_info=client_info,
             ),
-            self.get_trip: gapic_v1.method_async.wrap_method(
+            self.get_trip: self._wrap_method(
                 self.get_trip,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -401,12 +405,12 @@ class TripServiceGrpcAsyncIOTransport(TripServiceTransport):
                 default_timeout=15.0,
                 client_info=client_info,
             ),
-            self.report_billable_trip: gapic_v1.method_async.wrap_method(
+            self.report_billable_trip: self._wrap_method(
                 self.report_billable_trip,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.search_trips: gapic_v1.method_async.wrap_method(
+            self.search_trips: self._wrap_method(
                 self.search_trips,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -420,7 +424,7 @@ class TripServiceGrpcAsyncIOTransport(TripServiceTransport):
                 default_timeout=15.0,
                 client_info=client_info,
             ),
-            self.update_trip: gapic_v1.method_async.wrap_method(
+            self.update_trip: self._wrap_method(
                 self.update_trip,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -436,8 +440,17 @@ class TripServiceGrpcAsyncIOTransport(TripServiceTransport):
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("TripServiceGrpcAsyncIOTransport",)

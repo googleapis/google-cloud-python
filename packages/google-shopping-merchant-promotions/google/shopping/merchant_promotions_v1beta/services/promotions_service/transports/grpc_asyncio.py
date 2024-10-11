@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -226,6 +227,9 @@ class PromotionsServiceGrpcAsyncIOTransport(PromotionsServiceTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -333,25 +337,34 @@ class PromotionsServiceGrpcAsyncIOTransport(PromotionsServiceTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.insert_promotion: gapic_v1.method_async.wrap_method(
+            self.insert_promotion: self._wrap_method(
                 self.insert_promotion,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_promotion: gapic_v1.method_async.wrap_method(
+            self.get_promotion: self._wrap_method(
                 self.get_promotion,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_promotions: gapic_v1.method_async.wrap_method(
+            self.list_promotions: self._wrap_method(
                 self.list_promotions,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("PromotionsServiceGrpcAsyncIOTransport",)

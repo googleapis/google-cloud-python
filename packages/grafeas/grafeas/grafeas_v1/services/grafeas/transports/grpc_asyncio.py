@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -242,6 +243,9 @@ class GrafeasGrpcAsyncIOTransport(GrafeasTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -636,7 +640,7 @@ class GrafeasGrpcAsyncIOTransport(GrafeasTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.get_occurrence: gapic_v1.method_async.wrap_method(
+            self.get_occurrence: self._wrap_method(
                 self.get_occurrence,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -651,7 +655,7 @@ class GrafeasGrpcAsyncIOTransport(GrafeasTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_occurrences: gapic_v1.method_async.wrap_method(
+            self.list_occurrences: self._wrap_method(
                 self.list_occurrences,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -666,7 +670,7 @@ class GrafeasGrpcAsyncIOTransport(GrafeasTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.delete_occurrence: gapic_v1.method_async.wrap_method(
+            self.delete_occurrence: self._wrap_method(
                 self.delete_occurrence,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -681,22 +685,22 @@ class GrafeasGrpcAsyncIOTransport(GrafeasTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.create_occurrence: gapic_v1.method_async.wrap_method(
+            self.create_occurrence: self._wrap_method(
                 self.create_occurrence,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.batch_create_occurrences: gapic_v1.method_async.wrap_method(
+            self.batch_create_occurrences: self._wrap_method(
                 self.batch_create_occurrences,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.update_occurrence: gapic_v1.method_async.wrap_method(
+            self.update_occurrence: self._wrap_method(
                 self.update_occurrence,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_occurrence_note: gapic_v1.method_async.wrap_method(
+            self.get_occurrence_note: self._wrap_method(
                 self.get_occurrence_note,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -711,7 +715,7 @@ class GrafeasGrpcAsyncIOTransport(GrafeasTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_note: gapic_v1.method_async.wrap_method(
+            self.get_note: self._wrap_method(
                 self.get_note,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -726,7 +730,7 @@ class GrafeasGrpcAsyncIOTransport(GrafeasTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_notes: gapic_v1.method_async.wrap_method(
+            self.list_notes: self._wrap_method(
                 self.list_notes,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -741,7 +745,7 @@ class GrafeasGrpcAsyncIOTransport(GrafeasTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.delete_note: gapic_v1.method_async.wrap_method(
+            self.delete_note: self._wrap_method(
                 self.delete_note,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -756,22 +760,22 @@ class GrafeasGrpcAsyncIOTransport(GrafeasTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.create_note: gapic_v1.method_async.wrap_method(
+            self.create_note: self._wrap_method(
                 self.create_note,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.batch_create_notes: gapic_v1.method_async.wrap_method(
+            self.batch_create_notes: self._wrap_method(
                 self.batch_create_notes,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.update_note: gapic_v1.method_async.wrap_method(
+            self.update_note: self._wrap_method(
                 self.update_note,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_note_occurrences: gapic_v1.method_async.wrap_method(
+            self.list_note_occurrences: self._wrap_method(
                 self.list_note_occurrences,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -788,8 +792,17 @@ class GrafeasGrpcAsyncIOTransport(GrafeasTransport):
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("GrafeasGrpcAsyncIOTransport",)

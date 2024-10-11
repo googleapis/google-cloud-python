@@ -22,18 +22,11 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.oauth2 import service_account
+from google.api_core import api_core_version
 from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
@@ -42,6 +35,22 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import client_options
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+import google.auth
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.oauth2 import service_account
 
 from google.shopping.merchant_lfp_v1beta.services.lfp_store_service import (
     LfpStoreServiceAsyncClient,
@@ -52,8 +61,22 @@ from google.shopping.merchant_lfp_v1beta.services.lfp_store_service import (
 from google.shopping.merchant_lfp_v1beta.types import lfpstore
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1200,25 +1223,6 @@ def test_get_lfp_store(request_type, transport: str = "grpc"):
     assert response.matching_state_hint == "matching_state_hint_value"
 
 
-def test_get_lfp_store_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LfpStoreServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_lfp_store), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_lfp_store()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lfpstore.GetLfpStoreRequest()
-
-
 def test_get_lfp_store_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1283,39 +1287,6 @@ def test_get_lfp_store_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_lfp_store_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_lfp_store), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            lfpstore.LfpStore(
-                name="name_value",
-                target_account=1491,
-                store_code="store_code_value",
-                store_address="store_address_value",
-                store_name="store_name_value",
-                phone_number="phone_number_value",
-                website_uri="website_uri_value",
-                gcid_category=["gcid_category_value"],
-                place_id="place_id_value",
-                matching_state=lfpstore.LfpStore.StoreMatchingState.STORE_MATCHING_STATE_MATCHED,
-                matching_state_hint="matching_state_hint_value",
-            )
-        )
-        response = await client.get_lfp_store()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lfpstore.GetLfpStoreRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_lfp_store_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1323,7 +1294,7 @@ async def test_get_lfp_store_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LfpStoreServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1362,7 +1333,7 @@ async def test_get_lfp_store_async(
     transport: str = "grpc_asyncio", request_type=lfpstore.GetLfpStoreRequest
 ):
     client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1451,7 +1422,7 @@ def test_get_lfp_store_field_headers():
 @pytest.mark.asyncio
 async def test_get_lfp_store_field_headers_async():
     client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1519,7 +1490,7 @@ def test_get_lfp_store_flattened_error():
 @pytest.mark.asyncio
 async def test_get_lfp_store_flattened_async():
     client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1546,7 +1517,7 @@ async def test_get_lfp_store_flattened_async():
 @pytest.mark.asyncio
 async def test_get_lfp_store_flattened_error_async():
     client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1617,25 +1588,6 @@ def test_insert_lfp_store(request_type, transport: str = "grpc"):
     assert response.matching_state_hint == "matching_state_hint_value"
 
 
-def test_insert_lfp_store_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LfpStoreServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.insert_lfp_store), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.insert_lfp_store()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lfpstore.InsertLfpStoreRequest()
-
-
 def test_insert_lfp_store_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1702,39 +1654,6 @@ def test_insert_lfp_store_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_insert_lfp_store_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.insert_lfp_store), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            lfpstore.LfpStore(
-                name="name_value",
-                target_account=1491,
-                store_code="store_code_value",
-                store_address="store_address_value",
-                store_name="store_name_value",
-                phone_number="phone_number_value",
-                website_uri="website_uri_value",
-                gcid_category=["gcid_category_value"],
-                place_id="place_id_value",
-                matching_state=lfpstore.LfpStore.StoreMatchingState.STORE_MATCHING_STATE_MATCHED,
-                matching_state_hint="matching_state_hint_value",
-            )
-        )
-        response = await client.insert_lfp_store()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lfpstore.InsertLfpStoreRequest()
-
-
-@pytest.mark.asyncio
 async def test_insert_lfp_store_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1742,7 +1661,7 @@ async def test_insert_lfp_store_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LfpStoreServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1781,7 +1700,7 @@ async def test_insert_lfp_store_async(
     transport: str = "grpc_asyncio", request_type=lfpstore.InsertLfpStoreRequest
 ):
     client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1870,7 +1789,7 @@ def test_insert_lfp_store_field_headers():
 @pytest.mark.asyncio
 async def test_insert_lfp_store_field_headers_async():
     client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1943,7 +1862,7 @@ def test_insert_lfp_store_flattened_error():
 @pytest.mark.asyncio
 async def test_insert_lfp_store_flattened_async():
     client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1974,7 +1893,7 @@ async def test_insert_lfp_store_flattened_async():
 @pytest.mark.asyncio
 async def test_insert_lfp_store_flattened_error_async():
     client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2018,25 +1937,6 @@ def test_delete_lfp_store(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_lfp_store_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LfpStoreServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_lfp_store), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_lfp_store()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lfpstore.DeleteLfpStoreRequest()
 
 
 def test_delete_lfp_store_non_empty_request_with_auto_populated_field():
@@ -2105,25 +2005,6 @@ def test_delete_lfp_store_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_lfp_store_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_lfp_store), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_lfp_store()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lfpstore.DeleteLfpStoreRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_lfp_store_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2131,7 +2012,7 @@ async def test_delete_lfp_store_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LfpStoreServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2170,7 +2051,7 @@ async def test_delete_lfp_store_async(
     transport: str = "grpc_asyncio", request_type=lfpstore.DeleteLfpStoreRequest
 ):
     client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2231,7 +2112,7 @@ def test_delete_lfp_store_field_headers():
 @pytest.mark.asyncio
 async def test_delete_lfp_store_field_headers_async():
     client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2299,7 +2180,7 @@ def test_delete_lfp_store_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_lfp_store_flattened_async():
     client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2326,7 +2207,7 @@ async def test_delete_lfp_store_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_lfp_store_flattened_error_async():
     client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2372,25 +2253,6 @@ def test_list_lfp_stores(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLfpStoresPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_lfp_stores_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LfpStoreServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_lfp_stores), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_lfp_stores()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lfpstore.ListLfpStoresRequest()
 
 
 def test_list_lfp_stores_non_empty_request_with_auto_populated_field():
@@ -2459,29 +2321,6 @@ def test_list_lfp_stores_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_lfp_stores_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_lfp_stores), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            lfpstore.ListLfpStoresResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_lfp_stores()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lfpstore.ListLfpStoresRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_lfp_stores_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2489,7 +2328,7 @@ async def test_list_lfp_stores_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LfpStoreServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2528,7 +2367,7 @@ async def test_list_lfp_stores_async(
     transport: str = "grpc_asyncio", request_type=lfpstore.ListLfpStoresRequest
 ):
     client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2594,7 +2433,7 @@ def test_list_lfp_stores_field_headers():
 @pytest.mark.asyncio
 async def test_list_lfp_stores_field_headers_async():
     client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2664,7 +2503,7 @@ def test_list_lfp_stores_flattened_error():
 @pytest.mark.asyncio
 async def test_list_lfp_stores_flattened_async():
     client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2693,7 +2532,7 @@ async def test_list_lfp_stores_flattened_async():
 @pytest.mark.asyncio
 async def test_list_lfp_stores_flattened_error_async():
     client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2803,7 +2642,7 @@ def test_list_lfp_stores_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_lfp_stores_async_pager():
     client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2853,7 +2692,7 @@ async def test_list_lfp_stores_async_pager():
 @pytest.mark.asyncio
 async def test_list_lfp_stores_async_pages():
     client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2897,69 +2736,6 @@ async def test_list_lfp_stores_async_pages():
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lfpstore.GetLfpStoreRequest,
-        dict,
-    ],
-)
-def test_get_lfp_store_rest(request_type):
-    client = LfpStoreServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "accounts/sample1/lfpStores/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = lfpstore.LfpStore(
-            name="name_value",
-            target_account=1491,
-            store_code="store_code_value",
-            store_address="store_address_value",
-            store_name="store_name_value",
-            phone_number="phone_number_value",
-            website_uri="website_uri_value",
-            gcid_category=["gcid_category_value"],
-            place_id="place_id_value",
-            matching_state=lfpstore.LfpStore.StoreMatchingState.STORE_MATCHING_STATE_MATCHED,
-            matching_state_hint="matching_state_hint_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = lfpstore.LfpStore.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_lfp_store(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, lfpstore.LfpStore)
-    assert response.name == "name_value"
-    assert response.target_account == 1491
-    assert response.store_code == "store_code_value"
-    assert response.store_address == "store_address_value"
-    assert response.store_name == "store_name_value"
-    assert response.phone_number == "phone_number_value"
-    assert response.website_uri == "website_uri_value"
-    assert response.gcid_category == ["gcid_category_value"]
-    assert response.place_id == "place_id_value"
-    assert (
-        response.matching_state
-        == lfpstore.LfpStore.StoreMatchingState.STORE_MATCHING_STATE_MATCHED
-    )
-    assert response.matching_state_hint == "matching_state_hint_value"
 
 
 def test_get_lfp_store_rest_use_cached_wrapped_rpc():
@@ -3079,83 +2855,6 @@ def test_get_lfp_store_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_lfp_store_rest_interceptors(null_interceptor):
-    transport = transports.LfpStoreServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.LfpStoreServiceRestInterceptor(),
-    )
-    client = LfpStoreServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LfpStoreServiceRestInterceptor, "post_get_lfp_store"
-    ) as post, mock.patch.object(
-        transports.LfpStoreServiceRestInterceptor, "pre_get_lfp_store"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lfpstore.GetLfpStoreRequest.pb(lfpstore.GetLfpStoreRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = lfpstore.LfpStore.to_json(lfpstore.LfpStore())
-
-        request = lfpstore.GetLfpStoreRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = lfpstore.LfpStore()
-
-        client.get_lfp_store(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_lfp_store_rest_bad_request(
-    transport: str = "rest", request_type=lfpstore.GetLfpStoreRequest
-):
-    client = LfpStoreServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "accounts/sample1/lfpStores/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_lfp_store(request)
-
-
 def test_get_lfp_store_rest_flattened():
     client = LfpStoreServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3210,155 +2909,6 @@ def test_get_lfp_store_rest_flattened_error(transport: str = "rest"):
             lfpstore.GetLfpStoreRequest(),
             name="name_value",
         )
-
-
-def test_get_lfp_store_rest_error():
-    client = LfpStoreServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lfpstore.InsertLfpStoreRequest,
-        dict,
-    ],
-)
-def test_insert_lfp_store_rest(request_type):
-    client = LfpStoreServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request_init["lfp_store"] = {
-        "name": "name_value",
-        "target_account": 1491,
-        "store_code": "store_code_value",
-        "store_address": "store_address_value",
-        "store_name": "store_name_value",
-        "phone_number": "phone_number_value",
-        "website_uri": "website_uri_value",
-        "gcid_category": ["gcid_category_value1", "gcid_category_value2"],
-        "place_id": "place_id_value",
-        "matching_state": 1,
-        "matching_state_hint": "matching_state_hint_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = lfpstore.InsertLfpStoreRequest.meta.fields["lfp_store"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["lfp_store"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["lfp_store"][field])):
-                    del request_init["lfp_store"][field][i][subfield]
-            else:
-                del request_init["lfp_store"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = lfpstore.LfpStore(
-            name="name_value",
-            target_account=1491,
-            store_code="store_code_value",
-            store_address="store_address_value",
-            store_name="store_name_value",
-            phone_number="phone_number_value",
-            website_uri="website_uri_value",
-            gcid_category=["gcid_category_value"],
-            place_id="place_id_value",
-            matching_state=lfpstore.LfpStore.StoreMatchingState.STORE_MATCHING_STATE_MATCHED,
-            matching_state_hint="matching_state_hint_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = lfpstore.LfpStore.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.insert_lfp_store(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, lfpstore.LfpStore)
-    assert response.name == "name_value"
-    assert response.target_account == 1491
-    assert response.store_code == "store_code_value"
-    assert response.store_address == "store_address_value"
-    assert response.store_name == "store_name_value"
-    assert response.phone_number == "phone_number_value"
-    assert response.website_uri == "website_uri_value"
-    assert response.gcid_category == ["gcid_category_value"]
-    assert response.place_id == "place_id_value"
-    assert (
-        response.matching_state
-        == lfpstore.LfpStore.StoreMatchingState.STORE_MATCHING_STATE_MATCHED
-    )
-    assert response.matching_state_hint == "matching_state_hint_value"
 
 
 def test_insert_lfp_store_rest_use_cached_wrapped_rpc():
@@ -3491,83 +3041,6 @@ def test_insert_lfp_store_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_insert_lfp_store_rest_interceptors(null_interceptor):
-    transport = transports.LfpStoreServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.LfpStoreServiceRestInterceptor(),
-    )
-    client = LfpStoreServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LfpStoreServiceRestInterceptor, "post_insert_lfp_store"
-    ) as post, mock.patch.object(
-        transports.LfpStoreServiceRestInterceptor, "pre_insert_lfp_store"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lfpstore.InsertLfpStoreRequest.pb(lfpstore.InsertLfpStoreRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = lfpstore.LfpStore.to_json(lfpstore.LfpStore())
-
-        request = lfpstore.InsertLfpStoreRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = lfpstore.LfpStore()
-
-        client.insert_lfp_store(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_insert_lfp_store_rest_bad_request(
-    transport: str = "rest", request_type=lfpstore.InsertLfpStoreRequest
-):
-    client = LfpStoreServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.insert_lfp_store(request)
-
-
 def test_insert_lfp_store_rest_flattened():
     client = LfpStoreServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3625,47 +3098,6 @@ def test_insert_lfp_store_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             lfp_store=lfpstore.LfpStore(name="name_value"),
         )
-
-
-def test_insert_lfp_store_rest_error():
-    client = LfpStoreServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lfpstore.DeleteLfpStoreRequest,
-        dict,
-    ],
-)
-def test_delete_lfp_store_rest(request_type):
-    client = LfpStoreServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "accounts/sample1/lfpStores/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_lfp_store(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_lfp_store_rest_use_cached_wrapped_rpc():
@@ -3786,77 +3218,6 @@ def test_delete_lfp_store_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_lfp_store_rest_interceptors(null_interceptor):
-    transport = transports.LfpStoreServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.LfpStoreServiceRestInterceptor(),
-    )
-    client = LfpStoreServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LfpStoreServiceRestInterceptor, "pre_delete_lfp_store"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = lfpstore.DeleteLfpStoreRequest.pb(lfpstore.DeleteLfpStoreRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = lfpstore.DeleteLfpStoreRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_lfp_store(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_lfp_store_rest_bad_request(
-    transport: str = "rest", request_type=lfpstore.DeleteLfpStoreRequest
-):
-    client = LfpStoreServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "accounts/sample1/lfpStores/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_lfp_store(request)
-
-
 def test_delete_lfp_store_rest_flattened():
     client = LfpStoreServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3909,52 +3270,6 @@ def test_delete_lfp_store_rest_flattened_error(transport: str = "rest"):
             lfpstore.DeleteLfpStoreRequest(),
             name="name_value",
         )
-
-
-def test_delete_lfp_store_rest_error():
-    client = LfpStoreServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lfpstore.ListLfpStoresRequest,
-        dict,
-    ],
-)
-def test_list_lfp_stores_rest(request_type):
-    client = LfpStoreServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = lfpstore.ListLfpStoresResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = lfpstore.ListLfpStoresResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_lfp_stores(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListLfpStoresPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_lfp_stores_rest_use_cached_wrapped_rpc():
@@ -4109,85 +3424,6 @@ def test_list_lfp_stores_rest_unset_required_fields():
             )
         )
     )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_lfp_stores_rest_interceptors(null_interceptor):
-    transport = transports.LfpStoreServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.LfpStoreServiceRestInterceptor(),
-    )
-    client = LfpStoreServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LfpStoreServiceRestInterceptor, "post_list_lfp_stores"
-    ) as post, mock.patch.object(
-        transports.LfpStoreServiceRestInterceptor, "pre_list_lfp_stores"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lfpstore.ListLfpStoresRequest.pb(lfpstore.ListLfpStoresRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = lfpstore.ListLfpStoresResponse.to_json(
-            lfpstore.ListLfpStoresResponse()
-        )
-
-        request = lfpstore.ListLfpStoresRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = lfpstore.ListLfpStoresResponse()
-
-        client.list_lfp_stores(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_lfp_stores_rest_bad_request(
-    transport: str = "rest", request_type=lfpstore.ListLfpStoresRequest
-):
-    client = LfpStoreServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_lfp_stores(request)
 
 
 def test_list_lfp_stores_rest_flattened():
@@ -4399,18 +3635,909 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = LfpStoreServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_lfp_store_empty_call_grpc():
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_lfp_store), "__call__") as call:
+        call.return_value = lfpstore.LfpStore()
+        client.get_lfp_store(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lfpstore.GetLfpStoreRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_insert_lfp_store_empty_call_grpc():
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.insert_lfp_store), "__call__") as call:
+        call.return_value = lfpstore.LfpStore()
+        client.insert_lfp_store(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lfpstore.InsertLfpStoreRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_lfp_store_empty_call_grpc():
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_lfp_store), "__call__") as call:
+        call.return_value = None
+        client.delete_lfp_store(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lfpstore.DeleteLfpStoreRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_lfp_stores_empty_call_grpc():
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_lfp_stores), "__call__") as call:
+        call.return_value = lfpstore.ListLfpStoresResponse()
+        client.list_lfp_stores(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lfpstore.ListLfpStoresRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = LfpStoreServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = LfpStoreServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_lfp_store_empty_call_grpc_asyncio():
+    client = LfpStoreServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_lfp_store), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lfpstore.LfpStore(
+                name="name_value",
+                target_account=1491,
+                store_code="store_code_value",
+                store_address="store_address_value",
+                store_name="store_name_value",
+                phone_number="phone_number_value",
+                website_uri="website_uri_value",
+                gcid_category=["gcid_category_value"],
+                place_id="place_id_value",
+                matching_state=lfpstore.LfpStore.StoreMatchingState.STORE_MATCHING_STATE_MATCHED,
+                matching_state_hint="matching_state_hint_value",
+            )
+        )
+        await client.get_lfp_store(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lfpstore.GetLfpStoreRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_insert_lfp_store_empty_call_grpc_asyncio():
+    client = LfpStoreServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.insert_lfp_store), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lfpstore.LfpStore(
+                name="name_value",
+                target_account=1491,
+                store_code="store_code_value",
+                store_address="store_address_value",
+                store_name="store_name_value",
+                phone_number="phone_number_value",
+                website_uri="website_uri_value",
+                gcid_category=["gcid_category_value"],
+                place_id="place_id_value",
+                matching_state=lfpstore.LfpStore.StoreMatchingState.STORE_MATCHING_STATE_MATCHED,
+                matching_state_hint="matching_state_hint_value",
+            )
+        )
+        await client.insert_lfp_store(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lfpstore.InsertLfpStoreRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_lfp_store_empty_call_grpc_asyncio():
+    client = LfpStoreServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_lfp_store), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_lfp_store(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lfpstore.DeleteLfpStoreRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_lfp_stores_empty_call_grpc_asyncio():
+    client = LfpStoreServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_lfp_stores), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lfpstore.ListLfpStoresResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_lfp_stores(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lfpstore.ListLfpStoresRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = LfpStoreServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_get_lfp_store_rest_bad_request(request_type=lfpstore.GetLfpStoreRequest):
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "accounts/sample1/lfpStores/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_lfp_store(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        lfpstore.GetLfpStoreRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = LfpStoreServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_get_lfp_store_rest_call_success(request_type):
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "accounts/sample1/lfpStores/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lfpstore.LfpStore(
+            name="name_value",
+            target_account=1491,
+            store_code="store_code_value",
+            store_address="store_address_value",
+            store_name="store_name_value",
+            phone_number="phone_number_value",
+            website_uri="website_uri_value",
+            gcid_category=["gcid_category_value"],
+            place_id="place_id_value",
+            matching_state=lfpstore.LfpStore.StoreMatchingState.STORE_MATCHING_STATE_MATCHED,
+            matching_state_hint="matching_state_hint_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = lfpstore.LfpStore.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_lfp_store(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, lfpstore.LfpStore)
+    assert response.name == "name_value"
+    assert response.target_account == 1491
+    assert response.store_code == "store_code_value"
+    assert response.store_address == "store_address_value"
+    assert response.store_name == "store_name_value"
+    assert response.phone_number == "phone_number_value"
+    assert response.website_uri == "website_uri_value"
+    assert response.gcid_category == ["gcid_category_value"]
+    assert response.place_id == "place_id_value"
+    assert (
+        response.matching_state
+        == lfpstore.LfpStore.StoreMatchingState.STORE_MATCHING_STATE_MATCHED
+    )
+    assert response.matching_state_hint == "matching_state_hint_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_lfp_store_rest_interceptors(null_interceptor):
+    transport = transports.LfpStoreServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.LfpStoreServiceRestInterceptor(),
+    )
+    client = LfpStoreServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LfpStoreServiceRestInterceptor, "post_get_lfp_store"
+    ) as post, mock.patch.object(
+        transports.LfpStoreServiceRestInterceptor, "pre_get_lfp_store"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lfpstore.GetLfpStoreRequest.pb(lfpstore.GetLfpStoreRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = lfpstore.LfpStore.to_json(lfpstore.LfpStore())
+        req.return_value.content = return_value
+
+        request = lfpstore.GetLfpStoreRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lfpstore.LfpStore()
+
+        client.get_lfp_store(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_insert_lfp_store_rest_bad_request(request_type=lfpstore.InsertLfpStoreRequest):
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.insert_lfp_store(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lfpstore.InsertLfpStoreRequest,
+        dict,
+    ],
+)
+def test_insert_lfp_store_rest_call_success(request_type):
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request_init["lfp_store"] = {
+        "name": "name_value",
+        "target_account": 1491,
+        "store_code": "store_code_value",
+        "store_address": "store_address_value",
+        "store_name": "store_name_value",
+        "phone_number": "phone_number_value",
+        "website_uri": "website_uri_value",
+        "gcid_category": ["gcid_category_value1", "gcid_category_value2"],
+        "place_id": "place_id_value",
+        "matching_state": 1,
+        "matching_state_hint": "matching_state_hint_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = lfpstore.InsertLfpStoreRequest.meta.fields["lfp_store"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["lfp_store"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["lfp_store"][field])):
+                    del request_init["lfp_store"][field][i][subfield]
+            else:
+                del request_init["lfp_store"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lfpstore.LfpStore(
+            name="name_value",
+            target_account=1491,
+            store_code="store_code_value",
+            store_address="store_address_value",
+            store_name="store_name_value",
+            phone_number="phone_number_value",
+            website_uri="website_uri_value",
+            gcid_category=["gcid_category_value"],
+            place_id="place_id_value",
+            matching_state=lfpstore.LfpStore.StoreMatchingState.STORE_MATCHING_STATE_MATCHED,
+            matching_state_hint="matching_state_hint_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = lfpstore.LfpStore.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.insert_lfp_store(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, lfpstore.LfpStore)
+    assert response.name == "name_value"
+    assert response.target_account == 1491
+    assert response.store_code == "store_code_value"
+    assert response.store_address == "store_address_value"
+    assert response.store_name == "store_name_value"
+    assert response.phone_number == "phone_number_value"
+    assert response.website_uri == "website_uri_value"
+    assert response.gcid_category == ["gcid_category_value"]
+    assert response.place_id == "place_id_value"
+    assert (
+        response.matching_state
+        == lfpstore.LfpStore.StoreMatchingState.STORE_MATCHING_STATE_MATCHED
+    )
+    assert response.matching_state_hint == "matching_state_hint_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_insert_lfp_store_rest_interceptors(null_interceptor):
+    transport = transports.LfpStoreServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.LfpStoreServiceRestInterceptor(),
+    )
+    client = LfpStoreServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LfpStoreServiceRestInterceptor, "post_insert_lfp_store"
+    ) as post, mock.patch.object(
+        transports.LfpStoreServiceRestInterceptor, "pre_insert_lfp_store"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lfpstore.InsertLfpStoreRequest.pb(lfpstore.InsertLfpStoreRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = lfpstore.LfpStore.to_json(lfpstore.LfpStore())
+        req.return_value.content = return_value
+
+        request = lfpstore.InsertLfpStoreRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lfpstore.LfpStore()
+
+        client.insert_lfp_store(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_lfp_store_rest_bad_request(request_type=lfpstore.DeleteLfpStoreRequest):
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "accounts/sample1/lfpStores/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_lfp_store(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lfpstore.DeleteLfpStoreRequest,
+        dict,
+    ],
+)
+def test_delete_lfp_store_rest_call_success(request_type):
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "accounts/sample1/lfpStores/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_lfp_store(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_lfp_store_rest_interceptors(null_interceptor):
+    transport = transports.LfpStoreServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.LfpStoreServiceRestInterceptor(),
+    )
+    client = LfpStoreServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LfpStoreServiceRestInterceptor, "pre_delete_lfp_store"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = lfpstore.DeleteLfpStoreRequest.pb(lfpstore.DeleteLfpStoreRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = lfpstore.DeleteLfpStoreRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_lfp_store(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_list_lfp_stores_rest_bad_request(request_type=lfpstore.ListLfpStoresRequest):
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_lfp_stores(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lfpstore.ListLfpStoresRequest,
+        dict,
+    ],
+)
+def test_list_lfp_stores_rest_call_success(request_type):
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lfpstore.ListLfpStoresResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = lfpstore.ListLfpStoresResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_lfp_stores(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListLfpStoresPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_lfp_stores_rest_interceptors(null_interceptor):
+    transport = transports.LfpStoreServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.LfpStoreServiceRestInterceptor(),
+    )
+    client = LfpStoreServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LfpStoreServiceRestInterceptor, "post_list_lfp_stores"
+    ) as post, mock.patch.object(
+        transports.LfpStoreServiceRestInterceptor, "pre_list_lfp_stores"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lfpstore.ListLfpStoresRequest.pb(lfpstore.ListLfpStoresRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = lfpstore.ListLfpStoresResponse.to_json(
+            lfpstore.ListLfpStoresResponse()
+        )
+        req.return_value.content = return_value
+
+        request = lfpstore.ListLfpStoresRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lfpstore.ListLfpStoresResponse()
+
+        client.list_lfp_stores(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_initialize_client_w_rest():
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_lfp_store_empty_call_rest():
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_lfp_store), "__call__") as call:
+        client.get_lfp_store(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lfpstore.GetLfpStoreRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_insert_lfp_store_empty_call_rest():
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.insert_lfp_store), "__call__") as call:
+        client.insert_lfp_store(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lfpstore.InsertLfpStoreRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_lfp_store_empty_call_rest():
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_lfp_store), "__call__") as call:
+        client.delete_lfp_store(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lfpstore.DeleteLfpStoreRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_lfp_stores_empty_call_rest():
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_lfp_stores), "__call__") as call:
+        client.list_lfp_stores(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lfpstore.ListLfpStoresRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -5000,36 +5127,41 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = LfpStoreServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = LfpStoreServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = LfpStoreServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = LfpStoreServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

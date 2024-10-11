@@ -22,12 +22,29 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 import google.auth
@@ -37,17 +54,9 @@ from google.geo.type.types import viewport
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.maps.fleetengine_delivery_v1.services.delivery_service import (
     DeliveryServiceAsyncClient,
@@ -65,8 +74,22 @@ from google.maps.fleetengine_delivery_v1.types import (
 )
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1200,27 +1223,6 @@ def test_create_delivery_vehicle(request_type, transport: str = "grpc"):
     assert response.type_ == delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO
 
 
-def test_create_delivery_vehicle_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_delivery_vehicle), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_delivery_vehicle()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.CreateDeliveryVehicleRequest()
-
-
 def test_create_delivery_vehicle_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1294,34 +1296,6 @@ def test_create_delivery_vehicle_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_delivery_vehicle_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_delivery_vehicle), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            delivery_vehicles.DeliveryVehicle(
-                name="name_value",
-                navigation_status=common.DeliveryVehicleNavigationStatus.NO_GUIDANCE,
-                current_route_segment=b"current_route_segment_blob",
-                type_=delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO,
-            )
-        )
-        response = await client.create_delivery_vehicle()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.CreateDeliveryVehicleRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_delivery_vehicle_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1329,7 +1303,7 @@ async def test_create_delivery_vehicle_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DeliveryServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1369,7 +1343,7 @@ async def test_create_delivery_vehicle_async(
     request_type=delivery_api.CreateDeliveryVehicleRequest,
 ):
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1411,34 +1385,6 @@ async def test_create_delivery_vehicle_async(
 @pytest.mark.asyncio
 async def test_create_delivery_vehicle_async_from_dict():
     await test_create_delivery_vehicle_async(request_type=dict)
-
-
-def test_create_delivery_vehicle_routing_parameters():
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = delivery_api.CreateDeliveryVehicleRequest(
-        **{"parent": "providers/sample1"}
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_delivery_vehicle), "__call__"
-    ) as call:
-        call.return_value = delivery_vehicles.DeliveryVehicle()
-        client.create_delivery_vehicle(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
 
 
 def test_create_delivery_vehicle_flattened():
@@ -1494,7 +1440,7 @@ def test_create_delivery_vehicle_flattened_error():
 @pytest.mark.asyncio
 async def test_create_delivery_vehicle_flattened_async():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1533,7 +1479,7 @@ async def test_create_delivery_vehicle_flattened_async():
 @pytest.mark.asyncio
 async def test_create_delivery_vehicle_flattened_error_async():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1591,27 +1537,6 @@ def test_get_delivery_vehicle(request_type, transport: str = "grpc"):
     )
     assert response.current_route_segment == b"current_route_segment_blob"
     assert response.type_ == delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO
-
-
-def test_get_delivery_vehicle_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_delivery_vehicle), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_delivery_vehicle()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.GetDeliveryVehicleRequest()
 
 
 def test_get_delivery_vehicle_non_empty_request_with_auto_populated_field():
@@ -1684,34 +1609,6 @@ def test_get_delivery_vehicle_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_delivery_vehicle_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_delivery_vehicle), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            delivery_vehicles.DeliveryVehicle(
-                name="name_value",
-                navigation_status=common.DeliveryVehicleNavigationStatus.NO_GUIDANCE,
-                current_route_segment=b"current_route_segment_blob",
-                type_=delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO,
-            )
-        )
-        response = await client.get_delivery_vehicle()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.GetDeliveryVehicleRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_delivery_vehicle_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1719,7 +1616,7 @@ async def test_get_delivery_vehicle_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DeliveryServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1758,7 +1655,7 @@ async def test_get_delivery_vehicle_async(
     transport: str = "grpc_asyncio", request_type=delivery_api.GetDeliveryVehicleRequest
 ):
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1800,32 +1697,6 @@ async def test_get_delivery_vehicle_async(
 @pytest.mark.asyncio
 async def test_get_delivery_vehicle_async_from_dict():
     await test_get_delivery_vehicle_async(request_type=dict)
-
-
-def test_get_delivery_vehicle_routing_parameters():
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = delivery_api.GetDeliveryVehicleRequest(**{"name": "providers/sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_delivery_vehicle), "__call__"
-    ) as call:
-        call.return_value = delivery_vehicles.DeliveryVehicle()
-        client.get_delivery_vehicle(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
 
 
 def test_get_delivery_vehicle_flattened():
@@ -1871,7 +1742,7 @@ def test_get_delivery_vehicle_flattened_error():
 @pytest.mark.asyncio
 async def test_get_delivery_vehicle_flattened_async():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1902,7 +1773,7 @@ async def test_get_delivery_vehicle_flattened_async():
 @pytest.mark.asyncio
 async def test_get_delivery_vehicle_flattened_error_async():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1958,27 +1829,6 @@ def test_update_delivery_vehicle(request_type, transport: str = "grpc"):
     )
     assert response.current_route_segment == b"current_route_segment_blob"
     assert response.type_ == delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO
-
-
-def test_update_delivery_vehicle_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_delivery_vehicle), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_delivery_vehicle()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.UpdateDeliveryVehicleRequest()
 
 
 def test_update_delivery_vehicle_non_empty_request_with_auto_populated_field():
@@ -2048,34 +1898,6 @@ def test_update_delivery_vehicle_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_delivery_vehicle_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_delivery_vehicle), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            delivery_vehicles.DeliveryVehicle(
-                name="name_value",
-                navigation_status=common.DeliveryVehicleNavigationStatus.NO_GUIDANCE,
-                current_route_segment=b"current_route_segment_blob",
-                type_=delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO,
-            )
-        )
-        response = await client.update_delivery_vehicle()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.UpdateDeliveryVehicleRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_delivery_vehicle_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2083,7 +1905,7 @@ async def test_update_delivery_vehicle_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DeliveryServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2123,7 +1945,7 @@ async def test_update_delivery_vehicle_async(
     request_type=delivery_api.UpdateDeliveryVehicleRequest,
 ):
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2165,34 +1987,6 @@ async def test_update_delivery_vehicle_async(
 @pytest.mark.asyncio
 async def test_update_delivery_vehicle_async_from_dict():
     await test_update_delivery_vehicle_async(request_type=dict)
-
-
-def test_update_delivery_vehicle_routing_parameters():
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = delivery_api.UpdateDeliveryVehicleRequest(
-        **{"delivery_vehicle": {"name": "providers/sample1"}}
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_delivery_vehicle), "__call__"
-    ) as call:
-        call.return_value = delivery_vehicles.DeliveryVehicle()
-        client.update_delivery_vehicle(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
 
 
 def test_update_delivery_vehicle_flattened():
@@ -2243,7 +2037,7 @@ def test_update_delivery_vehicle_flattened_error():
 @pytest.mark.asyncio
 async def test_update_delivery_vehicle_flattened_async():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2278,7 +2072,7 @@ async def test_update_delivery_vehicle_flattened_async():
 @pytest.mark.asyncio
 async def test_update_delivery_vehicle_flattened_error_async():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2324,27 +2118,6 @@ def test_batch_create_tasks(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, delivery_api.BatchCreateTasksResponse)
-
-
-def test_batch_create_tasks_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_create_tasks), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.batch_create_tasks()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.BatchCreateTasksRequest()
 
 
 def test_batch_create_tasks_non_empty_request_with_auto_populated_field():
@@ -2417,29 +2190,6 @@ def test_batch_create_tasks_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_batch_create_tasks_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_create_tasks), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            delivery_api.BatchCreateTasksResponse()
-        )
-        response = await client.batch_create_tasks()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.BatchCreateTasksRequest()
-
-
-@pytest.mark.asyncio
 async def test_batch_create_tasks_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2447,7 +2197,7 @@ async def test_batch_create_tasks_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DeliveryServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2486,7 +2236,7 @@ async def test_batch_create_tasks_async(
     transport: str = "grpc_asyncio", request_type=delivery_api.BatchCreateTasksRequest
 ):
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2517,32 +2267,6 @@ async def test_batch_create_tasks_async(
 @pytest.mark.asyncio
 async def test_batch_create_tasks_async_from_dict():
     await test_batch_create_tasks_async(request_type=dict)
-
-
-def test_batch_create_tasks_routing_parameters():
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = delivery_api.BatchCreateTasksRequest(**{"parent": "providers/sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_create_tasks), "__call__"
-    ) as call:
-        call.return_value = delivery_api.BatchCreateTasksResponse()
-        client.batch_create_tasks(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
 
 
 @pytest.mark.parametrize(
@@ -2594,25 +2318,6 @@ def test_create_task(request_type, transport: str = "grpc"):
     )
     assert response.tracking_id == "tracking_id_value"
     assert response.delivery_vehicle_id == "delivery_vehicle_id_value"
-
-
-def test_create_task_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_task), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_task()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.CreateTaskRequest()
 
 
 def test_create_task_non_empty_request_with_auto_populated_field():
@@ -2681,35 +2386,6 @@ def test_create_task_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_task_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_task), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            tasks.Task(
-                name="name_value",
-                type_=tasks.Task.Type.PICKUP,
-                state=tasks.Task.State.OPEN,
-                task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
-                task_outcome_location_source=tasks.Task.TaskOutcomeLocationSource.PROVIDER,
-                tracking_id="tracking_id_value",
-                delivery_vehicle_id="delivery_vehicle_id_value",
-            )
-        )
-        response = await client.create_task()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.CreateTaskRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_task_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2717,7 +2393,7 @@ async def test_create_task_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DeliveryServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2756,7 +2432,7 @@ async def test_create_task_async(
     transport: str = "grpc_asyncio", request_type=delivery_api.CreateTaskRequest
 ):
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2803,30 +2479,6 @@ async def test_create_task_async(
 @pytest.mark.asyncio
 async def test_create_task_async_from_dict():
     await test_create_task_async(request_type=dict)
-
-
-def test_create_task_routing_parameters():
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = delivery_api.CreateTaskRequest(**{"parent": "providers/sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_task), "__call__") as call:
-        call.return_value = tasks.Task()
-        client.create_task(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
 
 
 def test_create_task_flattened():
@@ -2880,7 +2532,7 @@ def test_create_task_flattened_error():
 @pytest.mark.asyncio
 async def test_create_task_flattened_async():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2915,7 +2567,7 @@ async def test_create_task_flattened_async():
 @pytest.mark.asyncio
 async def test_create_task_flattened_error_async():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2978,25 +2630,6 @@ def test_get_task(request_type, transport: str = "grpc"):
     )
     assert response.tracking_id == "tracking_id_value"
     assert response.delivery_vehicle_id == "delivery_vehicle_id_value"
-
-
-def test_get_task_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_task), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_task()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.GetTaskRequest()
 
 
 def test_get_task_non_empty_request_with_auto_populated_field():
@@ -3063,41 +2696,12 @@ def test_get_task_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_task_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_task), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            tasks.Task(
-                name="name_value",
-                type_=tasks.Task.Type.PICKUP,
-                state=tasks.Task.State.OPEN,
-                task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
-                task_outcome_location_source=tasks.Task.TaskOutcomeLocationSource.PROVIDER,
-                tracking_id="tracking_id_value",
-                delivery_vehicle_id="delivery_vehicle_id_value",
-            )
-        )
-        response = await client.get_task()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.GetTaskRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_task_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DeliveryServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3136,7 +2740,7 @@ async def test_get_task_async(
     transport: str = "grpc_asyncio", request_type=delivery_api.GetTaskRequest
 ):
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3185,30 +2789,6 @@ async def test_get_task_async_from_dict():
     await test_get_task_async(request_type=dict)
 
 
-def test_get_task_routing_parameters():
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = delivery_api.GetTaskRequest(**{"name": "providers/sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_task), "__call__") as call:
-        call.return_value = tasks.Task()
-        client.get_task(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
-
-
 def test_get_task_flattened():
     client = DeliveryServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3250,7 +2830,7 @@ def test_get_task_flattened_error():
 @pytest.mark.asyncio
 async def test_get_task_flattened_async():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3277,7 +2857,7 @@ async def test_get_task_flattened_async():
 @pytest.mark.asyncio
 async def test_get_task_flattened_error_async():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3340,25 +2920,6 @@ def test_update_task(request_type, transport: str = "grpc"):
     assert response.delivery_vehicle_id == "delivery_vehicle_id_value"
 
 
-def test_update_task_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_task), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_task()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.UpdateTaskRequest()
-
-
 def test_update_task_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -3419,35 +2980,6 @@ def test_update_task_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_task_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_task), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            tasks.Task(
-                name="name_value",
-                type_=tasks.Task.Type.PICKUP,
-                state=tasks.Task.State.OPEN,
-                task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
-                task_outcome_location_source=tasks.Task.TaskOutcomeLocationSource.PROVIDER,
-                tracking_id="tracking_id_value",
-                delivery_vehicle_id="delivery_vehicle_id_value",
-            )
-        )
-        response = await client.update_task()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.UpdateTaskRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_task_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3455,7 +2987,7 @@ async def test_update_task_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DeliveryServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3494,7 +3026,7 @@ async def test_update_task_async(
     transport: str = "grpc_asyncio", request_type=delivery_api.UpdateTaskRequest
 ):
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3543,30 +3075,6 @@ async def test_update_task_async_from_dict():
     await test_update_task_async(request_type=dict)
 
 
-def test_update_task_routing_parameters():
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = delivery_api.UpdateTaskRequest(**{"task": {"name": "providers/sample1"}})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_task), "__call__") as call:
-        call.return_value = tasks.Task()
-        client.update_task(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
-
-
 def test_update_task_flattened():
     client = DeliveryServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3613,7 +3121,7 @@ def test_update_task_flattened_error():
 @pytest.mark.asyncio
 async def test_update_task_flattened_async():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3644,7 +3152,7 @@ async def test_update_task_flattened_async():
 @pytest.mark.asyncio
 async def test_update_task_flattened_error_async():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3693,25 +3201,6 @@ def test_list_tasks(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListTasksPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-def test_list_tasks_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_tasks()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.ListTasksRequest()
 
 
 def test_list_tasks_non_empty_request_with_auto_populated_field():
@@ -3782,36 +3271,12 @@ def test_list_tasks_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_tasks_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            delivery_api.ListTasksResponse(
-                next_page_token="next_page_token_value",
-                total_size=1086,
-            )
-        )
-        response = await client.list_tasks()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.ListTasksRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_tasks_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DeliveryServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3850,7 +3315,7 @@ async def test_list_tasks_async(
     transport: str = "grpc_asyncio", request_type=delivery_api.ListTasksRequest
 ):
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3884,30 +3349,6 @@ async def test_list_tasks_async(
 @pytest.mark.asyncio
 async def test_list_tasks_async_from_dict():
     await test_list_tasks_async(request_type=dict)
-
-
-def test_list_tasks_routing_parameters():
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = delivery_api.ListTasksRequest(**{"parent": "providers/sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
-        call.return_value = delivery_api.ListTasksResponse()
-        client.list_tasks(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
 
 
 def test_list_tasks_flattened():
@@ -3951,7 +3392,7 @@ def test_list_tasks_flattened_error():
 @pytest.mark.asyncio
 async def test_list_tasks_flattened_async():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3980,7 +3421,7 @@ async def test_list_tasks_flattened_async():
 @pytest.mark.asyncio
 async def test_list_tasks_flattened_error_async():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4087,7 +3528,7 @@ def test_list_tasks_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_tasks_async_pager():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4137,7 +3578,7 @@ async def test_list_tasks_async_pager():
 @pytest.mark.asyncio
 async def test_list_tasks_async_pages():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4227,27 +3668,6 @@ def test_get_task_tracking_info(request_type, transport: str = "grpc"):
     assert response.task_outcome == tasks.Task.TaskOutcome.SUCCEEDED
 
 
-def test_get_task_tracking_info_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_task_tracking_info), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_task_tracking_info()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.GetTaskTrackingInfoRequest()
-
-
 def test_get_task_tracking_info_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -4319,34 +3739,6 @@ def test_get_task_tracking_info_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_task_tracking_info_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_task_tracking_info), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            task_tracking_info.TaskTrackingInfo(
-                name="name_value",
-                tracking_id="tracking_id_value",
-                state=tasks.Task.State.OPEN,
-                task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
-            )
-        )
-        response = await client.get_task_tracking_info()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.GetTaskTrackingInfoRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_task_tracking_info_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4354,7 +3746,7 @@ async def test_get_task_tracking_info_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DeliveryServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4394,7 +3786,7 @@ async def test_get_task_tracking_info_async(
     request_type=delivery_api.GetTaskTrackingInfoRequest,
 ):
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4434,32 +3826,6 @@ async def test_get_task_tracking_info_async(
 @pytest.mark.asyncio
 async def test_get_task_tracking_info_async_from_dict():
     await test_get_task_tracking_info_async(request_type=dict)
-
-
-def test_get_task_tracking_info_routing_parameters():
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = delivery_api.GetTaskTrackingInfoRequest(**{"name": "providers/sample1"})
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_task_tracking_info), "__call__"
-    ) as call:
-        call.return_value = task_tracking_info.TaskTrackingInfo()
-        client.get_task_tracking_info(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
 
 
 def test_get_task_tracking_info_flattened():
@@ -4505,7 +3871,7 @@ def test_get_task_tracking_info_flattened_error():
 @pytest.mark.asyncio
 async def test_get_task_tracking_info_flattened_async():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4536,7 +3902,7 @@ async def test_get_task_tracking_info_flattened_async():
 @pytest.mark.asyncio
 async def test_get_task_tracking_info_flattened_error_async():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4586,27 +3952,6 @@ def test_list_delivery_vehicles(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListDeliveryVehiclesPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-def test_list_delivery_vehicles_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_delivery_vehicles), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_delivery_vehicles()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.ListDeliveryVehiclesRequest()
 
 
 def test_list_delivery_vehicles_non_empty_request_with_auto_populated_field():
@@ -4684,32 +4029,6 @@ def test_list_delivery_vehicles_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_delivery_vehicles_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_delivery_vehicles), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            delivery_api.ListDeliveryVehiclesResponse(
-                next_page_token="next_page_token_value",
-                total_size=1086,
-            )
-        )
-        response = await client.list_delivery_vehicles()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == delivery_api.ListDeliveryVehiclesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_delivery_vehicles_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4717,7 +4036,7 @@ async def test_list_delivery_vehicles_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DeliveryServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4757,7 +4076,7 @@ async def test_list_delivery_vehicles_async(
     request_type=delivery_api.ListDeliveryVehiclesRequest,
 ):
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4793,34 +4112,6 @@ async def test_list_delivery_vehicles_async(
 @pytest.mark.asyncio
 async def test_list_delivery_vehicles_async_from_dict():
     await test_list_delivery_vehicles_async(request_type=dict)
-
-
-def test_list_delivery_vehicles_routing_parameters():
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = delivery_api.ListDeliveryVehiclesRequest(
-        **{"parent": "providers/sample1"}
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_delivery_vehicles), "__call__"
-    ) as call:
-        call.return_value = delivery_api.ListDeliveryVehiclesResponse()
-        client.list_delivery_vehicles(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    _, _, kw = call.mock_calls[0]
-    # This test doesn't assert anything useful.
-    assert kw["metadata"]
 
 
 def test_list_delivery_vehicles_flattened():
@@ -4866,7 +4157,7 @@ def test_list_delivery_vehicles_flattened_error():
 @pytest.mark.asyncio
 async def test_list_delivery_vehicles_flattened_async():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4897,7 +4188,7 @@ async def test_list_delivery_vehicles_flattened_async():
 @pytest.mark.asyncio
 async def test_list_delivery_vehicles_flattened_error_async():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5008,7 +4299,7 @@ def test_list_delivery_vehicles_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_delivery_vehicles_async_pager():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5060,7 +4351,7 @@ async def test_list_delivery_vehicles_async_pager():
 @pytest.mark.asyncio
 async def test_list_delivery_vehicles_async_pages():
     client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5106,189 +4397,6 @@ async def test_list_delivery_vehicles_async_pages():
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        delivery_api.CreateDeliveryVehicleRequest,
-        dict,
-    ],
-)
-def test_create_delivery_vehicle_rest(request_type):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "providers/sample1"}
-    request_init["delivery_vehicle"] = {
-        "name": "name_value",
-        "last_location": {
-            "location": {"latitude": 0.86, "longitude": 0.971},
-            "horizontal_accuracy": {"value": 0.541},
-            "latlng_accuracy": {},
-            "heading": {"value": 541},
-            "bearing_accuracy": {},
-            "heading_accuracy": {},
-            "altitude": {},
-            "vertical_accuracy": {},
-            "altitude_accuracy": {},
-            "speed_kmph": {},
-            "speed": {},
-            "speed_accuracy": {},
-            "update_time": {"seconds": 751, "nanos": 543},
-            "server_time": {},
-            "location_sensor": 1,
-            "is_road_snapped": {"value": True},
-            "is_gps_sensor_enabled": {},
-            "time_since_update": {},
-            "num_stale_updates": {},
-            "raw_location": {},
-            "raw_location_time": {},
-            "raw_location_sensor": 1,
-            "raw_location_accuracy": {},
-            "supplemental_location": {},
-            "supplemental_location_time": {},
-            "supplemental_location_sensor": 1,
-            "supplemental_location_accuracy": {},
-            "road_snapped": True,
-        },
-        "navigation_status": 1,
-        "current_route_segment": b"current_route_segment_blob",
-        "current_route_segment_end_point": {},
-        "remaining_distance_meters": {},
-        "remaining_duration": {"seconds": 751, "nanos": 543},
-        "remaining_vehicle_journey_segments": [
-            {
-                "stop": {
-                    "planned_location": {"point": {}},
-                    "tasks": [
-                        {
-                            "task_id": "task_id_value",
-                            "task_duration": {},
-                            "target_time_window": {"start_time": {}, "end_time": {}},
-                        }
-                    ],
-                    "state": 1,
-                },
-                "driving_distance_meters": {},
-                "driving_duration": {},
-                "path": {},
-            }
-        ],
-        "attributes": [
-            {
-                "key": "key_value",
-                "value": "value_value",
-                "string_value": "string_value_value",
-                "bool_value": True,
-                "number_value": 0.1285,
-            }
-        ],
-        "type_": 1,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = delivery_api.CreateDeliveryVehicleRequest.meta.fields[
-        "delivery_vehicle"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["delivery_vehicle"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["delivery_vehicle"][field])):
-                    del request_init["delivery_vehicle"][field][i][subfield]
-            else:
-                del request_init["delivery_vehicle"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = delivery_vehicles.DeliveryVehicle(
-            name="name_value",
-            navigation_status=common.DeliveryVehicleNavigationStatus.NO_GUIDANCE,
-            current_route_segment=b"current_route_segment_blob",
-            type_=delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_delivery_vehicle(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, delivery_vehicles.DeliveryVehicle)
-    assert response.name == "name_value"
-    assert (
-        response.navigation_status == common.DeliveryVehicleNavigationStatus.NO_GUIDANCE
-    )
-    assert response.current_route_segment == b"current_route_segment_blob"
-    assert response.type_ == delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO
 
 
 def test_create_delivery_vehicle_rest_use_cached_wrapped_rpc():
@@ -5450,87 +4558,6 @@ def test_create_delivery_vehicle_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_delivery_vehicle_rest_interceptors(null_interceptor):
-    transport = transports.DeliveryServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DeliveryServiceRestInterceptor(),
-    )
-    client = DeliveryServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_create_delivery_vehicle"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_create_delivery_vehicle"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = delivery_api.CreateDeliveryVehicleRequest.pb(
-            delivery_api.CreateDeliveryVehicleRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = delivery_vehicles.DeliveryVehicle.to_json(
-            delivery_vehicles.DeliveryVehicle()
-        )
-
-        request = delivery_api.CreateDeliveryVehicleRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = delivery_vehicles.DeliveryVehicle()
-
-        client.create_delivery_vehicle(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_delivery_vehicle_rest_bad_request(
-    transport: str = "rest", request_type=delivery_api.CreateDeliveryVehicleRequest
-):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "providers/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_delivery_vehicle(request)
-
-
 def test_create_delivery_vehicle_rest_flattened():
     client = DeliveryServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5589,60 +4616,6 @@ def test_create_delivery_vehicle_rest_flattened_error(transport: str = "rest"):
             delivery_vehicle=delivery_vehicles.DeliveryVehicle(name="name_value"),
             delivery_vehicle_id="delivery_vehicle_id_value",
         )
-
-
-def test_create_delivery_vehicle_rest_error():
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        delivery_api.GetDeliveryVehicleRequest,
-        dict,
-    ],
-)
-def test_get_delivery_vehicle_rest(request_type):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "providers/sample1/deliveryVehicles/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = delivery_vehicles.DeliveryVehicle(
-            name="name_value",
-            navigation_status=common.DeliveryVehicleNavigationStatus.NO_GUIDANCE,
-            current_route_segment=b"current_route_segment_blob",
-            type_=delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_delivery_vehicle(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, delivery_vehicles.DeliveryVehicle)
-    assert response.name == "name_value"
-    assert (
-        response.navigation_status == common.DeliveryVehicleNavigationStatus.NO_GUIDANCE
-    )
-    assert response.current_route_segment == b"current_route_segment_blob"
-    assert response.type_ == delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO
 
 
 def test_get_delivery_vehicle_rest_use_cached_wrapped_rpc():
@@ -5770,87 +4743,6 @@ def test_get_delivery_vehicle_rest_unset_required_fields():
     assert set(unset_fields) == (set(("header",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_delivery_vehicle_rest_interceptors(null_interceptor):
-    transport = transports.DeliveryServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DeliveryServiceRestInterceptor(),
-    )
-    client = DeliveryServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_get_delivery_vehicle"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_get_delivery_vehicle"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = delivery_api.GetDeliveryVehicleRequest.pb(
-            delivery_api.GetDeliveryVehicleRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = delivery_vehicles.DeliveryVehicle.to_json(
-            delivery_vehicles.DeliveryVehicle()
-        )
-
-        request = delivery_api.GetDeliveryVehicleRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = delivery_vehicles.DeliveryVehicle()
-
-        client.get_delivery_vehicle(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_delivery_vehicle_rest_bad_request(
-    transport: str = "rest", request_type=delivery_api.GetDeliveryVehicleRequest
-):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "providers/sample1/deliveryVehicles/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_delivery_vehicle(request)
-
-
 def test_get_delivery_vehicle_rest_flattened():
     client = DeliveryServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5905,197 +4797,6 @@ def test_get_delivery_vehicle_rest_flattened_error(transport: str = "rest"):
             delivery_api.GetDeliveryVehicleRequest(),
             name="name_value",
         )
-
-
-def test_get_delivery_vehicle_rest_error():
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        delivery_api.UpdateDeliveryVehicleRequest,
-        dict,
-    ],
-)
-def test_update_delivery_vehicle_rest(request_type):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "delivery_vehicle": {"name": "providers/sample1/deliveryVehicles/sample2"}
-    }
-    request_init["delivery_vehicle"] = {
-        "name": "providers/sample1/deliveryVehicles/sample2",
-        "last_location": {
-            "location": {"latitude": 0.86, "longitude": 0.971},
-            "horizontal_accuracy": {"value": 0.541},
-            "latlng_accuracy": {},
-            "heading": {"value": 541},
-            "bearing_accuracy": {},
-            "heading_accuracy": {},
-            "altitude": {},
-            "vertical_accuracy": {},
-            "altitude_accuracy": {},
-            "speed_kmph": {},
-            "speed": {},
-            "speed_accuracy": {},
-            "update_time": {"seconds": 751, "nanos": 543},
-            "server_time": {},
-            "location_sensor": 1,
-            "is_road_snapped": {"value": True},
-            "is_gps_sensor_enabled": {},
-            "time_since_update": {},
-            "num_stale_updates": {},
-            "raw_location": {},
-            "raw_location_time": {},
-            "raw_location_sensor": 1,
-            "raw_location_accuracy": {},
-            "supplemental_location": {},
-            "supplemental_location_time": {},
-            "supplemental_location_sensor": 1,
-            "supplemental_location_accuracy": {},
-            "road_snapped": True,
-        },
-        "navigation_status": 1,
-        "current_route_segment": b"current_route_segment_blob",
-        "current_route_segment_end_point": {},
-        "remaining_distance_meters": {},
-        "remaining_duration": {"seconds": 751, "nanos": 543},
-        "remaining_vehicle_journey_segments": [
-            {
-                "stop": {
-                    "planned_location": {"point": {}},
-                    "tasks": [
-                        {
-                            "task_id": "task_id_value",
-                            "task_duration": {},
-                            "target_time_window": {"start_time": {}, "end_time": {}},
-                        }
-                    ],
-                    "state": 1,
-                },
-                "driving_distance_meters": {},
-                "driving_duration": {},
-                "path": {},
-            }
-        ],
-        "attributes": [
-            {
-                "key": "key_value",
-                "value": "value_value",
-                "string_value": "string_value_value",
-                "bool_value": True,
-                "number_value": 0.1285,
-            }
-        ],
-        "type_": 1,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = delivery_api.UpdateDeliveryVehicleRequest.meta.fields[
-        "delivery_vehicle"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["delivery_vehicle"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["delivery_vehicle"][field])):
-                    del request_init["delivery_vehicle"][field][i][subfield]
-            else:
-                del request_init["delivery_vehicle"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = delivery_vehicles.DeliveryVehicle(
-            name="name_value",
-            navigation_status=common.DeliveryVehicleNavigationStatus.NO_GUIDANCE,
-            current_route_segment=b"current_route_segment_blob",
-            type_=delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_delivery_vehicle(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, delivery_vehicles.DeliveryVehicle)
-    assert response.name == "name_value"
-    assert (
-        response.navigation_status == common.DeliveryVehicleNavigationStatus.NO_GUIDANCE
-    )
-    assert response.current_route_segment == b"current_route_segment_blob"
-    assert response.type_ == delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO
 
 
 def test_update_delivery_vehicle_rest_use_cached_wrapped_rpc():
@@ -6238,89 +4939,6 @@ def test_update_delivery_vehicle_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_delivery_vehicle_rest_interceptors(null_interceptor):
-    transport = transports.DeliveryServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DeliveryServiceRestInterceptor(),
-    )
-    client = DeliveryServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_update_delivery_vehicle"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_update_delivery_vehicle"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = delivery_api.UpdateDeliveryVehicleRequest.pb(
-            delivery_api.UpdateDeliveryVehicleRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = delivery_vehicles.DeliveryVehicle.to_json(
-            delivery_vehicles.DeliveryVehicle()
-        )
-
-        request = delivery_api.UpdateDeliveryVehicleRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = delivery_vehicles.DeliveryVehicle()
-
-        client.update_delivery_vehicle(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_delivery_vehicle_rest_bad_request(
-    transport: str = "rest", request_type=delivery_api.UpdateDeliveryVehicleRequest
-):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "delivery_vehicle": {"name": "providers/sample1/deliveryVehicles/sample2"}
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_delivery_vehicle(request)
-
-
 def test_update_delivery_vehicle_rest_flattened():
     client = DeliveryServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6380,49 +4998,6 @@ def test_update_delivery_vehicle_rest_flattened_error(transport: str = "rest"):
             delivery_vehicle=delivery_vehicles.DeliveryVehicle(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_delivery_vehicle_rest_error():
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        delivery_api.BatchCreateTasksRequest,
-        dict,
-    ],
-)
-def test_batch_create_tasks_rest(request_type):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "providers/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = delivery_api.BatchCreateTasksResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = delivery_api.BatchCreateTasksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.batch_create_tasks(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, delivery_api.BatchCreateTasksResponse)
 
 
 def test_batch_create_tasks_rest_use_cached_wrapped_rpc():
@@ -6555,302 +5130,6 @@ def test_batch_create_tasks_rest_unset_required_fields():
             )
         )
     )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_create_tasks_rest_interceptors(null_interceptor):
-    transport = transports.DeliveryServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DeliveryServiceRestInterceptor(),
-    )
-    client = DeliveryServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_batch_create_tasks"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_batch_create_tasks"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = delivery_api.BatchCreateTasksRequest.pb(
-            delivery_api.BatchCreateTasksRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = delivery_api.BatchCreateTasksResponse.to_json(
-            delivery_api.BatchCreateTasksResponse()
-        )
-
-        request = delivery_api.BatchCreateTasksRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = delivery_api.BatchCreateTasksResponse()
-
-        client.batch_create_tasks(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_create_tasks_rest_bad_request(
-    transport: str = "rest", request_type=delivery_api.BatchCreateTasksRequest
-):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "providers/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_create_tasks(request)
-
-
-def test_batch_create_tasks_rest_error():
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        delivery_api.CreateTaskRequest,
-        dict,
-    ],
-)
-def test_create_task_rest(request_type):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "providers/sample1"}
-    request_init["task"] = {
-        "name": "name_value",
-        "type_": 1,
-        "state": 1,
-        "task_outcome": 1,
-        "task_outcome_time": {"seconds": 751, "nanos": 543},
-        "task_outcome_location": {"point": {"latitude": 0.86, "longitude": 0.971}},
-        "task_outcome_location_source": 2,
-        "tracking_id": "tracking_id_value",
-        "delivery_vehicle_id": "delivery_vehicle_id_value",
-        "planned_location": {},
-        "task_duration": {"seconds": 751, "nanos": 543},
-        "target_time_window": {"start_time": {}, "end_time": {}},
-        "journey_sharing_info": {
-            "remaining_vehicle_journey_segments": [
-                {
-                    "stop": {
-                        "planned_location": {},
-                        "tasks": [
-                            {
-                                "task_id": "task_id_value",
-                                "task_duration": {},
-                                "target_time_window": {},
-                            }
-                        ],
-                        "state": 1,
-                    },
-                    "driving_distance_meters": {"value": 541},
-                    "driving_duration": {},
-                    "path": {},
-                }
-            ],
-            "last_location": {
-                "location": {},
-                "horizontal_accuracy": {"value": 0.541},
-                "latlng_accuracy": {},
-                "heading": {},
-                "bearing_accuracy": {},
-                "heading_accuracy": {},
-                "altitude": {},
-                "vertical_accuracy": {},
-                "altitude_accuracy": {},
-                "speed_kmph": {},
-                "speed": {},
-                "speed_accuracy": {},
-                "update_time": {},
-                "server_time": {},
-                "location_sensor": 1,
-                "is_road_snapped": {"value": True},
-                "is_gps_sensor_enabled": {},
-                "time_since_update": {},
-                "num_stale_updates": {},
-                "raw_location": {},
-                "raw_location_time": {},
-                "raw_location_sensor": 1,
-                "raw_location_accuracy": {},
-                "supplemental_location": {},
-                "supplemental_location_time": {},
-                "supplemental_location_sensor": 1,
-                "supplemental_location_accuracy": {},
-                "road_snapped": True,
-            },
-            "last_location_snappable": True,
-        },
-        "task_tracking_view_config": {
-            "route_polyline_points_visibility": {
-                "remaining_stop_count_threshold": 3219,
-                "duration_until_estimated_arrival_time_threshold": {},
-                "remaining_driving_distance_meters_threshold": 4561,
-                "always": True,
-                "never": True,
-            },
-            "estimated_arrival_time_visibility": {},
-            "estimated_task_completion_time_visibility": {},
-            "remaining_driving_distance_visibility": {},
-            "remaining_stop_count_visibility": {},
-            "vehicle_location_visibility": {},
-        },
-        "attributes": [
-            {
-                "key": "key_value",
-                "string_value": "string_value_value",
-                "bool_value": True,
-                "number_value": 0.1285,
-            }
-        ],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = delivery_api.CreateTaskRequest.meta.fields["task"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["task"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["task"][field])):
-                    del request_init["task"][field][i][subfield]
-            else:
-                del request_init["task"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = tasks.Task(
-            name="name_value",
-            type_=tasks.Task.Type.PICKUP,
-            state=tasks.Task.State.OPEN,
-            task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
-            task_outcome_location_source=tasks.Task.TaskOutcomeLocationSource.PROVIDER,
-            tracking_id="tracking_id_value",
-            delivery_vehicle_id="delivery_vehicle_id_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = tasks.Task.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_task(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, tasks.Task)
-    assert response.name == "name_value"
-    assert response.type_ == tasks.Task.Type.PICKUP
-    assert response.state == tasks.Task.State.OPEN
-    assert response.task_outcome == tasks.Task.TaskOutcome.SUCCEEDED
-    assert (
-        response.task_outcome_location_source
-        == tasks.Task.TaskOutcomeLocationSource.PROVIDER
-    )
-    assert response.tracking_id == "tracking_id_value"
-    assert response.delivery_vehicle_id == "delivery_vehicle_id_value"
 
 
 def test_create_task_rest_use_cached_wrapped_rpc():
@@ -7005,83 +5284,6 @@ def test_create_task_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_task_rest_interceptors(null_interceptor):
-    transport = transports.DeliveryServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DeliveryServiceRestInterceptor(),
-    )
-    client = DeliveryServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_create_task"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_create_task"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = delivery_api.CreateTaskRequest.pb(delivery_api.CreateTaskRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = tasks.Task.to_json(tasks.Task())
-
-        request = delivery_api.CreateTaskRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = tasks.Task()
-
-        client.create_task(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_task_rest_bad_request(
-    transport: str = "rest", request_type=delivery_api.CreateTaskRequest
-):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "providers/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_task(request)
-
-
 def test_create_task_rest_flattened():
     client = DeliveryServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7139,67 +5341,6 @@ def test_create_task_rest_flattened_error(transport: str = "rest"):
             task=tasks.Task(name="name_value"),
             task_id="task_id_value",
         )
-
-
-def test_create_task_rest_error():
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        delivery_api.GetTaskRequest,
-        dict,
-    ],
-)
-def test_get_task_rest(request_type):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "providers/sample1/tasks/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = tasks.Task(
-            name="name_value",
-            type_=tasks.Task.Type.PICKUP,
-            state=tasks.Task.State.OPEN,
-            task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
-            task_outcome_location_source=tasks.Task.TaskOutcomeLocationSource.PROVIDER,
-            tracking_id="tracking_id_value",
-            delivery_vehicle_id="delivery_vehicle_id_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = tasks.Task.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_task(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, tasks.Task)
-    assert response.name == "name_value"
-    assert response.type_ == tasks.Task.Type.PICKUP
-    assert response.state == tasks.Task.State.OPEN
-    assert response.task_outcome == tasks.Task.TaskOutcome.SUCCEEDED
-    assert (
-        response.task_outcome_location_source
-        == tasks.Task.TaskOutcomeLocationSource.PROVIDER
-    )
-    assert response.tracking_id == "tracking_id_value"
-    assert response.delivery_vehicle_id == "delivery_vehicle_id_value"
 
 
 def test_get_task_rest_use_cached_wrapped_rpc():
@@ -7321,83 +5462,6 @@ def test_get_task_rest_unset_required_fields():
     assert set(unset_fields) == (set(("header",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_task_rest_interceptors(null_interceptor):
-    transport = transports.DeliveryServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DeliveryServiceRestInterceptor(),
-    )
-    client = DeliveryServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_get_task"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_get_task"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = delivery_api.GetTaskRequest.pb(delivery_api.GetTaskRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = tasks.Task.to_json(tasks.Task())
-
-        request = delivery_api.GetTaskRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = tasks.Task()
-
-        client.get_task(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_task_rest_bad_request(
-    transport: str = "rest", request_type=delivery_api.GetTaskRequest
-):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "providers/sample1/tasks/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_task(request)
-
-
 def test_get_task_rest_flattened():
     client = DeliveryServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7451,221 +5515,6 @@ def test_get_task_rest_flattened_error(transport: str = "rest"):
             delivery_api.GetTaskRequest(),
             name="name_value",
         )
-
-
-def test_get_task_rest_error():
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        delivery_api.UpdateTaskRequest,
-        dict,
-    ],
-)
-def test_update_task_rest(request_type):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"task": {"name": "providers/sample1/tasks/sample2"}}
-    request_init["task"] = {
-        "name": "providers/sample1/tasks/sample2",
-        "type_": 1,
-        "state": 1,
-        "task_outcome": 1,
-        "task_outcome_time": {"seconds": 751, "nanos": 543},
-        "task_outcome_location": {"point": {"latitude": 0.86, "longitude": 0.971}},
-        "task_outcome_location_source": 2,
-        "tracking_id": "tracking_id_value",
-        "delivery_vehicle_id": "delivery_vehicle_id_value",
-        "planned_location": {},
-        "task_duration": {"seconds": 751, "nanos": 543},
-        "target_time_window": {"start_time": {}, "end_time": {}},
-        "journey_sharing_info": {
-            "remaining_vehicle_journey_segments": [
-                {
-                    "stop": {
-                        "planned_location": {},
-                        "tasks": [
-                            {
-                                "task_id": "task_id_value",
-                                "task_duration": {},
-                                "target_time_window": {},
-                            }
-                        ],
-                        "state": 1,
-                    },
-                    "driving_distance_meters": {"value": 541},
-                    "driving_duration": {},
-                    "path": {},
-                }
-            ],
-            "last_location": {
-                "location": {},
-                "horizontal_accuracy": {"value": 0.541},
-                "latlng_accuracy": {},
-                "heading": {},
-                "bearing_accuracy": {},
-                "heading_accuracy": {},
-                "altitude": {},
-                "vertical_accuracy": {},
-                "altitude_accuracy": {},
-                "speed_kmph": {},
-                "speed": {},
-                "speed_accuracy": {},
-                "update_time": {},
-                "server_time": {},
-                "location_sensor": 1,
-                "is_road_snapped": {"value": True},
-                "is_gps_sensor_enabled": {},
-                "time_since_update": {},
-                "num_stale_updates": {},
-                "raw_location": {},
-                "raw_location_time": {},
-                "raw_location_sensor": 1,
-                "raw_location_accuracy": {},
-                "supplemental_location": {},
-                "supplemental_location_time": {},
-                "supplemental_location_sensor": 1,
-                "supplemental_location_accuracy": {},
-                "road_snapped": True,
-            },
-            "last_location_snappable": True,
-        },
-        "task_tracking_view_config": {
-            "route_polyline_points_visibility": {
-                "remaining_stop_count_threshold": 3219,
-                "duration_until_estimated_arrival_time_threshold": {},
-                "remaining_driving_distance_meters_threshold": 4561,
-                "always": True,
-                "never": True,
-            },
-            "estimated_arrival_time_visibility": {},
-            "estimated_task_completion_time_visibility": {},
-            "remaining_driving_distance_visibility": {},
-            "remaining_stop_count_visibility": {},
-            "vehicle_location_visibility": {},
-        },
-        "attributes": [
-            {
-                "key": "key_value",
-                "string_value": "string_value_value",
-                "bool_value": True,
-                "number_value": 0.1285,
-            }
-        ],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = delivery_api.UpdateTaskRequest.meta.fields["task"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["task"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["task"][field])):
-                    del request_init["task"][field][i][subfield]
-            else:
-                del request_init["task"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = tasks.Task(
-            name="name_value",
-            type_=tasks.Task.Type.PICKUP,
-            state=tasks.Task.State.OPEN,
-            task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
-            task_outcome_location_source=tasks.Task.TaskOutcomeLocationSource.PROVIDER,
-            tracking_id="tracking_id_value",
-            delivery_vehicle_id="delivery_vehicle_id_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = tasks.Task.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_task(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, tasks.Task)
-    assert response.name == "name_value"
-    assert response.type_ == tasks.Task.Type.PICKUP
-    assert response.state == tasks.Task.State.OPEN
-    assert response.task_outcome == tasks.Task.TaskOutcome.SUCCEEDED
-    assert (
-        response.task_outcome_location_source
-        == tasks.Task.TaskOutcomeLocationSource.PROVIDER
-    )
-    assert response.tracking_id == "tracking_id_value"
-    assert response.delivery_vehicle_id == "delivery_vehicle_id_value"
 
 
 def test_update_task_rest_use_cached_wrapped_rpc():
@@ -7801,83 +5650,6 @@ def test_update_task_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_task_rest_interceptors(null_interceptor):
-    transport = transports.DeliveryServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DeliveryServiceRestInterceptor(),
-    )
-    client = DeliveryServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_update_task"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_update_task"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = delivery_api.UpdateTaskRequest.pb(delivery_api.UpdateTaskRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = tasks.Task.to_json(tasks.Task())
-
-        request = delivery_api.UpdateTaskRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = tasks.Task()
-
-        client.update_task(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_task_rest_bad_request(
-    transport: str = "rest", request_type=delivery_api.UpdateTaskRequest
-):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"task": {"name": "providers/sample1/tasks/sample2"}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_task(request)
-
-
 def test_update_task_rest_flattened():
     client = DeliveryServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7933,54 +5705,6 @@ def test_update_task_rest_flattened_error(transport: str = "rest"):
             task=tasks.Task(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_task_rest_error():
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        delivery_api.ListTasksRequest,
-        dict,
-    ],
-)
-def test_list_tasks_rest(request_type):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "providers/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = delivery_api.ListTasksResponse(
-            next_page_token="next_page_token_value",
-            total_size=1086,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = delivery_api.ListTasksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_tasks(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListTasksPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.total_size == 1086
 
 
 def test_list_tasks_rest_use_cached_wrapped_rpc():
@@ -8119,85 +5843,6 @@ def test_list_tasks_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_tasks_rest_interceptors(null_interceptor):
-    transport = transports.DeliveryServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DeliveryServiceRestInterceptor(),
-    )
-    client = DeliveryServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_list_tasks"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_list_tasks"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = delivery_api.ListTasksRequest.pb(delivery_api.ListTasksRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = delivery_api.ListTasksResponse.to_json(
-            delivery_api.ListTasksResponse()
-        )
-
-        request = delivery_api.ListTasksRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = delivery_api.ListTasksResponse()
-
-        client.list_tasks(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_tasks_rest_bad_request(
-    transport: str = "rest", request_type=delivery_api.ListTasksRequest
-):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "providers/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_tasks(request)
-
-
 def test_list_tasks_rest_flattened():
     client = DeliveryServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8312,52 +5957,6 @@ def test_list_tasks_rest_pager(transport: str = "rest"):
         pages = list(client.list_tasks(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        delivery_api.GetTaskTrackingInfoRequest,
-        dict,
-    ],
-)
-def test_get_task_tracking_info_rest(request_type):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "providers/sample1/taskTrackingInfo/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = task_tracking_info.TaskTrackingInfo(
-            name="name_value",
-            tracking_id="tracking_id_value",
-            state=tasks.Task.State.OPEN,
-            task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = task_tracking_info.TaskTrackingInfo.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_task_tracking_info(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, task_tracking_info.TaskTrackingInfo)
-    assert response.name == "name_value"
-    assert response.tracking_id == "tracking_id_value"
-    assert response.state == tasks.Task.State.OPEN
-    assert response.task_outcome == tasks.Task.TaskOutcome.SUCCEEDED
 
 
 def test_get_task_tracking_info_rest_use_cached_wrapped_rpc():
@@ -8486,87 +6085,6 @@ def test_get_task_tracking_info_rest_unset_required_fields():
     assert set(unset_fields) == (set(("header",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_task_tracking_info_rest_interceptors(null_interceptor):
-    transport = transports.DeliveryServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DeliveryServiceRestInterceptor(),
-    )
-    client = DeliveryServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_get_task_tracking_info"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_get_task_tracking_info"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = delivery_api.GetTaskTrackingInfoRequest.pb(
-            delivery_api.GetTaskTrackingInfoRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = task_tracking_info.TaskTrackingInfo.to_json(
-            task_tracking_info.TaskTrackingInfo()
-        )
-
-        request = delivery_api.GetTaskTrackingInfoRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = task_tracking_info.TaskTrackingInfo()
-
-        client.get_task_tracking_info(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_task_tracking_info_rest_bad_request(
-    transport: str = "rest", request_type=delivery_api.GetTaskTrackingInfoRequest
-):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "providers/sample1/taskTrackingInfo/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_task_tracking_info(request)
-
-
 def test_get_task_tracking_info_rest_flattened():
     client = DeliveryServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8621,54 +6139,6 @@ def test_get_task_tracking_info_rest_flattened_error(transport: str = "rest"):
             delivery_api.GetTaskTrackingInfoRequest(),
             name="name_value",
         )
-
-
-def test_get_task_tracking_info_rest_error():
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        delivery_api.ListDeliveryVehiclesRequest,
-        dict,
-    ],
-)
-def test_list_delivery_vehicles_rest(request_type):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "providers/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = delivery_api.ListDeliveryVehiclesResponse(
-            next_page_token="next_page_token_value",
-            total_size=1086,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = delivery_api.ListDeliveryVehiclesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_delivery_vehicles(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListDeliveryVehiclesPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.total_size == 1086
 
 
 def test_list_delivery_vehicles_rest_use_cached_wrapped_rpc():
@@ -8814,87 +6284,6 @@ def test_list_delivery_vehicles_rest_unset_required_fields():
         )
         & set(("parent",))
     )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_delivery_vehicles_rest_interceptors(null_interceptor):
-    transport = transports.DeliveryServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.DeliveryServiceRestInterceptor(),
-    )
-    client = DeliveryServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "post_list_delivery_vehicles"
-    ) as post, mock.patch.object(
-        transports.DeliveryServiceRestInterceptor, "pre_list_delivery_vehicles"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = delivery_api.ListDeliveryVehiclesRequest.pb(
-            delivery_api.ListDeliveryVehiclesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = delivery_api.ListDeliveryVehiclesResponse.to_json(
-            delivery_api.ListDeliveryVehiclesResponse()
-        )
-
-        request = delivery_api.ListDeliveryVehiclesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = delivery_api.ListDeliveryVehiclesResponse()
-
-        client.list_delivery_vehicles(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_delivery_vehicles_rest_bad_request(
-    transport: str = "rest", request_type=delivery_api.ListDeliveryVehiclesRequest
-):
-    client = DeliveryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "providers/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_delivery_vehicles(request)
 
 
 def test_list_delivery_vehicles_rest_flattened():
@@ -9108,18 +6497,3522 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = DeliveryServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_delivery_vehicle_empty_call_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_delivery_vehicle), "__call__"
+    ) as call:
+        call.return_value = delivery_vehicles.DeliveryVehicle()
+        client.create_delivery_vehicle(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.CreateDeliveryVehicleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_delivery_vehicle_empty_call_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_delivery_vehicle), "__call__"
+    ) as call:
+        call.return_value = delivery_vehicles.DeliveryVehicle()
+        client.get_delivery_vehicle(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.GetDeliveryVehicleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_delivery_vehicle_empty_call_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_delivery_vehicle), "__call__"
+    ) as call:
+        call.return_value = delivery_vehicles.DeliveryVehicle()
+        client.update_delivery_vehicle(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.UpdateDeliveryVehicleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_create_tasks_empty_call_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_tasks), "__call__"
+    ) as call:
+        call.return_value = delivery_api.BatchCreateTasksResponse()
+        client.batch_create_tasks(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.BatchCreateTasksRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_task_empty_call_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_task), "__call__") as call:
+        call.return_value = tasks.Task()
+        client.create_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.CreateTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_task_empty_call_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_task), "__call__") as call:
+        call.return_value = tasks.Task()
+        client.get_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.GetTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_task_empty_call_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_task), "__call__") as call:
+        call.return_value = tasks.Task()
+        client.update_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.UpdateTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_tasks_empty_call_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
+        call.return_value = delivery_api.ListTasksResponse()
+        client.list_tasks(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.ListTasksRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_task_tracking_info_empty_call_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_task_tracking_info), "__call__"
+    ) as call:
+        call.return_value = task_tracking_info.TaskTrackingInfo()
+        client.get_task_tracking_info(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.GetTaskTrackingInfoRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_delivery_vehicles_empty_call_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_delivery_vehicles), "__call__"
+    ) as call:
+        call.return_value = delivery_api.ListDeliveryVehiclesResponse()
+        client.list_delivery_vehicles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.ListDeliveryVehiclesRequest()
+
+        assert args[0] == request_msg
+
+
+def test_create_delivery_vehicle_routing_parameters_request_1_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_delivery_vehicle), "__call__"
+    ) as call:
+        call.return_value = delivery_vehicles.DeliveryVehicle()
+        client.create_delivery_vehicle(request={"parent": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.CreateDeliveryVehicleRequest(
+            **{"parent": "providers/sample1"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_get_delivery_vehicle_routing_parameters_request_1_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_delivery_vehicle), "__call__"
+    ) as call:
+        call.return_value = delivery_vehicles.DeliveryVehicle()
+        client.get_delivery_vehicle(request={"name": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.GetDeliveryVehicleRequest(
+            **{"name": "providers/sample1"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_update_delivery_vehicle_routing_parameters_request_1_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_delivery_vehicle), "__call__"
+    ) as call:
+        call.return_value = delivery_vehicles.DeliveryVehicle()
+        client.update_delivery_vehicle(
+            request={"delivery_vehicle": {"name": "providers/sample1"}}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.UpdateDeliveryVehicleRequest(
+            **{"delivery_vehicle": {"name": "providers/sample1"}}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_batch_create_tasks_routing_parameters_request_1_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_tasks), "__call__"
+    ) as call:
+        call.return_value = delivery_api.BatchCreateTasksResponse()
+        client.batch_create_tasks(request={"parent": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.BatchCreateTasksRequest(
+            **{"parent": "providers/sample1"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_create_task_routing_parameters_request_1_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_task), "__call__") as call:
+        call.return_value = tasks.Task()
+        client.create_task(request={"parent": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.CreateTaskRequest(**{"parent": "providers/sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_get_task_routing_parameters_request_1_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_task), "__call__") as call:
+        call.return_value = tasks.Task()
+        client.get_task(request={"name": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.GetTaskRequest(**{"name": "providers/sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_update_task_routing_parameters_request_1_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_task), "__call__") as call:
+        call.return_value = tasks.Task()
+        client.update_task(request={"task": {"name": "providers/sample1"}})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.UpdateTaskRequest(
+            **{"task": {"name": "providers/sample1"}}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_list_tasks_routing_parameters_request_1_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
+        call.return_value = delivery_api.ListTasksResponse()
+        client.list_tasks(request={"parent": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.ListTasksRequest(**{"parent": "providers/sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_get_task_tracking_info_routing_parameters_request_1_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_task_tracking_info), "__call__"
+    ) as call:
+        call.return_value = task_tracking_info.TaskTrackingInfo()
+        client.get_task_tracking_info(request={"name": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.GetTaskTrackingInfoRequest(
+            **{"name": "providers/sample1"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_list_delivery_vehicles_routing_parameters_request_1_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_delivery_vehicles), "__call__"
+    ) as call:
+        call.return_value = delivery_api.ListDeliveryVehiclesResponse()
+        client.list_delivery_vehicles(request={"parent": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.ListDeliveryVehiclesRequest(
+            **{"parent": "providers/sample1"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = DeliveryServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_delivery_vehicle_empty_call_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_delivery_vehicle), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            delivery_vehicles.DeliveryVehicle(
+                name="name_value",
+                navigation_status=common.DeliveryVehicleNavigationStatus.NO_GUIDANCE,
+                current_route_segment=b"current_route_segment_blob",
+                type_=delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO,
+            )
+        )
+        await client.create_delivery_vehicle(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.CreateDeliveryVehicleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_delivery_vehicle_empty_call_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_delivery_vehicle), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            delivery_vehicles.DeliveryVehicle(
+                name="name_value",
+                navigation_status=common.DeliveryVehicleNavigationStatus.NO_GUIDANCE,
+                current_route_segment=b"current_route_segment_blob",
+                type_=delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO,
+            )
+        )
+        await client.get_delivery_vehicle(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.GetDeliveryVehicleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_delivery_vehicle_empty_call_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_delivery_vehicle), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            delivery_vehicles.DeliveryVehicle(
+                name="name_value",
+                navigation_status=common.DeliveryVehicleNavigationStatus.NO_GUIDANCE,
+                current_route_segment=b"current_route_segment_blob",
+                type_=delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO,
+            )
+        )
+        await client.update_delivery_vehicle(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.UpdateDeliveryVehicleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_batch_create_tasks_empty_call_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_tasks), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            delivery_api.BatchCreateTasksResponse()
+        )
+        await client.batch_create_tasks(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.BatchCreateTasksRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_task_empty_call_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tasks.Task(
+                name="name_value",
+                type_=tasks.Task.Type.PICKUP,
+                state=tasks.Task.State.OPEN,
+                task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
+                task_outcome_location_source=tasks.Task.TaskOutcomeLocationSource.PROVIDER,
+                tracking_id="tracking_id_value",
+                delivery_vehicle_id="delivery_vehicle_id_value",
+            )
+        )
+        await client.create_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.CreateTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_task_empty_call_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tasks.Task(
+                name="name_value",
+                type_=tasks.Task.Type.PICKUP,
+                state=tasks.Task.State.OPEN,
+                task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
+                task_outcome_location_source=tasks.Task.TaskOutcomeLocationSource.PROVIDER,
+                tracking_id="tracking_id_value",
+                delivery_vehicle_id="delivery_vehicle_id_value",
+            )
+        )
+        await client.get_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.GetTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_task_empty_call_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tasks.Task(
+                name="name_value",
+                type_=tasks.Task.Type.PICKUP,
+                state=tasks.Task.State.OPEN,
+                task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
+                task_outcome_location_source=tasks.Task.TaskOutcomeLocationSource.PROVIDER,
+                tracking_id="tracking_id_value",
+                delivery_vehicle_id="delivery_vehicle_id_value",
+            )
+        )
+        await client.update_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.UpdateTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_tasks_empty_call_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            delivery_api.ListTasksResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        await client.list_tasks(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.ListTasksRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_task_tracking_info_empty_call_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_task_tracking_info), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            task_tracking_info.TaskTrackingInfo(
+                name="name_value",
+                tracking_id="tracking_id_value",
+                state=tasks.Task.State.OPEN,
+                task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
+            )
+        )
+        await client.get_task_tracking_info(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.GetTaskTrackingInfoRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_delivery_vehicles_empty_call_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_delivery_vehicles), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            delivery_api.ListDeliveryVehiclesResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        await client.list_delivery_vehicles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.ListDeliveryVehiclesRequest()
+
+        assert args[0] == request_msg
+
+
+@pytest.mark.asyncio
+async def test_create_delivery_vehicle_routing_parameters_request_1_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_delivery_vehicle), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            delivery_vehicles.DeliveryVehicle(
+                name="name_value",
+                navigation_status=common.DeliveryVehicleNavigationStatus.NO_GUIDANCE,
+                current_route_segment=b"current_route_segment_blob",
+                type_=delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO,
+            )
+        )
+        await client.create_delivery_vehicle(request={"parent": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.CreateDeliveryVehicleRequest(
+            **{"parent": "providers/sample1"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_delivery_vehicle_routing_parameters_request_1_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_delivery_vehicle), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            delivery_vehicles.DeliveryVehicle(
+                name="name_value",
+                navigation_status=common.DeliveryVehicleNavigationStatus.NO_GUIDANCE,
+                current_route_segment=b"current_route_segment_blob",
+                type_=delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO,
+            )
+        )
+        await client.get_delivery_vehicle(request={"name": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.GetDeliveryVehicleRequest(
+            **{"name": "providers/sample1"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_delivery_vehicle_routing_parameters_request_1_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_delivery_vehicle), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            delivery_vehicles.DeliveryVehicle(
+                name="name_value",
+                navigation_status=common.DeliveryVehicleNavigationStatus.NO_GUIDANCE,
+                current_route_segment=b"current_route_segment_blob",
+                type_=delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO,
+            )
+        )
+        await client.update_delivery_vehicle(
+            request={"delivery_vehicle": {"name": "providers/sample1"}}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.UpdateDeliveryVehicleRequest(
+            **{"delivery_vehicle": {"name": "providers/sample1"}}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_batch_create_tasks_routing_parameters_request_1_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_tasks), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            delivery_api.BatchCreateTasksResponse()
+        )
+        await client.batch_create_tasks(request={"parent": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.BatchCreateTasksRequest(
+            **{"parent": "providers/sample1"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_task_routing_parameters_request_1_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tasks.Task(
+                name="name_value",
+                type_=tasks.Task.Type.PICKUP,
+                state=tasks.Task.State.OPEN,
+                task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
+                task_outcome_location_source=tasks.Task.TaskOutcomeLocationSource.PROVIDER,
+                tracking_id="tracking_id_value",
+                delivery_vehicle_id="delivery_vehicle_id_value",
+            )
+        )
+        await client.create_task(request={"parent": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.CreateTaskRequest(**{"parent": "providers/sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_task_routing_parameters_request_1_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tasks.Task(
+                name="name_value",
+                type_=tasks.Task.Type.PICKUP,
+                state=tasks.Task.State.OPEN,
+                task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
+                task_outcome_location_source=tasks.Task.TaskOutcomeLocationSource.PROVIDER,
+                tracking_id="tracking_id_value",
+                delivery_vehicle_id="delivery_vehicle_id_value",
+            )
+        )
+        await client.get_task(request={"name": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.GetTaskRequest(**{"name": "providers/sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_task_routing_parameters_request_1_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tasks.Task(
+                name="name_value",
+                type_=tasks.Task.Type.PICKUP,
+                state=tasks.Task.State.OPEN,
+                task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
+                task_outcome_location_source=tasks.Task.TaskOutcomeLocationSource.PROVIDER,
+                tracking_id="tracking_id_value",
+                delivery_vehicle_id="delivery_vehicle_id_value",
+            )
+        )
+        await client.update_task(request={"task": {"name": "providers/sample1"}})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.UpdateTaskRequest(
+            **{"task": {"name": "providers/sample1"}}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_tasks_routing_parameters_request_1_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            delivery_api.ListTasksResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        await client.list_tasks(request={"parent": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.ListTasksRequest(**{"parent": "providers/sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_task_tracking_info_routing_parameters_request_1_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_task_tracking_info), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            task_tracking_info.TaskTrackingInfo(
+                name="name_value",
+                tracking_id="tracking_id_value",
+                state=tasks.Task.State.OPEN,
+                task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
+            )
+        )
+        await client.get_task_tracking_info(request={"name": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.GetTaskTrackingInfoRequest(
+            **{"name": "providers/sample1"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_delivery_vehicles_routing_parameters_request_1_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_delivery_vehicles), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            delivery_api.ListDeliveryVehiclesResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        await client.list_delivery_vehicles(request={"parent": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.ListDeliveryVehiclesRequest(
+            **{"parent": "providers/sample1"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_transport_kind_rest():
+    transport = DeliveryServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_create_delivery_vehicle_rest_bad_request(
+    request_type=delivery_api.CreateDeliveryVehicleRequest,
+):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "providers/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_delivery_vehicle(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        delivery_api.CreateDeliveryVehicleRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = DeliveryServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_create_delivery_vehicle_rest_call_success(request_type):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "providers/sample1"}
+    request_init["delivery_vehicle"] = {
+        "name": "name_value",
+        "last_location": {
+            "location": {"latitude": 0.86, "longitude": 0.971},
+            "horizontal_accuracy": {"value": 0.541},
+            "latlng_accuracy": {},
+            "heading": {"value": 541},
+            "bearing_accuracy": {},
+            "heading_accuracy": {},
+            "altitude": {},
+            "vertical_accuracy": {},
+            "altitude_accuracy": {},
+            "speed_kmph": {},
+            "speed": {},
+            "speed_accuracy": {},
+            "update_time": {"seconds": 751, "nanos": 543},
+            "server_time": {},
+            "location_sensor": 1,
+            "is_road_snapped": {"value": True},
+            "is_gps_sensor_enabled": {},
+            "time_since_update": {},
+            "num_stale_updates": {},
+            "raw_location": {},
+            "raw_location_time": {},
+            "raw_location_sensor": 1,
+            "raw_location_accuracy": {},
+            "supplemental_location": {},
+            "supplemental_location_time": {},
+            "supplemental_location_sensor": 1,
+            "supplemental_location_accuracy": {},
+            "road_snapped": True,
+        },
+        "navigation_status": 1,
+        "current_route_segment": b"current_route_segment_blob",
+        "current_route_segment_end_point": {},
+        "remaining_distance_meters": {},
+        "remaining_duration": {"seconds": 751, "nanos": 543},
+        "remaining_vehicle_journey_segments": [
+            {
+                "stop": {
+                    "planned_location": {"point": {}},
+                    "tasks": [
+                        {
+                            "task_id": "task_id_value",
+                            "task_duration": {},
+                            "target_time_window": {"start_time": {}, "end_time": {}},
+                        }
+                    ],
+                    "state": 1,
+                },
+                "driving_distance_meters": {},
+                "driving_duration": {},
+                "path": {},
+            }
+        ],
+        "attributes": [
+            {
+                "key": "key_value",
+                "value": "value_value",
+                "string_value": "string_value_value",
+                "bool_value": True,
+                "number_value": 0.1285,
+            }
+        ],
+        "type_": 1,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = delivery_api.CreateDeliveryVehicleRequest.meta.fields[
+        "delivery_vehicle"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["delivery_vehicle"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["delivery_vehicle"][field])):
+                    del request_init["delivery_vehicle"][field][i][subfield]
+            else:
+                del request_init["delivery_vehicle"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = delivery_vehicles.DeliveryVehicle(
+            name="name_value",
+            navigation_status=common.DeliveryVehicleNavigationStatus.NO_GUIDANCE,
+            current_route_segment=b"current_route_segment_blob",
+            type_=delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_delivery_vehicle(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, delivery_vehicles.DeliveryVehicle)
+    assert response.name == "name_value"
+    assert (
+        response.navigation_status == common.DeliveryVehicleNavigationStatus.NO_GUIDANCE
+    )
+    assert response.current_route_segment == b"current_route_segment_blob"
+    assert response.type_ == delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_delivery_vehicle_rest_interceptors(null_interceptor):
+    transport = transports.DeliveryServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DeliveryServiceRestInterceptor(),
+    )
+    client = DeliveryServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "post_create_delivery_vehicle"
+    ) as post, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "pre_create_delivery_vehicle"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = delivery_api.CreateDeliveryVehicleRequest.pb(
+            delivery_api.CreateDeliveryVehicleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = delivery_vehicles.DeliveryVehicle.to_json(
+            delivery_vehicles.DeliveryVehicle()
+        )
+        req.return_value.content = return_value
+
+        request = delivery_api.CreateDeliveryVehicleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = delivery_vehicles.DeliveryVehicle()
+
+        client.create_delivery_vehicle(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_delivery_vehicle_rest_bad_request(
+    request_type=delivery_api.GetDeliveryVehicleRequest,
+):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "providers/sample1/deliveryVehicles/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_delivery_vehicle(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.GetDeliveryVehicleRequest,
+        dict,
+    ],
+)
+def test_get_delivery_vehicle_rest_call_success(request_type):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "providers/sample1/deliveryVehicles/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = delivery_vehicles.DeliveryVehicle(
+            name="name_value",
+            navigation_status=common.DeliveryVehicleNavigationStatus.NO_GUIDANCE,
+            current_route_segment=b"current_route_segment_blob",
+            type_=delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_delivery_vehicle(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, delivery_vehicles.DeliveryVehicle)
+    assert response.name == "name_value"
+    assert (
+        response.navigation_status == common.DeliveryVehicleNavigationStatus.NO_GUIDANCE
+    )
+    assert response.current_route_segment == b"current_route_segment_blob"
+    assert response.type_ == delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_delivery_vehicle_rest_interceptors(null_interceptor):
+    transport = transports.DeliveryServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DeliveryServiceRestInterceptor(),
+    )
+    client = DeliveryServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "post_get_delivery_vehicle"
+    ) as post, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "pre_get_delivery_vehicle"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = delivery_api.GetDeliveryVehicleRequest.pb(
+            delivery_api.GetDeliveryVehicleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = delivery_vehicles.DeliveryVehicle.to_json(
+            delivery_vehicles.DeliveryVehicle()
+        )
+        req.return_value.content = return_value
+
+        request = delivery_api.GetDeliveryVehicleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = delivery_vehicles.DeliveryVehicle()
+
+        client.get_delivery_vehicle(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_delivery_vehicle_rest_bad_request(
+    request_type=delivery_api.UpdateDeliveryVehicleRequest,
+):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "delivery_vehicle": {"name": "providers/sample1/deliveryVehicles/sample2"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_delivery_vehicle(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.UpdateDeliveryVehicleRequest,
+        dict,
+    ],
+)
+def test_update_delivery_vehicle_rest_call_success(request_type):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "delivery_vehicle": {"name": "providers/sample1/deliveryVehicles/sample2"}
+    }
+    request_init["delivery_vehicle"] = {
+        "name": "providers/sample1/deliveryVehicles/sample2",
+        "last_location": {
+            "location": {"latitude": 0.86, "longitude": 0.971},
+            "horizontal_accuracy": {"value": 0.541},
+            "latlng_accuracy": {},
+            "heading": {"value": 541},
+            "bearing_accuracy": {},
+            "heading_accuracy": {},
+            "altitude": {},
+            "vertical_accuracy": {},
+            "altitude_accuracy": {},
+            "speed_kmph": {},
+            "speed": {},
+            "speed_accuracy": {},
+            "update_time": {"seconds": 751, "nanos": 543},
+            "server_time": {},
+            "location_sensor": 1,
+            "is_road_snapped": {"value": True},
+            "is_gps_sensor_enabled": {},
+            "time_since_update": {},
+            "num_stale_updates": {},
+            "raw_location": {},
+            "raw_location_time": {},
+            "raw_location_sensor": 1,
+            "raw_location_accuracy": {},
+            "supplemental_location": {},
+            "supplemental_location_time": {},
+            "supplemental_location_sensor": 1,
+            "supplemental_location_accuracy": {},
+            "road_snapped": True,
+        },
+        "navigation_status": 1,
+        "current_route_segment": b"current_route_segment_blob",
+        "current_route_segment_end_point": {},
+        "remaining_distance_meters": {},
+        "remaining_duration": {"seconds": 751, "nanos": 543},
+        "remaining_vehicle_journey_segments": [
+            {
+                "stop": {
+                    "planned_location": {"point": {}},
+                    "tasks": [
+                        {
+                            "task_id": "task_id_value",
+                            "task_duration": {},
+                            "target_time_window": {"start_time": {}, "end_time": {}},
+                        }
+                    ],
+                    "state": 1,
+                },
+                "driving_distance_meters": {},
+                "driving_duration": {},
+                "path": {},
+            }
+        ],
+        "attributes": [
+            {
+                "key": "key_value",
+                "value": "value_value",
+                "string_value": "string_value_value",
+                "bool_value": True,
+                "number_value": 0.1285,
+            }
+        ],
+        "type_": 1,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = delivery_api.UpdateDeliveryVehicleRequest.meta.fields[
+        "delivery_vehicle"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["delivery_vehicle"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["delivery_vehicle"][field])):
+                    del request_init["delivery_vehicle"][field][i][subfield]
+            else:
+                del request_init["delivery_vehicle"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = delivery_vehicles.DeliveryVehicle(
+            name="name_value",
+            navigation_status=common.DeliveryVehicleNavigationStatus.NO_GUIDANCE,
+            current_route_segment=b"current_route_segment_blob",
+            type_=delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = delivery_vehicles.DeliveryVehicle.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_delivery_vehicle(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, delivery_vehicles.DeliveryVehicle)
+    assert response.name == "name_value"
+    assert (
+        response.navigation_status == common.DeliveryVehicleNavigationStatus.NO_GUIDANCE
+    )
+    assert response.current_route_segment == b"current_route_segment_blob"
+    assert response.type_ == delivery_vehicles.DeliveryVehicle.DeliveryVehicleType.AUTO
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_delivery_vehicle_rest_interceptors(null_interceptor):
+    transport = transports.DeliveryServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DeliveryServiceRestInterceptor(),
+    )
+    client = DeliveryServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "post_update_delivery_vehicle"
+    ) as post, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "pre_update_delivery_vehicle"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = delivery_api.UpdateDeliveryVehicleRequest.pb(
+            delivery_api.UpdateDeliveryVehicleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = delivery_vehicles.DeliveryVehicle.to_json(
+            delivery_vehicles.DeliveryVehicle()
+        )
+        req.return_value.content = return_value
+
+        request = delivery_api.UpdateDeliveryVehicleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = delivery_vehicles.DeliveryVehicle()
+
+        client.update_delivery_vehicle(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_create_tasks_rest_bad_request(
+    request_type=delivery_api.BatchCreateTasksRequest,
+):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "providers/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.batch_create_tasks(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.BatchCreateTasksRequest,
+        dict,
+    ],
+)
+def test_batch_create_tasks_rest_call_success(request_type):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "providers/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = delivery_api.BatchCreateTasksResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = delivery_api.BatchCreateTasksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_create_tasks(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, delivery_api.BatchCreateTasksResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_create_tasks_rest_interceptors(null_interceptor):
+    transport = transports.DeliveryServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DeliveryServiceRestInterceptor(),
+    )
+    client = DeliveryServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "post_batch_create_tasks"
+    ) as post, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "pre_batch_create_tasks"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = delivery_api.BatchCreateTasksRequest.pb(
+            delivery_api.BatchCreateTasksRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = delivery_api.BatchCreateTasksResponse.to_json(
+            delivery_api.BatchCreateTasksResponse()
+        )
+        req.return_value.content = return_value
+
+        request = delivery_api.BatchCreateTasksRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = delivery_api.BatchCreateTasksResponse()
+
+        client.batch_create_tasks(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_task_rest_bad_request(request_type=delivery_api.CreateTaskRequest):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "providers/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_task(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.CreateTaskRequest,
+        dict,
+    ],
+)
+def test_create_task_rest_call_success(request_type):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "providers/sample1"}
+    request_init["task"] = {
+        "name": "name_value",
+        "type_": 1,
+        "state": 1,
+        "task_outcome": 1,
+        "task_outcome_time": {"seconds": 751, "nanos": 543},
+        "task_outcome_location": {"point": {"latitude": 0.86, "longitude": 0.971}},
+        "task_outcome_location_source": 2,
+        "tracking_id": "tracking_id_value",
+        "delivery_vehicle_id": "delivery_vehicle_id_value",
+        "planned_location": {},
+        "task_duration": {"seconds": 751, "nanos": 543},
+        "target_time_window": {"start_time": {}, "end_time": {}},
+        "journey_sharing_info": {
+            "remaining_vehicle_journey_segments": [
+                {
+                    "stop": {
+                        "planned_location": {},
+                        "tasks": [
+                            {
+                                "task_id": "task_id_value",
+                                "task_duration": {},
+                                "target_time_window": {},
+                            }
+                        ],
+                        "state": 1,
+                    },
+                    "driving_distance_meters": {"value": 541},
+                    "driving_duration": {},
+                    "path": {},
+                }
+            ],
+            "last_location": {
+                "location": {},
+                "horizontal_accuracy": {"value": 0.541},
+                "latlng_accuracy": {},
+                "heading": {},
+                "bearing_accuracy": {},
+                "heading_accuracy": {},
+                "altitude": {},
+                "vertical_accuracy": {},
+                "altitude_accuracy": {},
+                "speed_kmph": {},
+                "speed": {},
+                "speed_accuracy": {},
+                "update_time": {},
+                "server_time": {},
+                "location_sensor": 1,
+                "is_road_snapped": {"value": True},
+                "is_gps_sensor_enabled": {},
+                "time_since_update": {},
+                "num_stale_updates": {},
+                "raw_location": {},
+                "raw_location_time": {},
+                "raw_location_sensor": 1,
+                "raw_location_accuracy": {},
+                "supplemental_location": {},
+                "supplemental_location_time": {},
+                "supplemental_location_sensor": 1,
+                "supplemental_location_accuracy": {},
+                "road_snapped": True,
+            },
+            "last_location_snappable": True,
+        },
+        "task_tracking_view_config": {
+            "route_polyline_points_visibility": {
+                "remaining_stop_count_threshold": 3219,
+                "duration_until_estimated_arrival_time_threshold": {},
+                "remaining_driving_distance_meters_threshold": 4561,
+                "always": True,
+                "never": True,
+            },
+            "estimated_arrival_time_visibility": {},
+            "estimated_task_completion_time_visibility": {},
+            "remaining_driving_distance_visibility": {},
+            "remaining_stop_count_visibility": {},
+            "vehicle_location_visibility": {},
+        },
+        "attributes": [
+            {
+                "key": "key_value",
+                "string_value": "string_value_value",
+                "bool_value": True,
+                "number_value": 0.1285,
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = delivery_api.CreateTaskRequest.meta.fields["task"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["task"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["task"][field])):
+                    del request_init["task"][field][i][subfield]
+            else:
+                del request_init["task"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = tasks.Task(
+            name="name_value",
+            type_=tasks.Task.Type.PICKUP,
+            state=tasks.Task.State.OPEN,
+            task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
+            task_outcome_location_source=tasks.Task.TaskOutcomeLocationSource.PROVIDER,
+            tracking_id="tracking_id_value",
+            delivery_vehicle_id="delivery_vehicle_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = tasks.Task.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_task(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, tasks.Task)
+    assert response.name == "name_value"
+    assert response.type_ == tasks.Task.Type.PICKUP
+    assert response.state == tasks.Task.State.OPEN
+    assert response.task_outcome == tasks.Task.TaskOutcome.SUCCEEDED
+    assert (
+        response.task_outcome_location_source
+        == tasks.Task.TaskOutcomeLocationSource.PROVIDER
+    )
+    assert response.tracking_id == "tracking_id_value"
+    assert response.delivery_vehicle_id == "delivery_vehicle_id_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_task_rest_interceptors(null_interceptor):
+    transport = transports.DeliveryServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DeliveryServiceRestInterceptor(),
+    )
+    client = DeliveryServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "post_create_task"
+    ) as post, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "pre_create_task"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = delivery_api.CreateTaskRequest.pb(delivery_api.CreateTaskRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = tasks.Task.to_json(tasks.Task())
+        req.return_value.content = return_value
+
+        request = delivery_api.CreateTaskRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = tasks.Task()
+
+        client.create_task(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_task_rest_bad_request(request_type=delivery_api.GetTaskRequest):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "providers/sample1/tasks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_task(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.GetTaskRequest,
+        dict,
+    ],
+)
+def test_get_task_rest_call_success(request_type):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "providers/sample1/tasks/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = tasks.Task(
+            name="name_value",
+            type_=tasks.Task.Type.PICKUP,
+            state=tasks.Task.State.OPEN,
+            task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
+            task_outcome_location_source=tasks.Task.TaskOutcomeLocationSource.PROVIDER,
+            tracking_id="tracking_id_value",
+            delivery_vehicle_id="delivery_vehicle_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = tasks.Task.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_task(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, tasks.Task)
+    assert response.name == "name_value"
+    assert response.type_ == tasks.Task.Type.PICKUP
+    assert response.state == tasks.Task.State.OPEN
+    assert response.task_outcome == tasks.Task.TaskOutcome.SUCCEEDED
+    assert (
+        response.task_outcome_location_source
+        == tasks.Task.TaskOutcomeLocationSource.PROVIDER
+    )
+    assert response.tracking_id == "tracking_id_value"
+    assert response.delivery_vehicle_id == "delivery_vehicle_id_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_task_rest_interceptors(null_interceptor):
+    transport = transports.DeliveryServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DeliveryServiceRestInterceptor(),
+    )
+    client = DeliveryServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "post_get_task"
+    ) as post, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "pre_get_task"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = delivery_api.GetTaskRequest.pb(delivery_api.GetTaskRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = tasks.Task.to_json(tasks.Task())
+        req.return_value.content = return_value
+
+        request = delivery_api.GetTaskRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = tasks.Task()
+
+        client.get_task(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_task_rest_bad_request(request_type=delivery_api.UpdateTaskRequest):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"task": {"name": "providers/sample1/tasks/sample2"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_task(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.UpdateTaskRequest,
+        dict,
+    ],
+)
+def test_update_task_rest_call_success(request_type):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"task": {"name": "providers/sample1/tasks/sample2"}}
+    request_init["task"] = {
+        "name": "providers/sample1/tasks/sample2",
+        "type_": 1,
+        "state": 1,
+        "task_outcome": 1,
+        "task_outcome_time": {"seconds": 751, "nanos": 543},
+        "task_outcome_location": {"point": {"latitude": 0.86, "longitude": 0.971}},
+        "task_outcome_location_source": 2,
+        "tracking_id": "tracking_id_value",
+        "delivery_vehicle_id": "delivery_vehicle_id_value",
+        "planned_location": {},
+        "task_duration": {"seconds": 751, "nanos": 543},
+        "target_time_window": {"start_time": {}, "end_time": {}},
+        "journey_sharing_info": {
+            "remaining_vehicle_journey_segments": [
+                {
+                    "stop": {
+                        "planned_location": {},
+                        "tasks": [
+                            {
+                                "task_id": "task_id_value",
+                                "task_duration": {},
+                                "target_time_window": {},
+                            }
+                        ],
+                        "state": 1,
+                    },
+                    "driving_distance_meters": {"value": 541},
+                    "driving_duration": {},
+                    "path": {},
+                }
+            ],
+            "last_location": {
+                "location": {},
+                "horizontal_accuracy": {"value": 0.541},
+                "latlng_accuracy": {},
+                "heading": {},
+                "bearing_accuracy": {},
+                "heading_accuracy": {},
+                "altitude": {},
+                "vertical_accuracy": {},
+                "altitude_accuracy": {},
+                "speed_kmph": {},
+                "speed": {},
+                "speed_accuracy": {},
+                "update_time": {},
+                "server_time": {},
+                "location_sensor": 1,
+                "is_road_snapped": {"value": True},
+                "is_gps_sensor_enabled": {},
+                "time_since_update": {},
+                "num_stale_updates": {},
+                "raw_location": {},
+                "raw_location_time": {},
+                "raw_location_sensor": 1,
+                "raw_location_accuracy": {},
+                "supplemental_location": {},
+                "supplemental_location_time": {},
+                "supplemental_location_sensor": 1,
+                "supplemental_location_accuracy": {},
+                "road_snapped": True,
+            },
+            "last_location_snappable": True,
+        },
+        "task_tracking_view_config": {
+            "route_polyline_points_visibility": {
+                "remaining_stop_count_threshold": 3219,
+                "duration_until_estimated_arrival_time_threshold": {},
+                "remaining_driving_distance_meters_threshold": 4561,
+                "always": True,
+                "never": True,
+            },
+            "estimated_arrival_time_visibility": {},
+            "estimated_task_completion_time_visibility": {},
+            "remaining_driving_distance_visibility": {},
+            "remaining_stop_count_visibility": {},
+            "vehicle_location_visibility": {},
+        },
+        "attributes": [
+            {
+                "key": "key_value",
+                "string_value": "string_value_value",
+                "bool_value": True,
+                "number_value": 0.1285,
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = delivery_api.UpdateTaskRequest.meta.fields["task"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["task"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["task"][field])):
+                    del request_init["task"][field][i][subfield]
+            else:
+                del request_init["task"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = tasks.Task(
+            name="name_value",
+            type_=tasks.Task.Type.PICKUP,
+            state=tasks.Task.State.OPEN,
+            task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
+            task_outcome_location_source=tasks.Task.TaskOutcomeLocationSource.PROVIDER,
+            tracking_id="tracking_id_value",
+            delivery_vehicle_id="delivery_vehicle_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = tasks.Task.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_task(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, tasks.Task)
+    assert response.name == "name_value"
+    assert response.type_ == tasks.Task.Type.PICKUP
+    assert response.state == tasks.Task.State.OPEN
+    assert response.task_outcome == tasks.Task.TaskOutcome.SUCCEEDED
+    assert (
+        response.task_outcome_location_source
+        == tasks.Task.TaskOutcomeLocationSource.PROVIDER
+    )
+    assert response.tracking_id == "tracking_id_value"
+    assert response.delivery_vehicle_id == "delivery_vehicle_id_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_task_rest_interceptors(null_interceptor):
+    transport = transports.DeliveryServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DeliveryServiceRestInterceptor(),
+    )
+    client = DeliveryServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "post_update_task"
+    ) as post, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "pre_update_task"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = delivery_api.UpdateTaskRequest.pb(delivery_api.UpdateTaskRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = tasks.Task.to_json(tasks.Task())
+        req.return_value.content = return_value
+
+        request = delivery_api.UpdateTaskRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = tasks.Task()
+
+        client.update_task(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_tasks_rest_bad_request(request_type=delivery_api.ListTasksRequest):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "providers/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_tasks(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.ListTasksRequest,
+        dict,
+    ],
+)
+def test_list_tasks_rest_call_success(request_type):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "providers/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = delivery_api.ListTasksResponse(
+            next_page_token="next_page_token_value",
+            total_size=1086,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = delivery_api.ListTasksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_tasks(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListTasksPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_tasks_rest_interceptors(null_interceptor):
+    transport = transports.DeliveryServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DeliveryServiceRestInterceptor(),
+    )
+    client = DeliveryServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "post_list_tasks"
+    ) as post, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "pre_list_tasks"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = delivery_api.ListTasksRequest.pb(delivery_api.ListTasksRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = delivery_api.ListTasksResponse.to_json(
+            delivery_api.ListTasksResponse()
+        )
+        req.return_value.content = return_value
+
+        request = delivery_api.ListTasksRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = delivery_api.ListTasksResponse()
+
+        client.list_tasks(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_task_tracking_info_rest_bad_request(
+    request_type=delivery_api.GetTaskTrackingInfoRequest,
+):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "providers/sample1/taskTrackingInfo/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_task_tracking_info(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.GetTaskTrackingInfoRequest,
+        dict,
+    ],
+)
+def test_get_task_tracking_info_rest_call_success(request_type):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "providers/sample1/taskTrackingInfo/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = task_tracking_info.TaskTrackingInfo(
+            name="name_value",
+            tracking_id="tracking_id_value",
+            state=tasks.Task.State.OPEN,
+            task_outcome=tasks.Task.TaskOutcome.SUCCEEDED,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = task_tracking_info.TaskTrackingInfo.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_task_tracking_info(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, task_tracking_info.TaskTrackingInfo)
+    assert response.name == "name_value"
+    assert response.tracking_id == "tracking_id_value"
+    assert response.state == tasks.Task.State.OPEN
+    assert response.task_outcome == tasks.Task.TaskOutcome.SUCCEEDED
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_task_tracking_info_rest_interceptors(null_interceptor):
+    transport = transports.DeliveryServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DeliveryServiceRestInterceptor(),
+    )
+    client = DeliveryServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "post_get_task_tracking_info"
+    ) as post, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "pre_get_task_tracking_info"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = delivery_api.GetTaskTrackingInfoRequest.pb(
+            delivery_api.GetTaskTrackingInfoRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = task_tracking_info.TaskTrackingInfo.to_json(
+            task_tracking_info.TaskTrackingInfo()
+        )
+        req.return_value.content = return_value
+
+        request = delivery_api.GetTaskTrackingInfoRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = task_tracking_info.TaskTrackingInfo()
+
+        client.get_task_tracking_info(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_delivery_vehicles_rest_bad_request(
+    request_type=delivery_api.ListDeliveryVehiclesRequest,
+):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "providers/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_delivery_vehicles(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        delivery_api.ListDeliveryVehiclesRequest,
+        dict,
+    ],
+)
+def test_list_delivery_vehicles_rest_call_success(request_type):
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "providers/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = delivery_api.ListDeliveryVehiclesResponse(
+            next_page_token="next_page_token_value",
+            total_size=1086,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = delivery_api.ListDeliveryVehiclesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_delivery_vehicles(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDeliveryVehiclesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_delivery_vehicles_rest_interceptors(null_interceptor):
+    transport = transports.DeliveryServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DeliveryServiceRestInterceptor(),
+    )
+    client = DeliveryServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "post_list_delivery_vehicles"
+    ) as post, mock.patch.object(
+        transports.DeliveryServiceRestInterceptor, "pre_list_delivery_vehicles"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = delivery_api.ListDeliveryVehiclesRequest.pb(
+            delivery_api.ListDeliveryVehiclesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = delivery_api.ListDeliveryVehiclesResponse.to_json(
+            delivery_api.ListDeliveryVehiclesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = delivery_api.ListDeliveryVehiclesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = delivery_api.ListDeliveryVehiclesResponse()
+
+        client.list_delivery_vehicles(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_initialize_client_w_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_delivery_vehicle_empty_call_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_delivery_vehicle), "__call__"
+    ) as call:
+        client.create_delivery_vehicle(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.CreateDeliveryVehicleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_delivery_vehicle_empty_call_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_delivery_vehicle), "__call__"
+    ) as call:
+        client.get_delivery_vehicle(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.GetDeliveryVehicleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_delivery_vehicle_empty_call_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_delivery_vehicle), "__call__"
+    ) as call:
+        client.update_delivery_vehicle(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.UpdateDeliveryVehicleRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_create_tasks_empty_call_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_tasks), "__call__"
+    ) as call:
+        client.batch_create_tasks(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.BatchCreateTasksRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_task_empty_call_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_task), "__call__") as call:
+        client.create_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.CreateTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_task_empty_call_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_task), "__call__") as call:
+        client.get_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.GetTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_task_empty_call_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_task), "__call__") as call:
+        client.update_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.UpdateTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_tasks_empty_call_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
+        client.list_tasks(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.ListTasksRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_task_tracking_info_empty_call_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_task_tracking_info), "__call__"
+    ) as call:
+        client.get_task_tracking_info(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.GetTaskTrackingInfoRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_delivery_vehicles_empty_call_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_delivery_vehicles), "__call__"
+    ) as call:
+        client.list_delivery_vehicles(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = delivery_api.ListDeliveryVehiclesRequest()
+
+        assert args[0] == request_msg
+
+
+def test_create_delivery_vehicle_routing_parameters_request_1_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_delivery_vehicle), "__call__"
+    ) as call:
+        client.create_delivery_vehicle(request={"parent": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.CreateDeliveryVehicleRequest(
+            **{"parent": "providers/sample1"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_get_delivery_vehicle_routing_parameters_request_1_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_delivery_vehicle), "__call__"
+    ) as call:
+        client.get_delivery_vehicle(request={"name": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.GetDeliveryVehicleRequest(
+            **{"name": "providers/sample1"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_update_delivery_vehicle_routing_parameters_request_1_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_delivery_vehicle), "__call__"
+    ) as call:
+        client.update_delivery_vehicle(
+            request={"delivery_vehicle": {"name": "providers/sample1"}}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.UpdateDeliveryVehicleRequest(
+            **{"delivery_vehicle": {"name": "providers/sample1"}}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_batch_create_tasks_routing_parameters_request_1_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_tasks), "__call__"
+    ) as call:
+        client.batch_create_tasks(request={"parent": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.BatchCreateTasksRequest(
+            **{"parent": "providers/sample1"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_create_task_routing_parameters_request_1_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_task), "__call__") as call:
+        client.create_task(request={"parent": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.CreateTaskRequest(**{"parent": "providers/sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_get_task_routing_parameters_request_1_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_task), "__call__") as call:
+        client.get_task(request={"name": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.GetTaskRequest(**{"name": "providers/sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_update_task_routing_parameters_request_1_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_task), "__call__") as call:
+        client.update_task(request={"task": {"name": "providers/sample1"}})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.UpdateTaskRequest(
+            **{"task": {"name": "providers/sample1"}}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_list_tasks_routing_parameters_request_1_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
+        client.list_tasks(request={"parent": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.ListTasksRequest(**{"parent": "providers/sample1"})
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_get_task_tracking_info_routing_parameters_request_1_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_task_tracking_info), "__call__"
+    ) as call:
+        client.get_task_tracking_info(request={"name": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.GetTaskTrackingInfoRequest(
+            **{"name": "providers/sample1"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_list_delivery_vehicles_routing_parameters_request_1_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_delivery_vehicles), "__call__"
+    ) as call:
+        client.list_delivery_vehicles(request={"parent": "providers/sample1"})
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        request_msg = delivery_api.ListDeliveryVehiclesRequest(
+            **{"parent": "providers/sample1"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"provider_id": "providers/sample1"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
 
 
 def test_transport_grpc_default():
@@ -9776,36 +10669,41 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = DeliveryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = DeliveryServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = DeliveryServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = DeliveryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():
