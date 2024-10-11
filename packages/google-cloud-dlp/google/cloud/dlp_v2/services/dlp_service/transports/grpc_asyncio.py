@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -238,6 +239,9 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1873,7 +1877,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.inspect_content: gapic_v1.method_async.wrap_method(
+            self.inspect_content: self._wrap_method(
                 self.inspect_content,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1888,7 +1892,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.redact_image: gapic_v1.method_async.wrap_method(
+            self.redact_image: self._wrap_method(
                 self.redact_image,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1903,7 +1907,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.deidentify_content: gapic_v1.method_async.wrap_method(
+            self.deidentify_content: self._wrap_method(
                 self.deidentify_content,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1918,7 +1922,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.reidentify_content: gapic_v1.method_async.wrap_method(
+            self.reidentify_content: self._wrap_method(
                 self.reidentify_content,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1933,7 +1937,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.list_info_types: gapic_v1.method_async.wrap_method(
+            self.list_info_types: self._wrap_method(
                 self.list_info_types,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1948,17 +1952,17 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.create_inspect_template: gapic_v1.method_async.wrap_method(
+            self.create_inspect_template: self._wrap_method(
                 self.create_inspect_template,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.update_inspect_template: gapic_v1.method_async.wrap_method(
+            self.update_inspect_template: self._wrap_method(
                 self.update_inspect_template,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.get_inspect_template: gapic_v1.method_async.wrap_method(
+            self.get_inspect_template: self._wrap_method(
                 self.get_inspect_template,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1973,7 +1977,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.list_inspect_templates: gapic_v1.method_async.wrap_method(
+            self.list_inspect_templates: self._wrap_method(
                 self.list_inspect_templates,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1988,7 +1992,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.delete_inspect_template: gapic_v1.method_async.wrap_method(
+            self.delete_inspect_template: self._wrap_method(
                 self.delete_inspect_template,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2003,17 +2007,17 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.create_deidentify_template: gapic_v1.method_async.wrap_method(
+            self.create_deidentify_template: self._wrap_method(
                 self.create_deidentify_template,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.update_deidentify_template: gapic_v1.method_async.wrap_method(
+            self.update_deidentify_template: self._wrap_method(
                 self.update_deidentify_template,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.get_deidentify_template: gapic_v1.method_async.wrap_method(
+            self.get_deidentify_template: self._wrap_method(
                 self.get_deidentify_template,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2028,7 +2032,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.list_deidentify_templates: gapic_v1.method_async.wrap_method(
+            self.list_deidentify_templates: self._wrap_method(
                 self.list_deidentify_templates,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2043,7 +2047,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.delete_deidentify_template: gapic_v1.method_async.wrap_method(
+            self.delete_deidentify_template: self._wrap_method(
                 self.delete_deidentify_template,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2058,22 +2062,22 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.create_job_trigger: gapic_v1.method_async.wrap_method(
+            self.create_job_trigger: self._wrap_method(
                 self.create_job_trigger,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.update_job_trigger: gapic_v1.method_async.wrap_method(
+            self.update_job_trigger: self._wrap_method(
                 self.update_job_trigger,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.hybrid_inspect_job_trigger: gapic_v1.method_async.wrap_method(
+            self.hybrid_inspect_job_trigger: self._wrap_method(
                 self.hybrid_inspect_job_trigger,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.get_job_trigger: gapic_v1.method_async.wrap_method(
+            self.get_job_trigger: self._wrap_method(
                 self.get_job_trigger,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2088,7 +2092,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.list_job_triggers: gapic_v1.method_async.wrap_method(
+            self.list_job_triggers: self._wrap_method(
                 self.list_job_triggers,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2103,7 +2107,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.delete_job_trigger: gapic_v1.method_async.wrap_method(
+            self.delete_job_trigger: self._wrap_method(
                 self.delete_job_trigger,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2118,22 +2122,22 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.activate_job_trigger: gapic_v1.method_async.wrap_method(
+            self.activate_job_trigger: self._wrap_method(
                 self.activate_job_trigger,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.create_discovery_config: gapic_v1.method_async.wrap_method(
+            self.create_discovery_config: self._wrap_method(
                 self.create_discovery_config,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.update_discovery_config: gapic_v1.method_async.wrap_method(
+            self.update_discovery_config: self._wrap_method(
                 self.update_discovery_config,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.get_discovery_config: gapic_v1.method_async.wrap_method(
+            self.get_discovery_config: self._wrap_method(
                 self.get_discovery_config,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2148,7 +2152,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.list_discovery_configs: gapic_v1.method_async.wrap_method(
+            self.list_discovery_configs: self._wrap_method(
                 self.list_discovery_configs,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2163,7 +2167,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.delete_discovery_config: gapic_v1.method_async.wrap_method(
+            self.delete_discovery_config: self._wrap_method(
                 self.delete_discovery_config,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2178,12 +2182,12 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.create_dlp_job: gapic_v1.method_async.wrap_method(
+            self.create_dlp_job: self._wrap_method(
                 self.create_dlp_job,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.list_dlp_jobs: gapic_v1.method_async.wrap_method(
+            self.list_dlp_jobs: self._wrap_method(
                 self.list_dlp_jobs,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2198,7 +2202,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.get_dlp_job: gapic_v1.method_async.wrap_method(
+            self.get_dlp_job: self._wrap_method(
                 self.get_dlp_job,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2213,7 +2217,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.delete_dlp_job: gapic_v1.method_async.wrap_method(
+            self.delete_dlp_job: self._wrap_method(
                 self.delete_dlp_job,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2228,22 +2232,22 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.cancel_dlp_job: gapic_v1.method_async.wrap_method(
+            self.cancel_dlp_job: self._wrap_method(
                 self.cancel_dlp_job,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.create_stored_info_type: gapic_v1.method_async.wrap_method(
+            self.create_stored_info_type: self._wrap_method(
                 self.create_stored_info_type,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.update_stored_info_type: gapic_v1.method_async.wrap_method(
+            self.update_stored_info_type: self._wrap_method(
                 self.update_stored_info_type,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.get_stored_info_type: gapic_v1.method_async.wrap_method(
+            self.get_stored_info_type: self._wrap_method(
                 self.get_stored_info_type,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2258,7 +2262,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.list_stored_info_types: gapic_v1.method_async.wrap_method(
+            self.list_stored_info_types: self._wrap_method(
                 self.list_stored_info_types,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2273,7 +2277,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.delete_stored_info_type: gapic_v1.method_async.wrap_method(
+            self.delete_stored_info_type: self._wrap_method(
                 self.delete_stored_info_type,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2288,7 +2292,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.list_project_data_profiles: gapic_v1.method_async.wrap_method(
+            self.list_project_data_profiles: self._wrap_method(
                 self.list_project_data_profiles,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2303,7 +2307,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.list_table_data_profiles: gapic_v1.method_async.wrap_method(
+            self.list_table_data_profiles: self._wrap_method(
                 self.list_table_data_profiles,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2318,7 +2322,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.list_column_data_profiles: gapic_v1.method_async.wrap_method(
+            self.list_column_data_profiles: self._wrap_method(
                 self.list_column_data_profiles,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2333,7 +2337,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.get_project_data_profile: gapic_v1.method_async.wrap_method(
+            self.get_project_data_profile: self._wrap_method(
                 self.get_project_data_profile,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2348,7 +2352,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.list_file_store_data_profiles: gapic_v1.method_async.wrap_method(
+            self.list_file_store_data_profiles: self._wrap_method(
                 self.list_file_store_data_profiles,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2363,7 +2367,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.get_file_store_data_profile: gapic_v1.method_async.wrap_method(
+            self.get_file_store_data_profile: self._wrap_method(
                 self.get_file_store_data_profile,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2378,7 +2382,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.delete_file_store_data_profile: gapic_v1.method_async.wrap_method(
+            self.delete_file_store_data_profile: self._wrap_method(
                 self.delete_file_store_data_profile,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2393,7 +2397,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.get_table_data_profile: gapic_v1.method_async.wrap_method(
+            self.get_table_data_profile: self._wrap_method(
                 self.get_table_data_profile,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2408,7 +2412,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.get_column_data_profile: gapic_v1.method_async.wrap_method(
+            self.get_column_data_profile: self._wrap_method(
                 self.get_column_data_profile,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -2423,55 +2427,64 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.delete_table_data_profile: gapic_v1.method_async.wrap_method(
+            self.delete_table_data_profile: self._wrap_method(
                 self.delete_table_data_profile,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.hybrid_inspect_dlp_job: gapic_v1.method_async.wrap_method(
+            self.hybrid_inspect_dlp_job: self._wrap_method(
                 self.hybrid_inspect_dlp_job,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.finish_dlp_job: gapic_v1.method_async.wrap_method(
+            self.finish_dlp_job: self._wrap_method(
                 self.finish_dlp_job,
                 default_timeout=300.0,
                 client_info=client_info,
             ),
-            self.create_connection: gapic_v1.method_async.wrap_method(
+            self.create_connection: self._wrap_method(
                 self.create_connection,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_connection: gapic_v1.method_async.wrap_method(
+            self.get_connection: self._wrap_method(
                 self.get_connection,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_connections: gapic_v1.method_async.wrap_method(
+            self.list_connections: self._wrap_method(
                 self.list_connections,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.search_connections: gapic_v1.method_async.wrap_method(
+            self.search_connections: self._wrap_method(
                 self.search_connections,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_connection: gapic_v1.method_async.wrap_method(
+            self.delete_connection: self._wrap_method(
                 self.delete_connection,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_connection: gapic_v1.method_async.wrap_method(
+            self.update_connection: self._wrap_method(
                 self.update_connection,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("DlpServiceGrpcAsyncIOTransport",)

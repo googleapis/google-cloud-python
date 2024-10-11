@@ -1,2 +1,0 @@
-recursive-include google/cloud/datastream *.py
-recursive-include google/cloud/datastream_v1alpha1 *.py

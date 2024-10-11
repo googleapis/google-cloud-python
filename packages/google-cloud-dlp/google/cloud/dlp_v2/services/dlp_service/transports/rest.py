@@ -16,33 +16,29 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.dlp_v2.types import dlp
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseDlpServiceRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.protobuf import empty_pb2  # type: ignore
-
-from google.cloud.dlp_v2.types import dlp
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import DlpServiceTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -1556,8 +1552,8 @@ class DlpServiceRestStub:
     _interceptor: DlpServiceRestInterceptor
 
 
-class DlpServiceRestTransport(DlpServiceTransport):
-    """REST backend transport for DlpService.
+class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
+    """REST backend synchronous transport for DlpService.
 
     The Cloud Data Loss Prevention (DLP) API is a service that
     allows clients to detect the presence of Personally Identifiable
@@ -1576,7 +1572,6 @@ class DlpServiceRestTransport(DlpServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -1630,21 +1625,12 @@ class DlpServiceRestTransport(DlpServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -1655,19 +1641,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
         self._interceptor = interceptor or DlpServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ActivateJobTrigger(DlpServiceRestStub):
+    class _ActivateJobTrigger(
+        _BaseDlpServiceRestTransport._BaseActivateJobTrigger, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ActivateJobTrigger")
+            return hash("DlpServiceRestTransport.ActivateJobTrigger")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1696,52 +1697,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/jobTriggers/*}:activate",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/locations/*/jobTriggers/*}:activate",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseActivateJobTrigger._get_http_options()
+            )
             request, metadata = self._interceptor.pre_activate_job_trigger(
                 request, metadata
             )
-            pb_request = dlp.ActivateJobTriggerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDlpServiceRestTransport._BaseActivateJobTrigger._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDlpServiceRestTransport._BaseActivateJobTrigger._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseActivateJobTrigger._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._ActivateJobTrigger._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1757,19 +1740,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_activate_job_trigger(resp)
             return resp
 
-    class _CancelDlpJob(DlpServiceRestStub):
+    class _CancelDlpJob(
+        _BaseDlpServiceRestTransport._BaseCancelDlpJob, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("CancelDlpJob")
+            return hash("DlpServiceRestTransport.CancelDlpJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1792,50 +1790,38 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/dlpJobs/*}:cancel",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/locations/*/dlpJobs/*}:cancel",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_cancel_dlp_job(request, metadata)
-            pb_request = dlp.CancelDlpJobRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseCancelDlpJob._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_cancel_dlp_job(request, metadata)
+            transcoded_request = (
+                _BaseDlpServiceRestTransport._BaseCancelDlpJob._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = (
+                _BaseDlpServiceRestTransport._BaseCancelDlpJob._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDlpServiceRestTransport._BaseCancelDlpJob._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._CancelDlpJob._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1843,19 +1829,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _CreateConnection(DlpServiceRestStub):
+    class _CreateConnection(
+        _BaseDlpServiceRestTransport._BaseCreateConnection, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("CreateConnection")
+            return hash("DlpServiceRestTransport.CreateConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1884,52 +1885,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*}/connections",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=organizations/*/locations/*}/connections",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseCreateConnection._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_connection(
                 request, metadata
             )
-            pb_request = dlp.CreateConnectionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateConnection._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDlpServiceRestTransport._BaseCreateConnection._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseCreateConnection._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._CreateConnection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1945,19 +1928,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_create_connection(resp)
             return resp
 
-    class _CreateDeidentifyTemplate(DlpServiceRestStub):
+    class _CreateDeidentifyTemplate(
+        _BaseDlpServiceRestTransport._BaseCreateDeidentifyTemplate, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("CreateDeidentifyTemplate")
+            return hash("DlpServiceRestTransport.CreateDeidentifyTemplate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1990,62 +1988,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=organizations/*}/deidentifyTemplates",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=organizations/*/locations/*}/deidentifyTemplates",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*}/deidentifyTemplates",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*}/deidentifyTemplates",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseCreateDeidentifyTemplate._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_deidentify_template(
                 request, metadata
             )
-            pb_request = dlp.CreateDeidentifyTemplateRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateDeidentifyTemplate._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDlpServiceRestTransport._BaseCreateDeidentifyTemplate._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseCreateDeidentifyTemplate._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._CreateDeidentifyTemplate._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2061,19 +2031,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_create_deidentify_template(resp)
             return resp
 
-    class _CreateDiscoveryConfig(DlpServiceRestStub):
+    class _CreateDiscoveryConfig(
+        _BaseDlpServiceRestTransport._BaseCreateDiscoveryConfig, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("CreateDiscoveryConfig")
+            return hash("DlpServiceRestTransport.CreateDiscoveryConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2107,52 +2092,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*}/discoveryConfigs",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=organizations/*/locations/*}/discoveryConfigs",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseCreateDiscoveryConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_discovery_config(
                 request, metadata
             )
-            pb_request = dlp.CreateDiscoveryConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateDiscoveryConfig._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDlpServiceRestTransport._BaseCreateDiscoveryConfig._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseCreateDiscoveryConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._CreateDiscoveryConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2168,19 +2135,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_create_discovery_config(resp)
             return resp
 
-    class _CreateDlpJob(DlpServiceRestStub):
+    class _CreateDlpJob(
+        _BaseDlpServiceRestTransport._BaseCreateDlpJob, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("CreateDlpJob")
+            return hash("DlpServiceRestTransport.CreateDlpJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2212,50 +2194,38 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*}/dlpJobs",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*}/dlpJobs",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_dlp_job(request, metadata)
-            pb_request = dlp.CreateDlpJobRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseCreateDlpJob._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_create_dlp_job(request, metadata)
+            transcoded_request = (
+                _BaseDlpServiceRestTransport._BaseCreateDlpJob._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = (
+                _BaseDlpServiceRestTransport._BaseCreateDlpJob._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDlpServiceRestTransport._BaseCreateDlpJob._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._CreateDlpJob._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2271,19 +2241,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_create_dlp_job(resp)
             return resp
 
-    class _CreateInspectTemplate(DlpServiceRestStub):
+    class _CreateInspectTemplate(
+        _BaseDlpServiceRestTransport._BaseCreateInspectTemplate, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("CreateInspectTemplate")
+            return hash("DlpServiceRestTransport.CreateInspectTemplate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2317,62 +2302,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*}/inspectTemplates",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=organizations/*/locations/*}/inspectTemplates",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*}/inspectTemplates",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=organizations/*}/inspectTemplates",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseCreateInspectTemplate._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_inspect_template(
                 request, metadata
             )
-            pb_request = dlp.CreateInspectTemplateRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateInspectTemplate._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDlpServiceRestTransport._BaseCreateInspectTemplate._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseCreateInspectTemplate._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._CreateInspectTemplate._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2388,19 +2345,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_create_inspect_template(resp)
             return resp
 
-    class _CreateJobTrigger(DlpServiceRestStub):
+    class _CreateJobTrigger(
+        _BaseDlpServiceRestTransport._BaseCreateJobTrigger, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("CreateJobTrigger")
+            return hash("DlpServiceRestTransport.CreateJobTrigger")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2430,57 +2402,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*}/jobTriggers",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*}/jobTriggers",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=organizations/*/locations/*}/jobTriggers",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseCreateJobTrigger._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_job_trigger(
                 request, metadata
             )
-            pb_request = dlp.CreateJobTriggerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateJobTrigger._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDlpServiceRestTransport._BaseCreateJobTrigger._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseCreateJobTrigger._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._CreateJobTrigger._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2496,19 +2445,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_create_job_trigger(resp)
             return resp
 
-    class _CreateStoredInfoType(DlpServiceRestStub):
+    class _CreateStoredInfoType(
+        _BaseDlpServiceRestTransport._BaseCreateStoredInfoType, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("CreateStoredInfoType")
+            return hash("DlpServiceRestTransport.CreateStoredInfoType")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2538,62 +2502,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=organizations/*}/storedInfoTypes",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=organizations/*/locations/*}/storedInfoTypes",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*}/storedInfoTypes",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*}/storedInfoTypes",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseCreateStoredInfoType._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_stored_info_type(
                 request, metadata
             )
-            pb_request = dlp.CreateStoredInfoTypeRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateStoredInfoType._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDlpServiceRestTransport._BaseCreateStoredInfoType._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseCreateStoredInfoType._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._CreateStoredInfoType._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2609,9 +2545,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_create_stored_info_type(resp)
             return resp
 
-    class _DeidentifyContent(DlpServiceRestStub):
+    class _DeidentifyContent(
+        _BaseDlpServiceRestTransport._BaseDeidentifyContent, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("DeidentifyContent")
+            return hash("DlpServiceRestTransport.DeidentifyContent")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2639,51 +2600,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*}/content:deidentify",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*}/content:deidentify",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseDeidentifyContent._get_http_options()
+            )
             request, metadata = self._interceptor.pre_deidentify_content(
                 request, metadata
             )
-            pb_request = dlp.DeidentifyContentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeidentifyContent._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDlpServiceRestTransport._BaseDeidentifyContent._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseDeidentifyContent._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._DeidentifyContent._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2699,19 +2643,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_deidentify_content(resp)
             return resp
 
-    class _DeleteConnection(DlpServiceRestStub):
+    class _DeleteConnection(
+        _BaseDlpServiceRestTransport._BaseDeleteConnection, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteConnection")
+            return hash("DlpServiceRestTransport.DeleteConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2733,44 +2691,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/locations/*/connections/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=organizations/*/locations/*/connections/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseDeleteConnection._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_connection(
                 request, metadata
             )
-            pb_request = dlp.DeleteConnectionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteConnection._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseDeleteConnection._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._DeleteConnection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2778,19 +2721,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteDeidentifyTemplate(DlpServiceRestStub):
+    class _DeleteDeidentifyTemplate(
+        _BaseDlpServiceRestTransport._BaseDeleteDeidentifyTemplate, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteDeidentifyTemplate")
+            return hash("DlpServiceRestTransport.DeleteDeidentifyTemplate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2814,52 +2771,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=organizations/*/deidentifyTemplates/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=organizations/*/locations/*/deidentifyTemplates/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/deidentifyTemplates/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/locations/*/deidentifyTemplates/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseDeleteDeidentifyTemplate._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_deidentify_template(
                 request, metadata
             )
-            pb_request = dlp.DeleteDeidentifyTemplateRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteDeidentifyTemplate._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseDeleteDeidentifyTemplate._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._DeleteDeidentifyTemplate._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2867,19 +2801,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteDiscoveryConfig(DlpServiceRestStub):
+    class _DeleteDiscoveryConfig(
+        _BaseDlpServiceRestTransport._BaseDeleteDiscoveryConfig, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteDiscoveryConfig")
+            return hash("DlpServiceRestTransport.DeleteDiscoveryConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2902,44 +2850,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/locations/*/discoveryConfigs/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=organizations/*/locations/*/discoveryConfigs/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseDeleteDiscoveryConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_discovery_config(
                 request, metadata
             )
-            pb_request = dlp.DeleteDiscoveryConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteDiscoveryConfig._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseDeleteDiscoveryConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._DeleteDiscoveryConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2947,19 +2880,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteDlpJob(DlpServiceRestStub):
+    class _DeleteDlpJob(
+        _BaseDlpServiceRestTransport._BaseDeleteDlpJob, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteDlpJob")
+            return hash("DlpServiceRestTransport.DeleteDlpJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2982,42 +2929,31 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/dlpJobs/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/locations/*/dlpJobs/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseDeleteDlpJob._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_dlp_job(request, metadata)
-            pb_request = dlp.DeleteDlpJobRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDlpServiceRestTransport._BaseDeleteDlpJob._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseDlpServiceRestTransport._BaseDeleteDlpJob._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._DeleteDlpJob._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3025,19 +2961,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteFileStoreDataProfile(DlpServiceRestStub):
+    class _DeleteFileStoreDataProfile(
+        _BaseDlpServiceRestTransport._BaseDeleteFileStoreDataProfile, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteFileStoreDataProfile")
+            return hash("DlpServiceRestTransport.DeleteFileStoreDataProfile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3061,44 +3011,31 @@ class DlpServiceRestTransport(DlpServiceTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=organizations/*/locations/*/fileStoreDataProfiles/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/locations/*/fileStoreDataProfiles/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseDeleteFileStoreDataProfile._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_file_store_data_profile(
                 request, metadata
             )
-            pb_request = dlp.DeleteFileStoreDataProfileRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteFileStoreDataProfile._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseDeleteFileStoreDataProfile._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                DlpServiceRestTransport._DeleteFileStoreDataProfile._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3106,19 +3043,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteInspectTemplate(DlpServiceRestStub):
+    class _DeleteInspectTemplate(
+        _BaseDlpServiceRestTransport._BaseDeleteInspectTemplate, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteInspectTemplate")
+            return hash("DlpServiceRestTransport.DeleteInspectTemplate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3141,52 +3092,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/locations/*/inspectTemplates/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=organizations/*/locations/*/inspectTemplates/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/inspectTemplates/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=organizations/*/inspectTemplates/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseDeleteInspectTemplate._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_inspect_template(
                 request, metadata
             )
-            pb_request = dlp.DeleteInspectTemplateRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteInspectTemplate._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseDeleteInspectTemplate._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._DeleteInspectTemplate._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3194,19 +3122,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteJobTrigger(DlpServiceRestStub):
+    class _DeleteJobTrigger(
+        _BaseDlpServiceRestTransport._BaseDeleteJobTrigger, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteJobTrigger")
+            return hash("DlpServiceRestTransport.DeleteJobTrigger")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3228,48 +3170,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/jobTriggers/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/locations/*/jobTriggers/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=organizations/*/locations/*/jobTriggers/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseDeleteJobTrigger._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_job_trigger(
                 request, metadata
             )
-            pb_request = dlp.DeleteJobTriggerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteJobTrigger._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseDeleteJobTrigger._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._DeleteJobTrigger._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3277,19 +3200,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteStoredInfoType(DlpServiceRestStub):
+    class _DeleteStoredInfoType(
+        _BaseDlpServiceRestTransport._BaseDeleteStoredInfoType, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteStoredInfoType")
+            return hash("DlpServiceRestTransport.DeleteStoredInfoType")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3312,52 +3249,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=organizations/*/storedInfoTypes/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=organizations/*/locations/*/storedInfoTypes/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/storedInfoTypes/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/locations/*/storedInfoTypes/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseDeleteStoredInfoType._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_stored_info_type(
                 request, metadata
             )
-            pb_request = dlp.DeleteStoredInfoTypeRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteStoredInfoType._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseDeleteStoredInfoType._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._DeleteStoredInfoType._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3365,19 +3279,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteTableDataProfile(DlpServiceRestStub):
+    class _DeleteTableDataProfile(
+        _BaseDlpServiceRestTransport._BaseDeleteTableDataProfile, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteTableDataProfile")
+            return hash("DlpServiceRestTransport.DeleteTableDataProfile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3400,44 +3328,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=organizations/*/locations/*/tableDataProfiles/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v2/{name=projects/*/locations/*/tableDataProfiles/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseDeleteTableDataProfile._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_table_data_profile(
                 request, metadata
             )
-            pb_request = dlp.DeleteTableDataProfileRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteTableDataProfile._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseDeleteTableDataProfile._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._DeleteTableDataProfile._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3445,19 +3358,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _FinishDlpJob(DlpServiceRestStub):
+    class _FinishDlpJob(
+        _BaseDlpServiceRestTransport._BaseFinishDlpJob, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("FinishDlpJob")
+            return hash("DlpServiceRestTransport.FinishDlpJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3480,45 +3408,38 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/locations/*/dlpJobs/*}:finish",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_finish_dlp_job(request, metadata)
-            pb_request = dlp.FinishDlpJobRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseFinishDlpJob._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_finish_dlp_job(request, metadata)
+            transcoded_request = (
+                _BaseDlpServiceRestTransport._BaseFinishDlpJob._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = (
+                _BaseDlpServiceRestTransport._BaseFinishDlpJob._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDlpServiceRestTransport._BaseFinishDlpJob._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._FinishDlpJob._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3526,19 +3447,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetColumnDataProfile(DlpServiceRestStub):
+    class _GetColumnDataProfile(
+        _BaseDlpServiceRestTransport._BaseGetColumnDataProfile, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetColumnDataProfile")
+            return hash("DlpServiceRestTransport.GetColumnDataProfile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3566,44 +3501,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=organizations/*/locations/*/columnDataProfiles/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/columnDataProfiles/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseGetColumnDataProfile._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_column_data_profile(
                 request, metadata
             )
-            pb_request = dlp.GetColumnDataProfileRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetColumnDataProfile._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseGetColumnDataProfile._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._GetColumnDataProfile._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3619,19 +3539,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_get_column_data_profile(resp)
             return resp
 
-    class _GetConnection(DlpServiceRestStub):
+    class _GetConnection(
+        _BaseDlpServiceRestTransport._BaseGetConnection, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetConnection")
+            return hash("DlpServiceRestTransport.GetConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3660,42 +3594,31 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/connections/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=organizations/*/locations/*/connections/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseGetConnection._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_connection(request, metadata)
-            pb_request = dlp.GetConnectionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDlpServiceRestTransport._BaseGetConnection._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseDlpServiceRestTransport._BaseGetConnection._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._GetConnection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3711,19 +3634,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_get_connection(resp)
             return resp
 
-    class _GetDeidentifyTemplate(DlpServiceRestStub):
+    class _GetDeidentifyTemplate(
+        _BaseDlpServiceRestTransport._BaseGetDeidentifyTemplate, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetDeidentifyTemplate")
+            return hash("DlpServiceRestTransport.GetDeidentifyTemplate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3755,52 +3692,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=organizations/*/deidentifyTemplates/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=organizations/*/locations/*/deidentifyTemplates/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/deidentifyTemplates/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/deidentifyTemplates/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseGetDeidentifyTemplate._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_deidentify_template(
                 request, metadata
             )
-            pb_request = dlp.GetDeidentifyTemplateRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetDeidentifyTemplate._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseGetDeidentifyTemplate._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._GetDeidentifyTemplate._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3816,19 +3730,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_get_deidentify_template(resp)
             return resp
 
-    class _GetDiscoveryConfig(DlpServiceRestStub):
+    class _GetDiscoveryConfig(
+        _BaseDlpServiceRestTransport._BaseGetDiscoveryConfig, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetDiscoveryConfig")
+            return hash("DlpServiceRestTransport.GetDiscoveryConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3862,44 +3790,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/discoveryConfigs/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=organizations/*/locations/*/discoveryConfigs/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseGetDiscoveryConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_discovery_config(
                 request, metadata
             )
-            pb_request = dlp.GetDiscoveryConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetDiscoveryConfig._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseGetDiscoveryConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._GetDiscoveryConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3915,19 +3828,31 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_get_discovery_config(resp)
             return resp
 
-    class _GetDlpJob(DlpServiceRestStub):
+    class _GetDlpJob(_BaseDlpServiceRestTransport._BaseGetDlpJob, DlpServiceRestStub):
         def __hash__(self):
-            return hash("GetDlpJob")
+            return hash("DlpServiceRestTransport.GetDlpJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3955,42 +3880,31 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/dlpJobs/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/dlpJobs/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseGetDlpJob._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_dlp_job(request, metadata)
-            pb_request = dlp.GetDlpJobRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDlpServiceRestTransport._BaseGetDlpJob._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseDlpServiceRestTransport._BaseGetDlpJob._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._GetDlpJob._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4006,19 +3920,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_get_dlp_job(resp)
             return resp
 
-    class _GetFileStoreDataProfile(DlpServiceRestStub):
+    class _GetFileStoreDataProfile(
+        _BaseDlpServiceRestTransport._BaseGetFileStoreDataProfile, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetFileStoreDataProfile")
+            return hash("DlpServiceRestTransport.GetFileStoreDataProfile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4050,44 +3978,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=organizations/*/locations/*/fileStoreDataProfiles/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/fileStoreDataProfiles/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseGetFileStoreDataProfile._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_file_store_data_profile(
                 request, metadata
             )
-            pb_request = dlp.GetFileStoreDataProfileRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetFileStoreDataProfile._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseGetFileStoreDataProfile._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._GetFileStoreDataProfile._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4103,19 +4016,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_get_file_store_data_profile(resp)
             return resp
 
-    class _GetInspectTemplate(DlpServiceRestStub):
+    class _GetInspectTemplate(
+        _BaseDlpServiceRestTransport._BaseGetInspectTemplate, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetInspectTemplate")
+            return hash("DlpServiceRestTransport.GetInspectTemplate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4149,52 +4076,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/inspectTemplates/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=organizations/*/locations/*/inspectTemplates/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/inspectTemplates/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=organizations/*/inspectTemplates/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseGetInspectTemplate._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_inspect_template(
                 request, metadata
             )
-            pb_request = dlp.GetInspectTemplateRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetInspectTemplate._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseGetInspectTemplate._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._GetInspectTemplate._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4210,19 +4114,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_get_inspect_template(resp)
             return resp
 
-    class _GetJobTrigger(DlpServiceRestStub):
+    class _GetJobTrigger(
+        _BaseDlpServiceRestTransport._BaseGetJobTrigger, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetJobTrigger")
+            return hash("DlpServiceRestTransport.GetJobTrigger")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4252,46 +4170,31 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/jobTriggers/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/jobTriggers/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=organizations/*/locations/*/jobTriggers/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseGetJobTrigger._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_job_trigger(request, metadata)
-            pb_request = dlp.GetJobTriggerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDlpServiceRestTransport._BaseGetJobTrigger._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseDlpServiceRestTransport._BaseGetJobTrigger._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._GetJobTrigger._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4307,19 +4210,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_get_job_trigger(resp)
             return resp
 
-    class _GetProjectDataProfile(DlpServiceRestStub):
+    class _GetProjectDataProfile(
+        _BaseDlpServiceRestTransport._BaseGetProjectDataProfile, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetProjectDataProfile")
+            return hash("DlpServiceRestTransport.GetProjectDataProfile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4349,44 +4266,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=organizations/*/locations/*/projectDataProfiles/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/projectDataProfiles/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseGetProjectDataProfile._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_project_data_profile(
                 request, metadata
             )
-            pb_request = dlp.GetProjectDataProfileRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetProjectDataProfile._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseGetProjectDataProfile._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._GetProjectDataProfile._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4402,19 +4304,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_get_project_data_profile(resp)
             return resp
 
-    class _GetStoredInfoType(DlpServiceRestStub):
+    class _GetStoredInfoType(
+        _BaseDlpServiceRestTransport._BaseGetStoredInfoType, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetStoredInfoType")
+            return hash("DlpServiceRestTransport.GetStoredInfoType")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4444,52 +4360,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=organizations/*/storedInfoTypes/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=organizations/*/locations/*/storedInfoTypes/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/storedInfoTypes/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/storedInfoTypes/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseGetStoredInfoType._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_stored_info_type(
                 request, metadata
             )
-            pb_request = dlp.GetStoredInfoTypeRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetStoredInfoType._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseGetStoredInfoType._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._GetStoredInfoType._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4505,19 +4398,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_get_stored_info_type(resp)
             return resp
 
-    class _GetTableDataProfile(DlpServiceRestStub):
+    class _GetTableDataProfile(
+        _BaseDlpServiceRestTransport._BaseGetTableDataProfile, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetTableDataProfile")
+            return hash("DlpServiceRestTransport.GetTableDataProfile")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4543,44 +4450,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     The profile for a scanned table.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=organizations/*/locations/*/tableDataProfiles/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/locations/*/tableDataProfiles/*}",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseGetTableDataProfile._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_table_data_profile(
                 request, metadata
             )
-            pb_request = dlp.GetTableDataProfileRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetTableDataProfile._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseGetTableDataProfile._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._GetTableDataProfile._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4596,19 +4488,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_get_table_data_profile(resp)
             return resp
 
-    class _HybridInspectDlpJob(DlpServiceRestStub):
+    class _HybridInspectDlpJob(
+        _BaseDlpServiceRestTransport._BaseHybridInspectDlpJob, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("HybridInspectDlpJob")
+            return hash("DlpServiceRestTransport.HybridInspectDlpJob")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4637,47 +4544,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/locations/*/dlpJobs/*}:hybridInspect",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseHybridInspectDlpJob._get_http_options()
+            )
             request, metadata = self._interceptor.pre_hybrid_inspect_dlp_job(
                 request, metadata
             )
-            pb_request = dlp.HybridInspectDlpJobRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDlpServiceRestTransport._BaseHybridInspectDlpJob._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDlpServiceRestTransport._BaseHybridInspectDlpJob._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseHybridInspectDlpJob._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._HybridInspectDlpJob._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4693,19 +4587,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_hybrid_inspect_dlp_job(resp)
             return resp
 
-    class _HybridInspectJobTrigger(DlpServiceRestStub):
+    class _HybridInspectJobTrigger(
+        _BaseDlpServiceRestTransport._BaseHybridInspectJobTrigger, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("HybridInspectJobTrigger")
+            return hash("DlpServiceRestTransport.HybridInspectJobTrigger")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4735,47 +4644,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/locations/*/jobTriggers/*}:hybridInspect",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseHybridInspectJobTrigger._get_http_options()
+            )
             request, metadata = self._interceptor.pre_hybrid_inspect_job_trigger(
                 request, metadata
             )
-            pb_request = dlp.HybridInspectJobTriggerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDlpServiceRestTransport._BaseHybridInspectJobTrigger._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDlpServiceRestTransport._BaseHybridInspectJobTrigger._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseHybridInspectJobTrigger._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._HybridInspectJobTrigger._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4791,9 +4687,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_hybrid_inspect_job_trigger(resp)
             return resp
 
-    class _InspectContent(DlpServiceRestStub):
+    class _InspectContent(
+        _BaseDlpServiceRestTransport._BaseInspectContent, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("InspectContent")
+            return hash("DlpServiceRestTransport.InspectContent")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4820,49 +4741,36 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     Results of inspecting an item.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*}/content:inspect",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*}/content:inspect",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_inspect_content(request, metadata)
-            pb_request = dlp.InspectContentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseInspectContent._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_inspect_content(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseInspectContent._get_transcoded_request(
+                http_options, request
+            )
 
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            body = (
+                _BaseDlpServiceRestTransport._BaseInspectContent._get_request_body_json(
+                    transcoded_request
                 )
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseDlpServiceRestTransport._BaseInspectContent._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._InspectContent._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4878,19 +4786,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_inspect_content(resp)
             return resp
 
-    class _ListColumnDataProfiles(DlpServiceRestStub):
+    class _ListColumnDataProfiles(
+        _BaseDlpServiceRestTransport._BaseListColumnDataProfiles, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListColumnDataProfiles")
+            return hash("DlpServiceRestTransport.ListColumnDataProfiles")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4920,44 +4842,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*/locations/*}/columnDataProfiles",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/columnDataProfiles",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseListColumnDataProfiles._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_column_data_profiles(
                 request, metadata
             )
-            pb_request = dlp.ListColumnDataProfilesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListColumnDataProfiles._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseListColumnDataProfiles._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._ListColumnDataProfiles._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4973,19 +4880,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_list_column_data_profiles(resp)
             return resp
 
-    class _ListConnections(DlpServiceRestStub):
+    class _ListConnections(
+        _BaseDlpServiceRestTransport._BaseListConnections, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListConnections")
+            return hash("DlpServiceRestTransport.ListConnections")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5011,44 +4932,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     Response message for ListConnections.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/connections",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*/locations/*}/connections",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseListConnections._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_connections(
                 request, metadata
             )
-            pb_request = dlp.ListConnectionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListConnections._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseListConnections._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._ListConnections._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5064,19 +4970,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_list_connections(resp)
             return resp
 
-    class _ListDeidentifyTemplates(DlpServiceRestStub):
+    class _ListDeidentifyTemplates(
+        _BaseDlpServiceRestTransport._BaseListDeidentifyTemplates, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListDeidentifyTemplates")
+            return hash("DlpServiceRestTransport.ListDeidentifyTemplates")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5105,52 +5025,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*}/deidentifyTemplates",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*/locations/*}/deidentifyTemplates",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*}/deidentifyTemplates",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/deidentifyTemplates",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseListDeidentifyTemplates._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_deidentify_templates(
                 request, metadata
             )
-            pb_request = dlp.ListDeidentifyTemplatesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListDeidentifyTemplates._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseListDeidentifyTemplates._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._ListDeidentifyTemplates._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5166,19 +5063,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_list_deidentify_templates(resp)
             return resp
 
-    class _ListDiscoveryConfigs(DlpServiceRestStub):
+    class _ListDiscoveryConfigs(
+        _BaseDlpServiceRestTransport._BaseListDiscoveryConfigs, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListDiscoveryConfigs")
+            return hash("DlpServiceRestTransport.ListDiscoveryConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5207,44 +5118,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/discoveryConfigs",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*/locations/*}/discoveryConfigs",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseListDiscoveryConfigs._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_discovery_configs(
                 request, metadata
             )
-            pb_request = dlp.ListDiscoveryConfigsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListDiscoveryConfigs._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseListDiscoveryConfigs._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._ListDiscoveryConfigs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5260,19 +5156,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_list_discovery_configs(resp)
             return resp
 
-    class _ListDlpJobs(DlpServiceRestStub):
+    class _ListDlpJobs(
+        _BaseDlpServiceRestTransport._BaseListDlpJobs, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListDlpJobs")
+            return hash("DlpServiceRestTransport.ListDlpJobs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5301,46 +5211,31 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*}/dlpJobs",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/dlpJobs",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*/locations/*}/dlpJobs",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseListDlpJobs._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_dlp_jobs(request, metadata)
-            pb_request = dlp.ListDlpJobsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDlpServiceRestTransport._BaseListDlpJobs._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseDlpServiceRestTransport._BaseListDlpJobs._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._ListDlpJobs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5356,19 +5251,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_list_dlp_jobs(resp)
             return resp
 
-    class _ListFileStoreDataProfiles(DlpServiceRestStub):
+    class _ListFileStoreDataProfiles(
+        _BaseDlpServiceRestTransport._BaseListFileStoreDataProfiles, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListFileStoreDataProfiles")
+            return hash("DlpServiceRestTransport.ListFileStoreDataProfiles")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5400,44 +5309,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*/locations/*}/fileStoreDataProfiles",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/fileStoreDataProfiles",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseListFileStoreDataProfiles._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_file_store_data_profiles(
                 request, metadata
             )
-            pb_request = dlp.ListFileStoreDataProfilesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListFileStoreDataProfiles._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseListFileStoreDataProfiles._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._ListFileStoreDataProfiles._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5453,9 +5347,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_list_file_store_data_profiles(resp)
             return resp
 
-    class _ListInfoTypes(DlpServiceRestStub):
+    class _ListInfoTypes(
+        _BaseDlpServiceRestTransport._BaseListInfoTypes, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListInfoTypes")
+            return hash("DlpServiceRestTransport.ListInfoTypes")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5483,41 +5401,31 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/infoTypes",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=locations/*}/infoTypes",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseListInfoTypes._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_info_types(request, metadata)
-            pb_request = dlp.ListInfoTypesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDlpServiceRestTransport._BaseListInfoTypes._get_transcoded_request(
+                    http_options, request
                 )
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseDlpServiceRestTransport._BaseListInfoTypes._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._ListInfoTypes._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5533,19 +5441,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_list_info_types(resp)
             return resp
 
-    class _ListInspectTemplates(DlpServiceRestStub):
+    class _ListInspectTemplates(
+        _BaseDlpServiceRestTransport._BaseListInspectTemplates, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListInspectTemplates")
+            return hash("DlpServiceRestTransport.ListInspectTemplates")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5574,52 +5496,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/inspectTemplates",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*/locations/*}/inspectTemplates",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*}/inspectTemplates",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*}/inspectTemplates",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseListInspectTemplates._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_inspect_templates(
                 request, metadata
             )
-            pb_request = dlp.ListInspectTemplatesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListInspectTemplates._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseListInspectTemplates._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._ListInspectTemplates._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5635,19 +5534,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_list_inspect_templates(resp)
             return resp
 
-    class _ListJobTriggers(DlpServiceRestStub):
+    class _ListJobTriggers(
+        _BaseDlpServiceRestTransport._BaseListJobTriggers, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListJobTriggers")
+            return hash("DlpServiceRestTransport.ListJobTriggers")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5673,48 +5586,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     Response message for ListJobTriggers.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*}/jobTriggers",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/jobTriggers",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*/locations/*}/jobTriggers",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseListJobTriggers._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_job_triggers(
                 request, metadata
             )
-            pb_request = dlp.ListJobTriggersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListJobTriggers._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseListJobTriggers._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._ListJobTriggers._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5730,19 +5624,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_list_job_triggers(resp)
             return resp
 
-    class _ListProjectDataProfiles(DlpServiceRestStub):
+    class _ListProjectDataProfiles(
+        _BaseDlpServiceRestTransport._BaseListProjectDataProfiles, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListProjectDataProfiles")
+            return hash("DlpServiceRestTransport.ListProjectDataProfiles")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5773,44 +5681,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*/locations/*}/projectDataProfiles",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/projectDataProfiles",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseListProjectDataProfiles._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_project_data_profiles(
                 request, metadata
             )
-            pb_request = dlp.ListProjectDataProfilesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListProjectDataProfiles._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseListProjectDataProfiles._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._ListProjectDataProfiles._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5826,19 +5719,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_list_project_data_profiles(resp)
             return resp
 
-    class _ListStoredInfoTypes(DlpServiceRestStub):
+    class _ListStoredInfoTypes(
+        _BaseDlpServiceRestTransport._BaseListStoredInfoTypes, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListStoredInfoTypes")
+            return hash("DlpServiceRestTransport.ListStoredInfoTypes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5867,52 +5774,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*}/storedInfoTypes",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*/locations/*}/storedInfoTypes",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*}/storedInfoTypes",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/storedInfoTypes",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseListStoredInfoTypes._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_stored_info_types(
                 request, metadata
             )
-            pb_request = dlp.ListStoredInfoTypesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListStoredInfoTypes._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseListStoredInfoTypes._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._ListStoredInfoTypes._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5928,19 +5812,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_list_stored_info_types(resp)
             return resp
 
-    class _ListTableDataProfiles(DlpServiceRestStub):
+    class _ListTableDataProfiles(
+        _BaseDlpServiceRestTransport._BaseListTableDataProfiles, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListTableDataProfiles")
+            return hash("DlpServiceRestTransport.ListTableDataProfiles")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5970,44 +5868,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*/locations/*}/tableDataProfiles",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/tableDataProfiles",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseListTableDataProfiles._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_table_data_profiles(
                 request, metadata
             )
-            pb_request = dlp.ListTableDataProfilesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListTableDataProfiles._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseListTableDataProfiles._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._ListTableDataProfiles._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6023,9 +5906,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_list_table_data_profiles(resp)
             return resp
 
-    class _RedactImage(DlpServiceRestStub):
+    class _RedactImage(
+        _BaseDlpServiceRestTransport._BaseRedactImage, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("RedactImage")
+            return hash("DlpServiceRestTransport.RedactImage")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6053,49 +5961,36 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     Results of redacting an image.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*}/image:redact",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*}/image:redact",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_redact_image(request, metadata)
-            pb_request = dlp.RedactImageRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseRedactImage._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_redact_image(request, metadata)
+            transcoded_request = (
+                _BaseDlpServiceRestTransport._BaseRedactImage._get_transcoded_request(
+                    http_options, request
                 )
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseDlpServiceRestTransport._BaseRedactImage._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseDlpServiceRestTransport._BaseRedactImage._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._RedactImage._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6111,19 +6006,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_redact_image(resp)
             return resp
 
-    class _ReidentifyContent(DlpServiceRestStub):
+    class _ReidentifyContent(
+        _BaseDlpServiceRestTransport._BaseReidentifyContent, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ReidentifyContent")
+            return hash("DlpServiceRestTransport.ReidentifyContent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6149,52 +6059,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     Results of re-identifying an item.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*}/content:reidentify",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*/locations/*}/content:reidentify",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseReidentifyContent._get_http_options()
+            )
             request, metadata = self._interceptor.pre_reidentify_content(
                 request, metadata
             )
-            pb_request = dlp.ReidentifyContentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDlpServiceRestTransport._BaseReidentifyContent._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDlpServiceRestTransport._BaseReidentifyContent._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseReidentifyContent._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._ReidentifyContent._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6210,19 +6102,33 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_reidentify_content(resp)
             return resp
 
-    class _SearchConnections(DlpServiceRestStub):
+    class _SearchConnections(
+        _BaseDlpServiceRestTransport._BaseSearchConnections, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("SearchConnections")
+            return hash("DlpServiceRestTransport.SearchConnections")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6251,44 +6157,29 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*/locations/*}/connections:search",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*/locations/*}/connections:search",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseSearchConnections._get_http_options()
+            )
             request, metadata = self._interceptor.pre_search_connections(
                 request, metadata
             )
-            pb_request = dlp.SearchConnectionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDlpServiceRestTransport._BaseSearchConnections._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseSearchConnections._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DlpServiceRestTransport._SearchConnections._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6304,19 +6195,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_search_connections(resp)
             return resp
 
-    class _UpdateConnection(DlpServiceRestStub):
+    class _UpdateConnection(
+        _BaseDlpServiceRestTransport._BaseUpdateConnection, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateConnection")
+            return hash("DlpServiceRestTransport.UpdateConnection")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6345,52 +6251,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=projects/*/locations/*/connections/*}",
-                    "body": "*",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=organizations/*/locations/*/connections/*}",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseUpdateConnection._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_connection(
                 request, metadata
             )
-            pb_request = dlp.UpdateConnectionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDlpServiceRestTransport._BaseUpdateConnection._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDlpServiceRestTransport._BaseUpdateConnection._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseUpdateConnection._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._UpdateConnection._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6406,19 +6294,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_update_connection(resp)
             return resp
 
-    class _UpdateDeidentifyTemplate(DlpServiceRestStub):
+    class _UpdateDeidentifyTemplate(
+        _BaseDlpServiceRestTransport._BaseUpdateDeidentifyTemplate, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateDeidentifyTemplate")
+            return hash("DlpServiceRestTransport.UpdateDeidentifyTemplate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6451,62 +6354,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=organizations/*/deidentifyTemplates/*}",
-                    "body": "*",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=organizations/*/locations/*/deidentifyTemplates/*}",
-                    "body": "*",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=projects/*/deidentifyTemplates/*}",
-                    "body": "*",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=projects/*/locations/*/deidentifyTemplates/*}",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseUpdateDeidentifyTemplate._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_deidentify_template(
                 request, metadata
             )
-            pb_request = dlp.UpdateDeidentifyTemplateRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDlpServiceRestTransport._BaseUpdateDeidentifyTemplate._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDlpServiceRestTransport._BaseUpdateDeidentifyTemplate._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseUpdateDeidentifyTemplate._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._UpdateDeidentifyTemplate._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6522,19 +6397,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_update_deidentify_template(resp)
             return resp
 
-    class _UpdateDiscoveryConfig(DlpServiceRestStub):
+    class _UpdateDiscoveryConfig(
+        _BaseDlpServiceRestTransport._BaseUpdateDiscoveryConfig, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateDiscoveryConfig")
+            return hash("DlpServiceRestTransport.UpdateDiscoveryConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6568,52 +6458,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=projects/*/locations/*/discoveryConfigs/*}",
-                    "body": "*",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=organizations/*/locations/*/discoveryConfigs/*}",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseUpdateDiscoveryConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_discovery_config(
                 request, metadata
             )
-            pb_request = dlp.UpdateDiscoveryConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDlpServiceRestTransport._BaseUpdateDiscoveryConfig._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDlpServiceRestTransport._BaseUpdateDiscoveryConfig._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseUpdateDiscoveryConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._UpdateDiscoveryConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6629,19 +6501,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_update_discovery_config(resp)
             return resp
 
-    class _UpdateInspectTemplate(DlpServiceRestStub):
+    class _UpdateInspectTemplate(
+        _BaseDlpServiceRestTransport._BaseUpdateInspectTemplate, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateInspectTemplate")
+            return hash("DlpServiceRestTransport.UpdateInspectTemplate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6675,62 +6562,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=projects/*/locations/*/inspectTemplates/*}",
-                    "body": "*",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=organizations/*/locations/*/inspectTemplates/*}",
-                    "body": "*",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=projects/*/inspectTemplates/*}",
-                    "body": "*",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=organizations/*/inspectTemplates/*}",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseUpdateInspectTemplate._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_inspect_template(
                 request, metadata
             )
-            pb_request = dlp.UpdateInspectTemplateRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDlpServiceRestTransport._BaseUpdateInspectTemplate._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDlpServiceRestTransport._BaseUpdateInspectTemplate._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseUpdateInspectTemplate._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._UpdateInspectTemplate._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6746,19 +6605,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_update_inspect_template(resp)
             return resp
 
-    class _UpdateJobTrigger(DlpServiceRestStub):
+    class _UpdateJobTrigger(
+        _BaseDlpServiceRestTransport._BaseUpdateJobTrigger, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateJobTrigger")
+            return hash("DlpServiceRestTransport.UpdateJobTrigger")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6788,57 +6662,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=projects/*/jobTriggers/*}",
-                    "body": "*",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=projects/*/locations/*/jobTriggers/*}",
-                    "body": "*",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=organizations/*/locations/*/jobTriggers/*}",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseUpdateJobTrigger._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_job_trigger(
                 request, metadata
             )
-            pb_request = dlp.UpdateJobTriggerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDlpServiceRestTransport._BaseUpdateJobTrigger._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDlpServiceRestTransport._BaseUpdateJobTrigger._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseUpdateJobTrigger._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._UpdateJobTrigger._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6854,19 +6705,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_update_job_trigger(resp)
             return resp
 
-    class _UpdateStoredInfoType(DlpServiceRestStub):
+    class _UpdateStoredInfoType(
+        _BaseDlpServiceRestTransport._BaseUpdateStoredInfoType, DlpServiceRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateStoredInfoType")
+            return hash("DlpServiceRestTransport.UpdateStoredInfoType")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -6896,62 +6762,34 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=organizations/*/storedInfoTypes/*}",
-                    "body": "*",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=organizations/*/locations/*/storedInfoTypes/*}",
-                    "body": "*",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=projects/*/storedInfoTypes/*}",
-                    "body": "*",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v2/{name=projects/*/locations/*/storedInfoTypes/*}",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDlpServiceRestTransport._BaseUpdateStoredInfoType._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_stored_info_type(
                 request, metadata
             )
-            pb_request = dlp.UpdateStoredInfoTypeRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDlpServiceRestTransport._BaseUpdateStoredInfoType._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDlpServiceRestTransport._BaseUpdateStoredInfoType._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDlpServiceRestTransport._BaseUpdateStoredInfoType._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DlpServiceRestTransport._UpdateStoredInfoType._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
