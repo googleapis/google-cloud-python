@@ -1,0 +1,193 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.securesourcemanager_v1",
+  "protoPackage": "google.cloud.securesourcemanager.v1",
+  "schema": "1.0",
+  "services": {
+    "SecureSourceManager": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "SecureSourceManagerClient",
+          "rpcs": {
+            "CreateInstance": {
+              "methods": [
+                "create_instance"
+              ]
+            },
+            "CreateRepository": {
+              "methods": [
+                "create_repository"
+              ]
+            },
+            "DeleteInstance": {
+              "methods": [
+                "delete_instance"
+              ]
+            },
+            "DeleteRepository": {
+              "methods": [
+                "delete_repository"
+              ]
+            },
+            "GetIamPolicyRepo": {
+              "methods": [
+                "get_iam_policy_repo"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "GetRepository": {
+              "methods": [
+                "get_repository"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "ListRepositories": {
+              "methods": [
+                "list_repositories"
+              ]
+            },
+            "SetIamPolicyRepo": {
+              "methods": [
+                "set_iam_policy_repo"
+              ]
+            },
+            "TestIamPermissionsRepo": {
+              "methods": [
+                "test_iam_permissions_repo"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "SecureSourceManagerAsyncClient",
+          "rpcs": {
+            "CreateInstance": {
+              "methods": [
+                "create_instance"
+              ]
+            },
+            "CreateRepository": {
+              "methods": [
+                "create_repository"
+              ]
+            },
+            "DeleteInstance": {
+              "methods": [
+                "delete_instance"
+              ]
+            },
+            "DeleteRepository": {
+              "methods": [
+                "delete_repository"
+              ]
+            },
+            "GetIamPolicyRepo": {
+              "methods": [
+                "get_iam_policy_repo"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "GetRepository": {
+              "methods": [
+                "get_repository"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "ListRepositories": {
+              "methods": [
+                "list_repositories"
+              ]
+            },
+            "SetIamPolicyRepo": {
+              "methods": [
+                "set_iam_policy_repo"
+              ]
+            },
+            "TestIamPermissionsRepo": {
+              "methods": [
+                "test_iam_permissions_repo"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "SecureSourceManagerClient",
+          "rpcs": {
+            "CreateInstance": {
+              "methods": [
+                "create_instance"
+              ]
+            },
+            "CreateRepository": {
+              "methods": [
+                "create_repository"
+              ]
+            },
+            "DeleteInstance": {
+              "methods": [
+                "delete_instance"
+              ]
+            },
+            "DeleteRepository": {
+              "methods": [
+                "delete_repository"
+              ]
+            },
+            "GetIamPolicyRepo": {
+              "methods": [
+                "get_iam_policy_repo"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "GetRepository": {
+              "methods": [
+                "get_repository"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "ListRepositories": {
+              "methods": [
+                "list_repositories"
+              ]
+            },
+            "SetIamPolicyRepo": {
+              "methods": [
+                "set_iam_policy_repo"
+              ]
+            },
+            "TestIamPermissionsRepo": {
+              "methods": [
+                "test_iam_permissions_repo"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
