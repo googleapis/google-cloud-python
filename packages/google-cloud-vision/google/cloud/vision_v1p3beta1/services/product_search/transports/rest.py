@@ -16,39 +16,29 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.vision_v1p3beta1.types import product_search_service
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseProductSearchRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-
-from google.cloud.vision_v1p3beta1.types import product_search_service
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import ProductSearchTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -595,8 +585,8 @@ class ProductSearchRestStub:
     _interceptor: ProductSearchRestInterceptor
 
 
-class ProductSearchRestTransport(ProductSearchTransport):
-    """REST backend transport for ProductSearch.
+class ProductSearchRestTransport(_BaseProductSearchRestTransport):
+    """REST backend synchronous transport for ProductSearch.
 
     Manages Products and ProductSets of reference images for use in
     product search. It uses the following resource model:
@@ -624,7 +614,6 @@ class ProductSearchRestTransport(ProductSearchTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -678,21 +667,12 @@ class ProductSearchRestTransport(ProductSearchTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -731,19 +711,35 @@ class ProductSearchRestTransport(ProductSearchTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _AddProductToProductSet(ProductSearchRestStub):
+    class _AddProductToProductSet(
+        _BaseProductSearchRestTransport._BaseAddProductToProductSet,
+        ProductSearchRestStub,
+    ):
         def __hash__(self):
-            return hash("AddProductToProductSet")
+            return hash("ProductSearchRestTransport.AddProductToProductSet")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -767,49 +763,34 @@ class ProductSearchRestTransport(ProductSearchTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1p3beta1/{name=projects/*/locations/*/productSets/*}:addProduct",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseProductSearchRestTransport._BaseAddProductToProductSet._get_http_options()
+            )
             request, metadata = self._interceptor.pre_add_product_to_product_set(
                 request, metadata
             )
-            pb_request = product_search_service.AddProductToProductSetRequest.pb(
-                request
+            transcoded_request = _BaseProductSearchRestTransport._BaseAddProductToProductSet._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseProductSearchRestTransport._BaseAddProductToProductSet._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseProductSearchRestTransport._BaseAddProductToProductSet._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ProductSearchRestTransport._AddProductToProductSet._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -817,19 +798,34 @@ class ProductSearchRestTransport(ProductSearchTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _CreateProduct(ProductSearchRestStub):
+    class _CreateProduct(
+        _BaseProductSearchRestTransport._BaseCreateProduct, ProductSearchRestStub
+    ):
         def __hash__(self):
-            return hash("CreateProduct")
+            return hash("ProductSearchRestTransport.CreateProduct")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -855,45 +851,32 @@ class ProductSearchRestTransport(ProductSearchTransport):
                     A Product contains ReferenceImages.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1p3beta1/{parent=projects/*/locations/*}/products",
-                    "body": "product",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_product(request, metadata)
-            pb_request = product_search_service.CreateProductRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseProductSearchRestTransport._BaseCreateProduct._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_product(request, metadata)
+            transcoded_request = _BaseProductSearchRestTransport._BaseCreateProduct._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseProductSearchRestTransport._BaseCreateProduct._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseProductSearchRestTransport._BaseCreateProduct._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ProductSearchRestTransport._CreateProduct._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -909,19 +892,34 @@ class ProductSearchRestTransport(ProductSearchTransport):
             resp = self._interceptor.post_create_product(resp)
             return resp
 
-    class _CreateProductSet(ProductSearchRestStub):
+    class _CreateProductSet(
+        _BaseProductSearchRestTransport._BaseCreateProductSet, ProductSearchRestStub
+    ):
         def __hash__(self):
-            return hash("CreateProductSet")
+            return hash("ProductSearchRestTransport.CreateProductSet")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -952,47 +950,34 @@ class ProductSearchRestTransport(ProductSearchTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1p3beta1/{parent=projects/*/locations/*}/productSets",
-                    "body": "product_set",
-                },
-            ]
+            http_options = (
+                _BaseProductSearchRestTransport._BaseCreateProductSet._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_product_set(
                 request, metadata
             )
-            pb_request = product_search_service.CreateProductSetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseProductSearchRestTransport._BaseCreateProductSet._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseProductSearchRestTransport._BaseCreateProductSet._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseProductSearchRestTransport._BaseCreateProductSet._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ProductSearchRestTransport._CreateProductSet._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1008,19 +993,34 @@ class ProductSearchRestTransport(ProductSearchTransport):
             resp = self._interceptor.post_create_product_set(resp)
             return resp
 
-    class _CreateReferenceImage(ProductSearchRestStub):
+    class _CreateReferenceImage(
+        _BaseProductSearchRestTransport._BaseCreateReferenceImage, ProductSearchRestStub
+    ):
         def __hash__(self):
-            return hash("CreateReferenceImage")
+            return hash("ProductSearchRestTransport.CreateReferenceImage")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1048,47 +1048,34 @@ class ProductSearchRestTransport(ProductSearchTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages",
-                    "body": "reference_image",
-                },
-            ]
+            http_options = (
+                _BaseProductSearchRestTransport._BaseCreateReferenceImage._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_reference_image(
                 request, metadata
             )
-            pb_request = product_search_service.CreateReferenceImageRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseProductSearchRestTransport._BaseCreateReferenceImage._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseProductSearchRestTransport._BaseCreateReferenceImage._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseProductSearchRestTransport._BaseCreateReferenceImage._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ProductSearchRestTransport._CreateReferenceImage._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1104,19 +1091,33 @@ class ProductSearchRestTransport(ProductSearchTransport):
             resp = self._interceptor.post_create_reference_image(resp)
             return resp
 
-    class _DeleteProduct(ProductSearchRestStub):
+    class _DeleteProduct(
+        _BaseProductSearchRestTransport._BaseDeleteProduct, ProductSearchRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteProduct")
+            return hash("ProductSearchRestTransport.DeleteProduct")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1138,38 +1139,27 @@ class ProductSearchRestTransport(ProductSearchTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1p3beta1/{name=projects/*/locations/*/products/*}",
-                },
-            ]
+            http_options = (
+                _BaseProductSearchRestTransport._BaseDeleteProduct._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_product(request, metadata)
-            pb_request = product_search_service.DeleteProductRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseProductSearchRestTransport._BaseDeleteProduct._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseProductSearchRestTransport._BaseDeleteProduct._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ProductSearchRestTransport._DeleteProduct._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1177,19 +1167,33 @@ class ProductSearchRestTransport(ProductSearchTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteProductSet(ProductSearchRestStub):
+    class _DeleteProductSet(
+        _BaseProductSearchRestTransport._BaseDeleteProductSet, ProductSearchRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteProductSet")
+            return hash("ProductSearchRestTransport.DeleteProductSet")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1211,40 +1215,29 @@ class ProductSearchRestTransport(ProductSearchTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1p3beta1/{name=projects/*/locations/*/productSets/*}",
-                },
-            ]
+            http_options = (
+                _BaseProductSearchRestTransport._BaseDeleteProductSet._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_product_set(
                 request, metadata
             )
-            pb_request = product_search_service.DeleteProductSetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseProductSearchRestTransport._BaseDeleteProductSet._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseProductSearchRestTransport._BaseDeleteProductSet._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ProductSearchRestTransport._DeleteProductSet._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1252,19 +1245,33 @@ class ProductSearchRestTransport(ProductSearchTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteReferenceImage(ProductSearchRestStub):
+    class _DeleteReferenceImage(
+        _BaseProductSearchRestTransport._BaseDeleteReferenceImage, ProductSearchRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteReferenceImage")
+            return hash("ProductSearchRestTransport.DeleteReferenceImage")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1286,40 +1293,29 @@ class ProductSearchRestTransport(ProductSearchTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}",
-                },
-            ]
+            http_options = (
+                _BaseProductSearchRestTransport._BaseDeleteReferenceImage._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_reference_image(
                 request, metadata
             )
-            pb_request = product_search_service.DeleteReferenceImageRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseProductSearchRestTransport._BaseDeleteReferenceImage._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseProductSearchRestTransport._BaseDeleteReferenceImage._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ProductSearchRestTransport._DeleteReferenceImage._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1327,19 +1323,33 @@ class ProductSearchRestTransport(ProductSearchTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetProduct(ProductSearchRestStub):
+    class _GetProduct(
+        _BaseProductSearchRestTransport._BaseGetProduct, ProductSearchRestStub
+    ):
         def __hash__(self):
-            return hash("GetProduct")
+            return hash("ProductSearchRestTransport.GetProduct")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1365,38 +1375,31 @@ class ProductSearchRestTransport(ProductSearchTransport):
                     A Product contains ReferenceImages.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1p3beta1/{name=projects/*/locations/*/products/*}",
-                },
-            ]
+            http_options = (
+                _BaseProductSearchRestTransport._BaseGetProduct._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_product(request, metadata)
-            pb_request = product_search_service.GetProductRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseProductSearchRestTransport._BaseGetProduct._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseProductSearchRestTransport._BaseGetProduct._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ProductSearchRestTransport._GetProduct._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1412,19 +1415,33 @@ class ProductSearchRestTransport(ProductSearchTransport):
             resp = self._interceptor.post_get_product(resp)
             return resp
 
-    class _GetProductSet(ProductSearchRestStub):
+    class _GetProductSet(
+        _BaseProductSearchRestTransport._BaseGetProductSet, ProductSearchRestStub
+    ):
         def __hash__(self):
-            return hash("GetProductSet")
+            return hash("ProductSearchRestTransport.GetProductSet")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1455,38 +1472,27 @@ class ProductSearchRestTransport(ProductSearchTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1p3beta1/{name=projects/*/locations/*/productSets/*}",
-                },
-            ]
+            http_options = (
+                _BaseProductSearchRestTransport._BaseGetProductSet._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_product_set(request, metadata)
-            pb_request = product_search_service.GetProductSetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseProductSearchRestTransport._BaseGetProductSet._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseProductSearchRestTransport._BaseGetProductSet._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ProductSearchRestTransport._GetProductSet._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1502,19 +1508,33 @@ class ProductSearchRestTransport(ProductSearchTransport):
             resp = self._interceptor.post_get_product_set(resp)
             return resp
 
-    class _GetReferenceImage(ProductSearchRestStub):
+    class _GetReferenceImage(
+        _BaseProductSearchRestTransport._BaseGetReferenceImage, ProductSearchRestStub
+    ):
         def __hash__(self):
-            return hash("GetReferenceImage")
+            return hash("ProductSearchRestTransport.GetReferenceImage")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1542,40 +1562,29 @@ class ProductSearchRestTransport(ProductSearchTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}",
-                },
-            ]
+            http_options = (
+                _BaseProductSearchRestTransport._BaseGetReferenceImage._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_reference_image(
                 request, metadata
             )
-            pb_request = product_search_service.GetReferenceImageRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseProductSearchRestTransport._BaseGetReferenceImage._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseProductSearchRestTransport._BaseGetReferenceImage._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ProductSearchRestTransport._GetReferenceImage._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1591,19 +1600,34 @@ class ProductSearchRestTransport(ProductSearchTransport):
             resp = self._interceptor.post_get_reference_image(resp)
             return resp
 
-    class _ImportProductSets(ProductSearchRestStub):
+    class _ImportProductSets(
+        _BaseProductSearchRestTransport._BaseImportProductSets, ProductSearchRestStub
+    ):
         def __hash__(self):
-            return hash("ImportProductSets")
+            return hash("ProductSearchRestTransport.ImportProductSets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1632,47 +1656,34 @@ class ProductSearchRestTransport(ProductSearchTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1p3beta1/{parent=projects/*/locations/*}/productSets:import",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseProductSearchRestTransport._BaseImportProductSets._get_http_options()
+            )
             request, metadata = self._interceptor.pre_import_product_sets(
                 request, metadata
             )
-            pb_request = product_search_service.ImportProductSetsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseProductSearchRestTransport._BaseImportProductSets._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseProductSearchRestTransport._BaseImportProductSets._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseProductSearchRestTransport._BaseImportProductSets._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ProductSearchRestTransport._ImportProductSets._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1686,19 +1697,33 @@ class ProductSearchRestTransport(ProductSearchTransport):
             resp = self._interceptor.post_import_product_sets(resp)
             return resp
 
-    class _ListProducts(ProductSearchRestStub):
+    class _ListProducts(
+        _BaseProductSearchRestTransport._BaseListProducts, ProductSearchRestStub
+    ):
         def __hash__(self):
-            return hash("ListProducts")
+            return hash("ProductSearchRestTransport.ListProducts")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1724,38 +1749,27 @@ class ProductSearchRestTransport(ProductSearchTransport):
                     Response message for the ``ListProducts`` method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1p3beta1/{parent=projects/*/locations/*}/products",
-                },
-            ]
+            http_options = (
+                _BaseProductSearchRestTransport._BaseListProducts._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_products(request, metadata)
-            pb_request = product_search_service.ListProductsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseProductSearchRestTransport._BaseListProducts._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseProductSearchRestTransport._BaseListProducts._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ProductSearchRestTransport._ListProducts._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1771,19 +1785,33 @@ class ProductSearchRestTransport(ProductSearchTransport):
             resp = self._interceptor.post_list_products(resp)
             return resp
 
-    class _ListProductSets(ProductSearchRestStub):
+    class _ListProductSets(
+        _BaseProductSearchRestTransport._BaseListProductSets, ProductSearchRestStub
+    ):
         def __hash__(self):
-            return hash("ListProductSets")
+            return hash("ProductSearchRestTransport.ListProductSets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1809,40 +1837,29 @@ class ProductSearchRestTransport(ProductSearchTransport):
                     Response message for the ``ListProductSets`` method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1p3beta1/{parent=projects/*/locations/*}/productSets",
-                },
-            ]
+            http_options = (
+                _BaseProductSearchRestTransport._BaseListProductSets._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_product_sets(
                 request, metadata
             )
-            pb_request = product_search_service.ListProductSetsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseProductSearchRestTransport._BaseListProductSets._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseProductSearchRestTransport._BaseListProductSets._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ProductSearchRestTransport._ListProductSets._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1858,19 +1875,34 @@ class ProductSearchRestTransport(ProductSearchTransport):
             resp = self._interceptor.post_list_product_sets(resp)
             return resp
 
-    class _ListProductsInProductSet(ProductSearchRestStub):
+    class _ListProductsInProductSet(
+        _BaseProductSearchRestTransport._BaseListProductsInProductSet,
+        ProductSearchRestStub,
+    ):
         def __hash__(self):
-            return hash("ListProductsInProductSet")
+            return hash("ProductSearchRestTransport.ListProductsInProductSet")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1900,42 +1932,31 @@ class ProductSearchRestTransport(ProductSearchTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1p3beta1/{name=projects/*/locations/*/productSets/*}/products",
-                },
-            ]
+            http_options = (
+                _BaseProductSearchRestTransport._BaseListProductsInProductSet._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_products_in_product_set(
                 request, metadata
             )
-            pb_request = product_search_service.ListProductsInProductSetRequest.pb(
-                request
+            transcoded_request = _BaseProductSearchRestTransport._BaseListProductsInProductSet._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseProductSearchRestTransport._BaseListProductsInProductSet._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ProductSearchRestTransport._ListProductsInProductSet._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1951,19 +1972,33 @@ class ProductSearchRestTransport(ProductSearchTransport):
             resp = self._interceptor.post_list_products_in_product_set(resp)
             return resp
 
-    class _ListReferenceImages(ProductSearchRestStub):
+    class _ListReferenceImages(
+        _BaseProductSearchRestTransport._BaseListReferenceImages, ProductSearchRestStub
+    ):
         def __hash__(self):
-            return hash("ListReferenceImages")
+            return hash("ProductSearchRestTransport.ListReferenceImages")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1989,40 +2024,29 @@ class ProductSearchRestTransport(ProductSearchTransport):
                     Response message for the ``ListReferenceImages`` method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages",
-                },
-            ]
+            http_options = (
+                _BaseProductSearchRestTransport._BaseListReferenceImages._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_reference_images(
                 request, metadata
             )
-            pb_request = product_search_service.ListReferenceImagesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseProductSearchRestTransport._BaseListReferenceImages._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseProductSearchRestTransport._BaseListReferenceImages._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ProductSearchRestTransport._ListReferenceImages._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2038,19 +2062,35 @@ class ProductSearchRestTransport(ProductSearchTransport):
             resp = self._interceptor.post_list_reference_images(resp)
             return resp
 
-    class _RemoveProductFromProductSet(ProductSearchRestStub):
+    class _RemoveProductFromProductSet(
+        _BaseProductSearchRestTransport._BaseRemoveProductFromProductSet,
+        ProductSearchRestStub,
+    ):
         def __hash__(self):
-            return hash("RemoveProductFromProductSet")
+            return hash("ProductSearchRestTransport.RemoveProductFromProductSet")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2074,49 +2114,36 @@ class ProductSearchRestTransport(ProductSearchTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1p3beta1/{name=projects/*/locations/*/productSets/*}:removeProduct",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseProductSearchRestTransport._BaseRemoveProductFromProductSet._get_http_options()
+            )
             request, metadata = self._interceptor.pre_remove_product_from_product_set(
                 request, metadata
             )
-            pb_request = product_search_service.RemoveProductFromProductSetRequest.pb(
-                request
+            transcoded_request = _BaseProductSearchRestTransport._BaseRemoveProductFromProductSet._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseProductSearchRestTransport._BaseRemoveProductFromProductSet._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseProductSearchRestTransport._BaseRemoveProductFromProductSet._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                ProductSearchRestTransport._RemoveProductFromProductSet._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2124,19 +2151,34 @@ class ProductSearchRestTransport(ProductSearchTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _UpdateProduct(ProductSearchRestStub):
+    class _UpdateProduct(
+        _BaseProductSearchRestTransport._BaseUpdateProduct, ProductSearchRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateProduct")
+            return hash("ProductSearchRestTransport.UpdateProduct")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2162,45 +2204,32 @@ class ProductSearchRestTransport(ProductSearchTransport):
                     A Product contains ReferenceImages.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1p3beta1/{product.name=projects/*/locations/*/products/*}",
-                    "body": "product",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_product(request, metadata)
-            pb_request = product_search_service.UpdateProductRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseProductSearchRestTransport._BaseUpdateProduct._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_product(request, metadata)
+            transcoded_request = _BaseProductSearchRestTransport._BaseUpdateProduct._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseProductSearchRestTransport._BaseUpdateProduct._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseProductSearchRestTransport._BaseUpdateProduct._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ProductSearchRestTransport._UpdateProduct._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2216,19 +2245,34 @@ class ProductSearchRestTransport(ProductSearchTransport):
             resp = self._interceptor.post_update_product(resp)
             return resp
 
-    class _UpdateProductSet(ProductSearchRestStub):
+    class _UpdateProductSet(
+        _BaseProductSearchRestTransport._BaseUpdateProductSet, ProductSearchRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateProductSet")
+            return hash("ProductSearchRestTransport.UpdateProductSet")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2259,47 +2303,34 @@ class ProductSearchRestTransport(ProductSearchTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1p3beta1/{product_set.name=projects/*/locations/*/productSets/*}",
-                    "body": "product_set",
-                },
-            ]
+            http_options = (
+                _BaseProductSearchRestTransport._BaseUpdateProductSet._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_product_set(
                 request, metadata
             )
-            pb_request = product_search_service.UpdateProductSetRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseProductSearchRestTransport._BaseUpdateProductSet._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseProductSearchRestTransport._BaseUpdateProductSet._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseProductSearchRestTransport._BaseUpdateProductSet._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ProductSearchRestTransport._UpdateProductSet._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

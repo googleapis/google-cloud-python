@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -248,6 +249,9 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -945,7 +949,7 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_product_set: gapic_v1.method_async.wrap_method(
+            self.create_product_set: self._wrap_method(
                 self.create_product_set,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -957,7 +961,7 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.list_product_sets: gapic_v1.method_async.wrap_method(
+            self.list_product_sets: self._wrap_method(
                 self.list_product_sets,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -972,7 +976,7 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.get_product_set: gapic_v1.method_async.wrap_method(
+            self.get_product_set: self._wrap_method(
                 self.get_product_set,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -987,7 +991,7 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.update_product_set: gapic_v1.method_async.wrap_method(
+            self.update_product_set: self._wrap_method(
                 self.update_product_set,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -999,7 +1003,7 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.delete_product_set: gapic_v1.method_async.wrap_method(
+            self.delete_product_set: self._wrap_method(
                 self.delete_product_set,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1014,7 +1018,7 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.create_product: gapic_v1.method_async.wrap_method(
+            self.create_product: self._wrap_method(
                 self.create_product,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1026,7 +1030,7 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.list_products: gapic_v1.method_async.wrap_method(
+            self.list_products: self._wrap_method(
                 self.list_products,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1041,7 +1045,7 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.get_product: gapic_v1.method_async.wrap_method(
+            self.get_product: self._wrap_method(
                 self.get_product,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1056,7 +1060,7 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.update_product: gapic_v1.method_async.wrap_method(
+            self.update_product: self._wrap_method(
                 self.update_product,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1068,7 +1072,7 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.delete_product: gapic_v1.method_async.wrap_method(
+            self.delete_product: self._wrap_method(
                 self.delete_product,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1083,7 +1087,7 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.create_reference_image: gapic_v1.method_async.wrap_method(
+            self.create_reference_image: self._wrap_method(
                 self.create_reference_image,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1095,7 +1099,7 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.delete_reference_image: gapic_v1.method_async.wrap_method(
+            self.delete_reference_image: self._wrap_method(
                 self.delete_reference_image,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1110,7 +1114,7 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.list_reference_images: gapic_v1.method_async.wrap_method(
+            self.list_reference_images: self._wrap_method(
                 self.list_reference_images,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1125,7 +1129,7 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.get_reference_image: gapic_v1.method_async.wrap_method(
+            self.get_reference_image: self._wrap_method(
                 self.get_reference_image,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1140,7 +1144,7 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.add_product_to_product_set: gapic_v1.method_async.wrap_method(
+            self.add_product_to_product_set: self._wrap_method(
                 self.add_product_to_product_set,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1152,7 +1156,7 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.remove_product_from_product_set: gapic_v1.method_async.wrap_method(
+            self.remove_product_from_product_set: self._wrap_method(
                 self.remove_product_from_product_set,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1164,7 +1168,7 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.list_products_in_product_set: gapic_v1.method_async.wrap_method(
+            self.list_products_in_product_set: self._wrap_method(
                 self.list_products_in_product_set,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1179,7 +1183,7 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.import_product_sets: gapic_v1.method_async.wrap_method(
+            self.import_product_sets: self._wrap_method(
                 self.import_product_sets,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1193,8 +1197,17 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("ProductSearchGrpcAsyncIOTransport",)
