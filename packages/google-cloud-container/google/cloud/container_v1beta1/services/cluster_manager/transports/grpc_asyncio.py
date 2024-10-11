@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -227,6 +228,9 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1278,7 +1282,7 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_clusters: gapic_v1.method_async.wrap_method(
+            self.list_clusters: self._wrap_method(
                 self.list_clusters,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1293,7 +1297,7 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
                 default_timeout=20.0,
                 client_info=client_info,
             ),
-            self.get_cluster: gapic_v1.method_async.wrap_method(
+            self.get_cluster: self._wrap_method(
                 self.get_cluster,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1308,57 +1312,57 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
                 default_timeout=20.0,
                 client_info=client_info,
             ),
-            self.create_cluster: gapic_v1.method_async.wrap_method(
+            self.create_cluster: self._wrap_method(
                 self.create_cluster,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.update_cluster: gapic_v1.method_async.wrap_method(
+            self.update_cluster: self._wrap_method(
                 self.update_cluster,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.update_node_pool: gapic_v1.method_async.wrap_method(
+            self.update_node_pool: self._wrap_method(
                 self.update_node_pool,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.set_node_pool_autoscaling: gapic_v1.method_async.wrap_method(
+            self.set_node_pool_autoscaling: self._wrap_method(
                 self.set_node_pool_autoscaling,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.set_logging_service: gapic_v1.method_async.wrap_method(
+            self.set_logging_service: self._wrap_method(
                 self.set_logging_service,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.set_monitoring_service: gapic_v1.method_async.wrap_method(
+            self.set_monitoring_service: self._wrap_method(
                 self.set_monitoring_service,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.set_addons_config: gapic_v1.method_async.wrap_method(
+            self.set_addons_config: self._wrap_method(
                 self.set_addons_config,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.set_locations: gapic_v1.method_async.wrap_method(
+            self.set_locations: self._wrap_method(
                 self.set_locations,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.update_master: gapic_v1.method_async.wrap_method(
+            self.update_master: self._wrap_method(
                 self.update_master,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.set_master_auth: gapic_v1.method_async.wrap_method(
+            self.set_master_auth: self._wrap_method(
                 self.set_master_auth,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.delete_cluster: gapic_v1.method_async.wrap_method(
+            self.delete_cluster: self._wrap_method(
                 self.delete_cluster,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1373,7 +1377,7 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
                 default_timeout=20.0,
                 client_info=client_info,
             ),
-            self.list_operations: gapic_v1.method_async.wrap_method(
+            self.list_operations: self._wrap_method(
                 self.list_operations,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1388,7 +1392,7 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
                 default_timeout=20.0,
                 client_info=client_info,
             ),
-            self.get_operation: gapic_v1.method_async.wrap_method(
+            self.get_operation: self._wrap_method(
                 self.get_operation,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1403,12 +1407,12 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
                 default_timeout=20.0,
                 client_info=client_info,
             ),
-            self.cancel_operation: gapic_v1.method_async.wrap_method(
+            self.cancel_operation: self._wrap_method(
                 self.cancel_operation,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.get_server_config: gapic_v1.method_async.wrap_method(
+            self.get_server_config: self._wrap_method(
                 self.get_server_config,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1423,12 +1427,12 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
                 default_timeout=20.0,
                 client_info=client_info,
             ),
-            self.get_json_web_keys: gapic_v1.method_async.wrap_method(
+            self.get_json_web_keys: self._wrap_method(
                 self.get_json_web_keys,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_node_pools: gapic_v1.method_async.wrap_method(
+            self.list_node_pools: self._wrap_method(
                 self.list_node_pools,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1443,7 +1447,7 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
                 default_timeout=20.0,
                 client_info=client_info,
             ),
-            self.get_node_pool: gapic_v1.method_async.wrap_method(
+            self.get_node_pool: self._wrap_method(
                 self.get_node_pool,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1458,12 +1462,12 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
                 default_timeout=20.0,
                 client_info=client_info,
             ),
-            self.create_node_pool: gapic_v1.method_async.wrap_method(
+            self.create_node_pool: self._wrap_method(
                 self.create_node_pool,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.delete_node_pool: gapic_v1.method_async.wrap_method(
+            self.delete_node_pool: self._wrap_method(
                 self.delete_node_pool,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1478,57 +1482,57 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
                 default_timeout=20.0,
                 client_info=client_info,
             ),
-            self.complete_node_pool_upgrade: gapic_v1.method_async.wrap_method(
+            self.complete_node_pool_upgrade: self._wrap_method(
                 self.complete_node_pool_upgrade,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.rollback_node_pool_upgrade: gapic_v1.method_async.wrap_method(
+            self.rollback_node_pool_upgrade: self._wrap_method(
                 self.rollback_node_pool_upgrade,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.set_node_pool_management: gapic_v1.method_async.wrap_method(
+            self.set_node_pool_management: self._wrap_method(
                 self.set_node_pool_management,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.set_labels: gapic_v1.method_async.wrap_method(
+            self.set_labels: self._wrap_method(
                 self.set_labels,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.set_legacy_abac: gapic_v1.method_async.wrap_method(
+            self.set_legacy_abac: self._wrap_method(
                 self.set_legacy_abac,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.start_ip_rotation: gapic_v1.method_async.wrap_method(
+            self.start_ip_rotation: self._wrap_method(
                 self.start_ip_rotation,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.complete_ip_rotation: gapic_v1.method_async.wrap_method(
+            self.complete_ip_rotation: self._wrap_method(
                 self.complete_ip_rotation,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.set_node_pool_size: gapic_v1.method_async.wrap_method(
+            self.set_node_pool_size: self._wrap_method(
                 self.set_node_pool_size,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.set_network_policy: gapic_v1.method_async.wrap_method(
+            self.set_network_policy: self._wrap_method(
                 self.set_network_policy,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.set_maintenance_policy: gapic_v1.method_async.wrap_method(
+            self.set_maintenance_policy: self._wrap_method(
                 self.set_maintenance_policy,
                 default_timeout=45.0,
                 client_info=client_info,
             ),
-            self.list_usable_subnetworks: gapic_v1.method_async.wrap_method(
+            self.list_usable_subnetworks: self._wrap_method(
                 self.list_usable_subnetworks,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1543,12 +1547,12 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
                 default_timeout=20.0,
                 client_info=client_info,
             ),
-            self.check_autopilot_compatibility: gapic_v1.method_async.wrap_method(
+            self.check_autopilot_compatibility: self._wrap_method(
                 self.check_autopilot_compatibility,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_locations: gapic_v1.method_async.wrap_method(
+            self.list_locations: self._wrap_method(
                 self.list_locations,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1565,8 +1569,17 @@ class ClusterManagerGrpcAsyncIOTransport(ClusterManagerTransport):
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("ClusterManagerGrpcAsyncIOTransport",)

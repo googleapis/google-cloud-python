@@ -16,30 +16,27 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.compute_v1.types import compute
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseUrlMapsRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.cloud.compute_v1.types import compute
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import UrlMapsTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -330,8 +327,8 @@ class UrlMapsRestStub:
     _interceptor: UrlMapsRestInterceptor
 
 
-class UrlMapsRestTransport(UrlMapsTransport):
-    """REST backend transport for UrlMaps.
+class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
+    """REST backend synchronous transport for UrlMaps.
 
     The UrlMaps API.
 
@@ -340,10 +337,6 @@ class UrlMapsRestTransport(UrlMapsTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
-    NOTE: This REST transport functionality is currently in a beta
-    state (preview). We welcome your feedback via an issue in this
-    library's source repository. Thank you!
     """
 
     def __init__(
@@ -401,21 +394,12 @@ class UrlMapsRestTransport(UrlMapsTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -426,19 +410,33 @@ class UrlMapsRestTransport(UrlMapsTransport):
         self._interceptor = interceptor or UrlMapsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AggregatedList(UrlMapsRestStub):
+    class _AggregatedList(
+        _BaseUrlMapsRestTransport._BaseAggregatedList, UrlMapsRestStub
+    ):
         def __hash__(self):
-            return hash("AggregatedList")
+            return hash("UrlMapsRestTransport.AggregatedList")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -466,36 +464,31 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/compute/v1/projects/{project}/aggregated/urlMaps",
-                },
-            ]
+            http_options = (
+                _BaseUrlMapsRestTransport._BaseAggregatedList._get_http_options()
+            )
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            pb_request = compute.AggregatedListUrlMapsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+            transcoded_request = (
+                _BaseUrlMapsRestTransport._BaseAggregatedList._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Jsonify the query params
+            query_params = (
+                _BaseUrlMapsRestTransport._BaseAggregatedList._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = UrlMapsRestTransport._AggregatedList._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -511,19 +504,31 @@ class UrlMapsRestTransport(UrlMapsTransport):
             resp = self._interceptor.post_aggregated_list(resp)
             return resp
 
-    class _Delete(UrlMapsRestStub):
+    class _Delete(_BaseUrlMapsRestTransport._BaseDelete, UrlMapsRestStub):
         def __hash__(self):
-            return hash("Delete")
+            return hash("UrlMapsRestTransport.Delete")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -567,36 +572,27 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/compute/v1/projects/{project}/global/urlMaps/{url_map}",
-                },
-            ]
+            http_options = _BaseUrlMapsRestTransport._BaseDelete._get_http_options()
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            pb_request = compute.DeleteUrlMapRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+            transcoded_request = (
+                _BaseUrlMapsRestTransport._BaseDelete._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Jsonify the query params
+            query_params = _BaseUrlMapsRestTransport._BaseDelete._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = UrlMapsRestTransport._Delete._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -612,19 +608,31 @@ class UrlMapsRestTransport(UrlMapsTransport):
             resp = self._interceptor.post_delete(resp)
             return resp
 
-    class _Get(UrlMapsRestStub):
+    class _Get(_BaseUrlMapsRestTransport._BaseGet, UrlMapsRestStub):
         def __hash__(self):
-            return hash("Get")
+            return hash("UrlMapsRestTransport.Get")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -676,36 +684,27 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/compute/v1/projects/{project}/global/urlMaps/{url_map}",
-                },
-            ]
+            http_options = _BaseUrlMapsRestTransport._BaseGet._get_http_options()
             request, metadata = self._interceptor.pre_get(request, metadata)
-            pb_request = compute.GetUrlMapRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+            transcoded_request = (
+                _BaseUrlMapsRestTransport._BaseGet._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Jsonify the query params
+            query_params = _BaseUrlMapsRestTransport._BaseGet._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = UrlMapsRestTransport._Get._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -721,19 +720,32 @@ class UrlMapsRestTransport(UrlMapsTransport):
             resp = self._interceptor.post_get(resp)
             return resp
 
-    class _Insert(UrlMapsRestStub):
+    class _Insert(_BaseUrlMapsRestTransport._BaseInsert, UrlMapsRestStub):
         def __hash__(self):
-            return hash("Insert")
+            return hash("UrlMapsRestTransport.Insert")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -777,43 +789,32 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/global/urlMaps",
-                    "body": "url_map_resource",
-                },
-            ]
+            http_options = _BaseUrlMapsRestTransport._BaseInsert._get_http_options()
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            pb_request = compute.InsertUrlMapRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+            transcoded_request = (
+                _BaseUrlMapsRestTransport._BaseInsert._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
+
+            body = _BaseUrlMapsRestTransport._BaseInsert._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseUrlMapsRestTransport._BaseInsert._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = UrlMapsRestTransport._Insert._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -829,19 +830,34 @@ class UrlMapsRestTransport(UrlMapsTransport):
             resp = self._interceptor.post_insert(resp)
             return resp
 
-    class _InvalidateCache(UrlMapsRestStub):
+    class _InvalidateCache(
+        _BaseUrlMapsRestTransport._BaseInvalidateCache, UrlMapsRestStub
+    ):
         def __hash__(self):
-            return hash("InvalidateCache")
+            return hash("UrlMapsRestTransport.InvalidateCache")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -886,45 +902,40 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/global/urlMaps/{url_map}/invalidateCache",
-                    "body": "cache_invalidation_rule_resource",
-                },
-            ]
+            http_options = (
+                _BaseUrlMapsRestTransport._BaseInvalidateCache._get_http_options()
+            )
             request, metadata = self._interceptor.pre_invalidate_cache(
                 request, metadata
             )
-            pb_request = compute.InvalidateCacheUrlMapRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+            transcoded_request = (
+                _BaseUrlMapsRestTransport._BaseInvalidateCache._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
+
+            body = (
+                _BaseUrlMapsRestTransport._BaseInvalidateCache._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseUrlMapsRestTransport._BaseInvalidateCache._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = UrlMapsRestTransport._InvalidateCache._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -940,19 +951,31 @@ class UrlMapsRestTransport(UrlMapsTransport):
             resp = self._interceptor.post_invalidate_cache(resp)
             return resp
 
-    class _List(UrlMapsRestStub):
+    class _List(_BaseUrlMapsRestTransport._BaseList, UrlMapsRestStub):
         def __hash__(self):
-            return hash("List")
+            return hash("UrlMapsRestTransport.List")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -979,36 +1002,27 @@ class UrlMapsRestTransport(UrlMapsTransport):
                     Contains a list of UrlMap resources.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/compute/v1/projects/{project}/global/urlMaps",
-                },
-            ]
+            http_options = _BaseUrlMapsRestTransport._BaseList._get_http_options()
             request, metadata = self._interceptor.pre_list(request, metadata)
-            pb_request = compute.ListUrlMapsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+            transcoded_request = (
+                _BaseUrlMapsRestTransport._BaseList._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Jsonify the query params
+            query_params = _BaseUrlMapsRestTransport._BaseList._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = UrlMapsRestTransport._List._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1024,19 +1038,32 @@ class UrlMapsRestTransport(UrlMapsTransport):
             resp = self._interceptor.post_list(resp)
             return resp
 
-    class _Patch(UrlMapsRestStub):
+    class _Patch(_BaseUrlMapsRestTransport._BasePatch, UrlMapsRestStub):
         def __hash__(self):
-            return hash("Patch")
+            return hash("UrlMapsRestTransport.Patch")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1080,43 +1107,32 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/compute/v1/projects/{project}/global/urlMaps/{url_map}",
-                    "body": "url_map_resource",
-                },
-            ]
+            http_options = _BaseUrlMapsRestTransport._BasePatch._get_http_options()
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            pb_request = compute.PatchUrlMapRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+            transcoded_request = (
+                _BaseUrlMapsRestTransport._BasePatch._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
+
+            body = _BaseUrlMapsRestTransport._BasePatch._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseUrlMapsRestTransport._BasePatch._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = UrlMapsRestTransport._Patch._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1132,19 +1148,32 @@ class UrlMapsRestTransport(UrlMapsTransport):
             resp = self._interceptor.post_patch(resp)
             return resp
 
-    class _Update(UrlMapsRestStub):
+    class _Update(_BaseUrlMapsRestTransport._BaseUpdate, UrlMapsRestStub):
         def __hash__(self):
-            return hash("Update")
+            return hash("UrlMapsRestTransport.Update")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1188,43 +1217,32 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "put",
-                    "uri": "/compute/v1/projects/{project}/global/urlMaps/{url_map}",
-                    "body": "url_map_resource",
-                },
-            ]
+            http_options = _BaseUrlMapsRestTransport._BaseUpdate._get_http_options()
             request, metadata = self._interceptor.pre_update(request, metadata)
-            pb_request = compute.UpdateUrlMapRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+            transcoded_request = (
+                _BaseUrlMapsRestTransport._BaseUpdate._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
+
+            body = _BaseUrlMapsRestTransport._BaseUpdate._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseUrlMapsRestTransport._BaseUpdate._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = UrlMapsRestTransport._Update._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1240,19 +1258,32 @@ class UrlMapsRestTransport(UrlMapsTransport):
             resp = self._interceptor.post_update(resp)
             return resp
 
-    class _Validate(UrlMapsRestStub):
+    class _Validate(_BaseUrlMapsRestTransport._BaseValidate, UrlMapsRestStub):
         def __hash__(self):
-            return hash("Validate")
+            return hash("UrlMapsRestTransport.Validate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1280,43 +1311,34 @@ class UrlMapsRestTransport(UrlMapsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/global/urlMaps/{url_map}/validate",
-                    "body": "url_maps_validate_request_resource",
-                },
-            ]
+            http_options = _BaseUrlMapsRestTransport._BaseValidate._get_http_options()
             request, metadata = self._interceptor.pre_validate(request, metadata)
-            pb_request = compute.ValidateUrlMapRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+            transcoded_request = (
+                _BaseUrlMapsRestTransport._BaseValidate._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
+
+            body = _BaseUrlMapsRestTransport._BaseValidate._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseUrlMapsRestTransport._BaseValidate._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = UrlMapsRestTransport._Validate._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
