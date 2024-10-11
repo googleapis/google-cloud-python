@@ -206,17 +206,13 @@ replacements:
   - paths: [
       packages/google-cloud-automl/setup.py,
     ]
-    before: |
-      \]
-      url = \"https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-automl\"
+    before: extras = \{\}
     after: |
-      ]
       extras = {
           "libcst": "libcst >= 0.2.5",
           "pandas": ["pandas>=1.0.5"],
           "storage": ["google-cloud-storage >=1.18.0, <3.0.0dev"],
       }
-      url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-automl"
     count: 1
   - paths: [
       packages/google-cloud-automl/testing/constraints-3.7.txt,
@@ -277,14 +273,6 @@ replacements:
           "GcsClient",
           "TablesClient",
           "AutoMlAsyncClient",
-    count: 1
-  - paths: [
-      packages/google-cloud-automl/setup.py,
-    ]
-    before:
-          install_requires=dependencies,\n    include_package_data=True,
-    after:
-          install_requires=dependencies,\n    extras_require=extras,\n    include_package_data=True,
     count: 1
   - paths: [
       packages/google-cloud-automl/noxfile.py,
