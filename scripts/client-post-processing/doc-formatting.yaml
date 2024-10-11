@@ -203,3 +203,11 @@ replacements:
     before: CREATIVE_CUSTOM_FIELD_\\\*
     after: "`CREATIVE_CUSTOM_FIELD_*`"
     count: 1
+  - paths: [
+      packages/google-analytics-admin/google/analytics/admin_v1alpha/services/analytics_admin_service/async_client.py,
+      packages/google-analytics-admin/google/analytics/admin_v1alpha/services/analytics_admin_service/client.py,
+      packages/google-analytics-admin/google/analytics/admin_v1alpha/types/analytics_admin.py,
+    ]
+    before: \/\[a-zA-Z0-9_\]\/
+    after: "`[a-zA-Z0-9_]`"
+    count: 3
