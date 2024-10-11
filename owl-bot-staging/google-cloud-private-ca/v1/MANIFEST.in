@@ -1,0 +1,2 @@
+recursive-include google/cloud/security/privateca *.py
+recursive-include google/cloud/security/privateca_v1 *.py
