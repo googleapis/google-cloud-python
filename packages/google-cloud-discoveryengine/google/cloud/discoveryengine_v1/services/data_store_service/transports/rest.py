@@ -16,41 +16,31 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.protobuf import json_format
-import grpc  # type: ignore
-from requests import __version__ as requests_version
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import json_format
+from requests import __version__ as requests_version
 
 from google.cloud.discoveryengine_v1.types import data_store
 from google.cloud.discoveryengine_v1.types import data_store as gcd_data_store
 from google.cloud.discoveryengine_v1.types import data_store_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import DataStoreServiceTransport
+from .rest_base import _BaseDataStoreServiceRestTransport
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -310,8 +300,8 @@ class DataStoreServiceRestStub:
     _interceptor: DataStoreServiceRestInterceptor
 
 
-class DataStoreServiceRestTransport(DataStoreServiceTransport):
-    """REST backend transport for DataStoreService.
+class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
+    """REST backend synchronous transport for DataStoreService.
 
     Service for managing
     [DataStore][google.cloud.discoveryengine.v1.DataStore]
@@ -322,7 +312,6 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -376,21 +365,12 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -579,21 +559,35 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateDataStore(DataStoreServiceRestStub):
+    class _CreateDataStore(
+        _BaseDataStoreServiceRestTransport._BaseCreateDataStore,
+        DataStoreServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateDataStore")
+            return hash("DataStoreServiceRestTransport.CreateDataStore")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "dataStoreId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -624,52 +618,34 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/dataStores",
-                    "body": "data_store",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/collections/*}/dataStores",
-                    "body": "data_store",
-                },
-            ]
+            http_options = (
+                _BaseDataStoreServiceRestTransport._BaseCreateDataStore._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_data_store(
                 request, metadata
             )
-            pb_request = data_store_service.CreateDataStoreRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataStoreServiceRestTransport._BaseCreateDataStore._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDataStoreServiceRestTransport._BaseCreateDataStore._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataStoreServiceRestTransport._BaseCreateDataStore._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataStoreServiceRestTransport._CreateDataStore._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -683,19 +659,34 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
             resp = self._interceptor.post_create_data_store(resp)
             return resp
 
-    class _DeleteDataStore(DataStoreServiceRestStub):
+    class _DeleteDataStore(
+        _BaseDataStoreServiceRestTransport._BaseDeleteDataStore,
+        DataStoreServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteDataStore")
+            return hash("DataStoreServiceRestTransport.DeleteDataStore")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -726,44 +717,29 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/dataStores/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*}",
-                },
-            ]
+            http_options = (
+                _BaseDataStoreServiceRestTransport._BaseDeleteDataStore._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_data_store(
                 request, metadata
             )
-            pb_request = data_store_service.DeleteDataStoreRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataStoreServiceRestTransport._BaseDeleteDataStore._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataStoreServiceRestTransport._BaseDeleteDataStore._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataStoreServiceRestTransport._DeleteDataStore._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -777,19 +753,33 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
             resp = self._interceptor.post_delete_data_store(resp)
             return resp
 
-    class _GetDataStore(DataStoreServiceRestStub):
+    class _GetDataStore(
+        _BaseDataStoreServiceRestTransport._BaseGetDataStore, DataStoreServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetDataStore")
+            return hash("DataStoreServiceRestTransport.GetDataStore")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -819,42 +809,27 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/dataStores/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*}",
-                },
-            ]
+            http_options = (
+                _BaseDataStoreServiceRestTransport._BaseGetDataStore._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_data_store(request, metadata)
-            pb_request = data_store_service.GetDataStoreRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataStoreServiceRestTransport._BaseGetDataStore._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataStoreServiceRestTransport._BaseGetDataStore._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataStoreServiceRestTransport._GetDataStore._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -870,19 +845,33 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
             resp = self._interceptor.post_get_data_store(resp)
             return resp
 
-    class _ListDataStores(DataStoreServiceRestStub):
+    class _ListDataStores(
+        _BaseDataStoreServiceRestTransport._BaseListDataStores, DataStoreServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListDataStores")
+            return hash("DataStoreServiceRestTransport.ListDataStores")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -913,44 +902,29 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/dataStores",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/collections/*}/dataStores",
-                },
-            ]
+            http_options = (
+                _BaseDataStoreServiceRestTransport._BaseListDataStores._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_data_stores(
                 request, metadata
             )
-            pb_request = data_store_service.ListDataStoresRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataStoreServiceRestTransport._BaseListDataStores._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataStoreServiceRestTransport._BaseListDataStores._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DataStoreServiceRestTransport._ListDataStores._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -966,19 +940,35 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
             resp = self._interceptor.post_list_data_stores(resp)
             return resp
 
-    class _UpdateDataStore(DataStoreServiceRestStub):
+    class _UpdateDataStore(
+        _BaseDataStoreServiceRestTransport._BaseUpdateDataStore,
+        DataStoreServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateDataStore")
+            return hash("DataStoreServiceRestTransport.UpdateDataStore")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1008,52 +998,34 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{data_store.name=projects/*/locations/*/dataStores/*}",
-                    "body": "data_store",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{data_store.name=projects/*/locations/*/collections/*/dataStores/*}",
-                    "body": "data_store",
-                },
-            ]
+            http_options = (
+                _BaseDataStoreServiceRestTransport._BaseUpdateDataStore._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_data_store(
                 request, metadata
             )
-            pb_request = data_store_service.UpdateDataStoreRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDataStoreServiceRestTransport._BaseUpdateDataStore._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDataStoreServiceRestTransport._BaseUpdateDataStore._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDataStoreServiceRestTransport._BaseUpdateDataStore._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DataStoreServiceRestTransport._UpdateDataStore._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1122,7 +1094,36 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(DataStoreServiceRestStub):
+    class _CancelOperation(
+        _BaseDataStoreServiceRestTransport._BaseCancelOperation,
+        DataStoreServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("DataStoreServiceRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -1143,47 +1144,34 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/operations/*}:cancel",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}:cancel",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseDataStoreServiceRestTransport._BaseCancelOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseDataStoreServiceRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseDataStoreServiceRestTransport._BaseCancelOperation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseDataStoreServiceRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = DataStoreServiceRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1197,7 +1185,34 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(DataStoreServiceRestStub):
+    class _GetOperation(
+        _BaseDataStoreServiceRestTransport._BaseGetOperation, DataStoreServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("DataStoreServiceRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -1221,92 +1236,27 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/dataStores/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/identityMappingStores/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseDataStoreServiceRestTransport._BaseGetOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataStoreServiceRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseDataStoreServiceRestTransport._BaseGetOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = DataStoreServiceRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1314,8 +1264,9 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -1323,7 +1274,34 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(DataStoreServiceRestStub):
+    class _ListOperations(
+        _BaseDataStoreServiceRestTransport._BaseListOperations, DataStoreServiceRestStub
+    ):
+        def __hash__(self):
+            return hash("DataStoreServiceRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -1347,92 +1325,27 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/engines/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/dataStores/*/models/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/dataStores/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/identityMappingStores/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*}/operations",
-                },
-            ]
-
+            http_options = (
+                _BaseDataStoreServiceRestTransport._BaseListOperations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDataStoreServiceRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseDataStoreServiceRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = DataStoreServiceRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1440,8 +1353,9 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 
