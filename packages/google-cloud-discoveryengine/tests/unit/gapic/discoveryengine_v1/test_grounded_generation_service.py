@@ -3061,11 +3061,34 @@ def test_parse_grounding_config_path():
     assert expected == actual
 
 
-def test_serving_config_path():
+def test_location_path():
     project = "cuttlefish"
     location = "mussel"
-    data_store = "winkle"
-    serving_config = "nautilus"
+    expected = "projects/{project}/locations/{location}".format(
+        project=project,
+        location=location,
+    )
+    actual = GroundedGenerationServiceClient.location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_location_path():
+    expected = {
+        "project": "winkle",
+        "location": "nautilus",
+    }
+    path = GroundedGenerationServiceClient.location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = GroundedGenerationServiceClient.parse_location_path(path)
+    assert expected == actual
+
+
+def test_serving_config_path():
+    project = "scallop"
+    location = "abalone"
+    data_store = "squid"
+    serving_config = "clam"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}/servingConfigs/{serving_config}".format(
         project=project,
         location=location,
@@ -3080,10 +3103,10 @@ def test_serving_config_path():
 
 def test_parse_serving_config_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "data_store": "squid",
-        "serving_config": "clam",
+        "project": "whelk",
+        "location": "octopus",
+        "data_store": "oyster",
+        "serving_config": "nudibranch",
     }
     path = GroundedGenerationServiceClient.serving_config_path(**expected)
 
@@ -3093,7 +3116,7 @@ def test_parse_serving_config_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3105,7 +3128,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "mussel",
     }
     path = GroundedGenerationServiceClient.common_billing_account_path(**expected)
 
@@ -3115,7 +3138,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -3125,7 +3148,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "nautilus",
     }
     path = GroundedGenerationServiceClient.common_folder_path(**expected)
 
@@ -3135,7 +3158,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -3145,7 +3168,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "abalone",
     }
     path = GroundedGenerationServiceClient.common_organization_path(**expected)
 
@@ -3155,7 +3178,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -3165,7 +3188,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "clam",
     }
     path = GroundedGenerationServiceClient.common_project_path(**expected)
 
@@ -3175,8 +3198,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -3187,8 +3210,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = GroundedGenerationServiceClient.common_location_path(**expected)
 

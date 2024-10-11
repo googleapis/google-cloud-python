@@ -75,6 +75,10 @@ class GroundedGenerationServiceAsyncClient:
     parse_grounding_config_path = staticmethod(
         GroundedGenerationServiceClient.parse_grounding_config_path
     )
+    location_path = staticmethod(GroundedGenerationServiceClient.location_path)
+    parse_location_path = staticmethod(
+        GroundedGenerationServiceClient.parse_location_path
+    )
     serving_config_path = staticmethod(
         GroundedGenerationServiceClient.serving_config_path
     )
