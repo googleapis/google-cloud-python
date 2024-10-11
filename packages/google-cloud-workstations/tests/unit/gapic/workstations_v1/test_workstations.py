@@ -22,9 +22,26 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
+
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import (
     future,
@@ -35,7 +52,7 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
@@ -51,16 +68,8 @@ from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.workstations_v1.services.workstations import (
     WorkstationsAsyncClient,
@@ -71,8 +80,22 @@ from google.cloud.workstations_v1.services.workstations import (
 from google.cloud.workstations_v1.types import workstations
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1167,27 +1190,6 @@ def test_get_workstation_cluster(request_type, transport: str = "grpc"):
     assert response.degraded is True
 
 
-def test_get_workstation_cluster_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_cluster), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_workstation_cluster()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.GetWorkstationClusterRequest()
-
-
 def test_get_workstation_cluster_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1259,39 +1261,6 @@ def test_get_workstation_cluster_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_workstation_cluster_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_cluster), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.WorkstationCluster(
-                name="name_value",
-                display_name="display_name_value",
-                uid="uid_value",
-                reconciling=True,
-                etag="etag_value",
-                network="network_value",
-                subnetwork="subnetwork_value",
-                control_plane_ip="control_plane_ip_value",
-                degraded=True,
-            )
-        )
-        response = await client.get_workstation_cluster()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.GetWorkstationClusterRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_workstation_cluster_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1299,7 +1268,7 @@ async def test_get_workstation_cluster_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1339,7 +1308,7 @@ async def test_get_workstation_cluster_async(
     request_type=workstations.GetWorkstationClusterRequest,
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1425,7 +1394,7 @@ def test_get_workstation_cluster_field_headers():
 @pytest.mark.asyncio
 async def test_get_workstation_cluster_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1499,7 +1468,7 @@ def test_get_workstation_cluster_flattened_error():
 @pytest.mark.asyncio
 async def test_get_workstation_cluster_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1530,7 +1499,7 @@ async def test_get_workstation_cluster_flattened_async():
 @pytest.mark.asyncio
 async def test_get_workstation_cluster_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1580,27 +1549,6 @@ def test_list_workstation_clusters(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListWorkstationClustersPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_workstation_clusters_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_clusters), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_workstation_clusters()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.ListWorkstationClustersRequest()
 
 
 def test_list_workstation_clusters_non_empty_request_with_auto_populated_field():
@@ -1676,32 +1624,6 @@ def test_list_workstation_clusters_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_workstation_clusters_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_clusters), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.ListWorkstationClustersResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_workstation_clusters()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.ListWorkstationClustersRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_workstation_clusters_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1709,7 +1631,7 @@ async def test_list_workstation_clusters_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1749,7 +1671,7 @@ async def test_list_workstation_clusters_async(
     request_type=workstations.ListWorkstationClustersRequest,
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1821,7 +1743,7 @@ def test_list_workstation_clusters_field_headers():
 @pytest.mark.asyncio
 async def test_list_workstation_clusters_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1895,7 +1817,7 @@ def test_list_workstation_clusters_flattened_error():
 @pytest.mark.asyncio
 async def test_list_workstation_clusters_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1926,7 +1848,7 @@ async def test_list_workstation_clusters_flattened_async():
 @pytest.mark.asyncio
 async def test_list_workstation_clusters_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2042,7 +1964,7 @@ def test_list_workstation_clusters_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_workstation_clusters_async_pager():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2094,7 +2016,7 @@ async def test_list_workstation_clusters_async_pager():
 @pytest.mark.asyncio
 async def test_list_workstation_clusters_async_pages():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2177,27 +2099,6 @@ def test_create_workstation_cluster(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_create_workstation_cluster_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_cluster), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_workstation_cluster()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.CreateWorkstationClusterRequest()
-
-
 def test_create_workstation_cluster_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -2276,29 +2177,6 @@ def test_create_workstation_cluster_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_workstation_cluster_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_cluster), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_workstation_cluster()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.CreateWorkstationClusterRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_workstation_cluster_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2306,7 +2184,7 @@ async def test_create_workstation_cluster_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2351,7 +2229,7 @@ async def test_create_workstation_cluster_async(
     request_type=workstations.CreateWorkstationClusterRequest,
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2418,7 +2296,7 @@ def test_create_workstation_cluster_field_headers():
 @pytest.mark.asyncio
 async def test_create_workstation_cluster_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2502,7 +2380,7 @@ def test_create_workstation_cluster_flattened_error():
 @pytest.mark.asyncio
 async def test_create_workstation_cluster_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2541,7 +2419,7 @@ async def test_create_workstation_cluster_flattened_async():
 @pytest.mark.asyncio
 async def test_create_workstation_cluster_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2588,27 +2466,6 @@ def test_update_workstation_cluster(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_workstation_cluster_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_cluster), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_workstation_cluster()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.UpdateWorkstationClusterRequest()
 
 
 def test_update_workstation_cluster_non_empty_request_with_auto_populated_field():
@@ -2683,29 +2540,6 @@ def test_update_workstation_cluster_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_workstation_cluster_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_cluster), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_workstation_cluster()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.UpdateWorkstationClusterRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_workstation_cluster_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2713,7 +2547,7 @@ async def test_update_workstation_cluster_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2758,7 +2592,7 @@ async def test_update_workstation_cluster_async(
     request_type=workstations.UpdateWorkstationClusterRequest,
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2825,7 +2659,7 @@ def test_update_workstation_cluster_field_headers():
 @pytest.mark.asyncio
 async def test_update_workstation_cluster_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2904,7 +2738,7 @@ def test_update_workstation_cluster_flattened_error():
 @pytest.mark.asyncio
 async def test_update_workstation_cluster_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2939,7 +2773,7 @@ async def test_update_workstation_cluster_flattened_async():
 @pytest.mark.asyncio
 async def test_update_workstation_cluster_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2985,27 +2819,6 @@ def test_delete_workstation_cluster(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_workstation_cluster_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_cluster), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_workstation_cluster()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.DeleteWorkstationClusterRequest()
 
 
 def test_delete_workstation_cluster_non_empty_request_with_auto_populated_field():
@@ -3086,29 +2899,6 @@ def test_delete_workstation_cluster_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_workstation_cluster_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_cluster), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_workstation_cluster()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.DeleteWorkstationClusterRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_workstation_cluster_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3116,7 +2906,7 @@ async def test_delete_workstation_cluster_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3161,7 +2951,7 @@ async def test_delete_workstation_cluster_async(
     request_type=workstations.DeleteWorkstationClusterRequest,
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3228,7 +3018,7 @@ def test_delete_workstation_cluster_field_headers():
 @pytest.mark.asyncio
 async def test_delete_workstation_cluster_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3302,7 +3092,7 @@ def test_delete_workstation_cluster_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_workstation_cluster_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3333,7 +3123,7 @@ async def test_delete_workstation_cluster_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_workstation_cluster_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3393,27 +3183,6 @@ def test_get_workstation_config(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
     assert response.replica_zones == ["replica_zones_value"]
     assert response.degraded is True
-
-
-def test_get_workstation_config_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_workstation_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.GetWorkstationConfigRequest()
 
 
 def test_get_workstation_config_non_empty_request_with_auto_populated_field():
@@ -3487,37 +3256,6 @@ def test_get_workstation_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_workstation_config_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_config), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.WorkstationConfig(
-                name="name_value",
-                display_name="display_name_value",
-                uid="uid_value",
-                reconciling=True,
-                etag="etag_value",
-                replica_zones=["replica_zones_value"],
-                degraded=True,
-            )
-        )
-        response = await client.get_workstation_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.GetWorkstationConfigRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_workstation_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3525,7 +3263,7 @@ async def test_get_workstation_config_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3565,7 +3303,7 @@ async def test_get_workstation_config_async(
     request_type=workstations.GetWorkstationConfigRequest,
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3647,7 +3385,7 @@ def test_get_workstation_config_field_headers():
 @pytest.mark.asyncio
 async def test_get_workstation_config_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3721,7 +3459,7 @@ def test_get_workstation_config_flattened_error():
 @pytest.mark.asyncio
 async def test_get_workstation_config_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3752,7 +3490,7 @@ async def test_get_workstation_config_flattened_async():
 @pytest.mark.asyncio
 async def test_get_workstation_config_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3802,27 +3540,6 @@ def test_list_workstation_configs(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListWorkstationConfigsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_workstation_configs_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_configs), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_workstation_configs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.ListWorkstationConfigsRequest()
 
 
 def test_list_workstation_configs_non_empty_request_with_auto_populated_field():
@@ -3898,32 +3615,6 @@ def test_list_workstation_configs_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_workstation_configs_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_configs), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.ListWorkstationConfigsResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_workstation_configs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.ListWorkstationConfigsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_workstation_configs_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3931,7 +3622,7 @@ async def test_list_workstation_configs_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3971,7 +3662,7 @@ async def test_list_workstation_configs_async(
     request_type=workstations.ListWorkstationConfigsRequest,
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4043,7 +3734,7 @@ def test_list_workstation_configs_field_headers():
 @pytest.mark.asyncio
 async def test_list_workstation_configs_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4117,7 +3808,7 @@ def test_list_workstation_configs_flattened_error():
 @pytest.mark.asyncio
 async def test_list_workstation_configs_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4148,7 +3839,7 @@ async def test_list_workstation_configs_flattened_async():
 @pytest.mark.asyncio
 async def test_list_workstation_configs_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4264,7 +3955,7 @@ def test_list_workstation_configs_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_workstation_configs_async_pager():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4316,7 +4007,7 @@ async def test_list_workstation_configs_async_pager():
 @pytest.mark.asyncio
 async def test_list_workstation_configs_async_pages():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4404,27 +4095,6 @@ def test_list_usable_workstation_configs(request_type, transport: str = "grpc"):
     assert response.unreachable == ["unreachable_value"]
 
 
-def test_list_usable_workstation_configs_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstation_configs), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_usable_workstation_configs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.ListUsableWorkstationConfigsRequest()
-
-
 def test_list_usable_workstation_configs_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -4498,32 +4168,6 @@ def test_list_usable_workstation_configs_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_usable_workstation_configs_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstation_configs), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.ListUsableWorkstationConfigsResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_usable_workstation_configs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.ListUsableWorkstationConfigsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_usable_workstation_configs_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4531,7 +4175,7 @@ async def test_list_usable_workstation_configs_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4571,7 +4215,7 @@ async def test_list_usable_workstation_configs_async(
     request_type=workstations.ListUsableWorkstationConfigsRequest,
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4643,7 +4287,7 @@ def test_list_usable_workstation_configs_field_headers():
 @pytest.mark.asyncio
 async def test_list_usable_workstation_configs_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4717,7 +4361,7 @@ def test_list_usable_workstation_configs_flattened_error():
 @pytest.mark.asyncio
 async def test_list_usable_workstation_configs_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4748,7 +4392,7 @@ async def test_list_usable_workstation_configs_flattened_async():
 @pytest.mark.asyncio
 async def test_list_usable_workstation_configs_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4864,7 +4508,7 @@ def test_list_usable_workstation_configs_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_usable_workstation_configs_async_pager():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4916,7 +4560,7 @@ async def test_list_usable_workstation_configs_async_pager():
 @pytest.mark.asyncio
 async def test_list_usable_workstation_configs_async_pages():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4999,27 +4643,6 @@ def test_create_workstation_config(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_create_workstation_config_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_workstation_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.CreateWorkstationConfigRequest()
-
-
 def test_create_workstation_config_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -5098,29 +4721,6 @@ def test_create_workstation_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_workstation_config_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_config), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_workstation_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.CreateWorkstationConfigRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_workstation_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5128,7 +4728,7 @@ async def test_create_workstation_config_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5173,7 +4773,7 @@ async def test_create_workstation_config_async(
     request_type=workstations.CreateWorkstationConfigRequest,
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5240,7 +4840,7 @@ def test_create_workstation_config_field_headers():
 @pytest.mark.asyncio
 async def test_create_workstation_config_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5324,7 +4924,7 @@ def test_create_workstation_config_flattened_error():
 @pytest.mark.asyncio
 async def test_create_workstation_config_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5363,7 +4963,7 @@ async def test_create_workstation_config_flattened_async():
 @pytest.mark.asyncio
 async def test_create_workstation_config_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5410,27 +5010,6 @@ def test_update_workstation_config(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_workstation_config_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_workstation_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.UpdateWorkstationConfigRequest()
 
 
 def test_update_workstation_config_non_empty_request_with_auto_populated_field():
@@ -5505,29 +5084,6 @@ def test_update_workstation_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_workstation_config_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_config), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_workstation_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.UpdateWorkstationConfigRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_workstation_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5535,7 +5091,7 @@ async def test_update_workstation_config_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5580,7 +5136,7 @@ async def test_update_workstation_config_async(
     request_type=workstations.UpdateWorkstationConfigRequest,
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5647,7 +5203,7 @@ def test_update_workstation_config_field_headers():
 @pytest.mark.asyncio
 async def test_update_workstation_config_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5726,7 +5282,7 @@ def test_update_workstation_config_flattened_error():
 @pytest.mark.asyncio
 async def test_update_workstation_config_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5761,7 +5317,7 @@ async def test_update_workstation_config_flattened_async():
 @pytest.mark.asyncio
 async def test_update_workstation_config_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5807,27 +5363,6 @@ def test_delete_workstation_config(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_workstation_config_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_workstation_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.DeleteWorkstationConfigRequest()
 
 
 def test_delete_workstation_config_non_empty_request_with_auto_populated_field():
@@ -5908,29 +5443,6 @@ def test_delete_workstation_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_workstation_config_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_config), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_workstation_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.DeleteWorkstationConfigRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_workstation_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5938,7 +5450,7 @@ async def test_delete_workstation_config_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5983,7 +5495,7 @@ async def test_delete_workstation_config_async(
     request_type=workstations.DeleteWorkstationConfigRequest,
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6050,7 +5562,7 @@ def test_delete_workstation_config_field_headers():
 @pytest.mark.asyncio
 async def test_delete_workstation_config_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6124,7 +5636,7 @@ def test_delete_workstation_config_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_workstation_config_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6155,7 +5667,7 @@ async def test_delete_workstation_config_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_workstation_config_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6213,25 +5725,6 @@ def test_get_workstation(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
     assert response.state == workstations.Workstation.State.STATE_STARTING
     assert response.host == "host_value"
-
-
-def test_get_workstation_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_workstation), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_workstation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.GetWorkstationRequest()
 
 
 def test_get_workstation_non_empty_request_with_auto_populated_field():
@@ -6298,35 +5791,6 @@ def test_get_workstation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_workstation_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_workstation), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.Workstation(
-                name="name_value",
-                display_name="display_name_value",
-                uid="uid_value",
-                reconciling=True,
-                etag="etag_value",
-                state=workstations.Workstation.State.STATE_STARTING,
-                host="host_value",
-            )
-        )
-        response = await client.get_workstation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.GetWorkstationRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_workstation_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6334,7 +5798,7 @@ async def test_get_workstation_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6373,7 +5837,7 @@ async def test_get_workstation_async(
     transport: str = "grpc_asyncio", request_type=workstations.GetWorkstationRequest
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6451,7 +5915,7 @@ def test_get_workstation_field_headers():
 @pytest.mark.asyncio
 async def test_get_workstation_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6521,7 +5985,7 @@ def test_get_workstation_flattened_error():
 @pytest.mark.asyncio
 async def test_get_workstation_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6550,7 +6014,7 @@ async def test_get_workstation_flattened_async():
 @pytest.mark.asyncio
 async def test_get_workstation_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6600,27 +6064,6 @@ def test_list_workstations(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListWorkstationsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_workstations_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstations), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_workstations()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.ListWorkstationsRequest()
 
 
 def test_list_workstations_non_empty_request_with_auto_populated_field():
@@ -6693,32 +6136,6 @@ def test_list_workstations_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_workstations_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstations), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.ListWorkstationsResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_workstations()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.ListWorkstationsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_workstations_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6726,7 +6143,7 @@ async def test_list_workstations_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6765,7 +6182,7 @@ async def test_list_workstations_async(
     transport: str = "grpc_asyncio", request_type=workstations.ListWorkstationsRequest
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6837,7 +6254,7 @@ def test_list_workstations_field_headers():
 @pytest.mark.asyncio
 async def test_list_workstations_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6911,7 +6328,7 @@ def test_list_workstations_flattened_error():
 @pytest.mark.asyncio
 async def test_list_workstations_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6942,7 +6359,7 @@ async def test_list_workstations_flattened_async():
 @pytest.mark.asyncio
 async def test_list_workstations_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7056,7 +6473,7 @@ def test_list_workstations_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_workstations_async_pager():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7108,7 +6525,7 @@ async def test_list_workstations_async_pager():
 @pytest.mark.asyncio
 async def test_list_workstations_async_pages():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7196,27 +6613,6 @@ def test_list_usable_workstations(request_type, transport: str = "grpc"):
     assert response.unreachable == ["unreachable_value"]
 
 
-def test_list_usable_workstations_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstations), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_usable_workstations()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.ListUsableWorkstationsRequest()
-
-
 def test_list_usable_workstations_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -7290,32 +6686,6 @@ def test_list_usable_workstations_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_usable_workstations_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstations), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.ListUsableWorkstationsResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_usable_workstations()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.ListUsableWorkstationsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_usable_workstations_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7323,7 +6693,7 @@ async def test_list_usable_workstations_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7363,7 +6733,7 @@ async def test_list_usable_workstations_async(
     request_type=workstations.ListUsableWorkstationsRequest,
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7435,7 +6805,7 @@ def test_list_usable_workstations_field_headers():
 @pytest.mark.asyncio
 async def test_list_usable_workstations_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7509,7 +6879,7 @@ def test_list_usable_workstations_flattened_error():
 @pytest.mark.asyncio
 async def test_list_usable_workstations_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7540,7 +6910,7 @@ async def test_list_usable_workstations_flattened_async():
 @pytest.mark.asyncio
 async def test_list_usable_workstations_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7656,7 +7026,7 @@ def test_list_usable_workstations_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_usable_workstations_async_pager():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7708,7 +7078,7 @@ async def test_list_usable_workstations_async_pager():
 @pytest.mark.asyncio
 async def test_list_usable_workstations_async_pages():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7791,27 +7161,6 @@ def test_create_workstation(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_create_workstation_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_workstation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.CreateWorkstationRequest()
-
-
 def test_create_workstation_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -7889,29 +7238,6 @@ def test_create_workstation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_workstation_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_workstation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.CreateWorkstationRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_workstation_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7919,7 +7245,7 @@ async def test_create_workstation_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7963,7 +7289,7 @@ async def test_create_workstation_async(
     transport: str = "grpc_asyncio", request_type=workstations.CreateWorkstationRequest
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8030,7 +7356,7 @@ def test_create_workstation_field_headers():
 @pytest.mark.asyncio
 async def test_create_workstation_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8114,7 +7440,7 @@ def test_create_workstation_flattened_error():
 @pytest.mark.asyncio
 async def test_create_workstation_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8153,7 +7479,7 @@ async def test_create_workstation_flattened_async():
 @pytest.mark.asyncio
 async def test_create_workstation_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8200,27 +7526,6 @@ def test_update_workstation(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_workstation_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_workstation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.UpdateWorkstationRequest()
 
 
 def test_update_workstation_non_empty_request_with_auto_populated_field():
@@ -8294,29 +7599,6 @@ def test_update_workstation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_workstation_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_workstation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.UpdateWorkstationRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_workstation_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8324,7 +7606,7 @@ async def test_update_workstation_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8368,7 +7650,7 @@ async def test_update_workstation_async(
     transport: str = "grpc_asyncio", request_type=workstations.UpdateWorkstationRequest
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8435,7 +7717,7 @@ def test_update_workstation_field_headers():
 @pytest.mark.asyncio
 async def test_update_workstation_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8514,7 +7796,7 @@ def test_update_workstation_flattened_error():
 @pytest.mark.asyncio
 async def test_update_workstation_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8549,7 +7831,7 @@ async def test_update_workstation_flattened_async():
 @pytest.mark.asyncio
 async def test_update_workstation_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8595,27 +7877,6 @@ def test_delete_workstation(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_workstation_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_workstation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.DeleteWorkstationRequest()
 
 
 def test_delete_workstation_non_empty_request_with_auto_populated_field():
@@ -8695,29 +7956,6 @@ def test_delete_workstation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_workstation_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_workstation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.DeleteWorkstationRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_workstation_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8725,7 +7963,7 @@ async def test_delete_workstation_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8769,7 +8007,7 @@ async def test_delete_workstation_async(
     transport: str = "grpc_asyncio", request_type=workstations.DeleteWorkstationRequest
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8836,7 +8074,7 @@ def test_delete_workstation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_workstation_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8910,7 +8148,7 @@ def test_delete_workstation_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_workstation_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8941,7 +8179,7 @@ async def test_delete_workstation_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_workstation_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8986,27 +8224,6 @@ def test_start_workstation(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_start_workstation_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_workstation), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.start_workstation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.StartWorkstationRequest()
 
 
 def test_start_workstation_non_empty_request_with_auto_populated_field():
@@ -9084,29 +8301,6 @@ def test_start_workstation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_start_workstation_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_workstation), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.start_workstation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.StartWorkstationRequest()
-
-
-@pytest.mark.asyncio
 async def test_start_workstation_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9114,7 +8308,7 @@ async def test_start_workstation_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9158,7 +8352,7 @@ async def test_start_workstation_async(
     transport: str = "grpc_asyncio", request_type=workstations.StartWorkstationRequest
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9225,7 +8419,7 @@ def test_start_workstation_field_headers():
 @pytest.mark.asyncio
 async def test_start_workstation_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9299,7 +8493,7 @@ def test_start_workstation_flattened_error():
 @pytest.mark.asyncio
 async def test_start_workstation_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9330,7 +8524,7 @@ async def test_start_workstation_flattened_async():
 @pytest.mark.asyncio
 async def test_start_workstation_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9373,25 +8567,6 @@ def test_stop_workstation(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_stop_workstation_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.stop_workstation), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.stop_workstation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.StopWorkstationRequest()
 
 
 def test_stop_workstation_non_empty_request_with_auto_populated_field():
@@ -9467,27 +8642,6 @@ def test_stop_workstation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_stop_workstation_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.stop_workstation), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.stop_workstation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.StopWorkstationRequest()
-
-
-@pytest.mark.asyncio
 async def test_stop_workstation_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9495,7 +8649,7 @@ async def test_stop_workstation_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9539,7 +8693,7 @@ async def test_stop_workstation_async(
     transport: str = "grpc_asyncio", request_type=workstations.StopWorkstationRequest
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9602,7 +8756,7 @@ def test_stop_workstation_field_headers():
 @pytest.mark.asyncio
 async def test_stop_workstation_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9672,7 +8826,7 @@ def test_stop_workstation_flattened_error():
 @pytest.mark.asyncio
 async def test_stop_workstation_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9701,7 +8855,7 @@ async def test_stop_workstation_flattened_async():
 @pytest.mark.asyncio
 async def test_stop_workstation_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9749,27 +8903,6 @@ def test_generate_access_token(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, workstations.GenerateAccessTokenResponse)
     assert response.access_token == "access_token_value"
-
-
-def test_generate_access_token_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_access_token), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.generate_access_token()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.GenerateAccessTokenRequest()
 
 
 def test_generate_access_token_non_empty_request_with_auto_populated_field():
@@ -9843,31 +8976,6 @@ def test_generate_access_token_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_generate_access_token_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_access_token), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.GenerateAccessTokenResponse(
-                access_token="access_token_value",
-            )
-        )
-        response = await client.generate_access_token()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == workstations.GenerateAccessTokenRequest()
-
-
-@pytest.mark.asyncio
 async def test_generate_access_token_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9875,7 +8983,7 @@ async def test_generate_access_token_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = WorkstationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9915,7 +9023,7 @@ async def test_generate_access_token_async(
     request_type=workstations.GenerateAccessTokenRequest,
 ):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9985,7 +9093,7 @@ def test_generate_access_token_field_headers():
 @pytest.mark.asyncio
 async def test_generate_access_token_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10059,7 +9167,7 @@ def test_generate_access_token_flattened_error():
 @pytest.mark.asyncio
 async def test_generate_access_token_flattened_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10090,7 +9198,7 @@ async def test_generate_access_token_flattened_async():
 @pytest.mark.asyncio
 async def test_generate_access_token_flattened_error_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10100,64 +9208,6 @@ async def test_generate_access_token_flattened_error_async():
             workstations.GenerateAccessTokenRequest(),
             workstation="workstation_value",
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.GetWorkstationClusterRequest,
-        dict,
-    ],
-)
-def test_get_workstation_cluster_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = workstations.WorkstationCluster(
-            name="name_value",
-            display_name="display_name_value",
-            uid="uid_value",
-            reconciling=True,
-            etag="etag_value",
-            network="network_value",
-            subnetwork="subnetwork_value",
-            control_plane_ip="control_plane_ip_value",
-            degraded=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = workstations.WorkstationCluster.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_workstation_cluster(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, workstations.WorkstationCluster)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.uid == "uid_value"
-    assert response.reconciling is True
-    assert response.etag == "etag_value"
-    assert response.network == "network_value"
-    assert response.subnetwork == "subnetwork_value"
-    assert response.control_plane_ip == "control_plane_ip_value"
-    assert response.degraded is True
 
 
 def test_get_workstation_cluster_rest_use_cached_wrapped_rpc():
@@ -10284,89 +9334,6 @@ def test_get_workstation_cluster_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_workstation_cluster_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_get_workstation_cluster"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_get_workstation_cluster"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.GetWorkstationClusterRequest.pb(
-            workstations.GetWorkstationClusterRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = workstations.WorkstationCluster.to_json(
-            workstations.WorkstationCluster()
-        )
-
-        request = workstations.GetWorkstationClusterRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = workstations.WorkstationCluster()
-
-        client.get_workstation_cluster(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_workstation_cluster_rest_bad_request(
-    transport: str = "rest", request_type=workstations.GetWorkstationClusterRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_workstation_cluster(request)
-
-
 def test_get_workstation_cluster_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10424,54 +9391,6 @@ def test_get_workstation_cluster_rest_flattened_error(transport: str = "rest"):
             workstations.GetWorkstationClusterRequest(),
             name="name_value",
         )
-
-
-def test_get_workstation_cluster_rest_error():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.ListWorkstationClustersRequest,
-        dict,
-    ],
-)
-def test_list_workstation_clusters_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = workstations.ListWorkstationClustersResponse(
-            next_page_token="next_page_token_value",
-            unreachable=["unreachable_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = workstations.ListWorkstationClustersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_workstation_clusters(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListWorkstationClustersPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_workstation_clusters_rest_use_cached_wrapped_rpc():
@@ -10613,89 +9532,6 @@ def test_list_workstation_clusters_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_workstation_clusters_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_list_workstation_clusters"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_list_workstation_clusters"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.ListWorkstationClustersRequest.pb(
-            workstations.ListWorkstationClustersRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            workstations.ListWorkstationClustersResponse.to_json(
-                workstations.ListWorkstationClustersResponse()
-            )
-        )
-
-        request = workstations.ListWorkstationClustersRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = workstations.ListWorkstationClustersResponse()
-
-        client.list_workstation_clusters(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_workstation_clusters_rest_bad_request(
-    transport: str = "rest", request_type=workstations.ListWorkstationClustersRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_workstation_clusters(request)
-
-
 def test_list_workstation_clusters_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10814,144 +9650,6 @@ def test_list_workstation_clusters_rest_pager(transport: str = "rest"):
         pages = list(client.list_workstation_clusters(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.CreateWorkstationClusterRequest,
-        dict,
-    ],
-)
-def test_create_workstation_cluster_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["workstation_cluster"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "uid": "uid_value",
-        "reconciling": True,
-        "annotations": {},
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "delete_time": {},
-        "etag": "etag_value",
-        "network": "network_value",
-        "subnetwork": "subnetwork_value",
-        "control_plane_ip": "control_plane_ip_value",
-        "private_cluster_config": {
-            "enable_private_endpoint": True,
-            "cluster_hostname": "cluster_hostname_value",
-            "service_attachment_uri": "service_attachment_uri_value",
-            "allowed_projects": ["allowed_projects_value1", "allowed_projects_value2"],
-        },
-        "degraded": True,
-        "conditions": [
-            {
-                "code": 411,
-                "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
-            }
-        ],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = workstations.CreateWorkstationClusterRequest.meta.fields[
-        "workstation_cluster"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["workstation_cluster"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["workstation_cluster"][field])):
-                    del request_init["workstation_cluster"][field][i][subfield]
-            else:
-                del request_init["workstation_cluster"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_workstation_cluster(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_workstation_cluster_rest_use_cached_wrapped_rpc():
@@ -11117,89 +9815,6 @@ def test_create_workstation_cluster_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_workstation_cluster_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_create_workstation_cluster"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_create_workstation_cluster"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.CreateWorkstationClusterRequest.pb(
-            workstations.CreateWorkstationClusterRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = workstations.CreateWorkstationClusterRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_workstation_cluster(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_workstation_cluster_rest_bad_request(
-    transport: str = "rest", request_type=workstations.CreateWorkstationClusterRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_workstation_cluster(request)
-
-
 def test_create_workstation_cluster_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11257,154 +9872,6 @@ def test_create_workstation_cluster_rest_flattened_error(transport: str = "rest"
             workstation_cluster=workstations.WorkstationCluster(name="name_value"),
             workstation_cluster_id="workstation_cluster_id_value",
         )
-
-
-def test_create_workstation_cluster_rest_error():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.UpdateWorkstationClusterRequest,
-        dict,
-    ],
-)
-def test_update_workstation_cluster_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "workstation_cluster": {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
-        }
-    }
-    request_init["workstation_cluster"] = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3",
-        "display_name": "display_name_value",
-        "uid": "uid_value",
-        "reconciling": True,
-        "annotations": {},
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "delete_time": {},
-        "etag": "etag_value",
-        "network": "network_value",
-        "subnetwork": "subnetwork_value",
-        "control_plane_ip": "control_plane_ip_value",
-        "private_cluster_config": {
-            "enable_private_endpoint": True,
-            "cluster_hostname": "cluster_hostname_value",
-            "service_attachment_uri": "service_attachment_uri_value",
-            "allowed_projects": ["allowed_projects_value1", "allowed_projects_value2"],
-        },
-        "degraded": True,
-        "conditions": [
-            {
-                "code": 411,
-                "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
-            }
-        ],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = workstations.UpdateWorkstationClusterRequest.meta.fields[
-        "workstation_cluster"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["workstation_cluster"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["workstation_cluster"][field])):
-                    del request_init["workstation_cluster"][field][i][subfield]
-            else:
-                del request_init["workstation_cluster"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_workstation_cluster(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_update_workstation_cluster_rest_use_cached_wrapped_rpc():
@@ -11550,93 +10017,6 @@ def test_update_workstation_cluster_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_workstation_cluster_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_update_workstation_cluster"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_update_workstation_cluster"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.UpdateWorkstationClusterRequest.pb(
-            workstations.UpdateWorkstationClusterRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = workstations.UpdateWorkstationClusterRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.update_workstation_cluster(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_workstation_cluster_rest_bad_request(
-    transport: str = "rest", request_type=workstations.UpdateWorkstationClusterRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "workstation_cluster": {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_workstation_cluster(request)
-
-
 def test_update_workstation_cluster_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11696,49 +10076,6 @@ def test_update_workstation_cluster_rest_flattened_error(transport: str = "rest"
             workstation_cluster=workstations.WorkstationCluster(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_workstation_cluster_rest_error():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.DeleteWorkstationClusterRequest,
-        dict,
-    ],
-)
-def test_delete_workstation_cluster_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_workstation_cluster(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_delete_workstation_cluster_rest_use_cached_wrapped_rpc():
@@ -11883,91 +10220,6 @@ def test_delete_workstation_cluster_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_workstation_cluster_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_delete_workstation_cluster"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_delete_workstation_cluster"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.DeleteWorkstationClusterRequest.pb(
-            workstations.DeleteWorkstationClusterRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = workstations.DeleteWorkstationClusterRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_workstation_cluster(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_workstation_cluster_rest_bad_request(
-    transport: str = "rest", request_type=workstations.DeleteWorkstationClusterRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_workstation_cluster(request)
-
-
 def test_delete_workstation_cluster_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12023,66 +10275,6 @@ def test_delete_workstation_cluster_rest_flattened_error(transport: str = "rest"
             workstations.DeleteWorkstationClusterRequest(),
             name="name_value",
         )
-
-
-def test_delete_workstation_cluster_rest_error():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.GetWorkstationConfigRequest,
-        dict,
-    ],
-)
-def test_get_workstation_config_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = workstations.WorkstationConfig(
-            name="name_value",
-            display_name="display_name_value",
-            uid="uid_value",
-            reconciling=True,
-            etag="etag_value",
-            replica_zones=["replica_zones_value"],
-            degraded=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = workstations.WorkstationConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_workstation_config(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, workstations.WorkstationConfig)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.uid == "uid_value"
-    assert response.reconciling is True
-    assert response.etag == "etag_value"
-    assert response.replica_zones == ["replica_zones_value"]
-    assert response.degraded is True
 
 
 def test_get_workstation_config_rest_use_cached_wrapped_rpc():
@@ -12209,89 +10401,6 @@ def test_get_workstation_config_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_workstation_config_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_get_workstation_config"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_get_workstation_config"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.GetWorkstationConfigRequest.pb(
-            workstations.GetWorkstationConfigRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = workstations.WorkstationConfig.to_json(
-            workstations.WorkstationConfig()
-        )
-
-        request = workstations.GetWorkstationConfigRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = workstations.WorkstationConfig()
-
-        client.get_workstation_config(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_workstation_config_rest_bad_request(
-    transport: str = "rest", request_type=workstations.GetWorkstationConfigRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_workstation_config(request)
-
-
 def test_get_workstation_config_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12349,56 +10458,6 @@ def test_get_workstation_config_rest_flattened_error(transport: str = "rest"):
             workstations.GetWorkstationConfigRequest(),
             name="name_value",
         )
-
-
-def test_get_workstation_config_rest_error():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.ListWorkstationConfigsRequest,
-        dict,
-    ],
-)
-def test_list_workstation_configs_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = workstations.ListWorkstationConfigsResponse(
-            next_page_token="next_page_token_value",
-            unreachable=["unreachable_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = workstations.ListWorkstationConfigsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_workstation_configs(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListWorkstationConfigsPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_workstation_configs_rest_use_cached_wrapped_rpc():
@@ -12540,89 +10599,6 @@ def test_list_workstation_configs_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_workstation_configs_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_list_workstation_configs"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_list_workstation_configs"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.ListWorkstationConfigsRequest.pb(
-            workstations.ListWorkstationConfigsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = workstations.ListWorkstationConfigsResponse.to_json(
-            workstations.ListWorkstationConfigsResponse()
-        )
-
-        request = workstations.ListWorkstationConfigsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = workstations.ListWorkstationConfigsResponse()
-
-        client.list_workstation_configs(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_workstation_configs_rest_bad_request(
-    transport: str = "rest", request_type=workstations.ListWorkstationConfigsRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_workstation_configs(request)
-
-
 def test_list_workstation_configs_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12745,52 +10721,6 @@ def test_list_workstation_configs_rest_pager(transport: str = "rest"):
         pages = list(client.list_workstation_configs(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.ListUsableWorkstationConfigsRequest,
-        dict,
-    ],
-)
-def test_list_usable_workstation_configs_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = workstations.ListUsableWorkstationConfigsResponse(
-            next_page_token="next_page_token_value",
-            unreachable=["unreachable_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = workstations.ListUsableWorkstationConfigsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_usable_workstation_configs(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListUsableWorkstationConfigsPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_usable_workstation_configs_rest_use_cached_wrapped_rpc():
@@ -12936,92 +10866,6 @@ def test_list_usable_workstation_configs_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_usable_workstation_configs_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_list_usable_workstation_configs"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_list_usable_workstation_configs"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.ListUsableWorkstationConfigsRequest.pb(
-            workstations.ListUsableWorkstationConfigsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            workstations.ListUsableWorkstationConfigsResponse.to_json(
-                workstations.ListUsableWorkstationConfigsResponse()
-            )
-        )
-
-        request = workstations.ListUsableWorkstationConfigsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = workstations.ListUsableWorkstationConfigsResponse()
-
-        client.list_usable_workstation_configs(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_usable_workstation_configs_rest_bad_request(
-    transport: str = "rest",
-    request_type=workstations.ListUsableWorkstationConfigsRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_usable_workstation_configs(request)
-
-
 def test_list_usable_workstation_configs_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13149,187 +10993,6 @@ def test_list_usable_workstation_configs_rest_pager(transport: str = "rest"):
         )
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.CreateWorkstationConfigRequest,
-        dict,
-    ],
-)
-def test_create_workstation_config_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
-    request_init["workstation_config"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "uid": "uid_value",
-        "reconciling": True,
-        "annotations": {},
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "delete_time": {},
-        "etag": "etag_value",
-        "idle_timeout": {"seconds": 751, "nanos": 543},
-        "running_timeout": {},
-        "host": {
-            "gce_instance": {
-                "machine_type": "machine_type_value",
-                "service_account": "service_account_value",
-                "service_account_scopes": [
-                    "service_account_scopes_value1",
-                    "service_account_scopes_value2",
-                ],
-                "tags": ["tags_value1", "tags_value2"],
-                "pool_size": 980,
-                "pooled_instances": 1706,
-                "disable_public_ip_addresses": True,
-                "enable_nested_virtualization": True,
-                "shielded_instance_config": {
-                    "enable_secure_boot": True,
-                    "enable_vtpm": True,
-                    "enable_integrity_monitoring": True,
-                },
-                "confidential_instance_config": {"enable_confidential_compute": True},
-                "boot_disk_size_gb": 1792,
-            }
-        },
-        "persistent_directories": [
-            {
-                "gce_pd": {
-                    "size_gb": 739,
-                    "fs_type": "fs_type_value",
-                    "disk_type": "disk_type_value",
-                    "source_snapshot": "source_snapshot_value",
-                    "reclaim_policy": 1,
-                },
-                "mount_path": "mount_path_value",
-            }
-        ],
-        "container": {
-            "image": "image_value",
-            "command": ["command_value1", "command_value2"],
-            "args": ["args_value1", "args_value2"],
-            "env": {},
-            "working_dir": "working_dir_value",
-            "run_as_user": 1190,
-        },
-        "encryption_key": {
-            "kms_key": "kms_key_value",
-            "kms_key_service_account": "kms_key_service_account_value",
-        },
-        "readiness_checks": [{"path": "path_value", "port": 453}],
-        "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
-        "degraded": True,
-        "conditions": [
-            {
-                "code": 411,
-                "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
-            }
-        ],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = workstations.CreateWorkstationConfigRequest.meta.fields[
-        "workstation_config"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["workstation_config"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["workstation_config"][field])):
-                    del request_init["workstation_config"][field][i][subfield]
-            else:
-                del request_init["workstation_config"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_workstation_config(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_workstation_config_rest_use_cached_wrapped_rpc():
@@ -13495,91 +11158,6 @@ def test_create_workstation_config_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_workstation_config_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_create_workstation_config"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_create_workstation_config"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.CreateWorkstationConfigRequest.pb(
-            workstations.CreateWorkstationConfigRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = workstations.CreateWorkstationConfigRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_workstation_config(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_workstation_config_rest_bad_request(
-    transport: str = "rest", request_type=workstations.CreateWorkstationConfigRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_workstation_config(request)
-
-
 def test_create_workstation_config_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13639,195 +11217,6 @@ def test_create_workstation_config_rest_flattened_error(transport: str = "rest")
             workstation_config=workstations.WorkstationConfig(name="name_value"),
             workstation_config_id="workstation_config_id_value",
         )
-
-
-def test_create_workstation_config_rest_error():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.UpdateWorkstationConfigRequest,
-        dict,
-    ],
-)
-def test_update_workstation_config_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "workstation_config": {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-        }
-    }
-    request_init["workstation_config"] = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4",
-        "display_name": "display_name_value",
-        "uid": "uid_value",
-        "reconciling": True,
-        "annotations": {},
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "delete_time": {},
-        "etag": "etag_value",
-        "idle_timeout": {"seconds": 751, "nanos": 543},
-        "running_timeout": {},
-        "host": {
-            "gce_instance": {
-                "machine_type": "machine_type_value",
-                "service_account": "service_account_value",
-                "service_account_scopes": [
-                    "service_account_scopes_value1",
-                    "service_account_scopes_value2",
-                ],
-                "tags": ["tags_value1", "tags_value2"],
-                "pool_size": 980,
-                "pooled_instances": 1706,
-                "disable_public_ip_addresses": True,
-                "enable_nested_virtualization": True,
-                "shielded_instance_config": {
-                    "enable_secure_boot": True,
-                    "enable_vtpm": True,
-                    "enable_integrity_monitoring": True,
-                },
-                "confidential_instance_config": {"enable_confidential_compute": True},
-                "boot_disk_size_gb": 1792,
-            }
-        },
-        "persistent_directories": [
-            {
-                "gce_pd": {
-                    "size_gb": 739,
-                    "fs_type": "fs_type_value",
-                    "disk_type": "disk_type_value",
-                    "source_snapshot": "source_snapshot_value",
-                    "reclaim_policy": 1,
-                },
-                "mount_path": "mount_path_value",
-            }
-        ],
-        "container": {
-            "image": "image_value",
-            "command": ["command_value1", "command_value2"],
-            "args": ["args_value1", "args_value2"],
-            "env": {},
-            "working_dir": "working_dir_value",
-            "run_as_user": 1190,
-        },
-        "encryption_key": {
-            "kms_key": "kms_key_value",
-            "kms_key_service_account": "kms_key_service_account_value",
-        },
-        "readiness_checks": [{"path": "path_value", "port": 453}],
-        "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
-        "degraded": True,
-        "conditions": [
-            {
-                "code": 411,
-                "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
-            }
-        ],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = workstations.UpdateWorkstationConfigRequest.meta.fields[
-        "workstation_config"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["workstation_config"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["workstation_config"][field])):
-                    del request_init["workstation_config"][field][i][subfield]
-            else:
-                del request_init["workstation_config"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_workstation_config(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_update_workstation_config_rest_use_cached_wrapped_rpc():
@@ -13973,93 +11362,6 @@ def test_update_workstation_config_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_workstation_config_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_update_workstation_config"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_update_workstation_config"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.UpdateWorkstationConfigRequest.pb(
-            workstations.UpdateWorkstationConfigRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = workstations.UpdateWorkstationConfigRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.update_workstation_config(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_workstation_config_rest_bad_request(
-    transport: str = "rest", request_type=workstations.UpdateWorkstationConfigRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "workstation_config": {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_workstation_config(request)
-
-
 def test_update_workstation_config_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14119,49 +11421,6 @@ def test_update_workstation_config_rest_flattened_error(transport: str = "rest")
             workstation_config=workstations.WorkstationConfig(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_workstation_config_rest_error():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.DeleteWorkstationConfigRequest,
-        dict,
-    ],
-)
-def test_delete_workstation_config_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_workstation_config(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_delete_workstation_config_rest_use_cached_wrapped_rpc():
@@ -14306,91 +11565,6 @@ def test_delete_workstation_config_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_workstation_config_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_delete_workstation_config"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_delete_workstation_config"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.DeleteWorkstationConfigRequest.pb(
-            workstations.DeleteWorkstationConfigRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = workstations.DeleteWorkstationConfigRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_workstation_config(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_workstation_config_rest_bad_request(
-    transport: str = "rest", request_type=workstations.DeleteWorkstationConfigRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_workstation_config(request)
-
-
 def test_delete_workstation_config_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14446,66 +11620,6 @@ def test_delete_workstation_config_rest_flattened_error(transport: str = "rest")
             workstations.DeleteWorkstationConfigRequest(),
             name="name_value",
         )
-
-
-def test_delete_workstation_config_rest_error():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.GetWorkstationRequest,
-        dict,
-    ],
-)
-def test_get_workstation_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = workstations.Workstation(
-            name="name_value",
-            display_name="display_name_value",
-            uid="uid_value",
-            reconciling=True,
-            etag="etag_value",
-            state=workstations.Workstation.State.STATE_STARTING,
-            host="host_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = workstations.Workstation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_workstation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, workstations.Workstation)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.uid == "uid_value"
-    assert response.reconciling is True
-    assert response.etag == "etag_value"
-    assert response.state == workstations.Workstation.State.STATE_STARTING
-    assert response.host == "host_value"
 
 
 def test_get_workstation_rest_use_cached_wrapped_rpc():
@@ -14627,89 +11741,6 @@ def test_get_workstation_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_workstation_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_get_workstation"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_get_workstation"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.GetWorkstationRequest.pb(
-            workstations.GetWorkstationRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = workstations.Workstation.to_json(
-            workstations.Workstation()
-        )
-
-        request = workstations.GetWorkstationRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = workstations.Workstation()
-
-        client.get_workstation(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_workstation_rest_bad_request(
-    transport: str = "rest", request_type=workstations.GetWorkstationRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_workstation(request)
-
-
 def test_get_workstation_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14767,56 +11798,6 @@ def test_get_workstation_rest_flattened_error(transport: str = "rest"):
             workstations.GetWorkstationRequest(),
             name="name_value",
         )
-
-
-def test_get_workstation_rest_error():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.ListWorkstationsRequest,
-        dict,
-    ],
-)
-def test_list_workstations_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = workstations.ListWorkstationsResponse(
-            next_page_token="next_page_token_value",
-            unreachable=["unreachable_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = workstations.ListWorkstationsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_workstations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListWorkstationsPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_workstations_rest_use_cached_wrapped_rpc():
@@ -14955,89 +11936,6 @@ def test_list_workstations_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_workstations_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_list_workstations"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_list_workstations"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.ListWorkstationsRequest.pb(
-            workstations.ListWorkstationsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = workstations.ListWorkstationsResponse.to_json(
-            workstations.ListWorkstationsResponse()
-        )
-
-        request = workstations.ListWorkstationsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = workstations.ListWorkstationsResponse()
-
-        client.list_workstations(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_workstations_rest_bad_request(
-    transport: str = "rest", request_type=workstations.ListWorkstationsRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_workstations(request)
-
-
 def test_list_workstations_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15160,50 +12058,6 @@ def test_list_workstations_rest_pager(transport: str = "rest"):
         pages = list(client.list_workstations(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.ListUsableWorkstationsRequest,
-        dict,
-    ],
-)
-def test_list_usable_workstations_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = workstations.ListUsableWorkstationsResponse(
-            next_page_token="next_page_token_value",
-            unreachable=["unreachable_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = workstations.ListUsableWorkstationsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_usable_workstations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListUsableWorkstationsPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_usable_workstations_rest_use_cached_wrapped_rpc():
@@ -15345,89 +12199,6 @@ def test_list_usable_workstations_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_usable_workstations_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_list_usable_workstations"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_list_usable_workstations"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.ListUsableWorkstationsRequest.pb(
-            workstations.ListUsableWorkstationsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = workstations.ListUsableWorkstationsResponse.to_json(
-            workstations.ListUsableWorkstationsResponse()
-        )
-
-        request = workstations.ListUsableWorkstationsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = workstations.ListUsableWorkstationsResponse()
-
-        client.list_usable_workstations(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_usable_workstations_rest_bad_request(
-    transport: str = "rest", request_type=workstations.ListUsableWorkstationsRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_usable_workstations(request)
-
-
 def test_list_usable_workstations_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15550,125 +12321,6 @@ def test_list_usable_workstations_rest_pager(transport: str = "rest"):
         pages = list(client.list_usable_workstations(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.CreateWorkstationRequest,
-        dict,
-    ],
-)
-def test_create_workstation_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
-    request_init["workstation"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "uid": "uid_value",
-        "reconciling": True,
-        "annotations": {},
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "start_time": {},
-        "delete_time": {},
-        "etag": "etag_value",
-        "state": 1,
-        "host": "host_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = workstations.CreateWorkstationRequest.meta.fields["workstation"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["workstation"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["workstation"][field])):
-                    del request_init["workstation"][field][i][subfield]
-            else:
-                del request_init["workstation"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_workstation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_workstation_rest_use_cached_wrapped_rpc():
@@ -15830,91 +12482,6 @@ def test_create_workstation_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_workstation_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_create_workstation"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_create_workstation"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.CreateWorkstationRequest.pb(
-            workstations.CreateWorkstationRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = workstations.CreateWorkstationRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_workstation(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_workstation_rest_bad_request(
-    transport: str = "rest", request_type=workstations.CreateWorkstationRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_workstation(request)
-
-
 def test_create_workstation_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15974,133 +12541,6 @@ def test_create_workstation_rest_flattened_error(transport: str = "rest"):
             workstation=workstations.Workstation(name="name_value"),
             workstation_id="workstation_id_value",
         )
-
-
-def test_create_workstation_rest_error():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.UpdateWorkstationRequest,
-        dict,
-    ],
-)
-def test_update_workstation_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "workstation": {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-        }
-    }
-    request_init["workstation"] = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5",
-        "display_name": "display_name_value",
-        "uid": "uid_value",
-        "reconciling": True,
-        "annotations": {},
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "start_time": {},
-        "delete_time": {},
-        "etag": "etag_value",
-        "state": 1,
-        "host": "host_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = workstations.UpdateWorkstationRequest.meta.fields["workstation"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["workstation"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["workstation"][field])):
-                    del request_init["workstation"][field][i][subfield]
-            else:
-                del request_init["workstation"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_workstation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_update_workstation_rest_use_cached_wrapped_rpc():
@@ -16245,93 +12685,6 @@ def test_update_workstation_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_workstation_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_update_workstation"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_update_workstation"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.UpdateWorkstationRequest.pb(
-            workstations.UpdateWorkstationRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = workstations.UpdateWorkstationRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.update_workstation(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_workstation_rest_bad_request(
-    transport: str = "rest", request_type=workstations.UpdateWorkstationRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "workstation": {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_workstation(request)
-
-
 def test_update_workstation_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16391,49 +12744,6 @@ def test_update_workstation_rest_flattened_error(transport: str = "rest"):
             workstation=workstations.Workstation(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_workstation_rest_error():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.DeleteWorkstationRequest,
-        dict,
-    ],
-)
-def test_delete_workstation_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_workstation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_delete_workstation_rest_use_cached_wrapped_rpc():
@@ -16575,91 +12885,6 @@ def test_delete_workstation_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_workstation_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_delete_workstation"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_delete_workstation"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.DeleteWorkstationRequest.pb(
-            workstations.DeleteWorkstationRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = workstations.DeleteWorkstationRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_workstation(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_workstation_rest_bad_request(
-    transport: str = "rest", request_type=workstations.DeleteWorkstationRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_workstation(request)
-
-
 def test_delete_workstation_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16715,49 +12940,6 @@ def test_delete_workstation_rest_flattened_error(transport: str = "rest"):
             workstations.DeleteWorkstationRequest(),
             name="name_value",
         )
-
-
-def test_delete_workstation_rest_error():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.StartWorkstationRequest,
-        dict,
-    ],
-)
-def test_start_workstation_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.start_workstation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_start_workstation_rest_use_cached_wrapped_rpc():
@@ -16883,91 +13065,6 @@ def test_start_workstation_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_start_workstation_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_start_workstation"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_start_workstation"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.StartWorkstationRequest.pb(
-            workstations.StartWorkstationRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = workstations.StartWorkstationRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.start_workstation(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_start_workstation_rest_bad_request(
-    transport: str = "rest", request_type=workstations.StartWorkstationRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.start_workstation(request)
-
-
 def test_start_workstation_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17023,49 +13120,6 @@ def test_start_workstation_rest_flattened_error(transport: str = "rest"):
             workstations.StartWorkstationRequest(),
             name="name_value",
         )
-
-
-def test_start_workstation_rest_error():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.StopWorkstationRequest,
-        dict,
-    ],
-)
-def test_stop_workstation_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.stop_workstation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_stop_workstation_rest_use_cached_wrapped_rpc():
@@ -17191,91 +13245,6 @@ def test_stop_workstation_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_stop_workstation_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_stop_workstation"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_stop_workstation"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.StopWorkstationRequest.pb(
-            workstations.StopWorkstationRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = workstations.StopWorkstationRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.stop_workstation(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_stop_workstation_rest_bad_request(
-    transport: str = "rest", request_type=workstations.StopWorkstationRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.stop_workstation(request)
-
-
 def test_stop_workstation_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17331,54 +13300,6 @@ def test_stop_workstation_rest_flattened_error(transport: str = "rest"):
             workstations.StopWorkstationRequest(),
             name="name_value",
         )
-
-
-def test_stop_workstation_rest_error():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        workstations.GenerateAccessTokenRequest,
-        dict,
-    ],
-)
-def test_generate_access_token_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "workstation": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = workstations.GenerateAccessTokenResponse(
-            access_token="access_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = workstations.GenerateAccessTokenResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.generate_access_token(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, workstations.GenerateAccessTokenResponse)
-    assert response.access_token == "access_token_value"
 
 
 def test_generate_access_token_rest_use_cached_wrapped_rpc():
@@ -17506,89 +13427,6 @@ def test_generate_access_token_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("workstation",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_generate_access_token_rest_interceptors(null_interceptor):
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
-    )
-    client = WorkstationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_generate_access_token"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "pre_generate_access_token"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = workstations.GenerateAccessTokenRequest.pb(
-            workstations.GenerateAccessTokenRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = workstations.GenerateAccessTokenResponse.to_json(
-            workstations.GenerateAccessTokenResponse()
-        )
-
-        request = workstations.GenerateAccessTokenRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = workstations.GenerateAccessTokenResponse()
-
-        client.generate_access_token(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_generate_access_token_rest_bad_request(
-    transport: str = "rest", request_type=workstations.GenerateAccessTokenRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "workstation": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.generate_access_token(request)
-
-
 def test_generate_access_token_rest_flattened():
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17646,12 +13484,6 @@ def test_generate_access_token_rest_flattened_error(transport: str = "rest"):
             workstations.GenerateAccessTokenRequest(),
             workstation="workstation_value",
         )
-
-
-def test_generate_access_token_rest_error():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
 
 
 def test_credentials_transport_error():
@@ -17746,18 +13578,5115 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = WorkstationsClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_workstation_cluster_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_workstation_cluster), "__call__"
+    ) as call:
+        call.return_value = workstations.WorkstationCluster()
+        client.get_workstation_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.GetWorkstationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_workstation_clusters_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workstation_clusters), "__call__"
+    ) as call:
+        call.return_value = workstations.ListWorkstationClustersResponse()
+        client.list_workstation_clusters(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.ListWorkstationClustersRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_workstation_cluster_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workstation_cluster), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_workstation_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.CreateWorkstationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_workstation_cluster_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_workstation_cluster), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_workstation_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.UpdateWorkstationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_workstation_cluster_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workstation_cluster), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_workstation_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.DeleteWorkstationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_workstation_config_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_workstation_config), "__call__"
+    ) as call:
+        call.return_value = workstations.WorkstationConfig()
+        client.get_workstation_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.GetWorkstationConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_workstation_configs_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workstation_configs), "__call__"
+    ) as call:
+        call.return_value = workstations.ListWorkstationConfigsResponse()
+        client.list_workstation_configs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.ListWorkstationConfigsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_usable_workstation_configs_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_usable_workstation_configs), "__call__"
+    ) as call:
+        call.return_value = workstations.ListUsableWorkstationConfigsResponse()
+        client.list_usable_workstation_configs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.ListUsableWorkstationConfigsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_workstation_config_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workstation_config), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_workstation_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.CreateWorkstationConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_workstation_config_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_workstation_config), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_workstation_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.UpdateWorkstationConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_workstation_config_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workstation_config), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_workstation_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.DeleteWorkstationConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_workstation_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_workstation), "__call__") as call:
+        call.return_value = workstations.Workstation()
+        client.get_workstation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.GetWorkstationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_workstations_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workstations), "__call__"
+    ) as call:
+        call.return_value = workstations.ListWorkstationsResponse()
+        client.list_workstations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.ListWorkstationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_usable_workstations_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_usable_workstations), "__call__"
+    ) as call:
+        call.return_value = workstations.ListUsableWorkstationsResponse()
+        client.list_usable_workstations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.ListUsableWorkstationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_workstation_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workstation), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_workstation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.CreateWorkstationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_workstation_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_workstation), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_workstation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.UpdateWorkstationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_workstation_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workstation), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_workstation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.DeleteWorkstationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_start_workstation_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_workstation), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.start_workstation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.StartWorkstationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_stop_workstation_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.stop_workstation), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.stop_workstation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.StopWorkstationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_generate_access_token_empty_call_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_access_token), "__call__"
+    ) as call:
+        call.return_value = workstations.GenerateAccessTokenResponse()
+        client.generate_access_token(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.GenerateAccessTokenRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = WorkstationsAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_workstation_cluster_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_workstation_cluster), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            workstations.WorkstationCluster(
+                name="name_value",
+                display_name="display_name_value",
+                uid="uid_value",
+                reconciling=True,
+                etag="etag_value",
+                network="network_value",
+                subnetwork="subnetwork_value",
+                control_plane_ip="control_plane_ip_value",
+                degraded=True,
+            )
+        )
+        await client.get_workstation_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.GetWorkstationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_workstation_clusters_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workstation_clusters), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            workstations.ListWorkstationClustersResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_workstation_clusters(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.ListWorkstationClustersRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_workstation_cluster_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workstation_cluster), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_workstation_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.CreateWorkstationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_workstation_cluster_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_workstation_cluster), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_workstation_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.UpdateWorkstationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_workstation_cluster_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workstation_cluster), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_workstation_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.DeleteWorkstationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_workstation_config_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_workstation_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            workstations.WorkstationConfig(
+                name="name_value",
+                display_name="display_name_value",
+                uid="uid_value",
+                reconciling=True,
+                etag="etag_value",
+                replica_zones=["replica_zones_value"],
+                degraded=True,
+            )
+        )
+        await client.get_workstation_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.GetWorkstationConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_workstation_configs_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workstation_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            workstations.ListWorkstationConfigsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_workstation_configs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.ListWorkstationConfigsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_usable_workstation_configs_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_usable_workstation_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            workstations.ListUsableWorkstationConfigsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_usable_workstation_configs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.ListUsableWorkstationConfigsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_workstation_config_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workstation_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_workstation_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.CreateWorkstationConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_workstation_config_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_workstation_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_workstation_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.UpdateWorkstationConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_workstation_config_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workstation_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_workstation_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.DeleteWorkstationConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_workstation_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_workstation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            workstations.Workstation(
+                name="name_value",
+                display_name="display_name_value",
+                uid="uid_value",
+                reconciling=True,
+                etag="etag_value",
+                state=workstations.Workstation.State.STATE_STARTING,
+                host="host_value",
+            )
+        )
+        await client.get_workstation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.GetWorkstationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_workstations_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workstations), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            workstations.ListWorkstationsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_workstations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.ListWorkstationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_usable_workstations_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_usable_workstations), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            workstations.ListUsableWorkstationsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_usable_workstations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.ListUsableWorkstationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_workstation_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workstation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_workstation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.CreateWorkstationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_workstation_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_workstation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_workstation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.UpdateWorkstationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_workstation_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workstation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_workstation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.DeleteWorkstationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_start_workstation_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_workstation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.start_workstation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.StartWorkstationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_stop_workstation_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.stop_workstation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.stop_workstation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.StopWorkstationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_generate_access_token_empty_call_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_access_token), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            workstations.GenerateAccessTokenResponse(
+                access_token="access_token_value",
+            )
+        )
+        await client.generate_access_token(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.GenerateAccessTokenRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = WorkstationsClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_get_workstation_cluster_rest_bad_request(
+    request_type=workstations.GetWorkstationClusterRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_workstation_cluster(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        workstations.GetWorkstationClusterRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = WorkstationsClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_get_workstation_cluster_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = workstations.WorkstationCluster(
+            name="name_value",
+            display_name="display_name_value",
+            uid="uid_value",
+            reconciling=True,
+            etag="etag_value",
+            network="network_value",
+            subnetwork="subnetwork_value",
+            control_plane_ip="control_plane_ip_value",
+            degraded=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = workstations.WorkstationCluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_workstation_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, workstations.WorkstationCluster)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.uid == "uid_value"
+    assert response.reconciling is True
+    assert response.etag == "etag_value"
+    assert response.network == "network_value"
+    assert response.subnetwork == "subnetwork_value"
+    assert response.control_plane_ip == "control_plane_ip_value"
+    assert response.degraded is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_workstation_cluster_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_get_workstation_cluster"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_get_workstation_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.GetWorkstationClusterRequest.pb(
+            workstations.GetWorkstationClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = workstations.WorkstationCluster.to_json(
+            workstations.WorkstationCluster()
+        )
+        req.return_value.content = return_value
+
+        request = workstations.GetWorkstationClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = workstations.WorkstationCluster()
+
+        client.get_workstation_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_workstation_clusters_rest_bad_request(
+    request_type=workstations.ListWorkstationClustersRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_workstation_clusters(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.ListWorkstationClustersRequest,
+        dict,
+    ],
+)
+def test_list_workstation_clusters_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = workstations.ListWorkstationClustersResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = workstations.ListWorkstationClustersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_workstation_clusters(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListWorkstationClustersPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_workstation_clusters_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_list_workstation_clusters"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_list_workstation_clusters"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.ListWorkstationClustersRequest.pb(
+            workstations.ListWorkstationClustersRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = workstations.ListWorkstationClustersResponse.to_json(
+            workstations.ListWorkstationClustersResponse()
+        )
+        req.return_value.content = return_value
+
+        request = workstations.ListWorkstationClustersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = workstations.ListWorkstationClustersResponse()
+
+        client.list_workstation_clusters(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_workstation_cluster_rest_bad_request(
+    request_type=workstations.CreateWorkstationClusterRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_workstation_cluster(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.CreateWorkstationClusterRequest,
+        dict,
+    ],
+)
+def test_create_workstation_cluster_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["workstation_cluster"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "uid": "uid_value",
+        "reconciling": True,
+        "annotations": {},
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "delete_time": {},
+        "etag": "etag_value",
+        "network": "network_value",
+        "subnetwork": "subnetwork_value",
+        "control_plane_ip": "control_plane_ip_value",
+        "private_cluster_config": {
+            "enable_private_endpoint": True,
+            "cluster_hostname": "cluster_hostname_value",
+            "service_attachment_uri": "service_attachment_uri_value",
+            "allowed_projects": ["allowed_projects_value1", "allowed_projects_value2"],
+        },
+        "degraded": True,
+        "conditions": [
+            {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = workstations.CreateWorkstationClusterRequest.meta.fields[
+        "workstation_cluster"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["workstation_cluster"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["workstation_cluster"][field])):
+                    del request_init["workstation_cluster"][field][i][subfield]
+            else:
+                del request_init["workstation_cluster"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_workstation_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_workstation_cluster_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_create_workstation_cluster"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_create_workstation_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.CreateWorkstationClusterRequest.pb(
+            workstations.CreateWorkstationClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = workstations.CreateWorkstationClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_workstation_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_workstation_cluster_rest_bad_request(
+    request_type=workstations.UpdateWorkstationClusterRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "workstation_cluster": {
+            "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_workstation_cluster(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.UpdateWorkstationClusterRequest,
+        dict,
+    ],
+)
+def test_update_workstation_cluster_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "workstation_cluster": {
+            "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
+        }
+    }
+    request_init["workstation_cluster"] = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3",
+        "display_name": "display_name_value",
+        "uid": "uid_value",
+        "reconciling": True,
+        "annotations": {},
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "delete_time": {},
+        "etag": "etag_value",
+        "network": "network_value",
+        "subnetwork": "subnetwork_value",
+        "control_plane_ip": "control_plane_ip_value",
+        "private_cluster_config": {
+            "enable_private_endpoint": True,
+            "cluster_hostname": "cluster_hostname_value",
+            "service_attachment_uri": "service_attachment_uri_value",
+            "allowed_projects": ["allowed_projects_value1", "allowed_projects_value2"],
+        },
+        "degraded": True,
+        "conditions": [
+            {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = workstations.UpdateWorkstationClusterRequest.meta.fields[
+        "workstation_cluster"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["workstation_cluster"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["workstation_cluster"][field])):
+                    del request_init["workstation_cluster"][field][i][subfield]
+            else:
+                del request_init["workstation_cluster"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_workstation_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_workstation_cluster_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_update_workstation_cluster"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_update_workstation_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.UpdateWorkstationClusterRequest.pb(
+            workstations.UpdateWorkstationClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = workstations.UpdateWorkstationClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_workstation_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_workstation_cluster_rest_bad_request(
+    request_type=workstations.DeleteWorkstationClusterRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_workstation_cluster(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.DeleteWorkstationClusterRequest,
+        dict,
+    ],
+)
+def test_delete_workstation_cluster_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_workstation_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_workstation_cluster_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_delete_workstation_cluster"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_delete_workstation_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.DeleteWorkstationClusterRequest.pb(
+            workstations.DeleteWorkstationClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = workstations.DeleteWorkstationClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_workstation_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_workstation_config_rest_bad_request(
+    request_type=workstations.GetWorkstationConfigRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_workstation_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.GetWorkstationConfigRequest,
+        dict,
+    ],
+)
+def test_get_workstation_config_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = workstations.WorkstationConfig(
+            name="name_value",
+            display_name="display_name_value",
+            uid="uid_value",
+            reconciling=True,
+            etag="etag_value",
+            replica_zones=["replica_zones_value"],
+            degraded=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = workstations.WorkstationConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_workstation_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, workstations.WorkstationConfig)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.uid == "uid_value"
+    assert response.reconciling is True
+    assert response.etag == "etag_value"
+    assert response.replica_zones == ["replica_zones_value"]
+    assert response.degraded is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_workstation_config_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_get_workstation_config"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_get_workstation_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.GetWorkstationConfigRequest.pb(
+            workstations.GetWorkstationConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = workstations.WorkstationConfig.to_json(
+            workstations.WorkstationConfig()
+        )
+        req.return_value.content = return_value
+
+        request = workstations.GetWorkstationConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = workstations.WorkstationConfig()
+
+        client.get_workstation_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_workstation_configs_rest_bad_request(
+    request_type=workstations.ListWorkstationConfigsRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_workstation_configs(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.ListWorkstationConfigsRequest,
+        dict,
+    ],
+)
+def test_list_workstation_configs_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = workstations.ListWorkstationConfigsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = workstations.ListWorkstationConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_workstation_configs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListWorkstationConfigsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_workstation_configs_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_list_workstation_configs"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_list_workstation_configs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.ListWorkstationConfigsRequest.pb(
+            workstations.ListWorkstationConfigsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = workstations.ListWorkstationConfigsResponse.to_json(
+            workstations.ListWorkstationConfigsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = workstations.ListWorkstationConfigsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = workstations.ListWorkstationConfigsResponse()
+
+        client.list_workstation_configs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_usable_workstation_configs_rest_bad_request(
+    request_type=workstations.ListUsableWorkstationConfigsRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_usable_workstation_configs(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.ListUsableWorkstationConfigsRequest,
+        dict,
+    ],
+)
+def test_list_usable_workstation_configs_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = workstations.ListUsableWorkstationConfigsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = workstations.ListUsableWorkstationConfigsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_usable_workstation_configs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListUsableWorkstationConfigsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_usable_workstation_configs_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_list_usable_workstation_configs"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_list_usable_workstation_configs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.ListUsableWorkstationConfigsRequest.pb(
+            workstations.ListUsableWorkstationConfigsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = workstations.ListUsableWorkstationConfigsResponse.to_json(
+            workstations.ListUsableWorkstationConfigsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = workstations.ListUsableWorkstationConfigsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = workstations.ListUsableWorkstationConfigsResponse()
+
+        client.list_usable_workstation_configs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_workstation_config_rest_bad_request(
+    request_type=workstations.CreateWorkstationConfigRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_workstation_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.CreateWorkstationConfigRequest,
+        dict,
+    ],
+)
+def test_create_workstation_config_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
+    }
+    request_init["workstation_config"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "uid": "uid_value",
+        "reconciling": True,
+        "annotations": {},
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "delete_time": {},
+        "etag": "etag_value",
+        "idle_timeout": {"seconds": 751, "nanos": 543},
+        "running_timeout": {},
+        "host": {
+            "gce_instance": {
+                "machine_type": "machine_type_value",
+                "service_account": "service_account_value",
+                "service_account_scopes": [
+                    "service_account_scopes_value1",
+                    "service_account_scopes_value2",
+                ],
+                "tags": ["tags_value1", "tags_value2"],
+                "pool_size": 980,
+                "pooled_instances": 1706,
+                "disable_public_ip_addresses": True,
+                "enable_nested_virtualization": True,
+                "shielded_instance_config": {
+                    "enable_secure_boot": True,
+                    "enable_vtpm": True,
+                    "enable_integrity_monitoring": True,
+                },
+                "confidential_instance_config": {"enable_confidential_compute": True},
+                "boot_disk_size_gb": 1792,
+            }
+        },
+        "persistent_directories": [
+            {
+                "gce_pd": {
+                    "size_gb": 739,
+                    "fs_type": "fs_type_value",
+                    "disk_type": "disk_type_value",
+                    "source_snapshot": "source_snapshot_value",
+                    "reclaim_policy": 1,
+                },
+                "mount_path": "mount_path_value",
+            }
+        ],
+        "container": {
+            "image": "image_value",
+            "command": ["command_value1", "command_value2"],
+            "args": ["args_value1", "args_value2"],
+            "env": {},
+            "working_dir": "working_dir_value",
+            "run_as_user": 1190,
+        },
+        "encryption_key": {
+            "kms_key": "kms_key_value",
+            "kms_key_service_account": "kms_key_service_account_value",
+        },
+        "readiness_checks": [{"path": "path_value", "port": 453}],
+        "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
+        "degraded": True,
+        "conditions": [
+            {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = workstations.CreateWorkstationConfigRequest.meta.fields[
+        "workstation_config"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["workstation_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["workstation_config"][field])):
+                    del request_init["workstation_config"][field][i][subfield]
+            else:
+                del request_init["workstation_config"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_workstation_config(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_workstation_config_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_create_workstation_config"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_create_workstation_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.CreateWorkstationConfigRequest.pb(
+            workstations.CreateWorkstationConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = workstations.CreateWorkstationConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_workstation_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_workstation_config_rest_bad_request(
+    request_type=workstations.UpdateWorkstationConfigRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "workstation_config": {
+            "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_workstation_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.UpdateWorkstationConfigRequest,
+        dict,
+    ],
+)
+def test_update_workstation_config_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "workstation_config": {
+            "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
+        }
+    }
+    request_init["workstation_config"] = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4",
+        "display_name": "display_name_value",
+        "uid": "uid_value",
+        "reconciling": True,
+        "annotations": {},
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "delete_time": {},
+        "etag": "etag_value",
+        "idle_timeout": {"seconds": 751, "nanos": 543},
+        "running_timeout": {},
+        "host": {
+            "gce_instance": {
+                "machine_type": "machine_type_value",
+                "service_account": "service_account_value",
+                "service_account_scopes": [
+                    "service_account_scopes_value1",
+                    "service_account_scopes_value2",
+                ],
+                "tags": ["tags_value1", "tags_value2"],
+                "pool_size": 980,
+                "pooled_instances": 1706,
+                "disable_public_ip_addresses": True,
+                "enable_nested_virtualization": True,
+                "shielded_instance_config": {
+                    "enable_secure_boot": True,
+                    "enable_vtpm": True,
+                    "enable_integrity_monitoring": True,
+                },
+                "confidential_instance_config": {"enable_confidential_compute": True},
+                "boot_disk_size_gb": 1792,
+            }
+        },
+        "persistent_directories": [
+            {
+                "gce_pd": {
+                    "size_gb": 739,
+                    "fs_type": "fs_type_value",
+                    "disk_type": "disk_type_value",
+                    "source_snapshot": "source_snapshot_value",
+                    "reclaim_policy": 1,
+                },
+                "mount_path": "mount_path_value",
+            }
+        ],
+        "container": {
+            "image": "image_value",
+            "command": ["command_value1", "command_value2"],
+            "args": ["args_value1", "args_value2"],
+            "env": {},
+            "working_dir": "working_dir_value",
+            "run_as_user": 1190,
+        },
+        "encryption_key": {
+            "kms_key": "kms_key_value",
+            "kms_key_service_account": "kms_key_service_account_value",
+        },
+        "readiness_checks": [{"path": "path_value", "port": 453}],
+        "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
+        "degraded": True,
+        "conditions": [
+            {
+                "code": 411,
+                "message": "message_value",
+                "details": [
+                    {
+                        "type_url": "type.googleapis.com/google.protobuf.Duration",
+                        "value": b"\x08\x0c\x10\xdb\x07",
+                    }
+                ],
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = workstations.UpdateWorkstationConfigRequest.meta.fields[
+        "workstation_config"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["workstation_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["workstation_config"][field])):
+                    del request_init["workstation_config"][field][i][subfield]
+            else:
+                del request_init["workstation_config"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_workstation_config(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_workstation_config_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_update_workstation_config"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_update_workstation_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.UpdateWorkstationConfigRequest.pb(
+            workstations.UpdateWorkstationConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = workstations.UpdateWorkstationConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_workstation_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_workstation_config_rest_bad_request(
+    request_type=workstations.DeleteWorkstationConfigRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_workstation_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.DeleteWorkstationConfigRequest,
+        dict,
+    ],
+)
+def test_delete_workstation_config_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_workstation_config(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_workstation_config_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_delete_workstation_config"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_delete_workstation_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.DeleteWorkstationConfigRequest.pb(
+            workstations.DeleteWorkstationConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = workstations.DeleteWorkstationConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_workstation_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_workstation_rest_bad_request(
+    request_type=workstations.GetWorkstationRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_workstation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.GetWorkstationRequest,
+        dict,
+    ],
+)
+def test_get_workstation_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = workstations.Workstation(
+            name="name_value",
+            display_name="display_name_value",
+            uid="uid_value",
+            reconciling=True,
+            etag="etag_value",
+            state=workstations.Workstation.State.STATE_STARTING,
+            host="host_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = workstations.Workstation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_workstation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, workstations.Workstation)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.uid == "uid_value"
+    assert response.reconciling is True
+    assert response.etag == "etag_value"
+    assert response.state == workstations.Workstation.State.STATE_STARTING
+    assert response.host == "host_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_workstation_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_get_workstation"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_get_workstation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.GetWorkstationRequest.pb(
+            workstations.GetWorkstationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = workstations.Workstation.to_json(workstations.Workstation())
+        req.return_value.content = return_value
+
+        request = workstations.GetWorkstationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = workstations.Workstation()
+
+        client.get_workstation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_workstations_rest_bad_request(
+    request_type=workstations.ListWorkstationsRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_workstations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.ListWorkstationsRequest,
+        dict,
+    ],
+)
+def test_list_workstations_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = workstations.ListWorkstationsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = workstations.ListWorkstationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_workstations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListWorkstationsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_workstations_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_list_workstations"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_list_workstations"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.ListWorkstationsRequest.pb(
+            workstations.ListWorkstationsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = workstations.ListWorkstationsResponse.to_json(
+            workstations.ListWorkstationsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = workstations.ListWorkstationsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = workstations.ListWorkstationsResponse()
+
+        client.list_workstations(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_usable_workstations_rest_bad_request(
+    request_type=workstations.ListUsableWorkstationsRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_usable_workstations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.ListUsableWorkstationsRequest,
+        dict,
+    ],
+)
+def test_list_usable_workstations_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = workstations.ListUsableWorkstationsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = workstations.ListUsableWorkstationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_usable_workstations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListUsableWorkstationsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_usable_workstations_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_list_usable_workstations"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_list_usable_workstations"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.ListUsableWorkstationsRequest.pb(
+            workstations.ListUsableWorkstationsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = workstations.ListUsableWorkstationsResponse.to_json(
+            workstations.ListUsableWorkstationsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = workstations.ListUsableWorkstationsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = workstations.ListUsableWorkstationsResponse()
+
+        client.list_usable_workstations(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_workstation_rest_bad_request(
+    request_type=workstations.CreateWorkstationRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_workstation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.CreateWorkstationRequest,
+        dict,
+    ],
+)
+def test_create_workstation_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
+    }
+    request_init["workstation"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "uid": "uid_value",
+        "reconciling": True,
+        "annotations": {},
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "start_time": {},
+        "delete_time": {},
+        "etag": "etag_value",
+        "state": 1,
+        "host": "host_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = workstations.CreateWorkstationRequest.meta.fields["workstation"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["workstation"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["workstation"][field])):
+                    del request_init["workstation"][field][i][subfield]
+            else:
+                del request_init["workstation"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_workstation(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_workstation_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_create_workstation"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_create_workstation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.CreateWorkstationRequest.pb(
+            workstations.CreateWorkstationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = workstations.CreateWorkstationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_workstation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_workstation_rest_bad_request(
+    request_type=workstations.UpdateWorkstationRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "workstation": {
+            "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_workstation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.UpdateWorkstationRequest,
+        dict,
+    ],
+)
+def test_update_workstation_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "workstation": {
+            "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
+        }
+    }
+    request_init["workstation"] = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5",
+        "display_name": "display_name_value",
+        "uid": "uid_value",
+        "reconciling": True,
+        "annotations": {},
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "start_time": {},
+        "delete_time": {},
+        "etag": "etag_value",
+        "state": 1,
+        "host": "host_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = workstations.UpdateWorkstationRequest.meta.fields["workstation"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["workstation"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["workstation"][field])):
+                    del request_init["workstation"][field][i][subfield]
+            else:
+                del request_init["workstation"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_workstation(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_workstation_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_update_workstation"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_update_workstation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.UpdateWorkstationRequest.pb(
+            workstations.UpdateWorkstationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = workstations.UpdateWorkstationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_workstation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_workstation_rest_bad_request(
+    request_type=workstations.DeleteWorkstationRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_workstation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.DeleteWorkstationRequest,
+        dict,
+    ],
+)
+def test_delete_workstation_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_workstation(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_workstation_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_delete_workstation"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_delete_workstation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.DeleteWorkstationRequest.pb(
+            workstations.DeleteWorkstationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = workstations.DeleteWorkstationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_workstation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_start_workstation_rest_bad_request(
+    request_type=workstations.StartWorkstationRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.start_workstation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.StartWorkstationRequest,
+        dict,
+    ],
+)
+def test_start_workstation_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.start_workstation(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_start_workstation_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_start_workstation"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_start_workstation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.StartWorkstationRequest.pb(
+            workstations.StartWorkstationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = workstations.StartWorkstationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.start_workstation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_stop_workstation_rest_bad_request(
+    request_type=workstations.StopWorkstationRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.stop_workstation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.StopWorkstationRequest,
+        dict,
+    ],
+)
+def test_stop_workstation_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.stop_workstation(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_stop_workstation_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_stop_workstation"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_stop_workstation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.StopWorkstationRequest.pb(
+            workstations.StopWorkstationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = workstations.StopWorkstationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.stop_workstation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_generate_access_token_rest_bad_request(
+    request_type=workstations.GenerateAccessTokenRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "workstation": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.generate_access_token(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        workstations.GenerateAccessTokenRequest,
+        dict,
+    ],
+)
+def test_generate_access_token_rest_call_success(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "workstation": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = workstations.GenerateAccessTokenResponse(
+            access_token="access_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = workstations.GenerateAccessTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.generate_access_token(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, workstations.GenerateAccessTokenResponse)
+    assert response.access_token == "access_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_access_token_rest_interceptors(null_interceptor):
+    transport = transports.WorkstationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.WorkstationsRestInterceptor(),
+    )
+    client = WorkstationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_generate_access_token"
+    ) as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "pre_generate_access_token"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = workstations.GenerateAccessTokenRequest.pb(
+            workstations.GenerateAccessTokenRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = workstations.GenerateAccessTokenResponse.to_json(
+            workstations.GenerateAccessTokenResponse()
+        )
+        req.return_value.content = return_value
+
+        request = workstations.GenerateAccessTokenRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = workstations.GenerateAccessTokenResponse()
+
+        client.generate_access_token(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_iam_policy_rest_bad_request(
+    request_type=iam_policy_pb2.GetIamPolicyRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {
+            "resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
+        },
+        request,
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
+    }
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_set_iam_policy_rest_bad_request(
+    request_type=iam_policy_pb2.SetIamPolicyRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {
+            "resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
+        },
+        request,
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.set_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_set_iam_policy_rest(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
+    }
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.set_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+
+
+def test_test_iam_permissions_rest_bad_request(
+    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {
+            "resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
+        },
+        request,
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.test_iam_permissions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
+)
+def test_test_iam_permissions_rest(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {
+        "resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
+    }
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.test_iam_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_rest_bad_request(
+    request_type=operations_pb2.DeleteOperationRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.DeleteOperationRequest,
+        dict,
+    ],
+)
+def test_delete_operation_rest(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    request_type=operations_pb2.ListOperationsRequest,
+):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_initialize_client_w_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_workstation_cluster_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_workstation_cluster), "__call__"
+    ) as call:
+        client.get_workstation_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.GetWorkstationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_workstation_clusters_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workstation_clusters), "__call__"
+    ) as call:
+        client.list_workstation_clusters(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.ListWorkstationClustersRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_workstation_cluster_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workstation_cluster), "__call__"
+    ) as call:
+        client.create_workstation_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.CreateWorkstationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_workstation_cluster_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_workstation_cluster), "__call__"
+    ) as call:
+        client.update_workstation_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.UpdateWorkstationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_workstation_cluster_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workstation_cluster), "__call__"
+    ) as call:
+        client.delete_workstation_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.DeleteWorkstationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_workstation_config_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_workstation_config), "__call__"
+    ) as call:
+        client.get_workstation_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.GetWorkstationConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_workstation_configs_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workstation_configs), "__call__"
+    ) as call:
+        client.list_workstation_configs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.ListWorkstationConfigsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_usable_workstation_configs_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_usable_workstation_configs), "__call__"
+    ) as call:
+        client.list_usable_workstation_configs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.ListUsableWorkstationConfigsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_workstation_config_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workstation_config), "__call__"
+    ) as call:
+        client.create_workstation_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.CreateWorkstationConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_workstation_config_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_workstation_config), "__call__"
+    ) as call:
+        client.update_workstation_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.UpdateWorkstationConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_workstation_config_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workstation_config), "__call__"
+    ) as call:
+        client.delete_workstation_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.DeleteWorkstationConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_workstation_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_workstation), "__call__") as call:
+        client.get_workstation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.GetWorkstationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_workstations_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_workstations), "__call__"
+    ) as call:
+        client.list_workstations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.ListWorkstationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_usable_workstations_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_usable_workstations), "__call__"
+    ) as call:
+        client.list_usable_workstations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.ListUsableWorkstationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_workstation_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_workstation), "__call__"
+    ) as call:
+        client.create_workstation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.CreateWorkstationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_workstation_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_workstation), "__call__"
+    ) as call:
+        client.update_workstation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.UpdateWorkstationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_workstation_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_workstation), "__call__"
+    ) as call:
+        client.delete_workstation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.DeleteWorkstationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_start_workstation_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_workstation), "__call__"
+    ) as call:
+        client.start_workstation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.StartWorkstationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_stop_workstation_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.stop_workstation), "__call__") as call:
+        client.stop_workstation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.StopWorkstationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_generate_access_token_empty_call_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_access_token), "__call__"
+    ) as call:
+        client.generate_access_token(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = workstations.GenerateAccessTokenRequest()
+
+        assert args[0] == request_msg
+
+
+def test_workstations_rest_lro_client():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 def test_transport_grpc_default():
@@ -18015,23 +18944,6 @@ def test_workstations_http_transport_client_cert_source_for_mtls():
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_workstations_rest_lro_client():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -18530,441 +19442,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
-def test_get_iam_policy_rest_bad_request(
-    transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {
-            "resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-        },
-        request,
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_iam_policy(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
-    ],
-)
-def test_get_iam_policy_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {
-        "resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = policy_pb2.Policy()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_iam_policy(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-
-
-def test_set_iam_policy_rest_bad_request(
-    transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {
-            "resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-        },
-        request,
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.set_iam_policy(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
-    ],
-)
-def test_set_iam_policy_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {
-        "resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = policy_pb2.Policy()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.set_iam_policy(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-
-
-def test_test_iam_permissions_rest_bad_request(
-    transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {
-            "resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-        },
-        request,
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.test_iam_permissions(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
-    ],
-)
-def test_test_iam_permissions_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {
-        "resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = iam_policy_pb2.TestIamPermissionsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.test_iam_permissions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
-
-
-def test_cancel_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.cancel_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.CancelOperationRequest,
-        dict,
-    ],
-)
-def test_cancel_operation_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.cancel_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.DeleteOperationRequest,
-        dict,
-    ],
-)
-def test_delete_operation_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.delete_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_get_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
-def test_list_operations_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_operations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.ListOperationsRequest,
-        dict,
-    ],
-)
-def test_list_operations_rest(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.ListOperationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.ListOperationsResponse)
-
-
 def test_delete_operation(transport: str = "grpc"):
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18992,7 +19469,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -19045,7 +19522,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -19090,7 +19567,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -19131,7 +19608,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -19184,7 +19661,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -19229,7 +19706,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -19270,7 +19747,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -19325,7 +19802,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -19372,7 +19849,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -19415,7 +19892,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -19470,7 +19947,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -19517,7 +19994,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -19568,7 +20045,7 @@ def test_set_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -19633,7 +20110,7 @@ def test_set_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -19681,7 +20158,7 @@ def test_set_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_set_iam_policy_from_dict_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -19734,7 +20211,7 @@ def test_get_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -19800,7 +20277,7 @@ def test_get_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -19848,7 +20325,7 @@ def test_get_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_get_iam_policy_from_dict_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -19900,7 +20377,7 @@ def test_test_iam_permissions(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -19967,7 +20444,7 @@ def test_test_iam_permissions_field_headers():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -20021,7 +20498,7 @@ def test_test_iam_permissions_from_dict():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_from_dict_async():
     client = WorkstationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -20041,22 +20518,41 @@ async def test_test_iam_permissions_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = WorkstationsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = WorkstationsAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+    client = WorkstationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

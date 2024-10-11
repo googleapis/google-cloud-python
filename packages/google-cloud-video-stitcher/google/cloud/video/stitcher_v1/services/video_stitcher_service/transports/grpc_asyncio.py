@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -241,6 +242,9 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1151,160 +1155,189 @@ class VideoStitcherServiceGrpcAsyncIOTransport(VideoStitcherServiceTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_cdn_key: gapic_v1.method_async.wrap_method(
+            self.create_cdn_key: self._wrap_method(
                 self.create_cdn_key,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_cdn_keys: gapic_v1.method_async.wrap_method(
+            self.list_cdn_keys: self._wrap_method(
                 self.list_cdn_keys,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_cdn_key: gapic_v1.method_async.wrap_method(
+            self.get_cdn_key: self._wrap_method(
                 self.get_cdn_key,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_cdn_key: gapic_v1.method_async.wrap_method(
+            self.delete_cdn_key: self._wrap_method(
                 self.delete_cdn_key,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_cdn_key: gapic_v1.method_async.wrap_method(
+            self.update_cdn_key: self._wrap_method(
                 self.update_cdn_key,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_vod_session: gapic_v1.method_async.wrap_method(
+            self.create_vod_session: self._wrap_method(
                 self.create_vod_session,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_vod_session: gapic_v1.method_async.wrap_method(
+            self.get_vod_session: self._wrap_method(
                 self.get_vod_session,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_vod_stitch_details: gapic_v1.method_async.wrap_method(
+            self.list_vod_stitch_details: self._wrap_method(
                 self.list_vod_stitch_details,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_vod_stitch_detail: gapic_v1.method_async.wrap_method(
+            self.get_vod_stitch_detail: self._wrap_method(
                 self.get_vod_stitch_detail,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_vod_ad_tag_details: gapic_v1.method_async.wrap_method(
+            self.list_vod_ad_tag_details: self._wrap_method(
                 self.list_vod_ad_tag_details,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_vod_ad_tag_detail: gapic_v1.method_async.wrap_method(
+            self.get_vod_ad_tag_detail: self._wrap_method(
                 self.get_vod_ad_tag_detail,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_live_ad_tag_details: gapic_v1.method_async.wrap_method(
+            self.list_live_ad_tag_details: self._wrap_method(
                 self.list_live_ad_tag_details,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_live_ad_tag_detail: gapic_v1.method_async.wrap_method(
+            self.get_live_ad_tag_detail: self._wrap_method(
                 self.get_live_ad_tag_detail,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_slate: gapic_v1.method_async.wrap_method(
+            self.create_slate: self._wrap_method(
                 self.create_slate,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_slates: gapic_v1.method_async.wrap_method(
+            self.list_slates: self._wrap_method(
                 self.list_slates,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_slate: gapic_v1.method_async.wrap_method(
+            self.get_slate: self._wrap_method(
                 self.get_slate,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_slate: gapic_v1.method_async.wrap_method(
+            self.update_slate: self._wrap_method(
                 self.update_slate,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_slate: gapic_v1.method_async.wrap_method(
+            self.delete_slate: self._wrap_method(
                 self.delete_slate,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_live_session: gapic_v1.method_async.wrap_method(
+            self.create_live_session: self._wrap_method(
                 self.create_live_session,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_live_session: gapic_v1.method_async.wrap_method(
+            self.get_live_session: self._wrap_method(
                 self.get_live_session,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_live_config: gapic_v1.method_async.wrap_method(
+            self.create_live_config: self._wrap_method(
                 self.create_live_config,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_live_configs: gapic_v1.method_async.wrap_method(
+            self.list_live_configs: self._wrap_method(
                 self.list_live_configs,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_live_config: gapic_v1.method_async.wrap_method(
+            self.get_live_config: self._wrap_method(
                 self.get_live_config,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_live_config: gapic_v1.method_async.wrap_method(
+            self.delete_live_config: self._wrap_method(
                 self.delete_live_config,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_live_config: gapic_v1.method_async.wrap_method(
+            self.update_live_config: self._wrap_method(
                 self.update_live_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_vod_config: gapic_v1.method_async.wrap_method(
+            self.create_vod_config: self._wrap_method(
                 self.create_vod_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_vod_configs: gapic_v1.method_async.wrap_method(
+            self.list_vod_configs: self._wrap_method(
                 self.list_vod_configs,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_vod_config: gapic_v1.method_async.wrap_method(
+            self.get_vod_config: self._wrap_method(
                 self.get_vod_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_vod_config: gapic_v1.method_async.wrap_method(
+            self.delete_vod_config: self._wrap_method(
                 self.delete_vod_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_vod_config: gapic_v1.method_async.wrap_method(
+            self.update_vod_config: self._wrap_method(
                 self.update_vod_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(

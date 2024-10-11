@@ -3253,8 +3253,7 @@ class VertexCustomConfig(proto.Message):
                   'instanceId': STRING;
                   'node': STRING;
                   'processor': STRING;
-
-            }
+             }
     """
 
     max_prediction_fps: int = proto.Field(

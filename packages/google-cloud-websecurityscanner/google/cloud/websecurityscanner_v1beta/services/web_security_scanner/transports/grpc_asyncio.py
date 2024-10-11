@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -233,6 +234,9 @@ class WebSecurityScannerGrpcAsyncIOTransport(WebSecurityScannerTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -620,12 +624,12 @@ class WebSecurityScannerGrpcAsyncIOTransport(WebSecurityScannerTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_scan_config: gapic_v1.method_async.wrap_method(
+            self.create_scan_config: self._wrap_method(
                 self.create_scan_config,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.delete_scan_config: gapic_v1.method_async.wrap_method(
+            self.delete_scan_config: self._wrap_method(
                 self.delete_scan_config,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -640,7 +644,7 @@ class WebSecurityScannerGrpcAsyncIOTransport(WebSecurityScannerTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.get_scan_config: gapic_v1.method_async.wrap_method(
+            self.get_scan_config: self._wrap_method(
                 self.get_scan_config,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -655,7 +659,7 @@ class WebSecurityScannerGrpcAsyncIOTransport(WebSecurityScannerTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.list_scan_configs: gapic_v1.method_async.wrap_method(
+            self.list_scan_configs: self._wrap_method(
                 self.list_scan_configs,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -670,17 +674,17 @@ class WebSecurityScannerGrpcAsyncIOTransport(WebSecurityScannerTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.update_scan_config: gapic_v1.method_async.wrap_method(
+            self.update_scan_config: self._wrap_method(
                 self.update_scan_config,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.start_scan_run: gapic_v1.method_async.wrap_method(
+            self.start_scan_run: self._wrap_method(
                 self.start_scan_run,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.get_scan_run: gapic_v1.method_async.wrap_method(
+            self.get_scan_run: self._wrap_method(
                 self.get_scan_run,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -695,7 +699,7 @@ class WebSecurityScannerGrpcAsyncIOTransport(WebSecurityScannerTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.list_scan_runs: gapic_v1.method_async.wrap_method(
+            self.list_scan_runs: self._wrap_method(
                 self.list_scan_runs,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -710,12 +714,12 @@ class WebSecurityScannerGrpcAsyncIOTransport(WebSecurityScannerTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.stop_scan_run: gapic_v1.method_async.wrap_method(
+            self.stop_scan_run: self._wrap_method(
                 self.stop_scan_run,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.list_crawled_urls: gapic_v1.method_async.wrap_method(
+            self.list_crawled_urls: self._wrap_method(
                 self.list_crawled_urls,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -730,7 +734,7 @@ class WebSecurityScannerGrpcAsyncIOTransport(WebSecurityScannerTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.get_finding: gapic_v1.method_async.wrap_method(
+            self.get_finding: self._wrap_method(
                 self.get_finding,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -745,7 +749,7 @@ class WebSecurityScannerGrpcAsyncIOTransport(WebSecurityScannerTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.list_findings: gapic_v1.method_async.wrap_method(
+            self.list_findings: self._wrap_method(
                 self.list_findings,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -760,7 +764,7 @@ class WebSecurityScannerGrpcAsyncIOTransport(WebSecurityScannerTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.list_finding_type_stats: gapic_v1.method_async.wrap_method(
+            self.list_finding_type_stats: self._wrap_method(
                 self.list_finding_type_stats,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -777,8 +781,17 @@ class WebSecurityScannerGrpcAsyncIOTransport(WebSecurityScannerTransport):
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("WebSecurityScannerGrpcAsyncIOTransport",)
