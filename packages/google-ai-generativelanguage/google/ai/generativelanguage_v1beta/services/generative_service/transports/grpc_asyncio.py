@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -228,6 +229,9 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -435,7 +439,7 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.generate_content: gapic_v1.method_async.wrap_method(
+            self.generate_content: self._wrap_method(
                 self.generate_content,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -449,7 +453,7 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.generate_answer: gapic_v1.method_async.wrap_method(
+            self.generate_answer: self._wrap_method(
                 self.generate_answer,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -463,7 +467,7 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.stream_generate_content: gapic_v1.method_async.wrap_method(
+            self.stream_generate_content: self._wrap_method(
                 self.stream_generate_content,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -477,7 +481,7 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.embed_content: gapic_v1.method_async.wrap_method(
+            self.embed_content: self._wrap_method(
                 self.embed_content,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -491,7 +495,7 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.batch_embed_contents: gapic_v1.method_async.wrap_method(
+            self.batch_embed_contents: self._wrap_method(
                 self.batch_embed_contents,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -505,7 +509,7 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.count_tokens: gapic_v1.method_async.wrap_method(
+            self.count_tokens: self._wrap_method(
                 self.count_tokens,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -521,8 +525,17 @@ class GenerativeServiceGrpcAsyncIOTransport(GenerativeServiceTransport):
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("GenerativeServiceGrpcAsyncIOTransport",)
