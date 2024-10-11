@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -240,6 +241,9 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -687,7 +691,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_insights: gapic_v1.method_async.wrap_method(
+            self.list_insights: self._wrap_method(
                 self.list_insights,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -702,7 +706,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_insight: gapic_v1.method_async.wrap_method(
+            self.get_insight: self._wrap_method(
                 self.get_insight,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -717,12 +721,12 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.mark_insight_accepted: gapic_v1.method_async.wrap_method(
+            self.mark_insight_accepted: self._wrap_method(
                 self.mark_insight_accepted,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_recommendations: gapic_v1.method_async.wrap_method(
+            self.list_recommendations: self._wrap_method(
                 self.list_recommendations,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -737,7 +741,7 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_recommendation: gapic_v1.method_async.wrap_method(
+            self.get_recommendation: self._wrap_method(
                 self.get_recommendation,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -752,50 +756,59 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.mark_recommendation_dismissed: gapic_v1.method_async.wrap_method(
+            self.mark_recommendation_dismissed: self._wrap_method(
                 self.mark_recommendation_dismissed,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.mark_recommendation_claimed: gapic_v1.method_async.wrap_method(
+            self.mark_recommendation_claimed: self._wrap_method(
                 self.mark_recommendation_claimed,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.mark_recommendation_succeeded: gapic_v1.method_async.wrap_method(
+            self.mark_recommendation_succeeded: self._wrap_method(
                 self.mark_recommendation_succeeded,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.mark_recommendation_failed: gapic_v1.method_async.wrap_method(
+            self.mark_recommendation_failed: self._wrap_method(
                 self.mark_recommendation_failed,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_recommender_config: gapic_v1.method_async.wrap_method(
+            self.get_recommender_config: self._wrap_method(
                 self.get_recommender_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_recommender_config: gapic_v1.method_async.wrap_method(
+            self.update_recommender_config: self._wrap_method(
                 self.update_recommender_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_insight_type_config: gapic_v1.method_async.wrap_method(
+            self.get_insight_type_config: self._wrap_method(
                 self.get_insight_type_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_insight_type_config: gapic_v1.method_async.wrap_method(
+            self.update_insight_type_config: self._wrap_method(
                 self.update_insight_type_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("RecommenderGrpcAsyncIOTransport",)

@@ -22,12 +22,29 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 import google.auth
@@ -36,15 +53,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.retail_v2alpha.services.branch_service import (
     BranchServiceAsyncClient,
@@ -54,8 +63,22 @@ from google.cloud.retail_v2alpha.services.branch_service import (
 from google.cloud.retail_v2alpha.types import branch, branch_service
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1148,25 +1171,6 @@ def test_list_branches(request_type, transport: str = "grpc"):
     assert isinstance(response, branch_service.ListBranchesResponse)
 
 
-def test_list_branches_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BranchServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_branches), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_branches()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == branch_service.ListBranchesRequest()
-
-
 def test_list_branches_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1231,27 +1235,6 @@ def test_list_branches_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_branches_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BranchServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_branches), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            branch_service.ListBranchesResponse()
-        )
-        response = await client.list_branches()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == branch_service.ListBranchesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_branches_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1259,7 +1242,7 @@ async def test_list_branches_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BranchServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1298,7 +1281,7 @@ async def test_list_branches_async(
     transport: str = "grpc_asyncio", request_type=branch_service.ListBranchesRequest
 ):
     client = BranchServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1361,7 +1344,7 @@ def test_list_branches_field_headers():
 @pytest.mark.asyncio
 async def test_list_branches_field_headers_async():
     client = BranchServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1431,7 +1414,7 @@ def test_list_branches_flattened_error():
 @pytest.mark.asyncio
 async def test_list_branches_flattened_async():
     client = BranchServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1460,7 +1443,7 @@ async def test_list_branches_flattened_async():
 @pytest.mark.asyncio
 async def test_list_branches_flattened_error_async():
     client = BranchServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1510,25 +1493,6 @@ def test_get_branch(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.is_default is True
-
-
-def test_get_branch_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BranchServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_branch), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_branch()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == branch_service.GetBranchRequest()
 
 
 def test_get_branch_non_empty_request_with_auto_populated_field():
@@ -1595,37 +1559,12 @@ def test_get_branch_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_branch_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = BranchServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_branch), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            branch.Branch(
-                name="name_value",
-                display_name="display_name_value",
-                is_default=True,
-            )
-        )
-        response = await client.get_branch()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == branch_service.GetBranchRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_branch_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = BranchServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1664,7 +1603,7 @@ async def test_get_branch_async(
     transport: str = "grpc_asyncio", request_type=branch_service.GetBranchRequest
 ):
     client = BranchServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1734,7 +1673,7 @@ def test_get_branch_field_headers():
 @pytest.mark.asyncio
 async def test_get_branch_field_headers_async():
     client = BranchServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1802,7 +1741,7 @@ def test_get_branch_flattened_error():
 @pytest.mark.asyncio
 async def test_get_branch_flattened_async():
     client = BranchServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1829,7 +1768,7 @@ async def test_get_branch_flattened_async():
 @pytest.mark.asyncio
 async def test_get_branch_flattened_error_async():
     client = BranchServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1839,43 +1778,6 @@ async def test_get_branch_flattened_error_async():
             branch_service.GetBranchRequest(),
             name="name_value",
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        branch_service.ListBranchesRequest,
-        dict,
-    ],
-)
-def test_list_branches_rest(request_type):
-    client = BranchServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = branch_service.ListBranchesResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = branch_service.ListBranchesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_branches(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, branch_service.ListBranchesResponse)
 
 
 def test_list_branches_rest_use_cached_wrapped_rpc():
@@ -1999,87 +1901,6 @@ def test_list_branches_rest_unset_required_fields():
     assert set(unset_fields) == (set(("view",)) & set(("parent",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_branches_rest_interceptors(null_interceptor):
-    transport = transports.BranchServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BranchServiceRestInterceptor(),
-    )
-    client = BranchServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BranchServiceRestInterceptor, "post_list_branches"
-    ) as post, mock.patch.object(
-        transports.BranchServiceRestInterceptor, "pre_list_branches"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = branch_service.ListBranchesRequest.pb(
-            branch_service.ListBranchesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = branch_service.ListBranchesResponse.to_json(
-            branch_service.ListBranchesResponse()
-        )
-
-        request = branch_service.ListBranchesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = branch_service.ListBranchesResponse()
-
-        client.list_branches(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_branches_rest_bad_request(
-    transport: str = "rest", request_type=branch_service.ListBranchesRequest
-):
-    client = BranchServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_branches(request)
-
-
 def test_list_branches_rest_flattened():
     client = BranchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2137,58 +1958,6 @@ def test_list_branches_rest_flattened_error(transport: str = "rest"):
             branch_service.ListBranchesRequest(),
             parent="parent_value",
         )
-
-
-def test_list_branches_rest_error():
-    client = BranchServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        branch_service.GetBranchRequest,
-        dict,
-    ],
-)
-def test_get_branch_rest(request_type):
-    client = BranchServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/catalogs/sample3/branches/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = branch.Branch(
-            name="name_value",
-            display_name="display_name_value",
-            is_default=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = branch.Branch.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_branch(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, branch.Branch)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.is_default is True
 
 
 def test_get_branch_rest_use_cached_wrapped_rpc():
@@ -2310,87 +2079,6 @@ def test_get_branch_rest_unset_required_fields():
     assert set(unset_fields) == (set(("view",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_branch_rest_interceptors(null_interceptor):
-    transport = transports.BranchServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.BranchServiceRestInterceptor(),
-    )
-    client = BranchServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.BranchServiceRestInterceptor, "post_get_branch"
-    ) as post, mock.patch.object(
-        transports.BranchServiceRestInterceptor, "pre_get_branch"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = branch_service.GetBranchRequest.pb(
-            branch_service.GetBranchRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = branch.Branch.to_json(branch.Branch())
-
-        request = branch_service.GetBranchRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = branch.Branch()
-
-        client.get_branch(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_branch_rest_bad_request(
-    transport: str = "rest", request_type=branch_service.GetBranchRequest
-):
-    client = BranchServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/catalogs/sample3/branches/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_branch(request)
-
-
 def test_get_branch_rest_flattened():
     client = BranchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2448,12 +2136,6 @@ def test_get_branch_rest_flattened_error(transport: str = "rest"):
             branch_service.GetBranchRequest(),
             name="name_value",
         )
-
-
-def test_get_branch_rest_error():
-    client = BranchServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
 
 
 def test_credentials_transport_error():
@@ -2548,18 +2230,550 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = BranchServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = BranchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_branches_empty_call_grpc():
+    client = BranchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_branches), "__call__") as call:
+        call.return_value = branch_service.ListBranchesResponse()
+        client.list_branches(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = branch_service.ListBranchesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_branch_empty_call_grpc():
+    client = BranchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_branch), "__call__") as call:
+        call.return_value = branch.Branch()
+        client.get_branch(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = branch_service.GetBranchRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = BranchServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = BranchServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_branches_empty_call_grpc_asyncio():
+    client = BranchServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_branches), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            branch_service.ListBranchesResponse()
+        )
+        await client.list_branches(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = branch_service.ListBranchesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_branch_empty_call_grpc_asyncio():
+    client = BranchServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_branch), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            branch.Branch(
+                name="name_value",
+                display_name="display_name_value",
+                is_default=True,
+            )
+        )
+        await client.get_branch(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = branch_service.GetBranchRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = BranchServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_list_branches_rest_bad_request(
+    request_type=branch_service.ListBranchesRequest,
+):
+    client = BranchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_branches(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        branch_service.ListBranchesRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = BranchServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_list_branches_rest_call_success(request_type):
+    client = BranchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = branch_service.ListBranchesResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = branch_service.ListBranchesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_branches(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, branch_service.ListBranchesResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_branches_rest_interceptors(null_interceptor):
+    transport = transports.BranchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BranchServiceRestInterceptor(),
+    )
+    client = BranchServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BranchServiceRestInterceptor, "post_list_branches"
+    ) as post, mock.patch.object(
+        transports.BranchServiceRestInterceptor, "pre_list_branches"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = branch_service.ListBranchesRequest.pb(
+            branch_service.ListBranchesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = branch_service.ListBranchesResponse.to_json(
+            branch_service.ListBranchesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = branch_service.ListBranchesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = branch_service.ListBranchesResponse()
+
+        client.list_branches(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_branch_rest_bad_request(request_type=branch_service.GetBranchRequest):
+    client = BranchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/catalogs/sample3/branches/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_branch(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        branch_service.GetBranchRequest,
+        dict,
+    ],
+)
+def test_get_branch_rest_call_success(request_type):
+    client = BranchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/catalogs/sample3/branches/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = branch.Branch(
+            name="name_value",
+            display_name="display_name_value",
+            is_default=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = branch.Branch.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_branch(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, branch.Branch)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.is_default is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_branch_rest_interceptors(null_interceptor):
+    transport = transports.BranchServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BranchServiceRestInterceptor(),
+    )
+    client = BranchServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BranchServiceRestInterceptor, "post_get_branch"
+    ) as post, mock.patch.object(
+        transports.BranchServiceRestInterceptor, "pre_get_branch"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = branch_service.GetBranchRequest.pb(
+            branch_service.GetBranchRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = branch.Branch.to_json(branch.Branch())
+        req.return_value.content = return_value
+
+        request = branch_service.GetBranchRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = branch.Branch()
+
+        client.get_branch(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = BranchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {
+            "name": "projects/sample1/locations/sample2/catalogs/sample3/branches/sample4/operations/sample5"
+        },
+        request,
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = BranchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {
+        "name": "projects/sample1/locations/sample2/catalogs/sample3/branches/sample4/operations/sample5"
+    }
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    request_type=operations_pb2.ListOperationsRequest,
+):
+    client = BranchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/catalogs/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = BranchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/catalogs/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_initialize_client_w_rest():
+    client = BranchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_branches_empty_call_rest():
+    client = BranchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_branches), "__call__") as call:
+        client.list_branches(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = branch_service.ListBranchesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_branch_empty_call_rest():
+    client = BranchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_branch), "__call__") as call:
+        client.get_branch(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = branch_service.GetBranchRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -3204,141 +3418,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = BranchServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
-def test_get_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
-):
-    client = BranchServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {
-            "name": "projects/sample1/locations/sample2/catalogs/sample3/branches/sample4/operations/sample5"
-        },
-        request,
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = BranchServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {
-        "name": "projects/sample1/locations/sample2/catalogs/sample3/branches/sample4/operations/sample5"
-    }
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
-def test_list_operations_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
-):
-    client = BranchServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/catalogs/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_operations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.ListOperationsRequest,
-        dict,
-    ],
-)
-def test_list_operations_rest(request_type):
-    client = BranchServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/catalogs/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.ListOperationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.ListOperationsResponse)
-
-
 def test_get_operation(transport: str = "grpc"):
     client = BranchServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3366,7 +3445,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = BranchServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3421,7 +3500,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = BranchServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3468,7 +3547,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = BranchServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -3511,7 +3590,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = BranchServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3566,7 +3645,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = BranchServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3613,7 +3692,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = BranchServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -3629,22 +3708,41 @@ async def test_list_operations_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = BranchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = BranchServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = BranchServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+    client = BranchServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():
