@@ -104,6 +104,12 @@ class Semantics:
         for column in columns:
             if column not in self._df.columns:
                 raise ValueError(f"Column {column} not found.")
+            if self._df[column].dtype != dtypes.STRING_DTYPE:
+                raise TypeError(
+                    "Semantics aggregated column must be a string type, not "
+                    f"{type(self._df[column])}"
+                )
+
         if len(columns) > 1:
             raise NotImplementedError(
                 "Semantic aggregations are limited to a single column."
@@ -324,6 +330,11 @@ class Semantics:
         for column in columns:
             if column not in self._df.columns:
                 raise ValueError(f"Column {column} not found.")
+            if self._df[column].dtype != dtypes.STRING_DTYPE:
+                raise TypeError(
+                    "Semantics aggregated column must be a string type, not "
+                    f"{type(self._df[column])}"
+                )
 
         user_instruction = self._format_instruction(instruction, columns)
         output_instruction = "Based on the provided context, reply to the following claim by only True or False:"
@@ -372,7 +383,7 @@ class Semantics:
                 in the instructions like:
                 "Get the ingredients of {food}."
 
-            result_column_name:
+            output_column:
                 The column name of the mapping result.
 
             model:
@@ -391,6 +402,11 @@ class Semantics:
         for column in columns:
             if column not in self._df.columns:
                 raise ValueError(f"Column {column} not found.")
+            if self._df[column].dtype != dtypes.STRING_DTYPE:
+                raise TypeError(
+                    "Semantics aggregated column must be a string type, not "
+                    f"{type(self._df[column])}"
+                )
 
         user_instruction = self._format_instruction(instruction, columns)
         output_instruction = (
@@ -512,8 +528,11 @@ class Semantics:
             else:
                 raise ValueError(f"Column {col} not found")
 
-        if not left_columns or not right_columns:
-            raise ValueError()
+        if not left_columns:
+            raise ValueError("No left column references.")
+
+        if not right_columns:
+            raise ValueError("No right column references.")
 
         joined_df = self._df.merge(other, how="cross", suffixes=("_left", "_right"))
 
@@ -570,12 +589,15 @@ class Semantics:
         """
 
         if search_column not in self._df.columns:
-            raise ValueError(f"Column {search_column} not found")
+            raise ValueError(f"Column `{search_column}` not found")
 
         import bigframes.ml.llm as llm
 
         if not isinstance(model, llm.TextEmbeddingGenerator):
             raise TypeError(f"Expect a text embedding model, but got: {type(model)}")
+
+        if top_k < 1:
+            raise ValueError("top_k must be an integer greater than or equal to 1.")
 
         embedded_df = model.predict(self._df[search_column])
         embedded_table = embedded_df.reset_index().to_gbq()
@@ -855,6 +877,9 @@ class Semantics:
                 f"Number of rows that need processing is {joined_table_rows}, which exceeds row limit {max_rows}."
             )
 
+        if top_k < 1:
+            raise ValueError("top_k must be an integer greater than or equal to 1.")
+
         base_table_embedding_column = guid.generate_guid()
         base_table = self._attach_embedding(
             other, right_on, base_table_embedding_column, model
@@ -926,4 +951,4 @@ class Semantics:
         from bigframes.ml.llm import GeminiTextGenerator
 
         if not isinstance(model, GeminiTextGenerator):
-            raise ValueError("Model is not GeminiText Generator")
+            raise TypeError("Model is not GeminiText Generator")
