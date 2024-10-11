@@ -22,21 +22,12 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.location import locations_pb2
-from google.oauth2 import service_account
+from google.api_core import api_core_version
 from google.protobuf import json_format
-from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -44,6 +35,24 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import client_options
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+import google.auth
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.location import locations_pb2
+from google.oauth2 import service_account
+from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.servicehealth_v1.services.service_health import (
     ServiceHealthAsyncClient,
@@ -54,8 +63,22 @@ from google.cloud.servicehealth_v1.services.service_health import (
 from google.cloud.servicehealth_v1.types import event_resources
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1153,25 +1176,6 @@ def test_list_events(request_type, transport: str = "grpc"):
     assert response.unreachable == ["unreachable_value"]
 
 
-def test_list_events_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_events), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_events()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.ListEventsRequest()
-
-
 def test_list_events_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1240,30 +1244,6 @@ def test_list_events_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_events_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_events), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            event_resources.ListEventsResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_events()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.ListEventsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_events_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1271,7 +1251,7 @@ async def test_list_events_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ServiceHealthAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1310,7 +1290,7 @@ async def test_list_events_async(
     transport: str = "grpc_asyncio", request_type=event_resources.ListEventsRequest
 ):
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1378,7 +1358,7 @@ def test_list_events_field_headers():
 @pytest.mark.asyncio
 async def test_list_events_field_headers_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1448,7 +1428,7 @@ def test_list_events_flattened_error():
 @pytest.mark.asyncio
 async def test_list_events_flattened_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1477,7 +1457,7 @@ async def test_list_events_flattened_async():
 @pytest.mark.asyncio
 async def test_list_events_flattened_error_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1587,7 +1567,7 @@ def test_list_events_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_events_async_pager():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1637,7 +1617,7 @@ async def test_list_events_async_pager():
 @pytest.mark.asyncio
 async def test_list_events_async_pages():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1738,25 +1718,6 @@ def test_get_event(request_type, transport: str = "grpc"):
     assert response.parent_event == "parent_event_value"
 
 
-def test_get_event_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_event), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_event()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.GetEventRequest()
-
-
 def test_get_event_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1821,43 +1782,12 @@ def test_get_event_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_event_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_event), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            event_resources.Event(
-                name="name_value",
-                title="title_value",
-                description="description_value",
-                category=event_resources.Event.EventCategory.INCIDENT,
-                detailed_category=event_resources.Event.DetailedCategory.CONFIRMED_INCIDENT,
-                state=event_resources.Event.State.ACTIVE,
-                detailed_state=event_resources.Event.DetailedState.EMERGING,
-                relevance=event_resources.Event.Relevance.UNKNOWN,
-                parent_event="parent_event_value",
-            )
-        )
-        response = await client.get_event()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.GetEventRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_event_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ServiceHealthAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1896,7 +1826,7 @@ async def test_get_event_async(
     transport: str = "grpc_asyncio", request_type=event_resources.GetEventRequest
 ):
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1981,7 +1911,7 @@ def test_get_event_field_headers():
 @pytest.mark.asyncio
 async def test_get_event_field_headers_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2051,7 +1981,7 @@ def test_get_event_flattened_error():
 @pytest.mark.asyncio
 async def test_get_event_flattened_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2080,7 +2010,7 @@ async def test_get_event_flattened_async():
 @pytest.mark.asyncio
 async def test_get_event_flattened_error_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2130,27 +2060,6 @@ def test_list_organization_events(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListOrganizationEventsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_organization_events_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_organization_events), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_organization_events()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.ListOrganizationEventsRequest()
 
 
 def test_list_organization_events_non_empty_request_with_auto_populated_field():
@@ -2228,32 +2137,6 @@ def test_list_organization_events_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_organization_events_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_organization_events), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            event_resources.ListOrganizationEventsResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_organization_events()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.ListOrganizationEventsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_organization_events_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2261,7 +2144,7 @@ async def test_list_organization_events_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ServiceHealthAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2301,7 +2184,7 @@ async def test_list_organization_events_async(
     request_type=event_resources.ListOrganizationEventsRequest,
 ):
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2373,7 +2256,7 @@ def test_list_organization_events_field_headers():
 @pytest.mark.asyncio
 async def test_list_organization_events_field_headers_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2447,7 +2330,7 @@ def test_list_organization_events_flattened_error():
 @pytest.mark.asyncio
 async def test_list_organization_events_flattened_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2478,7 +2361,7 @@ async def test_list_organization_events_flattened_async():
 @pytest.mark.asyncio
 async def test_list_organization_events_flattened_error_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2594,7 +2477,7 @@ def test_list_organization_events_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_organization_events_async_pager():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2646,7 +2529,7 @@ async def test_list_organization_events_async_pager():
 @pytest.mark.asyncio
 async def test_list_organization_events_async_pages():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2752,27 +2635,6 @@ def test_get_organization_event(request_type, transport: str = "grpc"):
     assert response.parent_event == "parent_event_value"
 
 
-def test_get_organization_event_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_organization_event), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_organization_event()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.GetOrganizationEventRequest()
-
-
 def test_get_organization_event_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -2844,38 +2706,6 @@ def test_get_organization_event_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_organization_event_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_organization_event), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            event_resources.OrganizationEvent(
-                name="name_value",
-                title="title_value",
-                description="description_value",
-                category=event_resources.OrganizationEvent.EventCategory.INCIDENT,
-                detailed_category=event_resources.OrganizationEvent.DetailedCategory.CONFIRMED_INCIDENT,
-                state=event_resources.OrganizationEvent.State.ACTIVE,
-                detailed_state=event_resources.OrganizationEvent.DetailedState.EMERGING,
-                parent_event="parent_event_value",
-            )
-        )
-        response = await client.get_organization_event()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.GetOrganizationEventRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_organization_event_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2883,7 +2713,7 @@ async def test_get_organization_event_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ServiceHealthAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2923,7 +2753,7 @@ async def test_get_organization_event_async(
     request_type=event_resources.GetOrganizationEventRequest,
 ):
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3013,7 +2843,7 @@ def test_get_organization_event_field_headers():
 @pytest.mark.asyncio
 async def test_get_organization_event_field_headers_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3087,7 +2917,7 @@ def test_get_organization_event_flattened_error():
 @pytest.mark.asyncio
 async def test_get_organization_event_flattened_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3118,7 +2948,7 @@ async def test_get_organization_event_flattened_async():
 @pytest.mark.asyncio
 async def test_get_organization_event_flattened_error_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3168,27 +2998,6 @@ def test_list_organization_impacts(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListOrganizationImpactsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_organization_impacts_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_organization_impacts), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_organization_impacts()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.ListOrganizationImpactsRequest()
 
 
 def test_list_organization_impacts_non_empty_request_with_auto_populated_field():
@@ -3266,32 +3075,6 @@ def test_list_organization_impacts_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_organization_impacts_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_organization_impacts), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            event_resources.ListOrganizationImpactsResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_organization_impacts()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.ListOrganizationImpactsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_organization_impacts_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3299,7 +3082,7 @@ async def test_list_organization_impacts_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ServiceHealthAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3339,7 +3122,7 @@ async def test_list_organization_impacts_async(
     request_type=event_resources.ListOrganizationImpactsRequest,
 ):
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3411,7 +3194,7 @@ def test_list_organization_impacts_field_headers():
 @pytest.mark.asyncio
 async def test_list_organization_impacts_field_headers_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3485,7 +3268,7 @@ def test_list_organization_impacts_flattened_error():
 @pytest.mark.asyncio
 async def test_list_organization_impacts_flattened_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3516,7 +3299,7 @@ async def test_list_organization_impacts_flattened_async():
 @pytest.mark.asyncio
 async def test_list_organization_impacts_flattened_error_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3632,7 +3415,7 @@ def test_list_organization_impacts_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_organization_impacts_async_pager():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3684,7 +3467,7 @@ async def test_list_organization_impacts_async_pager():
 @pytest.mark.asyncio
 async def test_list_organization_impacts_async_pages():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3772,27 +3555,6 @@ def test_get_organization_impact(request_type, transport: str = "grpc"):
     assert response.events == ["events_value"]
 
 
-def test_get_organization_impact_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_organization_impact), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_organization_impact()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.GetOrganizationImpactRequest()
-
-
 def test_get_organization_impact_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -3864,32 +3626,6 @@ def test_get_organization_impact_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_organization_impact_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_organization_impact), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            event_resources.OrganizationImpact(
-                name="name_value",
-                events=["events_value"],
-            )
-        )
-        response = await client.get_organization_impact()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.GetOrganizationImpactRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_organization_impact_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3897,7 +3633,7 @@ async def test_get_organization_impact_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ServiceHealthAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3937,7 +3673,7 @@ async def test_get_organization_impact_async(
     request_type=event_resources.GetOrganizationImpactRequest,
 ):
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4009,7 +3745,7 @@ def test_get_organization_impact_field_headers():
 @pytest.mark.asyncio
 async def test_get_organization_impact_field_headers_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4083,7 +3819,7 @@ def test_get_organization_impact_flattened_error():
 @pytest.mark.asyncio
 async def test_get_organization_impact_flattened_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4114,7 +3850,7 @@ async def test_get_organization_impact_flattened_async():
 @pytest.mark.asyncio
 async def test_get_organization_impact_flattened_error_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4124,48 +3860,6 @@ async def test_get_organization_impact_flattened_error_async():
             event_resources.GetOrganizationImpactRequest(),
             name="name_value",
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        event_resources.ListEventsRequest,
-        dict,
-    ],
-)
-def test_list_events_rest(request_type):
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = event_resources.ListEventsResponse(
-            next_page_token="next_page_token_value",
-            unreachable=["unreachable_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = event_resources.ListEventsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_events(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListEventsPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_events_rest_use_cached_wrapped_rpc():
@@ -4306,87 +4000,6 @@ def test_list_events_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_events_rest_interceptors(null_interceptor):
-    transport = transports.ServiceHealthRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ServiceHealthRestInterceptor(),
-    )
-    client = ServiceHealthClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ServiceHealthRestInterceptor, "post_list_events"
-    ) as post, mock.patch.object(
-        transports.ServiceHealthRestInterceptor, "pre_list_events"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = event_resources.ListEventsRequest.pb(
-            event_resources.ListEventsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = event_resources.ListEventsResponse.to_json(
-            event_resources.ListEventsResponse()
-        )
-
-        request = event_resources.ListEventsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = event_resources.ListEventsResponse()
-
-        client.list_events(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_events_rest_bad_request(
-    transport: str = "rest", request_type=event_resources.ListEventsRequest
-):
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_events(request)
-
-
 def test_list_events_rest_flattened():
     client = ServiceHealthClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4506,65 +4119,6 @@ def test_list_events_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        event_resources.GetEventRequest,
-        dict,
-    ],
-)
-def test_get_event_rest(request_type):
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/events/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = event_resources.Event(
-            name="name_value",
-            title="title_value",
-            description="description_value",
-            category=event_resources.Event.EventCategory.INCIDENT,
-            detailed_category=event_resources.Event.DetailedCategory.CONFIRMED_INCIDENT,
-            state=event_resources.Event.State.ACTIVE,
-            detailed_state=event_resources.Event.DetailedState.EMERGING,
-            relevance=event_resources.Event.Relevance.UNKNOWN,
-            parent_event="parent_event_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = event_resources.Event.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_event(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, event_resources.Event)
-    assert response.name == "name_value"
-    assert response.title == "title_value"
-    assert response.description == "description_value"
-    assert response.category == event_resources.Event.EventCategory.INCIDENT
-    assert (
-        response.detailed_category
-        == event_resources.Event.DetailedCategory.CONFIRMED_INCIDENT
-    )
-    assert response.state == event_resources.Event.State.ACTIVE
-    assert response.detailed_state == event_resources.Event.DetailedState.EMERGING
-    assert response.relevance == event_resources.Event.Relevance.UNKNOWN
-    assert response.parent_event == "parent_event_value"
-
-
 def test_get_event_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -4682,87 +4236,6 @@ def test_get_event_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_event_rest_interceptors(null_interceptor):
-    transport = transports.ServiceHealthRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ServiceHealthRestInterceptor(),
-    )
-    client = ServiceHealthClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ServiceHealthRestInterceptor, "post_get_event"
-    ) as post, mock.patch.object(
-        transports.ServiceHealthRestInterceptor, "pre_get_event"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = event_resources.GetEventRequest.pb(
-            event_resources.GetEventRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = event_resources.Event.to_json(
-            event_resources.Event()
-        )
-
-        request = event_resources.GetEventRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = event_resources.Event()
-
-        client.get_event(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_event_rest_bad_request(
-    transport: str = "rest", request_type=event_resources.GetEventRequest
-):
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/events/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_event(request)
-
-
 def test_get_event_rest_flattened():
     client = ServiceHealthClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4817,54 +4290,6 @@ def test_get_event_rest_flattened_error(transport: str = "rest"):
             event_resources.GetEventRequest(),
             name="name_value",
         )
-
-
-def test_get_event_rest_error():
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        event_resources.ListOrganizationEventsRequest,
-        dict,
-    ],
-)
-def test_list_organization_events_rest(request_type):
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = event_resources.ListOrganizationEventsResponse(
-            next_page_token="next_page_token_value",
-            unreachable=["unreachable_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = event_resources.ListOrganizationEventsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_organization_events(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListOrganizationEventsPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_organization_events_rest_use_cached_wrapped_rpc():
@@ -5012,89 +4437,6 @@ def test_list_organization_events_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_organization_events_rest_interceptors(null_interceptor):
-    transport = transports.ServiceHealthRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ServiceHealthRestInterceptor(),
-    )
-    client = ServiceHealthClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ServiceHealthRestInterceptor, "post_list_organization_events"
-    ) as post, mock.patch.object(
-        transports.ServiceHealthRestInterceptor, "pre_list_organization_events"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = event_resources.ListOrganizationEventsRequest.pb(
-            event_resources.ListOrganizationEventsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            event_resources.ListOrganizationEventsResponse.to_json(
-                event_resources.ListOrganizationEventsResponse()
-            )
-        )
-
-        request = event_resources.ListOrganizationEventsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = event_resources.ListOrganizationEventsResponse()
-
-        client.list_organization_events(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_organization_events_rest_bad_request(
-    transport: str = "rest", request_type=event_resources.ListOrganizationEventsRequest
-):
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_organization_events(request)
-
-
 def test_list_organization_events_rest_flattened():
     client = ServiceHealthClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5213,68 +4555,6 @@ def test_list_organization_events_rest_pager(transport: str = "rest"):
         pages = list(client.list_organization_events(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        event_resources.GetOrganizationEventRequest,
-        dict,
-    ],
-)
-def test_get_organization_event_rest(request_type):
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/organizationEvents/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = event_resources.OrganizationEvent(
-            name="name_value",
-            title="title_value",
-            description="description_value",
-            category=event_resources.OrganizationEvent.EventCategory.INCIDENT,
-            detailed_category=event_resources.OrganizationEvent.DetailedCategory.CONFIRMED_INCIDENT,
-            state=event_resources.OrganizationEvent.State.ACTIVE,
-            detailed_state=event_resources.OrganizationEvent.DetailedState.EMERGING,
-            parent_event="parent_event_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = event_resources.OrganizationEvent.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_organization_event(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, event_resources.OrganizationEvent)
-    assert response.name == "name_value"
-    assert response.title == "title_value"
-    assert response.description == "description_value"
-    assert response.category == event_resources.OrganizationEvent.EventCategory.INCIDENT
-    assert (
-        response.detailed_category
-        == event_resources.OrganizationEvent.DetailedCategory.CONFIRMED_INCIDENT
-    )
-    assert response.state == event_resources.OrganizationEvent.State.ACTIVE
-    assert (
-        response.detailed_state
-        == event_resources.OrganizationEvent.DetailedState.EMERGING
-    )
-    assert response.parent_event == "parent_event_value"
 
 
 def test_get_organization_event_rest_use_cached_wrapped_rpc():
@@ -5401,89 +4681,6 @@ def test_get_organization_event_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_organization_event_rest_interceptors(null_interceptor):
-    transport = transports.ServiceHealthRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ServiceHealthRestInterceptor(),
-    )
-    client = ServiceHealthClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ServiceHealthRestInterceptor, "post_get_organization_event"
-    ) as post, mock.patch.object(
-        transports.ServiceHealthRestInterceptor, "pre_get_organization_event"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = event_resources.GetOrganizationEventRequest.pb(
-            event_resources.GetOrganizationEventRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = event_resources.OrganizationEvent.to_json(
-            event_resources.OrganizationEvent()
-        )
-
-        request = event_resources.GetOrganizationEventRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = event_resources.OrganizationEvent()
-
-        client.get_organization_event(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_organization_event_rest_bad_request(
-    transport: str = "rest", request_type=event_resources.GetOrganizationEventRequest
-):
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/organizationEvents/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_organization_event(request)
-
-
 def test_get_organization_event_rest_flattened():
     client = ServiceHealthClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5541,54 +4738,6 @@ def test_get_organization_event_rest_flattened_error(transport: str = "rest"):
             event_resources.GetOrganizationEventRequest(),
             name="name_value",
         )
-
-
-def test_get_organization_event_rest_error():
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        event_resources.ListOrganizationImpactsRequest,
-        dict,
-    ],
-)
-def test_list_organization_impacts_rest(request_type):
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = event_resources.ListOrganizationImpactsResponse(
-            next_page_token="next_page_token_value",
-            unreachable=["unreachable_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = event_resources.ListOrganizationImpactsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_organization_impacts(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListOrganizationImpactsPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_organization_impacts_rest_use_cached_wrapped_rpc():
@@ -5734,89 +4883,6 @@ def test_list_organization_impacts_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_organization_impacts_rest_interceptors(null_interceptor):
-    transport = transports.ServiceHealthRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ServiceHealthRestInterceptor(),
-    )
-    client = ServiceHealthClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ServiceHealthRestInterceptor, "post_list_organization_impacts"
-    ) as post, mock.patch.object(
-        transports.ServiceHealthRestInterceptor, "pre_list_organization_impacts"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = event_resources.ListOrganizationImpactsRequest.pb(
-            event_resources.ListOrganizationImpactsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            event_resources.ListOrganizationImpactsResponse.to_json(
-                event_resources.ListOrganizationImpactsResponse()
-            )
-        )
-
-        request = event_resources.ListOrganizationImpactsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = event_resources.ListOrganizationImpactsResponse()
-
-        client.list_organization_impacts(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_organization_impacts_rest_bad_request(
-    transport: str = "rest", request_type=event_resources.ListOrganizationImpactsRequest
-):
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_organization_impacts(request)
-
-
 def test_list_organization_impacts_rest_flattened():
     client = ServiceHealthClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5935,50 +5001,6 @@ def test_list_organization_impacts_rest_pager(transport: str = "rest"):
         pages = list(client.list_organization_impacts(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        event_resources.GetOrganizationImpactRequest,
-        dict,
-    ],
-)
-def test_get_organization_impact_rest(request_type):
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/organizationImpacts/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = event_resources.OrganizationImpact(
-            name="name_value",
-            events=["events_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = event_resources.OrganizationImpact.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_organization_impact(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, event_resources.OrganizationImpact)
-    assert response.name == "name_value"
-    assert response.events == ["events_value"]
 
 
 def test_get_organization_impact_rest_use_cached_wrapped_rpc():
@@ -6105,89 +5127,6 @@ def test_get_organization_impact_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_organization_impact_rest_interceptors(null_interceptor):
-    transport = transports.ServiceHealthRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ServiceHealthRestInterceptor(),
-    )
-    client = ServiceHealthClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ServiceHealthRestInterceptor, "post_get_organization_impact"
-    ) as post, mock.patch.object(
-        transports.ServiceHealthRestInterceptor, "pre_get_organization_impact"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = event_resources.GetOrganizationImpactRequest.pb(
-            event_resources.GetOrganizationImpactRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = event_resources.OrganizationImpact.to_json(
-            event_resources.OrganizationImpact()
-        )
-
-        request = event_resources.GetOrganizationImpactRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = event_resources.OrganizationImpact()
-
-        client.get_organization_impact(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_organization_impact_rest_bad_request(
-    transport: str = "rest", request_type=event_resources.GetOrganizationImpactRequest
-):
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "organizations/sample1/locations/sample2/organizationImpacts/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_organization_impact(request)
-
-
 def test_get_organization_impact_rest_flattened():
     client = ServiceHealthClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6245,12 +5184,6 @@ def test_get_organization_impact_rest_flattened_error(transport: str = "rest"):
             event_resources.GetOrganizationImpactRequest(),
             name="name_value",
         )
-
-
-def test_get_organization_impact_rest_error():
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
 
 
 def test_credentials_transport_error():
@@ -6345,18 +5278,1388 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = ServiceHealthClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_events_empty_call_grpc():
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_events), "__call__") as call:
+        call.return_value = event_resources.ListEventsResponse()
+        client.list_events(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = event_resources.ListEventsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_event_empty_call_grpc():
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_event), "__call__") as call:
+        call.return_value = event_resources.Event()
+        client.get_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = event_resources.GetEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_organization_events_empty_call_grpc():
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_organization_events), "__call__"
+    ) as call:
+        call.return_value = event_resources.ListOrganizationEventsResponse()
+        client.list_organization_events(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = event_resources.ListOrganizationEventsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_organization_event_empty_call_grpc():
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_organization_event), "__call__"
+    ) as call:
+        call.return_value = event_resources.OrganizationEvent()
+        client.get_organization_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = event_resources.GetOrganizationEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_organization_impacts_empty_call_grpc():
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_organization_impacts), "__call__"
+    ) as call:
+        call.return_value = event_resources.ListOrganizationImpactsResponse()
+        client.list_organization_impacts(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = event_resources.ListOrganizationImpactsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_organization_impact_empty_call_grpc():
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_organization_impact), "__call__"
+    ) as call:
+        call.return_value = event_resources.OrganizationImpact()
+        client.get_organization_impact(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = event_resources.GetOrganizationImpactRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = ServiceHealthAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = ServiceHealthAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_events_empty_call_grpc_asyncio():
+    client = ServiceHealthAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_events), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_resources.ListEventsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_events(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = event_resources.ListEventsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_event_empty_call_grpc_asyncio():
+    client = ServiceHealthAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_event), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_resources.Event(
+                name="name_value",
+                title="title_value",
+                description="description_value",
+                category=event_resources.Event.EventCategory.INCIDENT,
+                detailed_category=event_resources.Event.DetailedCategory.CONFIRMED_INCIDENT,
+                state=event_resources.Event.State.ACTIVE,
+                detailed_state=event_resources.Event.DetailedState.EMERGING,
+                relevance=event_resources.Event.Relevance.UNKNOWN,
+                parent_event="parent_event_value",
+            )
+        )
+        await client.get_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = event_resources.GetEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_organization_events_empty_call_grpc_asyncio():
+    client = ServiceHealthAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_organization_events), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_resources.ListOrganizationEventsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_organization_events(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = event_resources.ListOrganizationEventsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_organization_event_empty_call_grpc_asyncio():
+    client = ServiceHealthAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_organization_event), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_resources.OrganizationEvent(
+                name="name_value",
+                title="title_value",
+                description="description_value",
+                category=event_resources.OrganizationEvent.EventCategory.INCIDENT,
+                detailed_category=event_resources.OrganizationEvent.DetailedCategory.CONFIRMED_INCIDENT,
+                state=event_resources.OrganizationEvent.State.ACTIVE,
+                detailed_state=event_resources.OrganizationEvent.DetailedState.EMERGING,
+                parent_event="parent_event_value",
+            )
+        )
+        await client.get_organization_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = event_resources.GetOrganizationEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_organization_impacts_empty_call_grpc_asyncio():
+    client = ServiceHealthAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_organization_impacts), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_resources.ListOrganizationImpactsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_organization_impacts(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = event_resources.ListOrganizationImpactsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_organization_impact_empty_call_grpc_asyncio():
+    client = ServiceHealthAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_organization_impact), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_resources.OrganizationImpact(
+                name="name_value",
+                events=["events_value"],
+            )
+        )
+        await client.get_organization_impact(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = event_resources.GetOrganizationImpactRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = ServiceHealthClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_list_events_rest_bad_request(request_type=event_resources.ListEventsRequest):
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_events(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        event_resources.ListEventsRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = ServiceHealthClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_list_events_rest_call_success(request_type):
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = event_resources.ListEventsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = event_resources.ListEventsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_events(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListEventsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_events_rest_interceptors(null_interceptor):
+    transport = transports.ServiceHealthRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceHealthRestInterceptor(),
+    )
+    client = ServiceHealthClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceHealthRestInterceptor, "post_list_events"
+    ) as post, mock.patch.object(
+        transports.ServiceHealthRestInterceptor, "pre_list_events"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = event_resources.ListEventsRequest.pb(
+            event_resources.ListEventsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = event_resources.ListEventsResponse.to_json(
+            event_resources.ListEventsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = event_resources.ListEventsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = event_resources.ListEventsResponse()
+
+        client.list_events(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_event_rest_bad_request(request_type=event_resources.GetEventRequest):
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/events/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_event(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        event_resources.GetEventRequest,
+        dict,
+    ],
+)
+def test_get_event_rest_call_success(request_type):
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/events/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = event_resources.Event(
+            name="name_value",
+            title="title_value",
+            description="description_value",
+            category=event_resources.Event.EventCategory.INCIDENT,
+            detailed_category=event_resources.Event.DetailedCategory.CONFIRMED_INCIDENT,
+            state=event_resources.Event.State.ACTIVE,
+            detailed_state=event_resources.Event.DetailedState.EMERGING,
+            relevance=event_resources.Event.Relevance.UNKNOWN,
+            parent_event="parent_event_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = event_resources.Event.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_event(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, event_resources.Event)
+    assert response.name == "name_value"
+    assert response.title == "title_value"
+    assert response.description == "description_value"
+    assert response.category == event_resources.Event.EventCategory.INCIDENT
+    assert (
+        response.detailed_category
+        == event_resources.Event.DetailedCategory.CONFIRMED_INCIDENT
+    )
+    assert response.state == event_resources.Event.State.ACTIVE
+    assert response.detailed_state == event_resources.Event.DetailedState.EMERGING
+    assert response.relevance == event_resources.Event.Relevance.UNKNOWN
+    assert response.parent_event == "parent_event_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_event_rest_interceptors(null_interceptor):
+    transport = transports.ServiceHealthRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceHealthRestInterceptor(),
+    )
+    client = ServiceHealthClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceHealthRestInterceptor, "post_get_event"
+    ) as post, mock.patch.object(
+        transports.ServiceHealthRestInterceptor, "pre_get_event"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = event_resources.GetEventRequest.pb(
+            event_resources.GetEventRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = event_resources.Event.to_json(event_resources.Event())
+        req.return_value.content = return_value
+
+        request = event_resources.GetEventRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = event_resources.Event()
+
+        client.get_event(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_organization_events_rest_bad_request(
+    request_type=event_resources.ListOrganizationEventsRequest,
+):
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_organization_events(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        event_resources.ListOrganizationEventsRequest,
+        dict,
+    ],
+)
+def test_list_organization_events_rest_call_success(request_type):
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = event_resources.ListOrganizationEventsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = event_resources.ListOrganizationEventsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_organization_events(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListOrganizationEventsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_organization_events_rest_interceptors(null_interceptor):
+    transport = transports.ServiceHealthRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceHealthRestInterceptor(),
+    )
+    client = ServiceHealthClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceHealthRestInterceptor, "post_list_organization_events"
+    ) as post, mock.patch.object(
+        transports.ServiceHealthRestInterceptor, "pre_list_organization_events"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = event_resources.ListOrganizationEventsRequest.pb(
+            event_resources.ListOrganizationEventsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = event_resources.ListOrganizationEventsResponse.to_json(
+            event_resources.ListOrganizationEventsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = event_resources.ListOrganizationEventsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = event_resources.ListOrganizationEventsResponse()
+
+        client.list_organization_events(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_organization_event_rest_bad_request(
+    request_type=event_resources.GetOrganizationEventRequest,
+):
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/organizationEvents/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_organization_event(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        event_resources.GetOrganizationEventRequest,
+        dict,
+    ],
+)
+def test_get_organization_event_rest_call_success(request_type):
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/organizationEvents/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = event_resources.OrganizationEvent(
+            name="name_value",
+            title="title_value",
+            description="description_value",
+            category=event_resources.OrganizationEvent.EventCategory.INCIDENT,
+            detailed_category=event_resources.OrganizationEvent.DetailedCategory.CONFIRMED_INCIDENT,
+            state=event_resources.OrganizationEvent.State.ACTIVE,
+            detailed_state=event_resources.OrganizationEvent.DetailedState.EMERGING,
+            parent_event="parent_event_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = event_resources.OrganizationEvent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_organization_event(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, event_resources.OrganizationEvent)
+    assert response.name == "name_value"
+    assert response.title == "title_value"
+    assert response.description == "description_value"
+    assert response.category == event_resources.OrganizationEvent.EventCategory.INCIDENT
+    assert (
+        response.detailed_category
+        == event_resources.OrganizationEvent.DetailedCategory.CONFIRMED_INCIDENT
+    )
+    assert response.state == event_resources.OrganizationEvent.State.ACTIVE
+    assert (
+        response.detailed_state
+        == event_resources.OrganizationEvent.DetailedState.EMERGING
+    )
+    assert response.parent_event == "parent_event_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_organization_event_rest_interceptors(null_interceptor):
+    transport = transports.ServiceHealthRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceHealthRestInterceptor(),
+    )
+    client = ServiceHealthClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceHealthRestInterceptor, "post_get_organization_event"
+    ) as post, mock.patch.object(
+        transports.ServiceHealthRestInterceptor, "pre_get_organization_event"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = event_resources.GetOrganizationEventRequest.pb(
+            event_resources.GetOrganizationEventRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = event_resources.OrganizationEvent.to_json(
+            event_resources.OrganizationEvent()
+        )
+        req.return_value.content = return_value
+
+        request = event_resources.GetOrganizationEventRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = event_resources.OrganizationEvent()
+
+        client.get_organization_event(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_organization_impacts_rest_bad_request(
+    request_type=event_resources.ListOrganizationImpactsRequest,
+):
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_organization_impacts(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        event_resources.ListOrganizationImpactsRequest,
+        dict,
+    ],
+)
+def test_list_organization_impacts_rest_call_success(request_type):
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = event_resources.ListOrganizationImpactsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = event_resources.ListOrganizationImpactsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_organization_impacts(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListOrganizationImpactsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_organization_impacts_rest_interceptors(null_interceptor):
+    transport = transports.ServiceHealthRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceHealthRestInterceptor(),
+    )
+    client = ServiceHealthClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceHealthRestInterceptor, "post_list_organization_impacts"
+    ) as post, mock.patch.object(
+        transports.ServiceHealthRestInterceptor, "pre_list_organization_impacts"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = event_resources.ListOrganizationImpactsRequest.pb(
+            event_resources.ListOrganizationImpactsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = event_resources.ListOrganizationImpactsResponse.to_json(
+            event_resources.ListOrganizationImpactsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = event_resources.ListOrganizationImpactsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = event_resources.ListOrganizationImpactsResponse()
+
+        client.list_organization_impacts(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_organization_impact_rest_bad_request(
+    request_type=event_resources.GetOrganizationImpactRequest,
+):
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/organizationImpacts/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_organization_impact(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        event_resources.GetOrganizationImpactRequest,
+        dict,
+    ],
+)
+def test_get_organization_impact_rest_call_success(request_type):
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "organizations/sample1/locations/sample2/organizationImpacts/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = event_resources.OrganizationImpact(
+            name="name_value",
+            events=["events_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = event_resources.OrganizationImpact.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_organization_impact(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, event_resources.OrganizationImpact)
+    assert response.name == "name_value"
+    assert response.events == ["events_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_organization_impact_rest_interceptors(null_interceptor):
+    transport = transports.ServiceHealthRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ServiceHealthRestInterceptor(),
+    )
+    client = ServiceHealthClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ServiceHealthRestInterceptor, "post_get_organization_impact"
+    ) as post, mock.patch.object(
+        transports.ServiceHealthRestInterceptor, "pre_get_organization_impact"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = event_resources.GetOrganizationImpactRequest.pb(
+            event_resources.GetOrganizationImpactRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = event_resources.OrganizationImpact.to_json(
+            event_resources.OrganizationImpact()
+        )
+        req.return_value.content = return_value
+
+        request = event_resources.GetOrganizationImpactRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = event_resources.OrganizationImpact()
+
+        client.get_organization_impact(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    request_type=locations_pb2.ListLocationsRequest,
+):
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_initialize_client_w_rest():
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_events_empty_call_rest():
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_events), "__call__") as call:
+        client.list_events(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = event_resources.ListEventsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_event_empty_call_rest():
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_event), "__call__") as call:
+        client.get_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = event_resources.GetEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_organization_events_empty_call_rest():
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_organization_events), "__call__"
+    ) as call:
+        client.list_organization_events(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = event_resources.ListOrganizationEventsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_organization_event_empty_call_rest():
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_organization_event), "__call__"
+    ) as call:
+        client.get_organization_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = event_resources.GetOrganizationEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_organization_impacts_empty_call_rest():
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_organization_impacts), "__call__"
+    ) as call:
+        client.list_organization_impacts(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = event_resources.ListOrganizationImpactsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_organization_impact_empty_call_rest():
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_organization_impact), "__call__"
+    ) as call:
+        client.get_organization_impact(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = event_resources.GetOrganizationImpactRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -7008,134 +7311,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
-def test_get_location_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
-):
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_location(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.GetLocationRequest,
-        dict,
-    ],
-)
-def test_get_location_rest(request_type):
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.Location()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_location(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.Location)
-
-
-def test_list_locations_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
-):
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({"name": "projects/sample1"}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_locations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.ListLocationsRequest,
-        dict,
-    ],
-)
-def test_list_locations_rest(request_type):
-    client = ServiceHealthClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.ListLocationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_locations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.ListLocationsResponse)
-
-
 def test_list_locations(transport: str = "grpc"):
     client = ServiceHealthClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7163,7 +7338,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7218,7 +7393,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7265,7 +7440,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -7308,7 +7483,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7360,7 +7535,7 @@ def test_get_location_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
-    client = ServiceHealthAsyncClient(credentials=ga_credentials.AnonymousCredentials())
+    client = ServiceHealthAsyncClient(credentials=async_anonymous_credentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -7406,7 +7581,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = ServiceHealthAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -7422,22 +7597,41 @@ async def test_get_location_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = ServiceHealthClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = ServiceHealthAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():
