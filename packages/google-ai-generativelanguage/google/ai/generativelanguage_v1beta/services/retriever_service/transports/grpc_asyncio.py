@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -229,6 +230,9 @@ class RetrieverServiceGrpcAsyncIOTransport(RetrieverServiceTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -795,7 +799,7 @@ class RetrieverServiceGrpcAsyncIOTransport(RetrieverServiceTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_corpus: gapic_v1.method_async.wrap_method(
+            self.create_corpus: self._wrap_method(
                 self.create_corpus,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -809,7 +813,7 @@ class RetrieverServiceGrpcAsyncIOTransport(RetrieverServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_corpus: gapic_v1.method_async.wrap_method(
+            self.get_corpus: self._wrap_method(
                 self.get_corpus,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -823,7 +827,7 @@ class RetrieverServiceGrpcAsyncIOTransport(RetrieverServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_corpus: gapic_v1.method_async.wrap_method(
+            self.update_corpus: self._wrap_method(
                 self.update_corpus,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -837,7 +841,7 @@ class RetrieverServiceGrpcAsyncIOTransport(RetrieverServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_corpus: gapic_v1.method_async.wrap_method(
+            self.delete_corpus: self._wrap_method(
                 self.delete_corpus,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -851,7 +855,7 @@ class RetrieverServiceGrpcAsyncIOTransport(RetrieverServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_corpora: gapic_v1.method_async.wrap_method(
+            self.list_corpora: self._wrap_method(
                 self.list_corpora,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -865,7 +869,7 @@ class RetrieverServiceGrpcAsyncIOTransport(RetrieverServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.query_corpus: gapic_v1.method_async.wrap_method(
+            self.query_corpus: self._wrap_method(
                 self.query_corpus,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -879,7 +883,7 @@ class RetrieverServiceGrpcAsyncIOTransport(RetrieverServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_document: gapic_v1.method_async.wrap_method(
+            self.create_document: self._wrap_method(
                 self.create_document,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -893,7 +897,7 @@ class RetrieverServiceGrpcAsyncIOTransport(RetrieverServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_document: gapic_v1.method_async.wrap_method(
+            self.get_document: self._wrap_method(
                 self.get_document,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -907,7 +911,7 @@ class RetrieverServiceGrpcAsyncIOTransport(RetrieverServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_document: gapic_v1.method_async.wrap_method(
+            self.update_document: self._wrap_method(
                 self.update_document,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -921,7 +925,7 @@ class RetrieverServiceGrpcAsyncIOTransport(RetrieverServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_document: gapic_v1.method_async.wrap_method(
+            self.delete_document: self._wrap_method(
                 self.delete_document,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -935,7 +939,7 @@ class RetrieverServiceGrpcAsyncIOTransport(RetrieverServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_documents: gapic_v1.method_async.wrap_method(
+            self.list_documents: self._wrap_method(
                 self.list_documents,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -949,7 +953,7 @@ class RetrieverServiceGrpcAsyncIOTransport(RetrieverServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.query_document: gapic_v1.method_async.wrap_method(
+            self.query_document: self._wrap_method(
                 self.query_document,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -963,7 +967,7 @@ class RetrieverServiceGrpcAsyncIOTransport(RetrieverServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_chunk: gapic_v1.method_async.wrap_method(
+            self.create_chunk: self._wrap_method(
                 self.create_chunk,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -977,12 +981,12 @@ class RetrieverServiceGrpcAsyncIOTransport(RetrieverServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.batch_create_chunks: gapic_v1.method_async.wrap_method(
+            self.batch_create_chunks: self._wrap_method(
                 self.batch_create_chunks,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_chunk: gapic_v1.method_async.wrap_method(
+            self.get_chunk: self._wrap_method(
                 self.get_chunk,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -996,7 +1000,7 @@ class RetrieverServiceGrpcAsyncIOTransport(RetrieverServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_chunk: gapic_v1.method_async.wrap_method(
+            self.update_chunk: self._wrap_method(
                 self.update_chunk,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1010,12 +1014,12 @@ class RetrieverServiceGrpcAsyncIOTransport(RetrieverServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.batch_update_chunks: gapic_v1.method_async.wrap_method(
+            self.batch_update_chunks: self._wrap_method(
                 self.batch_update_chunks,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_chunk: gapic_v1.method_async.wrap_method(
+            self.delete_chunk: self._wrap_method(
                 self.delete_chunk,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1029,20 +1033,29 @@ class RetrieverServiceGrpcAsyncIOTransport(RetrieverServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.batch_delete_chunks: gapic_v1.method_async.wrap_method(
+            self.batch_delete_chunks: self._wrap_method(
                 self.batch_delete_chunks,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_chunks: gapic_v1.method_async.wrap_method(
+            self.list_chunks: self._wrap_method(
                 self.list_chunks,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("RetrieverServiceGrpcAsyncIOTransport",)

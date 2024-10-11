@@ -269,7 +269,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         (``text``), cards (``cardsV2``), and accessory widgets
         (``accessoryWidgets``).
 
-        |Message sent with app authentication gRPC|
+        |Message sent with app authentication|
 
         The following image shows how Chat attributes a message when you
         use user authentication. Chat displays the user as the message
@@ -277,13 +277,13 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         its name. The content of message can only contain text
         (``text``).
 
-        |Message sent with user authentication gRPC|
+        |Message sent with user authentication|
 
         The maximum message size, including the message contents, is
         32,000 bytes.
 
-        .. |Message sent with app authentication gRPC| image:: https://developers.google.com/workspace/chat/images/message-app-auth.svg
-        .. |Message sent with user authentication gRPC| image:: https://developers.google.com/workspace/chat/images/message-user-auth.svg
+        .. |Message sent with app authentication| image:: https://developers.google.com/workspace/chat/images/message-app-auth.svg
+        .. |Message sent with user authentication| image:: https://developers.google.com/workspace/chat/images/message-user-auth.svg
 
         Returns:
             Callable[[~.CreateMessageRequest],

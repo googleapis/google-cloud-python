@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -229,6 +230,9 @@ class ApiGatewayServiceGrpcAsyncIOTransport(ApiGatewayServiceTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -668,17 +672,17 @@ class ApiGatewayServiceGrpcAsyncIOTransport(ApiGatewayServiceTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_gateways: gapic_v1.method_async.wrap_method(
+            self.list_gateways: self._wrap_method(
                 self.list_gateways,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_gateway: gapic_v1.method_async.wrap_method(
+            self.get_gateway: self._wrap_method(
                 self.get_gateway,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_gateway: gapic_v1.method_async.wrap_method(
+            self.create_gateway: self._wrap_method(
                 self.create_gateway,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -693,7 +697,7 @@ class ApiGatewayServiceGrpcAsyncIOTransport(ApiGatewayServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_gateway: gapic_v1.method_async.wrap_method(
+            self.update_gateway: self._wrap_method(
                 self.update_gateway,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -708,7 +712,7 @@ class ApiGatewayServiceGrpcAsyncIOTransport(ApiGatewayServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_gateway: gapic_v1.method_async.wrap_method(
+            self.delete_gateway: self._wrap_method(
                 self.delete_gateway,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -723,17 +727,17 @@ class ApiGatewayServiceGrpcAsyncIOTransport(ApiGatewayServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_apis: gapic_v1.method_async.wrap_method(
+            self.list_apis: self._wrap_method(
                 self.list_apis,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_api: gapic_v1.method_async.wrap_method(
+            self.get_api: self._wrap_method(
                 self.get_api,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_api: gapic_v1.method_async.wrap_method(
+            self.create_api: self._wrap_method(
                 self.create_api,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -748,7 +752,7 @@ class ApiGatewayServiceGrpcAsyncIOTransport(ApiGatewayServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_api: gapic_v1.method_async.wrap_method(
+            self.update_api: self._wrap_method(
                 self.update_api,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -763,7 +767,7 @@ class ApiGatewayServiceGrpcAsyncIOTransport(ApiGatewayServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_api: gapic_v1.method_async.wrap_method(
+            self.delete_api: self._wrap_method(
                 self.delete_api,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -778,17 +782,17 @@ class ApiGatewayServiceGrpcAsyncIOTransport(ApiGatewayServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_api_configs: gapic_v1.method_async.wrap_method(
+            self.list_api_configs: self._wrap_method(
                 self.list_api_configs,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_api_config: gapic_v1.method_async.wrap_method(
+            self.get_api_config: self._wrap_method(
                 self.get_api_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_api_config: gapic_v1.method_async.wrap_method(
+            self.create_api_config: self._wrap_method(
                 self.create_api_config,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -803,7 +807,7 @@ class ApiGatewayServiceGrpcAsyncIOTransport(ApiGatewayServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_api_config: gapic_v1.method_async.wrap_method(
+            self.update_api_config: self._wrap_method(
                 self.update_api_config,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -818,7 +822,7 @@ class ApiGatewayServiceGrpcAsyncIOTransport(ApiGatewayServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_api_config: gapic_v1.method_async.wrap_method(
+            self.delete_api_config: self._wrap_method(
                 self.delete_api_config,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -835,8 +839,17 @@ class ApiGatewayServiceGrpcAsyncIOTransport(ApiGatewayServiceTransport):
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("ApiGatewayServiceGrpcAsyncIOTransport",)
