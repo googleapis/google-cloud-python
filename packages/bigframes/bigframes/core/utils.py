@@ -116,9 +116,9 @@ def label_to_identifier(label: typing.Hashable, strict: bool = False) -> str:
     """
     # Column values will be loaded as null if the column name has spaces.
     # https://github.com/googleapis/python-bigquery/issues/1566
-    identifier = str(label).replace(" ", "_")
-
+    identifier = str(label)
     if strict:
+        identifier = str(label).replace(" ", "_")
         identifier = re.sub(r"[^a-zA-Z0-9_]", "", identifier)
         if not identifier:
             identifier = "id"

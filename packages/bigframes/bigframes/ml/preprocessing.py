@@ -76,7 +76,7 @@ class StandardScaler(
         Returns:
             tuple(StandardScaler, column_label)"""
         col_label = sql[sql.find("(") + 1 : sql.find(")")]
-        return cls(), col_label
+        return cls(), _unescape_id(col_label)
 
     def fit(
         self,
@@ -152,8 +152,9 @@ class MaxAbsScaler(
 
         Returns:
             tuple(MaxAbsScaler, column_label)"""
+        # TODO: Use real sql parser
         col_label = sql[sql.find("(") + 1 : sql.find(")")]
-        return cls(), col_label
+        return cls(), _unescape_id(col_label)
 
     def fit(
         self,
@@ -229,8 +230,9 @@ class MinMaxScaler(
 
         Returns:
             tuple(MinMaxScaler, column_label)"""
+        # TODO: Use real sql parser
         col_label = sql[sql.find("(") + 1 : sql.find(")")]
-        return cls(), col_label
+        return cls(), _unescape_id(col_label)
 
     def fit(
         self,
@@ -349,11 +351,11 @@ class KBinsDiscretizer(
 
         if sql.startswith("ML.QUANTILE_BUCKETIZE"):
             num_bins = s.split(",")[1]
-            return cls(int(num_bins), "quantile"), col_label
+            return cls(int(num_bins), "quantile"), _unescape_id(col_label)
         else:
             array_split_points = s[s.find("[") + 1 : s.find("]")]
             n_bins = array_split_points.count(",") + 2
-            return cls(n_bins, "uniform"), col_label
+            return cls(n_bins, "uniform"), _unescape_id(col_label)
 
     def fit(
         self,
@@ -469,7 +471,7 @@ class OneHotEncoder(
         max_categories = int(top_k) + 1
         min_frequency = int(frequency_threshold)
 
-        return cls(drop, min_frequency, max_categories), col_label
+        return cls(drop, min_frequency, max_categories), _unescape_id(col_label)
 
     def fit(
         self,
@@ -578,7 +580,7 @@ class LabelEncoder(
         max_categories = int(top_k) + 1
         min_frequency = int(frequency_threshold)
 
-        return cls(min_frequency, max_categories), col_label
+        return cls(min_frequency, max_categories), _unescape_id(col_label)
 
     def fit(
         self,
@@ -661,7 +663,7 @@ class PolynomialFeatures(
         col_labels = sql[sql.find("STRUCT(") + 7 : sql.find(")")].split(",")
         col_labels = [label.strip() for label in col_labels]
         degree = int(sql[sql.rfind(",") + 1 : sql.rfind(")")])
-        return cls(degree), tuple(col_labels)
+        return cls(degree), tuple(map(_unescape_id, col_labels))
 
     def fit(
         self,
@@ -692,6 +694,14 @@ class PolynomialFeatures(
             bpd.DataFrame,
             df[self._output_names],
         )
+
+
+def _unescape_id(id: str) -> str:
+    """Very simple conversion to removed ` characters from ids.
+
+    A proper sql parser should be used instead.
+    """
+    return id.removeprefix("`").removesuffix("`")
 
 
 PreprocessingType = Union[

@@ -258,8 +258,8 @@ def test_customtransformer_compile_sql(mock_X):
     ident_trafo = SQLScalarColumnTransformer("{0}", target_column="ident_{0}")
     sqls = ident_trafo._compile_to_sql(X=mock_X, columns=["col1", "col2"])
     assert sqls == [
-        "col1 AS ident_col1",
-        "col2 AS ident_col2",
+        "`col1` AS `ident_col1`",
+        "`col2` AS `ident_col2`",
     ]
 
     len1_trafo = SQLScalarColumnTransformer(
@@ -267,8 +267,8 @@ def test_customtransformer_compile_sql(mock_X):
     )
     sqls = len1_trafo._compile_to_sql(X=mock_X, columns=["col1", "col2"])
     assert sqls == [
-        "CASE WHEN col1 IS NULL THEN -5 ELSE LENGTH(col1) END AS len1_col1",
-        "CASE WHEN col2 IS NULL THEN -5 ELSE LENGTH(col2) END AS len1_col2",
+        "CASE WHEN `col1` IS NULL THEN -5 ELSE LENGTH(`col1`) END AS `len1_col1`",
+        "CASE WHEN `col2` IS NULL THEN -5 ELSE LENGTH(`col2`) END AS `len1_col2`",
     ]
 
     len2_trafo = SQLScalarColumnTransformer(
@@ -276,8 +276,8 @@ def test_customtransformer_compile_sql(mock_X):
     )
     sqls = len2_trafo._compile_to_sql(X=mock_X, columns=["col1", "col2"])
     assert sqls == [
-        "CASE WHEN col1 IS NULL THEN 99 ELSE LENGTH(col1) END AS len2_col1",
-        "CASE WHEN col2 IS NULL THEN 99 ELSE LENGTH(col2) END AS len2_col2",
+        "CASE WHEN `col1` IS NULL THEN 99 ELSE LENGTH(`col1`) END AS `len2_col1`",
+        "CASE WHEN `col2` IS NULL THEN 99 ELSE LENGTH(`col2`) END AS `len2_col2`",
     ]
 
 
@@ -524,11 +524,11 @@ def test_columntransformer_compile_to_sql(mock_X):
     )
     sqls = column_transformer._compile_to_sql(mock_X)
     assert sqls == [
-        "culmen_length_mm AS ident_culmen_length_mm",
-        "flipper_length_mm AS ident_flipper_length_mm",
-        "CASE WHEN species IS NULL THEN -2 ELSE LENGTH(species) END AS len1_species",
-        "CASE WHEN species IS NULL THEN 99 ELSE LENGTH(species) END AS len2_species",
-        "ML.LABEL_ENCODER(species, 1000000, 0) OVER() AS labelencoded_species",
+        "`culmen_length_mm` AS `ident_culmen_length_mm`",
+        "`flipper_length_mm` AS `ident_flipper_length_mm`",
+        "CASE WHEN `species` IS NULL THEN -2 ELSE LENGTH(`species`) END AS `len1_species`",
+        "CASE WHEN `species` IS NULL THEN 99 ELSE LENGTH(`species`) END AS `len2_species`",
+        "ML.LABEL_ENCODER(`species`, 1000000, 0) OVER() AS `labelencoded_species`",
     ]
 
 
@@ -548,13 +548,13 @@ def test_columntransformer_flexible_column_names(mock_X):
                 ["culmen_length_mm", "flipper_length_mm"],
             ),
             ("len1_trafo", len1_transformer, ["species shortname"]),
-            ("len2_trafo", len2_transformer, ["`species longname`"]),
+            ("len2_trafo", len2_transformer, ["species longname"]),
         ]
     )
     sqls = column_transformer._compile_to_sql(mock_X)
     assert sqls == [
-        "culmen_length_mm AS `ident culmen_length_mm`",
-        "flipper_length_mm AS `ident flipper_length_mm`",
+        "`culmen_length_mm` AS `ident culmen_length_mm`",
+        "`flipper_length_mm` AS `ident flipper_length_mm`",
         "CASE WHEN `species shortname` IS NULL THEN -2 ELSE LENGTH(`species shortname`) END AS `len1_species shortname`",
         "CASE WHEN `species longname` IS NULL THEN 99 ELSE LENGTH(`species longname`) END AS `len2_species longname`",
     ]
@@ -576,6 +576,6 @@ def test_columntransformer_extract_from_bq_model_flexnames(bq_model_flexnames):
                                  SQLScalarColumnTransformer(sql='culmen_length_mm', target_column='Flex Name culmen_length_mm'),
                                  '?Flex Name culmen_length_mm'),
                                 ('sql_scalar_column_transformer',
-                                 SQLScalarColumnTransformer(sql='flipper_length_mm ', target_column='Flex Name flipper_length_mm'),
+                                 SQLScalarColumnTransformer(sql='flipper_length_mm', target_column='Flex Name flipper_length_mm'),
                                  '?Flex Name flipper_length_mm')])"""
     assert expected == actual

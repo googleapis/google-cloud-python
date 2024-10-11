@@ -47,8 +47,10 @@ class BqmlModel(BaseBqml):
     def __init__(self, session: bigframes.Session, model: bigquery.Model):
         self._session = session
         self._model = model
+        model_ref = self._model.reference
+        assert model_ref is not None
         self._model_manipulation_sql_generator = ml_sql.ModelManipulationSqlGenerator(
-            self.model_name
+            model_ref
         )
 
     def _apply_ml_tvf(

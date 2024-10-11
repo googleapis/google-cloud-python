@@ -28,6 +28,7 @@ import bigframes_vendored.sklearn.compose._column_transformer
 from google.cloud import bigquery
 
 from bigframes.core import log_adapter
+import bigframes.core.compile.googlesql as sql_utils
 from bigframes.ml import base, core, globals, impute, preprocessing, utils
 import bigframes.pandas as bpd
 
@@ -98,15 +99,10 @@ class SQLScalarColumnTransformer:
     def __init__(self, sql: str, target_column: str = "transformed_{0}"):
         super().__init__()
         self._sql = sql
+        # TODO: More robust unescaping
         self._target_column = target_column.replace("`", "")
 
     PLAIN_COLNAME_RX = re.compile("^[a-z][a-z0-9_]*$", re.IGNORECASE)
-
-    def escape(self, colname: str):
-        colname = colname.replace("`", "")
-        if self.PLAIN_COLNAME_RX.match(colname):
-            return colname
-        return f"`{colname}`"
 
     def _compile_to_sql(
         self, X: bpd.DataFrame, columns: Optional[Iterable[str]] = None
@@ -115,8 +111,10 @@ class SQLScalarColumnTransformer:
             columns = X.columns
         result = []
         for column in columns:
-            current_sql = self._sql.format(self.escape(column))
-            current_target_column = self.escape(self._target_column.format(column))
+            current_sql = self._sql.format(sql_utils.identifier(column))
+            current_target_column = sql_utils.identifier(
+                self._target_column.format(column)
+            )
             result.append(f"{current_sql} AS {current_target_column}")
         return result
 
@@ -239,6 +237,7 @@ class ColumnTransformer(
                     transformers_set.add(
                         (
                             camel_to_snake(transformer_cls.__name__),
+                            # TODO: This is very fragile, use real SQL parser
                             *transformer_cls._parse_from_sql(transform_sql),  # type: ignore
                         )
                     )
@@ -253,7 +252,7 @@ class ColumnTransformer(
 
                 target_column = transform_col_dict["name"]
                 sql_transformer = SQLScalarColumnTransformer(
-                    transform_sql, target_column=target_column
+                    transform_sql.strip(), target_column=target_column
                 )
                 input_column_name = f"?{target_column}"
                 transformers_set.add(

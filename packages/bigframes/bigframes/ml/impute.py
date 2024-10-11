@@ -80,7 +80,7 @@ class SimpleImputer(
             tuple(SimpleImputer, column_label)"""
         s = sql[sql.find("(") + 1 : sql.find(")")]
         col_label, strategy = s.split(", ")
-        return cls(strategy[1:-1]), col_label  # type: ignore[arg-type]
+        return cls(strategy[1:-1]), _unescape_id(col_label)  # type: ignore[arg-type]
 
     def fit(
         self,
@@ -110,3 +110,11 @@ class SimpleImputer(
             bpd.DataFrame,
             df[self._output_names],
         )
+
+
+def _unescape_id(id: str) -> str:
+    """Very simple conversion to removed ` characters from ids.
+
+    A proper sql parser should be used instead.
+    """
+    return id.removeprefix("`").removesuffix("`")

@@ -90,12 +90,14 @@ def test_columntransformer_standalone_fit_and_transform(
 
 
 def test_columntransformer_standalone_fit_transform(new_penguins_df):
+    # rename column to ensure robustness to column names that must be escaped
+    new_penguins_df = new_penguins_df.rename(columns={"species": "123 'species'"})
     transformer = compose.ColumnTransformer(
         [
             (
                 "onehot",
                 preprocessing.OneHotEncoder(),
-                "species",
+                "123 'species'",
             ),
             (
                 "standard_scale",
@@ -108,7 +110,7 @@ def test_columntransformer_standalone_fit_transform(new_penguins_df):
                     "CASE WHEN {0} IS NULL THEN -1 ELSE LENGTH({0}) END",
                     target_column="len_{0}",
                 ),
-                "species",
+                "123 'species'",
             ),
             (
                 "identity",
@@ -119,16 +121,16 @@ def test_columntransformer_standalone_fit_transform(new_penguins_df):
     )
 
     result = transformer.fit_transform(
-        new_penguins_df[["species", "culmen_length_mm", "flipper_length_mm"]]
+        new_penguins_df[["123 'species'", "culmen_length_mm", "flipper_length_mm"]]
     ).to_pandas()
 
     utils.check_pandas_df_schema_and_index(
         result,
         columns=[
-            "onehotencoded_species",
+            "onehotencoded_123 'species'",
             "standard_scaled_culmen_length_mm",
             "standard_scaled_flipper_length_mm",
-            "len_species",
+            "len_123 'species'",
             "culmen_length_mm",
             "flipper_length_mm",
         ],
@@ -194,7 +196,7 @@ def test_columntransformer_save_load(new_penguins_df, dataset_id):
         (
             "sql_scalar_column_transformer",
             compose.SQLScalarColumnTransformer(
-                "CASE WHEN species IS NULL THEN -1 ELSE LENGTH(species) END",
+                "CASE WHEN `species` IS NULL THEN -1 ELSE LENGTH(`species`) END",
                 target_column="len_species",
             ),
             "?len_species",
@@ -202,21 +204,21 @@ def test_columntransformer_save_load(new_penguins_df, dataset_id):
         (
             "sql_scalar_column_transformer",
             compose.SQLScalarColumnTransformer(
-                "flipper_length_mm", target_column="flipper_length_mm"
+                "`flipper_length_mm`", target_column="flipper_length_mm"
             ),
             "?flipper_length_mm",
         ),
         (
             "sql_scalar_column_transformer",
             compose.SQLScalarColumnTransformer(
-                "culmen_length_mm", target_column="culmen_length_mm"
+                "`culmen_length_mm`", target_column="culmen_length_mm"
             ),
             "?culmen_length_mm",
         ),
         (
             "sql_scalar_column_transformer",
             compose.SQLScalarColumnTransformer(
-                "CASE WHEN species IS NULL THEN -1 ELSE LENGTH(species) END ",
+                "CASE WHEN `species` IS NULL THEN -1 ELSE LENGTH(`species`) END",
                 target_column="Flex species Name",
             ),
             "?Flex species Name",

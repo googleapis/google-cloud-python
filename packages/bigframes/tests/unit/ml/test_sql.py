@@ -34,7 +34,9 @@ def model_creation_sql_generator() -> ml_sql.ModelCreationSqlGenerator:
 @pytest.fixture(scope="session")
 def model_manipulation_sql_generator() -> ml_sql.ModelManipulationSqlGenerator:
     return ml_sql.ModelManipulationSqlGenerator(
-        model_name="my_project_id.my_dataset_id.my_model_id"
+        model_ref=bigquery.ModelReference.from_string(
+            "my_project_id.my_dataset_id.my_model_id"
+        )
     )
 
 
@@ -53,7 +55,7 @@ def test_ml_arima_coefficients(
     sql = model_manipulation_sql_generator.ml_arima_coefficients()
     assert (
         sql
-        == """SELECT * FROM ML.ARIMA_COEFFICIENTS(MODEL `my_project_id.my_dataset_id.my_model_id`)"""
+        == """SELECT * FROM ML.ARIMA_COEFFICIENTS(MODEL `my_project_id`.`my_dataset_id`.`my_model_id`)"""
     )
 
 
@@ -64,8 +66,8 @@ def test_options_correct(base_sql_generator: ml_sql.BaseSqlGenerator):
     assert (
         sql
         == """OPTIONS(
-  model_type="lin_reg",
-  input_label_cols=["col_a"],
+  model_type='lin_reg',
+  input_label_cols=['col_a'],
   l1_reg=0.6)"""
     )
 
@@ -89,42 +91,42 @@ def test_standard_scaler_correct(
     base_sql_generator: ml_sql.BaseSqlGenerator,
 ):
     sql = base_sql_generator.ml_standard_scaler("col_a", "scaled_col_a")
-    assert sql == "ML.STANDARD_SCALER(col_a) OVER() AS scaled_col_a"
+    assert sql == "ML.STANDARD_SCALER(`col_a`) OVER() AS `scaled_col_a`"
 
 
 def test_max_abs_scaler_correct(
     base_sql_generator: ml_sql.BaseSqlGenerator,
 ):
     sql = base_sql_generator.ml_max_abs_scaler("col_a", "scaled_col_a")
-    assert sql == "ML.MAX_ABS_SCALER(col_a) OVER() AS scaled_col_a"
+    assert sql == "ML.MAX_ABS_SCALER(`col_a`) OVER() AS `scaled_col_a`"
 
 
 def test_min_max_scaler_correct(
     base_sql_generator: ml_sql.BaseSqlGenerator,
 ):
     sql = base_sql_generator.ml_min_max_scaler("col_a", "scaled_col_a")
-    assert sql == "ML.MIN_MAX_SCALER(col_a) OVER() AS scaled_col_a"
+    assert sql == "ML.MIN_MAX_SCALER(`col_a`) OVER() AS `scaled_col_a`"
 
 
 def test_imputer_correct(
     base_sql_generator: ml_sql.BaseSqlGenerator,
 ):
     sql = base_sql_generator.ml_imputer("col_a", "mean", "scaled_col_a")
-    assert sql == "ML.IMPUTER(col_a, 'mean') OVER() AS scaled_col_a"
+    assert sql == "ML.IMPUTER(`col_a`, 'mean') OVER() AS `scaled_col_a`"
 
 
 def test_k_bins_discretizer_correct(
     base_sql_generator: ml_sql.BaseSqlGenerator,
 ):
     sql = base_sql_generator.ml_bucketize("col_a", [1, 2, 3, 4], "scaled_col_a")
-    assert sql == "ML.BUCKETIZE(col_a, [1, 2, 3, 4], FALSE) AS scaled_col_a"
+    assert sql == "ML.BUCKETIZE(`col_a`, [1, 2, 3, 4], FALSE) AS `scaled_col_a`"
 
 
 def test_k_bins_discretizer_quantile_correct(
     base_sql_generator: ml_sql.BaseSqlGenerator,
 ):
     sql = base_sql_generator.ml_quantile_bucketize("col_a", 5, "scaled_col_a")
-    assert sql == "ML.QUANTILE_BUCKETIZE(col_a, 5) OVER() AS scaled_col_a"
+    assert sql == "ML.QUANTILE_BUCKETIZE(`col_a`, 5) OVER() AS `scaled_col_a`"
 
 
 def test_one_hot_encoder_correct(
@@ -134,7 +136,8 @@ def test_one_hot_encoder_correct(
         "col_a", "none", 1000000, 0, "encoded_col_a"
     )
     assert (
-        sql == "ML.ONE_HOT_ENCODER(col_a, 'none', 1000000, 0) OVER() AS encoded_col_a"
+        sql
+        == "ML.ONE_HOT_ENCODER(`col_a`, 'none', 1000000, 0) OVER() AS `encoded_col_a`"
     )
 
 
@@ -142,14 +145,14 @@ def test_label_encoder_correct(
     base_sql_generator: ml_sql.BaseSqlGenerator,
 ):
     sql = base_sql_generator.ml_label_encoder("col_a", 1000000, 0, "encoded_col_a")
-    assert sql == "ML.LABEL_ENCODER(col_a, 1000000, 0) OVER() AS encoded_col_a"
+    assert sql == "ML.LABEL_ENCODER(`col_a`, 1000000, 0) OVER() AS `encoded_col_a`"
 
 
 def test_polynomial_expand(
     base_sql_generator: ml_sql.BaseSqlGenerator,
 ):
     sql = base_sql_generator.ml_polynomial_expand(["col_a", "col_b"], 2, "poly_exp")
-    assert sql == "ML.POLYNOMIAL_EXPAND(STRUCT(col_a, col_b), 2) AS poly_exp"
+    assert sql == "ML.POLYNOMIAL_EXPAND(STRUCT(`col_a`, `col_b`), 2) AS `poly_exp`"
 
 
 def test_create_model_correct(
@@ -167,7 +170,7 @@ def test_create_model_correct(
         sql
         == """CREATE OR REPLACE MODEL `test-proj`.`_anonXYZ`.`create_model_correct_sql`
 OPTIONS(
-  option_key1="option_value1",
+  option_key1='option_value1',
   option_key2=2)
 AS input_X_y_sql"""
     )
@@ -195,7 +198,7 @@ TRANSFORM(
   ML.STANDARD_SCALER(col_a) OVER(col_a) AS scaled_col_a,
   ML.ONE_HOT_ENCODER(col_b) OVER(col_b) AS encoded_col_b)
 OPTIONS(
-  option_key1="option_value1",
+  option_key1='option_value1',
   option_key2=2)
 AS input_X_y_sql"""
     )
@@ -218,7 +221,7 @@ def test_create_llm_remote_model_correct(
         == """CREATE OR REPLACE MODEL `test-proj`.`_anonXYZ`.`create_remote_model`
 REMOTE WITH CONNECTION `my_project.us.my_connection`
 OPTIONS(
-  option_key1="option_value1",
+  option_key1='option_value1',
   option_key2=2)
 AS input_X_y_sql"""
     )
@@ -239,7 +242,7 @@ def test_create_remote_model_correct(
         == """CREATE OR REPLACE MODEL `test-proj`.`_anonXYZ`.`create_remote_model`
 REMOTE WITH CONNECTION `my_project.us.my_connection`
 OPTIONS(
-  option_key1="option_value1",
+  option_key1='option_value1',
   option_key2=2)"""
     )
 
@@ -260,12 +263,12 @@ def test_create_remote_model_with_params_correct(
         sql
         == """CREATE OR REPLACE MODEL `test-proj`.`_anonXYZ`.`create_remote_model`
 INPUT(
-  column1 int64)
+  `column1` int64)
 OUTPUT(
-  result array<float64>)
+  `result` array<float64>)
 REMOTE WITH CONNECTION `my_project.us.my_connection`
 OPTIONS(
-  option_key1="option_value1",
+  option_key1='option_value1',
   option_key2=2)"""
     )
 
@@ -283,7 +286,7 @@ def test_create_imported_model_correct(
         sql
         == """CREATE OR REPLACE MODEL `test-proj`.`_anonXYZ`.`create_imported_model`
 OPTIONS(
-  option_key1="option_value1",
+  option_key1='option_value1',
   option_key2=2)"""
     )
 
@@ -303,11 +306,11 @@ def test_create_xgboost_imported_model_produces_correct_sql(
         sql
         == """CREATE OR REPLACE MODEL `test-proj`.`_anonXYZ`.`create_xgboost_imported_model`
 INPUT(
-  column1 int64)
+  `column1` int64)
 OUTPUT(
-  result array<float64>)
+  `result` array<float64>)
 OPTIONS(
-  option_key1="option_value1",
+  option_key1='option_value1',
   option_key2=2)"""
     )
 
@@ -320,9 +323,9 @@ def test_alter_model_correct_sql(
     )
     assert (
         sql
-        == """ALTER MODEL `my_project_id.my_dataset_id.my_model_id`
+        == """ALTER MODEL `my_project_id`.`my_dataset_id`.`my_model_id`
 SET OPTIONS(
-  option_key1="option_value1",
+  option_key1='option_value1',
   option_key2=2)"""
     )
 
@@ -334,7 +337,7 @@ def test_ml_predict_correct(
     sql = model_manipulation_sql_generator.ml_predict(source_sql=mock_df.sql)
     assert (
         sql
-        == """SELECT * FROM ML.PREDICT(MODEL `my_project_id.my_dataset_id.my_model_id`,
+        == """SELECT * FROM ML.PREDICT(MODEL `my_project_id`.`my_dataset_id`.`my_model_id`,
   (input_X_y_sql))"""
     )
 
@@ -348,7 +351,7 @@ def test_ml_llm_evaluate_correct(
     )
     assert (
         sql
-        == """SELECT * FROM ML.EVALUATE(MODEL `my_project_id.my_dataset_id.my_model_id`,
+        == """SELECT * FROM ML.EVALUATE(MODEL `my_project_id`.`my_dataset_id`.`my_model_id`,
             (input_X_y_sql), STRUCT("CLASSIFICATION" AS task_type))"""
     )
 
@@ -360,7 +363,7 @@ def test_ml_evaluate_correct(
     sql = model_manipulation_sql_generator.ml_evaluate(source_sql=mock_df.sql)
     assert (
         sql
-        == """SELECT * FROM ML.EVALUATE(MODEL `my_project_id.my_dataset_id.my_model_id`,
+        == """SELECT * FROM ML.EVALUATE(MODEL `my_project_id`.`my_dataset_id`.`my_model_id`,
   (input_X_y_sql))"""
     )
 
@@ -373,7 +376,7 @@ def test_ml_arima_evaluate_correct(
     )
     assert (
         sql
-        == """SELECT * FROM ML.ARIMA_EVALUATE(MODEL `my_project_id.my_dataset_id.my_model_id`,
+        == """SELECT * FROM ML.ARIMA_EVALUATE(MODEL `my_project_id`.`my_dataset_id`.`my_model_id`,
             STRUCT(True AS show_all_candidate_models))"""
     )
 
@@ -384,7 +387,7 @@ def test_ml_evaluate_no_source_correct(
     sql = model_manipulation_sql_generator.ml_evaluate()
     assert (
         sql
-        == """SELECT * FROM ML.EVALUATE(MODEL `my_project_id.my_dataset_id.my_model_id`)"""
+        == """SELECT * FROM ML.EVALUATE(MODEL `my_project_id`.`my_dataset_id`.`my_model_id`)"""
     )
 
 
@@ -394,7 +397,7 @@ def test_ml_centroids_correct(
     sql = model_manipulation_sql_generator.ml_centroids()
     assert (
         sql
-        == """SELECT * FROM ML.CENTROIDS(MODEL `my_project_id.my_dataset_id.my_model_id`)"""
+        == """SELECT * FROM ML.CENTROIDS(MODEL `my_project_id`.`my_dataset_id`.`my_model_id`)"""
     )
 
 
@@ -406,10 +409,10 @@ def test_ml_forecast_correct_sql(
     )
     assert (
         sql
-        == """SELECT * FROM ML.FORECAST(MODEL `my_project_id.my_dataset_id.my_model_id`,
+        == """SELECT * FROM ML.FORECAST(MODEL `my_project_id`.`my_dataset_id`.`my_model_id`,
   STRUCT(
-  1 AS option_key1,
-  2.2 AS option_key2))"""
+  1 AS `option_key1`,
+  2.2 AS `option_key2`))"""
     )
 
 
@@ -423,10 +426,10 @@ def test_ml_generate_text_correct(
     )
     assert (
         sql
-        == """SELECT * FROM ML.GENERATE_TEXT(MODEL `my_project_id.my_dataset_id.my_model_id`,
+        == """SELECT * FROM ML.GENERATE_TEXT(MODEL `my_project_id`.`my_dataset_id`.`my_model_id`,
   (input_X_y_sql), STRUCT(
-  1 AS option_key1,
-  2.2 AS option_key2))"""
+  1 AS `option_key1`,
+  2.2 AS `option_key2`))"""
     )
 
 
@@ -440,10 +443,10 @@ def test_ml_generate_embedding_correct(
     )
     assert (
         sql
-        == """SELECT * FROM ML.GENERATE_EMBEDDING(MODEL `my_project_id.my_dataset_id.my_model_id`,
+        == """SELECT * FROM ML.GENERATE_EMBEDDING(MODEL `my_project_id`.`my_dataset_id`.`my_model_id`,
   (input_X_y_sql), STRUCT(
-  1 AS option_key1,
-  2.2 AS option_key2))"""
+  1 AS `option_key1`,
+  2.2 AS `option_key2`))"""
     )
 
 
@@ -457,10 +460,10 @@ def test_ml_detect_anomalies_correct_sql(
     )
     assert (
         sql
-        == """SELECT * FROM ML.DETECT_ANOMALIES(MODEL `my_project_id.my_dataset_id.my_model_id`,
+        == """SELECT * FROM ML.DETECT_ANOMALIES(MODEL `my_project_id`.`my_dataset_id`.`my_model_id`,
   STRUCT(
-  1 AS option_key1,
-  2.2 AS option_key2), (input_X_y_sql))"""
+  1 AS `option_key1`,
+  2.2 AS `option_key2`), (input_X_y_sql))"""
     )
 
 
@@ -470,7 +473,7 @@ def test_ml_principal_components_correct(
     sql = model_manipulation_sql_generator.ml_principal_components()
     assert (
         sql
-        == """SELECT * FROM ML.PRINCIPAL_COMPONENTS(MODEL `my_project_id.my_dataset_id.my_model_id`)"""
+        == """SELECT * FROM ML.PRINCIPAL_COMPONENTS(MODEL `my_project_id`.`my_dataset_id`.`my_model_id`)"""
     )
 
 
@@ -480,5 +483,5 @@ def test_ml_principal_component_info_correct(
     sql = model_manipulation_sql_generator.ml_principal_component_info()
     assert (
         sql
-        == """SELECT * FROM ML.PRINCIPAL_COMPONENT_INFO(MODEL `my_project_id.my_dataset_id.my_model_id`)"""
+        == """SELECT * FROM ML.PRINCIPAL_COMPONENT_INFO(MODEL `my_project_id`.`my_dataset_id`.`my_model_id`)"""
     )
