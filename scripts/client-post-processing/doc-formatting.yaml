@@ -275,3 +275,9 @@ replacements:
                   OR entry_type=projects/another-project/locations/*` `NOT
                   entry_source.display_name=AnotherExampleDisplayName`.
     count: 1
+  - paths: [
+      packages/google-cloud-deploy/google/cloud/deploy_v1/types/cloud_deploy.py,
+    ]
+    before: \"gs:\/\/my-bucket\/dir\/configs\/\*\"
+    after: "`gs://my-bucket/dir/configs/*`"
+    count: 1
