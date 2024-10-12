@@ -305,3 +305,17 @@ replacements:
                               -extfile <(printf
                               "\\nsubjectAltName='DNS:www.example.com'")\n
     count: 1
+
+  - paths: [
+      packages/google-cloud-dms/google/cloud/clouddms_v1/types/conversionworkspace_resources.py,
+    ]
+    before: |
+      Optional. Column fractional seconds precision
+      \            - used only for timestamp based datatypes - if
+      \              not specified and relevant uses the source
+    after: |
+      Optional. Column fractional seconds precision:
+
+                  - used only for timestamp based datatypes
+                  - if not specified and relevant uses the source
+    count: 1
