@@ -22,20 +22,11 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account
-from google.protobuf import field_mask_pb2  # type: ignore
+from google.api_core import api_core_version
 from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
@@ -44,6 +35,24 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import client_options
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+import google.auth
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account
+from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.ai.generativelanguage_v1beta3.services.permission_service import (
     PermissionServiceAsyncClient,
@@ -56,8 +65,22 @@ from google.ai.generativelanguage_v1beta3.types import permission
 from google.ai.generativelanguage_v1beta3.types import permission_service
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1203,27 +1226,6 @@ def test_create_permission(request_type, transport: str = "grpc"):
     assert response.role == gag_permission.Permission.Role.OWNER
 
 
-def test_create_permission_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_permission), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_permission()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.CreatePermissionRequest()
-
-
 def test_create_permission_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1292,34 +1294,6 @@ def test_create_permission_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_permission_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_permission), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gag_permission.Permission(
-                name="name_value",
-                grantee_type=gag_permission.Permission.GranteeType.USER,
-                email_address="email_address_value",
-                role=gag_permission.Permission.Role.OWNER,
-            )
-        )
-        response = await client.create_permission()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.CreatePermissionRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_permission_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1327,7 +1301,7 @@ async def test_create_permission_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = PermissionServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1367,7 +1341,7 @@ async def test_create_permission_async(
     request_type=permission_service.CreatePermissionRequest,
 ):
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1443,7 +1417,7 @@ def test_create_permission_field_headers():
 @pytest.mark.asyncio
 async def test_create_permission_field_headers_async():
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1522,7 +1496,7 @@ def test_create_permission_flattened_error():
 @pytest.mark.asyncio
 async def test_create_permission_flattened_async():
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1557,7 +1531,7 @@ async def test_create_permission_flattened_async():
 @pytest.mark.asyncio
 async def test_create_permission_flattened_error_async():
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1610,25 +1584,6 @@ def test_get_permission(request_type, transport: str = "grpc"):
     assert response.grantee_type == permission.Permission.GranteeType.USER
     assert response.email_address == "email_address_value"
     assert response.role == permission.Permission.Role.OWNER
-
-
-def test_get_permission_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_permission), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_permission()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.GetPermissionRequest()
 
 
 def test_get_permission_non_empty_request_with_auto_populated_field():
@@ -1695,32 +1650,6 @@ def test_get_permission_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_permission_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_permission), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            permission.Permission(
-                name="name_value",
-                grantee_type=permission.Permission.GranteeType.USER,
-                email_address="email_address_value",
-                role=permission.Permission.Role.OWNER,
-            )
-        )
-        response = await client.get_permission()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.GetPermissionRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_permission_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1728,7 +1657,7 @@ async def test_get_permission_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = PermissionServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1768,7 +1697,7 @@ async def test_get_permission_async(
     request_type=permission_service.GetPermissionRequest,
 ):
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1840,7 +1769,7 @@ def test_get_permission_field_headers():
 @pytest.mark.asyncio
 async def test_get_permission_field_headers_async():
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1910,7 +1839,7 @@ def test_get_permission_flattened_error():
 @pytest.mark.asyncio
 async def test_get_permission_flattened_async():
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1939,7 +1868,7 @@ async def test_get_permission_flattened_async():
 @pytest.mark.asyncio
 async def test_get_permission_flattened_error_async():
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1985,25 +1914,6 @@ def test_list_permissions(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPermissionsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_permissions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_permissions), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_permissions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.ListPermissionsRequest()
 
 
 def test_list_permissions_non_empty_request_with_auto_populated_field():
@@ -2074,29 +1984,6 @@ def test_list_permissions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_permissions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_permissions), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            permission_service.ListPermissionsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_permissions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.ListPermissionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_permissions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2104,7 +1991,7 @@ async def test_list_permissions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = PermissionServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2144,7 +2031,7 @@ async def test_list_permissions_async(
     request_type=permission_service.ListPermissionsRequest,
 ):
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2210,7 +2097,7 @@ def test_list_permissions_field_headers():
 @pytest.mark.asyncio
 async def test_list_permissions_field_headers_async():
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2280,7 +2167,7 @@ def test_list_permissions_flattened_error():
 @pytest.mark.asyncio
 async def test_list_permissions_flattened_async():
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2309,7 +2196,7 @@ async def test_list_permissions_flattened_async():
 @pytest.mark.asyncio
 async def test_list_permissions_flattened_error_async():
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2419,7 +2306,7 @@ def test_list_permissions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_permissions_async_pager():
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2469,7 +2356,7 @@ async def test_list_permissions_async_pager():
 @pytest.mark.asyncio
 async def test_list_permissions_async_pages():
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2559,27 +2446,6 @@ def test_update_permission(request_type, transport: str = "grpc"):
     assert response.role == gag_permission.Permission.Role.OWNER
 
 
-def test_update_permission_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_permission), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_permission()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.UpdatePermissionRequest()
-
-
 def test_update_permission_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -2644,34 +2510,6 @@ def test_update_permission_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_permission_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_permission), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gag_permission.Permission(
-                name="name_value",
-                grantee_type=gag_permission.Permission.GranteeType.USER,
-                email_address="email_address_value",
-                role=gag_permission.Permission.Role.OWNER,
-            )
-        )
-        response = await client.update_permission()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.UpdatePermissionRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_permission_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2679,7 +2517,7 @@ async def test_update_permission_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = PermissionServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2719,7 +2557,7 @@ async def test_update_permission_async(
     request_type=permission_service.UpdatePermissionRequest,
 ):
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2795,7 +2633,7 @@ def test_update_permission_field_headers():
 @pytest.mark.asyncio
 async def test_update_permission_field_headers_async():
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2874,7 +2712,7 @@ def test_update_permission_flattened_error():
 @pytest.mark.asyncio
 async def test_update_permission_flattened_async():
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2909,7 +2747,7 @@ async def test_update_permission_flattened_async():
 @pytest.mark.asyncio
 async def test_update_permission_flattened_error_async():
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2955,27 +2793,6 @@ def test_delete_permission(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_permission_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_permission), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_permission()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.DeletePermissionRequest()
 
 
 def test_delete_permission_non_empty_request_with_auto_populated_field():
@@ -3046,27 +2863,6 @@ def test_delete_permission_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_permission_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_permission), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_permission()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.DeletePermissionRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_permission_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3074,7 +2870,7 @@ async def test_delete_permission_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = PermissionServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3114,7 +2910,7 @@ async def test_delete_permission_async(
     request_type=permission_service.DeletePermissionRequest,
 ):
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3179,7 +2975,7 @@ def test_delete_permission_field_headers():
 @pytest.mark.asyncio
 async def test_delete_permission_field_headers_async():
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3251,7 +3047,7 @@ def test_delete_permission_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_permission_flattened_async():
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3280,7 +3076,7 @@ async def test_delete_permission_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_permission_flattened_error_async():
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3325,27 +3121,6 @@ def test_transfer_ownership(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, permission_service.TransferOwnershipResponse)
-
-
-def test_transfer_ownership_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.transfer_ownership), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.transfer_ownership()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.TransferOwnershipRequest()
 
 
 def test_transfer_ownership_non_empty_request_with_auto_populated_field():
@@ -3420,29 +3195,6 @@ def test_transfer_ownership_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_transfer_ownership_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.transfer_ownership), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            permission_service.TransferOwnershipResponse()
-        )
-        response = await client.transfer_ownership()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == permission_service.TransferOwnershipRequest()
-
-
-@pytest.mark.asyncio
 async def test_transfer_ownership_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3450,7 +3202,7 @@ async def test_transfer_ownership_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = PermissionServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3490,7 +3242,7 @@ async def test_transfer_ownership_async(
     request_type=permission_service.TransferOwnershipRequest,
 ):
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3557,7 +3309,7 @@ def test_transfer_ownership_field_headers():
 @pytest.mark.asyncio
 async def test_transfer_ownership_field_headers_async():
     client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3586,125 +3338,6 @@ async def test_transfer_ownership_field_headers_async():
         "x-goog-request-params",
         "name=name_value",
     ) in kw["metadata"]
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        permission_service.CreatePermissionRequest,
-        dict,
-    ],
-)
-def test_create_permission_rest(request_type):
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "tunedModels/sample1"}
-    request_init["permission"] = {
-        "name": "name_value",
-        "grantee_type": 1,
-        "email_address": "email_address_value",
-        "role": 1,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = permission_service.CreatePermissionRequest.meta.fields["permission"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["permission"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["permission"][field])):
-                    del request_init["permission"][field][i][subfield]
-            else:
-                del request_init["permission"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gag_permission.Permission(
-            name="name_value",
-            grantee_type=gag_permission.Permission.GranteeType.USER,
-            email_address="email_address_value",
-            role=gag_permission.Permission.Role.OWNER,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gag_permission.Permission.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_permission(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gag_permission.Permission)
-    assert response.name == "name_value"
-    assert response.grantee_type == gag_permission.Permission.GranteeType.USER
-    assert response.email_address == "email_address_value"
-    assert response.role == gag_permission.Permission.Role.OWNER
 
 
 def test_create_permission_rest_use_cached_wrapped_rpc():
@@ -3837,87 +3470,6 @@ def test_create_permission_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_permission_rest_interceptors(null_interceptor):
-    transport = transports.PermissionServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.PermissionServiceRestInterceptor(),
-    )
-    client = PermissionServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.PermissionServiceRestInterceptor, "post_create_permission"
-    ) as post, mock.patch.object(
-        transports.PermissionServiceRestInterceptor, "pre_create_permission"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = permission_service.CreatePermissionRequest.pb(
-            permission_service.CreatePermissionRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gag_permission.Permission.to_json(
-            gag_permission.Permission()
-        )
-
-        request = permission_service.CreatePermissionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gag_permission.Permission()
-
-        client.create_permission(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_permission_rest_bad_request(
-    transport: str = "rest", request_type=permission_service.CreatePermissionRequest
-):
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "tunedModels/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_permission(request)
-
-
 def test_create_permission_rest_flattened():
     client = PermissionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3974,58 +3526,6 @@ def test_create_permission_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             permission=gag_permission.Permission(name="name_value"),
         )
-
-
-def test_create_permission_rest_error():
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        permission_service.GetPermissionRequest,
-        dict,
-    ],
-)
-def test_get_permission_rest(request_type):
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "tunedModels/sample1/permissions/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = permission.Permission(
-            name="name_value",
-            grantee_type=permission.Permission.GranteeType.USER,
-            email_address="email_address_value",
-            role=permission.Permission.Role.OWNER,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = permission.Permission.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_permission(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, permission.Permission)
-    assert response.name == "name_value"
-    assert response.grantee_type == permission.Permission.GranteeType.USER
-    assert response.email_address == "email_address_value"
-    assert response.role == permission.Permission.Role.OWNER
 
 
 def test_get_permission_rest_use_cached_wrapped_rpc():
@@ -4147,87 +3647,6 @@ def test_get_permission_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_permission_rest_interceptors(null_interceptor):
-    transport = transports.PermissionServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.PermissionServiceRestInterceptor(),
-    )
-    client = PermissionServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.PermissionServiceRestInterceptor, "post_get_permission"
-    ) as post, mock.patch.object(
-        transports.PermissionServiceRestInterceptor, "pre_get_permission"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = permission_service.GetPermissionRequest.pb(
-            permission_service.GetPermissionRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = permission.Permission.to_json(
-            permission.Permission()
-        )
-
-        request = permission_service.GetPermissionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = permission.Permission()
-
-        client.get_permission(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_permission_rest_bad_request(
-    transport: str = "rest", request_type=permission_service.GetPermissionRequest
-):
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "tunedModels/sample1/permissions/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_permission(request)
-
-
 def test_get_permission_rest_flattened():
     client = PermissionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4282,52 +3701,6 @@ def test_get_permission_rest_flattened_error(transport: str = "rest"):
             permission_service.GetPermissionRequest(),
             name="name_value",
         )
-
-
-def test_get_permission_rest_error():
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        permission_service.ListPermissionsRequest,
-        dict,
-    ],
-)
-def test_list_permissions_rest(request_type):
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "tunedModels/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = permission_service.ListPermissionsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = permission_service.ListPermissionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_permissions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListPermissionsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_permissions_rest_use_cached_wrapped_rpc():
@@ -4466,87 +3839,6 @@ def test_list_permissions_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_permissions_rest_interceptors(null_interceptor):
-    transport = transports.PermissionServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.PermissionServiceRestInterceptor(),
-    )
-    client = PermissionServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.PermissionServiceRestInterceptor, "post_list_permissions"
-    ) as post, mock.patch.object(
-        transports.PermissionServiceRestInterceptor, "pre_list_permissions"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = permission_service.ListPermissionsRequest.pb(
-            permission_service.ListPermissionsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = permission_service.ListPermissionsResponse.to_json(
-            permission_service.ListPermissionsResponse()
-        )
-
-        request = permission_service.ListPermissionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = permission_service.ListPermissionsResponse()
-
-        client.list_permissions(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_permissions_rest_bad_request(
-    transport: str = "rest", request_type=permission_service.ListPermissionsRequest
-):
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "tunedModels/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_permissions(request)
-
-
 def test_list_permissions_rest_flattened():
     client = PermissionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4664,125 +3956,6 @@ def test_list_permissions_rest_pager(transport: str = "rest"):
         pages = list(client.list_permissions(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        permission_service.UpdatePermissionRequest,
-        dict,
-    ],
-)
-def test_update_permission_rest(request_type):
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"permission": {"name": "tunedModels/sample1/permissions/sample2"}}
-    request_init["permission"] = {
-        "name": "tunedModels/sample1/permissions/sample2",
-        "grantee_type": 1,
-        "email_address": "email_address_value",
-        "role": 1,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = permission_service.UpdatePermissionRequest.meta.fields["permission"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["permission"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["permission"][field])):
-                    del request_init["permission"][field][i][subfield]
-            else:
-                del request_init["permission"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gag_permission.Permission(
-            name="name_value",
-            grantee_type=gag_permission.Permission.GranteeType.USER,
-            email_address="email_address_value",
-            role=gag_permission.Permission.Role.OWNER,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gag_permission.Permission.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_permission(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gag_permission.Permission)
-    assert response.name == "name_value"
-    assert response.grantee_type == gag_permission.Permission.GranteeType.USER
-    assert response.email_address == "email_address_value"
-    assert response.role == gag_permission.Permission.Role.OWNER
 
 
 def test_update_permission_rest_use_cached_wrapped_rpc():
@@ -4912,87 +4085,6 @@ def test_update_permission_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_permission_rest_interceptors(null_interceptor):
-    transport = transports.PermissionServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.PermissionServiceRestInterceptor(),
-    )
-    client = PermissionServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.PermissionServiceRestInterceptor, "post_update_permission"
-    ) as post, mock.patch.object(
-        transports.PermissionServiceRestInterceptor, "pre_update_permission"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = permission_service.UpdatePermissionRequest.pb(
-            permission_service.UpdatePermissionRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gag_permission.Permission.to_json(
-            gag_permission.Permission()
-        )
-
-        request = permission_service.UpdatePermissionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gag_permission.Permission()
-
-        client.update_permission(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_permission_rest_bad_request(
-    transport: str = "rest", request_type=permission_service.UpdatePermissionRequest
-):
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"permission": {"name": "tunedModels/sample1/permissions/sample2"}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_permission(request)
-
-
 def test_update_permission_rest_flattened():
     client = PermissionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5052,47 +4144,6 @@ def test_update_permission_rest_flattened_error(transport: str = "rest"):
             permission=gag_permission.Permission(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_permission_rest_error():
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        permission_service.DeletePermissionRequest,
-        dict,
-    ],
-)
-def test_delete_permission_rest(request_type):
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "tunedModels/sample1/permissions/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_permission(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_permission_rest_use_cached_wrapped_rpc():
@@ -5213,79 +4264,6 @@ def test_delete_permission_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_permission_rest_interceptors(null_interceptor):
-    transport = transports.PermissionServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.PermissionServiceRestInterceptor(),
-    )
-    client = PermissionServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.PermissionServiceRestInterceptor, "pre_delete_permission"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = permission_service.DeletePermissionRequest.pb(
-            permission_service.DeletePermissionRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = permission_service.DeletePermissionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_permission(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_permission_rest_bad_request(
-    transport: str = "rest", request_type=permission_service.DeletePermissionRequest
-):
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "tunedModels/sample1/permissions/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_permission(request)
-
-
 def test_delete_permission_rest_flattened():
     client = PermissionServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5338,49 +4316,6 @@ def test_delete_permission_rest_flattened_error(transport: str = "rest"):
             permission_service.DeletePermissionRequest(),
             name="name_value",
         )
-
-
-def test_delete_permission_rest_error():
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        permission_service.TransferOwnershipRequest,
-        dict,
-    ],
-)
-def test_transfer_ownership_rest(request_type):
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "tunedModels/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = permission_service.TransferOwnershipResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = permission_service.TransferOwnershipResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.transfer_ownership(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, permission_service.TransferOwnershipResponse)
 
 
 def test_transfer_ownership_rest_use_cached_wrapped_rpc():
@@ -5519,95 +4454,6 @@ def test_transfer_ownership_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_transfer_ownership_rest_interceptors(null_interceptor):
-    transport = transports.PermissionServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.PermissionServiceRestInterceptor(),
-    )
-    client = PermissionServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.PermissionServiceRestInterceptor, "post_transfer_ownership"
-    ) as post, mock.patch.object(
-        transports.PermissionServiceRestInterceptor, "pre_transfer_ownership"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = permission_service.TransferOwnershipRequest.pb(
-            permission_service.TransferOwnershipRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            permission_service.TransferOwnershipResponse.to_json(
-                permission_service.TransferOwnershipResponse()
-            )
-        )
-
-        request = permission_service.TransferOwnershipRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = permission_service.TransferOwnershipResponse()
-
-        client.transfer_ownership(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_transfer_ownership_rest_bad_request(
-    transport: str = "rest", request_type=permission_service.TransferOwnershipRequest
-):
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "tunedModels/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.transfer_ownership(request)
-
-
-def test_transfer_ownership_rest_error():
-    client = PermissionServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.PermissionServiceGrpcTransport(
@@ -5700,18 +4546,1347 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = PermissionServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_permission_empty_call_grpc():
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_permission), "__call__"
+    ) as call:
+        call.return_value = gag_permission.Permission()
+        client.create_permission(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = permission_service.CreatePermissionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_permission_empty_call_grpc():
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_permission), "__call__") as call:
+        call.return_value = permission.Permission()
+        client.get_permission(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = permission_service.GetPermissionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_permissions_empty_call_grpc():
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_permissions), "__call__") as call:
+        call.return_value = permission_service.ListPermissionsResponse()
+        client.list_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = permission_service.ListPermissionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_permission_empty_call_grpc():
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_permission), "__call__"
+    ) as call:
+        call.return_value = gag_permission.Permission()
+        client.update_permission(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = permission_service.UpdatePermissionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_permission_empty_call_grpc():
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_permission), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_permission(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = permission_service.DeletePermissionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_transfer_ownership_empty_call_grpc():
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.transfer_ownership), "__call__"
+    ) as call:
+        call.return_value = permission_service.TransferOwnershipResponse()
+        client.transfer_ownership(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = permission_service.TransferOwnershipRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = PermissionServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = PermissionServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_permission_empty_call_grpc_asyncio():
+    client = PermissionServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gag_permission.Permission(
+                name="name_value",
+                grantee_type=gag_permission.Permission.GranteeType.USER,
+                email_address="email_address_value",
+                role=gag_permission.Permission.Role.OWNER,
+            )
+        )
+        await client.create_permission(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = permission_service.CreatePermissionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_permission_empty_call_grpc_asyncio():
+    client = PermissionServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_permission), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            permission.Permission(
+                name="name_value",
+                grantee_type=permission.Permission.GranteeType.USER,
+                email_address="email_address_value",
+                role=permission.Permission.Role.OWNER,
+            )
+        )
+        await client.get_permission(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = permission_service.GetPermissionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_permissions_empty_call_grpc_asyncio():
+    client = PermissionServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_permissions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            permission_service.ListPermissionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = permission_service.ListPermissionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_permission_empty_call_grpc_asyncio():
+    client = PermissionServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gag_permission.Permission(
+                name="name_value",
+                grantee_type=gag_permission.Permission.GranteeType.USER,
+                email_address="email_address_value",
+                role=gag_permission.Permission.Role.OWNER,
+            )
+        )
+        await client.update_permission(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = permission_service.UpdatePermissionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_permission_empty_call_grpc_asyncio():
+    client = PermissionServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_permission(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = permission_service.DeletePermissionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_transfer_ownership_empty_call_grpc_asyncio():
+    client = PermissionServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.transfer_ownership), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            permission_service.TransferOwnershipResponse()
+        )
+        await client.transfer_ownership(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = permission_service.TransferOwnershipRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = PermissionServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_create_permission_rest_bad_request(
+    request_type=permission_service.CreatePermissionRequest,
+):
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "tunedModels/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_permission(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        permission_service.CreatePermissionRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = PermissionServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_create_permission_rest_call_success(request_type):
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "tunedModels/sample1"}
+    request_init["permission"] = {
+        "name": "name_value",
+        "grantee_type": 1,
+        "email_address": "email_address_value",
+        "role": 1,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = permission_service.CreatePermissionRequest.meta.fields["permission"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["permission"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["permission"][field])):
+                    del request_init["permission"][field][i][subfield]
+            else:
+                del request_init["permission"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gag_permission.Permission(
+            name="name_value",
+            grantee_type=gag_permission.Permission.GranteeType.USER,
+            email_address="email_address_value",
+            role=gag_permission.Permission.Role.OWNER,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gag_permission.Permission.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_permission(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gag_permission.Permission)
+    assert response.name == "name_value"
+    assert response.grantee_type == gag_permission.Permission.GranteeType.USER
+    assert response.email_address == "email_address_value"
+    assert response.role == gag_permission.Permission.Role.OWNER
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_permission_rest_interceptors(null_interceptor):
+    transport = transports.PermissionServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.PermissionServiceRestInterceptor(),
+    )
+    client = PermissionServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PermissionServiceRestInterceptor, "post_create_permission"
+    ) as post, mock.patch.object(
+        transports.PermissionServiceRestInterceptor, "pre_create_permission"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = permission_service.CreatePermissionRequest.pb(
+            permission_service.CreatePermissionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = gag_permission.Permission.to_json(gag_permission.Permission())
+        req.return_value.content = return_value
+
+        request = permission_service.CreatePermissionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gag_permission.Permission()
+
+        client.create_permission(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_permission_rest_bad_request(
+    request_type=permission_service.GetPermissionRequest,
+):
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "tunedModels/sample1/permissions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_permission(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        permission_service.GetPermissionRequest,
+        dict,
+    ],
+)
+def test_get_permission_rest_call_success(request_type):
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "tunedModels/sample1/permissions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = permission.Permission(
+            name="name_value",
+            grantee_type=permission.Permission.GranteeType.USER,
+            email_address="email_address_value",
+            role=permission.Permission.Role.OWNER,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = permission.Permission.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_permission(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, permission.Permission)
+    assert response.name == "name_value"
+    assert response.grantee_type == permission.Permission.GranteeType.USER
+    assert response.email_address == "email_address_value"
+    assert response.role == permission.Permission.Role.OWNER
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_permission_rest_interceptors(null_interceptor):
+    transport = transports.PermissionServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.PermissionServiceRestInterceptor(),
+    )
+    client = PermissionServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PermissionServiceRestInterceptor, "post_get_permission"
+    ) as post, mock.patch.object(
+        transports.PermissionServiceRestInterceptor, "pre_get_permission"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = permission_service.GetPermissionRequest.pb(
+            permission_service.GetPermissionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = permission.Permission.to_json(permission.Permission())
+        req.return_value.content = return_value
+
+        request = permission_service.GetPermissionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = permission.Permission()
+
+        client.get_permission(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_permissions_rest_bad_request(
+    request_type=permission_service.ListPermissionsRequest,
+):
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "tunedModels/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_permissions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        permission_service.ListPermissionsRequest,
+        dict,
+    ],
+)
+def test_list_permissions_rest_call_success(request_type):
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "tunedModels/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = permission_service.ListPermissionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = permission_service.ListPermissionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListPermissionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_permissions_rest_interceptors(null_interceptor):
+    transport = transports.PermissionServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.PermissionServiceRestInterceptor(),
+    )
+    client = PermissionServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PermissionServiceRestInterceptor, "post_list_permissions"
+    ) as post, mock.patch.object(
+        transports.PermissionServiceRestInterceptor, "pre_list_permissions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = permission_service.ListPermissionsRequest.pb(
+            permission_service.ListPermissionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = permission_service.ListPermissionsResponse.to_json(
+            permission_service.ListPermissionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = permission_service.ListPermissionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = permission_service.ListPermissionsResponse()
+
+        client.list_permissions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_permission_rest_bad_request(
+    request_type=permission_service.UpdatePermissionRequest,
+):
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"permission": {"name": "tunedModels/sample1/permissions/sample2"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_permission(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        permission_service.UpdatePermissionRequest,
+        dict,
+    ],
+)
+def test_update_permission_rest_call_success(request_type):
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"permission": {"name": "tunedModels/sample1/permissions/sample2"}}
+    request_init["permission"] = {
+        "name": "tunedModels/sample1/permissions/sample2",
+        "grantee_type": 1,
+        "email_address": "email_address_value",
+        "role": 1,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = permission_service.UpdatePermissionRequest.meta.fields["permission"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["permission"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["permission"][field])):
+                    del request_init["permission"][field][i][subfield]
+            else:
+                del request_init["permission"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gag_permission.Permission(
+            name="name_value",
+            grantee_type=gag_permission.Permission.GranteeType.USER,
+            email_address="email_address_value",
+            role=gag_permission.Permission.Role.OWNER,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gag_permission.Permission.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_permission(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gag_permission.Permission)
+    assert response.name == "name_value"
+    assert response.grantee_type == gag_permission.Permission.GranteeType.USER
+    assert response.email_address == "email_address_value"
+    assert response.role == gag_permission.Permission.Role.OWNER
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_permission_rest_interceptors(null_interceptor):
+    transport = transports.PermissionServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.PermissionServiceRestInterceptor(),
+    )
+    client = PermissionServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PermissionServiceRestInterceptor, "post_update_permission"
+    ) as post, mock.patch.object(
+        transports.PermissionServiceRestInterceptor, "pre_update_permission"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = permission_service.UpdatePermissionRequest.pb(
+            permission_service.UpdatePermissionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = gag_permission.Permission.to_json(gag_permission.Permission())
+        req.return_value.content = return_value
+
+        request = permission_service.UpdatePermissionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gag_permission.Permission()
+
+        client.update_permission(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_permission_rest_bad_request(
+    request_type=permission_service.DeletePermissionRequest,
+):
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "tunedModels/sample1/permissions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_permission(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        permission_service.DeletePermissionRequest,
+        dict,
+    ],
+)
+def test_delete_permission_rest_call_success(request_type):
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "tunedModels/sample1/permissions/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_permission(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_permission_rest_interceptors(null_interceptor):
+    transport = transports.PermissionServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.PermissionServiceRestInterceptor(),
+    )
+    client = PermissionServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PermissionServiceRestInterceptor, "pre_delete_permission"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = permission_service.DeletePermissionRequest.pb(
+            permission_service.DeletePermissionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = permission_service.DeletePermissionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_permission(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_transfer_ownership_rest_bad_request(
+    request_type=permission_service.TransferOwnershipRequest,
+):
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "tunedModels/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.transfer_ownership(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        permission_service.TransferOwnershipRequest,
+        dict,
+    ],
+)
+def test_transfer_ownership_rest_call_success(request_type):
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "tunedModels/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = permission_service.TransferOwnershipResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = permission_service.TransferOwnershipResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.transfer_ownership(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, permission_service.TransferOwnershipResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_transfer_ownership_rest_interceptors(null_interceptor):
+    transport = transports.PermissionServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.PermissionServiceRestInterceptor(),
+    )
+    client = PermissionServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PermissionServiceRestInterceptor, "post_transfer_ownership"
+    ) as post, mock.patch.object(
+        transports.PermissionServiceRestInterceptor, "pre_transfer_ownership"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = permission_service.TransferOwnershipRequest.pb(
+            permission_service.TransferOwnershipRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = permission_service.TransferOwnershipResponse.to_json(
+            permission_service.TransferOwnershipResponse()
+        )
+        req.return_value.content = return_value
+
+        request = permission_service.TransferOwnershipRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = permission_service.TransferOwnershipResponse()
+
+        client.transfer_ownership(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_initialize_client_w_rest():
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_permission_empty_call_rest():
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_permission), "__call__"
+    ) as call:
+        client.create_permission(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = permission_service.CreatePermissionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_permission_empty_call_rest():
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_permission), "__call__") as call:
+        client.get_permission(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = permission_service.GetPermissionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_permissions_empty_call_rest():
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_permissions), "__call__") as call:
+        client.list_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = permission_service.ListPermissionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_permission_empty_call_rest():
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_permission), "__call__"
+    ) as call:
+        client.update_permission(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = permission_service.UpdatePermissionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_permission_empty_call_rest():
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_permission), "__call__"
+    ) as call:
+        client.delete_permission(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = permission_service.DeletePermissionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_transfer_ownership_empty_call_rest():
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.transfer_ownership), "__call__"
+    ) as call:
+        client.transfer_ownership(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = permission_service.TransferOwnershipRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -6326,36 +6501,41 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = PermissionServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = PermissionServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = PermissionServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = PermissionServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

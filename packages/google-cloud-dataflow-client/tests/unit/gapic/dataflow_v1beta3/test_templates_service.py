@@ -22,21 +22,12 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.oauth2 import service_account
+from google.api_core import api_core_version
 from google.protobuf import json_format
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -44,6 +35,24 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import client_options
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+import google.auth
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.oauth2 import service_account
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 
 from google.cloud.dataflow_v1beta3.services.templates_service import (
     TemplatesServiceAsyncClient,
@@ -53,8 +62,22 @@ from google.cloud.dataflow_v1beta3.services.templates_service import (
 from google.cloud.dataflow_v1beta3.types import environment, jobs, templates
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1217,27 +1240,6 @@ def test_create_job_from_template(request_type, transport: str = "grpc"):
     assert response.satisfies_pzs is True
 
 
-def test_create_job_from_template_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TemplatesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_job_from_template), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_job_from_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == templates.CreateJobFromTemplateRequest()
-
-
 def test_create_job_from_template_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1315,44 +1317,6 @@ def test_create_job_from_template_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_job_from_template_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TemplatesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_job_from_template), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            jobs.Job(
-                id="id_value",
-                project_id="project_id_value",
-                name="name_value",
-                type_=environment.JobType.JOB_TYPE_BATCH,
-                steps_location="steps_location_value",
-                current_state=jobs.JobState.JOB_STATE_STOPPED,
-                requested_state=jobs.JobState.JOB_STATE_STOPPED,
-                replace_job_id="replace_job_id_value",
-                client_request_id="client_request_id_value",
-                replaced_by_job_id="replaced_by_job_id_value",
-                temp_files=["temp_files_value"],
-                location="location_value",
-                created_from_snapshot_id="created_from_snapshot_id_value",
-                satisfies_pzs=True,
-            )
-        )
-        response = await client.create_job_from_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == templates.CreateJobFromTemplateRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_job_from_template_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1360,7 +1324,7 @@ async def test_create_job_from_template_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TemplatesServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1399,7 +1363,7 @@ async def test_create_job_from_template_async(
     transport: str = "grpc_asyncio", request_type=templates.CreateJobFromTemplateRequest
 ):
     client = TemplatesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1496,7 +1460,7 @@ def test_create_job_from_template_field_headers():
 @pytest.mark.asyncio
 async def test_create_job_from_template_field_headers_async():
     client = TemplatesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1557,25 +1521,6 @@ def test_launch_template(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, templates.LaunchTemplateResponse)
-
-
-def test_launch_template_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TemplatesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.launch_template), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.launch_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == templates.LaunchTemplateRequest()
 
 
 def test_launch_template_non_empty_request_with_auto_populated_field():
@@ -1646,27 +1591,6 @@ def test_launch_template_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_launch_template_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TemplatesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.launch_template), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            templates.LaunchTemplateResponse()
-        )
-        response = await client.launch_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == templates.LaunchTemplateRequest()
-
-
-@pytest.mark.asyncio
 async def test_launch_template_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1674,7 +1598,7 @@ async def test_launch_template_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TemplatesServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1713,7 +1637,7 @@ async def test_launch_template_async(
     transport: str = "grpc_asyncio", request_type=templates.LaunchTemplateRequest
 ):
     client = TemplatesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1777,7 +1701,7 @@ def test_launch_template_field_headers():
 @pytest.mark.asyncio
 async def test_launch_template_field_headers_async():
     client = TemplatesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1841,25 +1765,6 @@ def test_get_template(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, templates.GetTemplateResponse)
     assert response.template_type == templates.GetTemplateResponse.TemplateType.LEGACY
-
-
-def test_get_template_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TemplatesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_template), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == templates.GetTemplateRequest()
 
 
 def test_get_template_non_empty_request_with_auto_populated_field():
@@ -1930,29 +1835,6 @@ def test_get_template_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_template_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TemplatesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_template), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            templates.GetTemplateResponse(
-                template_type=templates.GetTemplateResponse.TemplateType.LEGACY,
-            )
-        )
-        response = await client.get_template()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == templates.GetTemplateRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_template_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1960,7 +1842,7 @@ async def test_get_template_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TemplatesServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1999,7 +1881,7 @@ async def test_get_template_async(
     transport: str = "grpc_asyncio", request_type=templates.GetTemplateRequest
 ):
     client = TemplatesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2066,7 +1948,7 @@ def test_get_template_field_headers():
 @pytest.mark.asyncio
 async def test_get_template_field_headers_async():
     client = TemplatesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2094,72 +1976,6 @@ async def test_get_template_field_headers_async():
         "x-goog-request-params",
         "project_id=project_id_value&location=location_value",
     ) in kw["metadata"]
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        templates.CreateJobFromTemplateRequest,
-        dict,
-    ],
-)
-def test_create_job_from_template_rest(request_type):
-    client = TemplatesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project_id": "sample1", "location": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = jobs.Job(
-            id="id_value",
-            project_id="project_id_value",
-            name="name_value",
-            type_=environment.JobType.JOB_TYPE_BATCH,
-            steps_location="steps_location_value",
-            current_state=jobs.JobState.JOB_STATE_STOPPED,
-            requested_state=jobs.JobState.JOB_STATE_STOPPED,
-            replace_job_id="replace_job_id_value",
-            client_request_id="client_request_id_value",
-            replaced_by_job_id="replaced_by_job_id_value",
-            temp_files=["temp_files_value"],
-            location="location_value",
-            created_from_snapshot_id="created_from_snapshot_id_value",
-            satisfies_pzs=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = jobs.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_job_from_template(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, jobs.Job)
-    assert response.id == "id_value"
-    assert response.project_id == "project_id_value"
-    assert response.name == "name_value"
-    assert response.type_ == environment.JobType.JOB_TYPE_BATCH
-    assert response.steps_location == "steps_location_value"
-    assert response.current_state == jobs.JobState.JOB_STATE_STOPPED
-    assert response.requested_state == jobs.JobState.JOB_STATE_STOPPED
-    assert response.replace_job_id == "replace_job_id_value"
-    assert response.client_request_id == "client_request_id_value"
-    assert response.replaced_by_job_id == "replaced_by_job_id_value"
-    assert response.temp_files == ["temp_files_value"]
-    assert response.location == "location_value"
-    assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
-    assert response.satisfies_pzs is True
 
 
 def test_create_job_from_template_rest_use_cached_wrapped_rpc():
@@ -2203,6 +2019,453 @@ def test_create_job_from_template_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
+def test_launch_template_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = TemplatesServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.launch_template in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.launch_template] = mock_rpc
+
+        request = {}
+        client.launch_template(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.launch_template(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_template_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = TemplatesServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.get_template in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.get_template] = mock_rpc
+
+        request = {}
+        client.get_template(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_template(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_credentials_transport_error():
+    # It is an error to provide credentials and a transport instance.
+    transport = transports.TemplatesServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = TemplatesServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+    # It is an error to provide a credentials file and a transport instance.
+    transport = transports.TemplatesServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = TemplatesServiceClient(
+            client_options={"credentials_file": "credentials.json"},
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a transport instance.
+    transport = transports.TemplatesServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = TemplatesServiceClient(
+            client_options=options,
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a credential.
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = TemplatesServiceClient(
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
+        )
+
+    # It is an error to provide scopes and a transport instance.
+    transport = transports.TemplatesServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = TemplatesServiceClient(
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
+        )
+
+
+def test_transport_instance():
+    # A client may be instantiated with a custom transport instance.
+    transport = transports.TemplatesServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    client = TemplatesServiceClient(transport=transport)
+    assert client.transport is transport
+
+
+def test_transport_get_channel():
+    # A client may be instantiated with a custom transport instance.
+    transport = transports.TemplatesServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    channel = transport.grpc_channel
+    assert channel
+
+    transport = transports.TemplatesServiceGrpcAsyncIOTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    channel = transport.grpc_channel
+    assert channel
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.TemplatesServiceGrpcTransport,
+        transports.TemplatesServiceGrpcAsyncIOTransport,
+        transports.TemplatesServiceRestTransport,
+    ],
+)
+def test_transport_adc(transport_class):
+    # Test default credentials are used if not provided.
+    with mock.patch.object(google.auth, "default") as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class()
+        adc.assert_called_once()
+
+
+def test_transport_kind_grpc():
+    transport = TemplatesServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = TemplatesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_job_from_template_empty_call_grpc():
+    client = TemplatesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_job_from_template), "__call__"
+    ) as call:
+        call.return_value = jobs.Job()
+        client.create_job_from_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = templates.CreateJobFromTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_launch_template_empty_call_grpc():
+    client = TemplatesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.launch_template), "__call__") as call:
+        call.return_value = templates.LaunchTemplateResponse()
+        client.launch_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = templates.LaunchTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_template_empty_call_grpc():
+    client = TemplatesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_template), "__call__") as call:
+        call.return_value = templates.GetTemplateResponse()
+        client.get_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = templates.GetTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = TemplatesServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = TemplatesServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_job_from_template_empty_call_grpc_asyncio():
+    client = TemplatesServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_job_from_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            jobs.Job(
+                id="id_value",
+                project_id="project_id_value",
+                name="name_value",
+                type_=environment.JobType.JOB_TYPE_BATCH,
+                steps_location="steps_location_value",
+                current_state=jobs.JobState.JOB_STATE_STOPPED,
+                requested_state=jobs.JobState.JOB_STATE_STOPPED,
+                replace_job_id="replace_job_id_value",
+                client_request_id="client_request_id_value",
+                replaced_by_job_id="replaced_by_job_id_value",
+                temp_files=["temp_files_value"],
+                location="location_value",
+                created_from_snapshot_id="created_from_snapshot_id_value",
+                satisfies_pzs=True,
+            )
+        )
+        await client.create_job_from_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = templates.CreateJobFromTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_launch_template_empty_call_grpc_asyncio():
+    client = TemplatesServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.launch_template), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            templates.LaunchTemplateResponse()
+        )
+        await client.launch_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = templates.LaunchTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_template_empty_call_grpc_asyncio():
+    client = TemplatesServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_template), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            templates.GetTemplateResponse(
+                template_type=templates.GetTemplateResponse.TemplateType.LEGACY,
+            )
+        )
+        await client.get_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = templates.GetTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = TemplatesServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_create_job_from_template_rest_bad_request(
+    request_type=templates.CreateJobFromTemplateRequest,
+):
+    client = TemplatesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_job_from_template(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        templates.CreateJobFromTemplateRequest,
+        dict,
+    ],
+)
+def test_create_job_from_template_rest_call_success(request_type):
+    client = TemplatesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project_id": "sample1", "location": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = jobs.Job(
+            id="id_value",
+            project_id="project_id_value",
+            name="name_value",
+            type_=environment.JobType.JOB_TYPE_BATCH,
+            steps_location="steps_location_value",
+            current_state=jobs.JobState.JOB_STATE_STOPPED,
+            requested_state=jobs.JobState.JOB_STATE_STOPPED,
+            replace_job_id="replace_job_id_value",
+            client_request_id="client_request_id_value",
+            replaced_by_job_id="replaced_by_job_id_value",
+            temp_files=["temp_files_value"],
+            location="location_value",
+            created_from_snapshot_id="created_from_snapshot_id_value",
+            satisfies_pzs=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = jobs.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_job_from_template(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, jobs.Job)
+    assert response.id == "id_value"
+    assert response.project_id == "project_id_value"
+    assert response.name == "name_value"
+    assert response.type_ == environment.JobType.JOB_TYPE_BATCH
+    assert response.steps_location == "steps_location_value"
+    assert response.current_state == jobs.JobState.JOB_STATE_STOPPED
+    assert response.requested_state == jobs.JobState.JOB_STATE_STOPPED
+    assert response.replace_job_id == "replace_job_id_value"
+    assert response.client_request_id == "client_request_id_value"
+    assert response.replaced_by_job_id == "replaced_by_job_id_value"
+    assert response.temp_files == ["temp_files_value"]
+    assert response.location == "location_value"
+    assert response.created_from_snapshot_id == "created_from_snapshot_id_value"
+    assert response.satisfies_pzs is True
+
+
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_job_from_template_rest_interceptors(null_interceptor):
     transport = transports.TemplatesServiceRestTransport(
@@ -2212,6 +2475,7 @@ def test_create_job_from_template_rest_interceptors(null_interceptor):
         else transports.TemplatesServiceRestInterceptor(),
     )
     client = TemplatesServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -2233,10 +2497,10 @@ def test_create_job_from_template_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = jobs.Job.to_json(jobs.Job())
+        return_value = jobs.Job.to_json(jobs.Job())
+        req.return_value.content = return_value
 
         request = templates.CreateJobFromTemplateRequest()
         metadata = [
@@ -2258,14 +2522,10 @@ def test_create_job_from_template_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_create_job_from_template_rest_bad_request(
-    transport: str = "rest", request_type=templates.CreateJobFromTemplateRequest
-):
+def test_launch_template_rest_bad_request(request_type=templates.LaunchTemplateRequest):
     client = TemplatesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
     request_init = {"project_id": "sample1", "location": "sample2"}
     request = request_type(**request_init)
@@ -2275,17 +2535,13 @@ def test_create_job_from_template_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.create_job_from_template(request)
-
-
-def test_create_job_from_template_rest_error():
-    client = TemplatesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.launch_template(request)
 
 
 @pytest.mark.parametrize(
@@ -2295,10 +2551,9 @@ def test_create_job_from_template_rest_error():
         dict,
     ],
 )
-def test_launch_template_rest(request_type):
+def test_launch_template_rest_call_success(request_type):
     client = TemplatesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -2405,54 +2660,18 @@ def test_launch_template_rest(request_type):
         return_value = templates.LaunchTemplateResponse()
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = templates.LaunchTemplateResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.launch_template(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, templates.LaunchTemplateResponse)
-
-
-def test_launch_template_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = TemplatesServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.launch_template in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.launch_template] = mock_rpc
-
-        request = {}
-        client.launch_template(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.launch_template(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -2464,6 +2683,7 @@ def test_launch_template_rest_interceptors(null_interceptor):
         else transports.TemplatesServiceRestInterceptor(),
     )
     client = TemplatesServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -2485,12 +2705,12 @@ def test_launch_template_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = templates.LaunchTemplateResponse.to_json(
+        return_value = templates.LaunchTemplateResponse.to_json(
             templates.LaunchTemplateResponse()
         )
+        req.return_value.content = return_value
 
         request = templates.LaunchTemplateRequest()
         metadata = [
@@ -2512,14 +2732,10 @@ def test_launch_template_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_launch_template_rest_bad_request(
-    transport: str = "rest", request_type=templates.LaunchTemplateRequest
-):
+def test_get_template_rest_bad_request(request_type=templates.GetTemplateRequest):
     client = TemplatesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
     request_init = {"project_id": "sample1", "location": "sample2"}
     request = request_type(**request_init)
@@ -2529,17 +2745,13 @@ def test_launch_template_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.launch_template(request)
-
-
-def test_launch_template_rest_error():
-    client = TemplatesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.get_template(request)
 
 
 @pytest.mark.parametrize(
@@ -2549,10 +2761,9 @@ def test_launch_template_rest_error():
         dict,
     ],
 )
-def test_get_template_rest(request_type):
+def test_get_template_rest_call_success(request_type):
     client = TemplatesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -2567,55 +2778,19 @@ def test_get_template_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = templates.GetTemplateResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get_template(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, templates.GetTemplateResponse)
     assert response.template_type == templates.GetTemplateResponse.TemplateType.LEGACY
-
-
-def test_get_template_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = TemplatesServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.get_template in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.get_template] = mock_rpc
-
-        request = {}
-        client.get_template(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_template(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -2627,6 +2802,7 @@ def test_get_template_rest_interceptors(null_interceptor):
         else transports.TemplatesServiceRestInterceptor(),
     )
     client = TemplatesServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -2646,12 +2822,12 @@ def test_get_template_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = templates.GetTemplateResponse.to_json(
+        return_value = templates.GetTemplateResponse.to_json(
             templates.GetTemplateResponse()
         )
+        req.return_value.content = return_value
 
         request = templates.GetTemplateRequest()
         metadata = [
@@ -2673,140 +2849,73 @@ def test_get_template_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_get_template_rest_bad_request(
-    transport: str = "rest", request_type=templates.GetTemplateRequest
-):
-    client = TemplatesServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project_id": "sample1", "location": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_template(request)
-
-
-def test_get_template_rest_error():
+def test_initialize_client_w_rest():
     client = TemplatesServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
+    assert client is not None
 
 
-def test_credentials_transport_error():
-    # It is an error to provide credentials and a transport instance.
-    transport = transports.TemplatesServiceGrpcTransport(
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_job_from_template_empty_call_rest():
+    client = TemplatesServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    with pytest.raises(ValueError):
-        client = TemplatesServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
 
-    # It is an error to provide a credentials file and a transport instance.
-    transport = transports.TemplatesServiceGrpcTransport(
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_job_from_template), "__call__"
+    ) as call:
+        client.create_job_from_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = templates.CreateJobFromTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_launch_template_empty_call_rest():
+    client = TemplatesServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    with pytest.raises(ValueError):
-        client = TemplatesServiceClient(
-            client_options={"credentials_file": "credentials.json"},
-            transport=transport,
-        )
 
-    # It is an error to provide an api_key and a transport instance.
-    transport = transports.TemplatesServiceGrpcTransport(
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.launch_template), "__call__") as call:
+        client.launch_template(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = templates.LaunchTemplateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_template_empty_call_rest():
+    client = TemplatesServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    options = client_options.ClientOptions()
-    options.api_key = "api_key"
-    with pytest.raises(ValueError):
-        client = TemplatesServiceClient(
-            client_options=options,
-            transport=transport,
-        )
 
-    # It is an error to provide an api_key and a credential.
-    options = client_options.ClientOptions()
-    options.api_key = "api_key"
-    with pytest.raises(ValueError):
-        client = TemplatesServiceClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_template), "__call__") as call:
+        client.get_template(request=None)
 
-    # It is an error to provide scopes and a transport instance.
-    transport = transports.TemplatesServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    with pytest.raises(ValueError):
-        client = TemplatesServiceClient(
-            client_options={"scopes": ["1", "2"]},
-            transport=transport,
-        )
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = templates.GetTemplateRequest()
 
-
-def test_transport_instance():
-    # A client may be instantiated with a custom transport instance.
-    transport = transports.TemplatesServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    client = TemplatesServiceClient(transport=transport)
-    assert client.transport is transport
-
-
-def test_transport_get_channel():
-    # A client may be instantiated with a custom transport instance.
-    transport = transports.TemplatesServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    channel = transport.grpc_channel
-    assert channel
-
-    transport = transports.TemplatesServiceGrpcAsyncIOTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    channel = transport.grpc_channel
-    assert channel
-
-
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.TemplatesServiceGrpcTransport,
-        transports.TemplatesServiceGrpcAsyncIOTransport,
-        transports.TemplatesServiceRestTransport,
-    ],
-)
-def test_transport_adc(transport_class):
-    # Test default credentials are used if not provided.
-    with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport_class()
-        adc.assert_called_once()
-
-
-@pytest.mark.parametrize(
-    "transport_name",
-    [
-        "grpc",
-        "rest",
-    ],
-)
-def test_transport_kind(transport_name):
-    transport = TemplatesServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    assert transport.kind == transport_name
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -3386,36 +3495,41 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = TemplatesServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = TemplatesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = TemplatesServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = TemplatesServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = TemplatesServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

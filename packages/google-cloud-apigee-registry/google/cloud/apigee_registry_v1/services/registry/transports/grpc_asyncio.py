@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -233,6 +234,9 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1254,7 +1258,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_apis: gapic_v1.method_async.wrap_method(
+            self.list_apis: self._wrap_method(
                 self.list_apis,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1271,7 +1275,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_api: gapic_v1.method_async.wrap_method(
+            self.get_api: self._wrap_method(
                 self.get_api,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1288,7 +1292,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_api: gapic_v1.method_async.wrap_method(
+            self.create_api: self._wrap_method(
                 self.create_api,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1305,7 +1309,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_api: gapic_v1.method_async.wrap_method(
+            self.update_api: self._wrap_method(
                 self.update_api,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1322,7 +1326,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_api: gapic_v1.method_async.wrap_method(
+            self.delete_api: self._wrap_method(
                 self.delete_api,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1339,7 +1343,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_api_versions: gapic_v1.method_async.wrap_method(
+            self.list_api_versions: self._wrap_method(
                 self.list_api_versions,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1356,7 +1360,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_api_version: gapic_v1.method_async.wrap_method(
+            self.get_api_version: self._wrap_method(
                 self.get_api_version,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1373,7 +1377,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_api_version: gapic_v1.method_async.wrap_method(
+            self.create_api_version: self._wrap_method(
                 self.create_api_version,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1390,7 +1394,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_api_version: gapic_v1.method_async.wrap_method(
+            self.update_api_version: self._wrap_method(
                 self.update_api_version,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1407,7 +1411,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_api_version: gapic_v1.method_async.wrap_method(
+            self.delete_api_version: self._wrap_method(
                 self.delete_api_version,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1424,7 +1428,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_api_specs: gapic_v1.method_async.wrap_method(
+            self.list_api_specs: self._wrap_method(
                 self.list_api_specs,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1441,7 +1445,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_api_spec: gapic_v1.method_async.wrap_method(
+            self.get_api_spec: self._wrap_method(
                 self.get_api_spec,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1458,7 +1462,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_api_spec_contents: gapic_v1.method_async.wrap_method(
+            self.get_api_spec_contents: self._wrap_method(
                 self.get_api_spec_contents,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1475,7 +1479,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_api_spec: gapic_v1.method_async.wrap_method(
+            self.create_api_spec: self._wrap_method(
                 self.create_api_spec,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1492,7 +1496,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_api_spec: gapic_v1.method_async.wrap_method(
+            self.update_api_spec: self._wrap_method(
                 self.update_api_spec,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1509,7 +1513,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_api_spec: gapic_v1.method_async.wrap_method(
+            self.delete_api_spec: self._wrap_method(
                 self.delete_api_spec,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1526,7 +1530,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.tag_api_spec_revision: gapic_v1.method_async.wrap_method(
+            self.tag_api_spec_revision: self._wrap_method(
                 self.tag_api_spec_revision,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1543,7 +1547,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_api_spec_revisions: gapic_v1.method_async.wrap_method(
+            self.list_api_spec_revisions: self._wrap_method(
                 self.list_api_spec_revisions,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1560,12 +1564,12 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.rollback_api_spec: gapic_v1.method_async.wrap_method(
+            self.rollback_api_spec: self._wrap_method(
                 self.rollback_api_spec,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_api_spec_revision: gapic_v1.method_async.wrap_method(
+            self.delete_api_spec_revision: self._wrap_method(
                 self.delete_api_spec_revision,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1582,7 +1586,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_api_deployments: gapic_v1.method_async.wrap_method(
+            self.list_api_deployments: self._wrap_method(
                 self.list_api_deployments,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1599,7 +1603,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_api_deployment: gapic_v1.method_async.wrap_method(
+            self.get_api_deployment: self._wrap_method(
                 self.get_api_deployment,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1616,7 +1620,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_api_deployment: gapic_v1.method_async.wrap_method(
+            self.create_api_deployment: self._wrap_method(
                 self.create_api_deployment,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1633,7 +1637,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_api_deployment: gapic_v1.method_async.wrap_method(
+            self.update_api_deployment: self._wrap_method(
                 self.update_api_deployment,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1650,7 +1654,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_api_deployment: gapic_v1.method_async.wrap_method(
+            self.delete_api_deployment: self._wrap_method(
                 self.delete_api_deployment,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1667,7 +1671,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.tag_api_deployment_revision: gapic_v1.method_async.wrap_method(
+            self.tag_api_deployment_revision: self._wrap_method(
                 self.tag_api_deployment_revision,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1684,7 +1688,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_api_deployment_revisions: gapic_v1.method_async.wrap_method(
+            self.list_api_deployment_revisions: self._wrap_method(
                 self.list_api_deployment_revisions,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1701,12 +1705,12 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.rollback_api_deployment: gapic_v1.method_async.wrap_method(
+            self.rollback_api_deployment: self._wrap_method(
                 self.rollback_api_deployment,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_api_deployment_revision: gapic_v1.method_async.wrap_method(
+            self.delete_api_deployment_revision: self._wrap_method(
                 self.delete_api_deployment_revision,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1723,7 +1727,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_artifacts: gapic_v1.method_async.wrap_method(
+            self.list_artifacts: self._wrap_method(
                 self.list_artifacts,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1740,7 +1744,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_artifact: gapic_v1.method_async.wrap_method(
+            self.get_artifact: self._wrap_method(
                 self.get_artifact,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1757,7 +1761,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_artifact_contents: gapic_v1.method_async.wrap_method(
+            self.get_artifact_contents: self._wrap_method(
                 self.get_artifact_contents,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1774,7 +1778,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_artifact: gapic_v1.method_async.wrap_method(
+            self.create_artifact: self._wrap_method(
                 self.create_artifact,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1791,7 +1795,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.replace_artifact: gapic_v1.method_async.wrap_method(
+            self.replace_artifact: self._wrap_method(
                 self.replace_artifact,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1808,7 +1812,7 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_artifact: gapic_v1.method_async.wrap_method(
+            self.delete_artifact: self._wrap_method(
                 self.delete_artifact,
                 default_retry=retries.AsyncRetry(
                     initial=0.2,
@@ -1825,10 +1829,64 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_iam_policy: self._wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: self._wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: self._wrap_method(
+                self.test_iam_permissions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
+
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(

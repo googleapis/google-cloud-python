@@ -22,12 +22,29 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 import google.auth
@@ -37,16 +54,8 @@ from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.dialogflow_v2beta1.services.conversations import (
     ConversationsAsyncClient,
@@ -65,8 +74,22 @@ from google.cloud.dialogflow_v2beta1.types import audio_config
 from google.cloud.dialogflow_v2beta1.types import conversation
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1179,27 +1202,6 @@ def test_create_conversation(request_type, transport: str = "grpc"):
     )
 
 
-def test_create_conversation_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_conversation), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_conversation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_conversation.CreateConversationRequest()
-
-
 def test_create_conversation_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1272,34 +1274,6 @@ def test_create_conversation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_conversation_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_conversation), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcd_conversation.Conversation(
-                name="name_value",
-                lifecycle_state=gcd_conversation.Conversation.LifecycleState.IN_PROGRESS,
-                conversation_profile="conversation_profile_value",
-                conversation_stage=gcd_conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE,
-            )
-        )
-        response = await client.create_conversation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_conversation.CreateConversationRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_conversation_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1307,7 +1281,7 @@ async def test_create_conversation_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConversationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1347,7 +1321,7 @@ async def test_create_conversation_async(
     request_type=gcd_conversation.CreateConversationRequest,
 ):
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1429,7 +1403,7 @@ def test_create_conversation_field_headers():
 @pytest.mark.asyncio
 async def test_create_conversation_field_headers_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1508,7 +1482,7 @@ def test_create_conversation_flattened_error():
 @pytest.mark.asyncio
 async def test_create_conversation_flattened_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1543,7 +1517,7 @@ async def test_create_conversation_flattened_async():
 @pytest.mark.asyncio
 async def test_create_conversation_flattened_error_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1592,27 +1566,6 @@ def test_list_conversations(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConversationsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_conversations_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_conversations), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_conversations()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.ListConversationsRequest()
 
 
 def test_list_conversations_non_empty_request_with_auto_populated_field():
@@ -1689,31 +1642,6 @@ def test_list_conversations_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_conversations_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_conversations), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            conversation.ListConversationsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_conversations()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.ListConversationsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_conversations_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1721,7 +1649,7 @@ async def test_list_conversations_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConversationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1760,7 +1688,7 @@ async def test_list_conversations_async(
     transport: str = "grpc_asyncio", request_type=conversation.ListConversationsRequest
 ):
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1830,7 +1758,7 @@ def test_list_conversations_field_headers():
 @pytest.mark.asyncio
 async def test_list_conversations_field_headers_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1904,7 +1832,7 @@ def test_list_conversations_flattened_error():
 @pytest.mark.asyncio
 async def test_list_conversations_flattened_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1935,7 +1863,7 @@ async def test_list_conversations_flattened_async():
 @pytest.mark.asyncio
 async def test_list_conversations_flattened_error_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2049,7 +1977,7 @@ def test_list_conversations_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_conversations_async_pager():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2101,7 +2029,7 @@ async def test_list_conversations_async_pager():
 @pytest.mark.asyncio
 async def test_list_conversations_async_pages():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2196,25 +2124,6 @@ def test_get_conversation(request_type, transport: str = "grpc"):
     )
 
 
-def test_get_conversation_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_conversation), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_conversation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.GetConversationRequest()
-
-
 def test_get_conversation_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -2281,32 +2190,6 @@ def test_get_conversation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_conversation_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_conversation), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            conversation.Conversation(
-                name="name_value",
-                lifecycle_state=conversation.Conversation.LifecycleState.IN_PROGRESS,
-                conversation_profile="conversation_profile_value",
-                conversation_stage=conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE,
-            )
-        )
-        response = await client.get_conversation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.GetConversationRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_conversation_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2314,7 +2197,7 @@ async def test_get_conversation_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConversationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2353,7 +2236,7 @@ async def test_get_conversation_async(
     transport: str = "grpc_asyncio", request_type=conversation.GetConversationRequest
 ):
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2430,7 +2313,7 @@ def test_get_conversation_field_headers():
 @pytest.mark.asyncio
 async def test_get_conversation_field_headers_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2500,7 +2383,7 @@ def test_get_conversation_flattened_error():
 @pytest.mark.asyncio
 async def test_get_conversation_flattened_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2529,7 +2412,7 @@ async def test_get_conversation_flattened_async():
 @pytest.mark.asyncio
 async def test_get_conversation_flattened_error_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2588,27 +2471,6 @@ def test_complete_conversation(request_type, transport: str = "grpc"):
         response.conversation_stage
         == conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE
     )
-
-
-def test_complete_conversation_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.complete_conversation), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.complete_conversation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.CompleteConversationRequest()
 
 
 def test_complete_conversation_non_empty_request_with_auto_populated_field():
@@ -2682,34 +2544,6 @@ def test_complete_conversation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_complete_conversation_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.complete_conversation), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            conversation.Conversation(
-                name="name_value",
-                lifecycle_state=conversation.Conversation.LifecycleState.IN_PROGRESS,
-                conversation_profile="conversation_profile_value",
-                conversation_stage=conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE,
-            )
-        )
-        response = await client.complete_conversation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.CompleteConversationRequest()
-
-
-@pytest.mark.asyncio
 async def test_complete_conversation_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2717,7 +2551,7 @@ async def test_complete_conversation_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConversationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2757,7 +2591,7 @@ async def test_complete_conversation_async(
     request_type=conversation.CompleteConversationRequest,
 ):
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2838,7 +2672,7 @@ def test_complete_conversation_field_headers():
 @pytest.mark.asyncio
 async def test_complete_conversation_field_headers_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2912,7 +2746,7 @@ def test_complete_conversation_flattened_error():
 @pytest.mark.asyncio
 async def test_complete_conversation_flattened_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2943,7 +2777,7 @@ async def test_complete_conversation_flattened_async():
 @pytest.mark.asyncio
 async def test_complete_conversation_flattened_error_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2988,27 +2822,6 @@ def test_batch_create_messages(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, conversation.BatchCreateMessagesResponse)
-
-
-def test_batch_create_messages_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_create_messages), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.batch_create_messages()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.BatchCreateMessagesRequest()
 
 
 def test_batch_create_messages_non_empty_request_with_auto_populated_field():
@@ -3082,29 +2895,6 @@ def test_batch_create_messages_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_batch_create_messages_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_create_messages), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            conversation.BatchCreateMessagesResponse()
-        )
-        response = await client.batch_create_messages()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.BatchCreateMessagesRequest()
-
-
-@pytest.mark.asyncio
 async def test_batch_create_messages_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3112,7 +2902,7 @@ async def test_batch_create_messages_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConversationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3152,7 +2942,7 @@ async def test_batch_create_messages_async(
     request_type=conversation.BatchCreateMessagesRequest,
 ):
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3219,7 +3009,7 @@ def test_batch_create_messages_field_headers():
 @pytest.mark.asyncio
 async def test_batch_create_messages_field_headers_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3298,7 +3088,7 @@ def test_batch_create_messages_flattened_error():
 @pytest.mark.asyncio
 async def test_batch_create_messages_flattened_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3333,7 +3123,7 @@ async def test_batch_create_messages_flattened_async():
 @pytest.mark.asyncio
 async def test_batch_create_messages_flattened_error_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3380,25 +3170,6 @@ def test_list_messages(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMessagesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_messages_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_messages), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_messages()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.ListMessagesRequest()
 
 
 def test_list_messages_non_empty_request_with_auto_populated_field():
@@ -3469,29 +3240,6 @@ def test_list_messages_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_messages_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_messages), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            conversation.ListMessagesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_messages()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.ListMessagesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_messages_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3499,7 +3247,7 @@ async def test_list_messages_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConversationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3538,7 +3286,7 @@ async def test_list_messages_async(
     transport: str = "grpc_asyncio", request_type=conversation.ListMessagesRequest
 ):
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3604,7 +3352,7 @@ def test_list_messages_field_headers():
 @pytest.mark.asyncio
 async def test_list_messages_field_headers_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3674,7 +3422,7 @@ def test_list_messages_flattened_error():
 @pytest.mark.asyncio
 async def test_list_messages_flattened_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3703,7 +3451,7 @@ async def test_list_messages_flattened_async():
 @pytest.mark.asyncio
 async def test_list_messages_flattened_error_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3813,7 +3561,7 @@ def test_list_messages_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_messages_async_pager():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3863,7 +3611,7 @@ async def test_list_messages_async_pager():
 @pytest.mark.asyncio
 async def test_list_messages_async_pages():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3949,27 +3697,6 @@ def test_suggest_conversation_summary(request_type, transport: str = "grpc"):
     assert response.context_size == 1311
 
 
-def test_suggest_conversation_summary_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.suggest_conversation_summary), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.suggest_conversation_summary()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_conversation.SuggestConversationSummaryRequest()
-
-
 def test_suggest_conversation_summary_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -4043,32 +3770,6 @@ def test_suggest_conversation_summary_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_suggest_conversation_summary_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.suggest_conversation_summary), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcd_conversation.SuggestConversationSummaryResponse(
-                latest_message="latest_message_value",
-                context_size=1311,
-            )
-        )
-        response = await client.suggest_conversation_summary()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_conversation.SuggestConversationSummaryRequest()
-
-
-@pytest.mark.asyncio
 async def test_suggest_conversation_summary_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4076,7 +3777,7 @@ async def test_suggest_conversation_summary_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConversationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4116,7 +3817,7 @@ async def test_suggest_conversation_summary_async(
     request_type=gcd_conversation.SuggestConversationSummaryRequest,
 ):
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4188,7 +3889,7 @@ def test_suggest_conversation_summary_field_headers():
 @pytest.mark.asyncio
 async def test_suggest_conversation_summary_field_headers_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4262,7 +3963,7 @@ def test_suggest_conversation_summary_flattened_error():
 @pytest.mark.asyncio
 async def test_suggest_conversation_summary_flattened_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4293,7 +3994,7 @@ async def test_suggest_conversation_summary_flattened_async():
 @pytest.mark.asyncio
 async def test_suggest_conversation_summary_flattened_error_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4343,27 +4044,6 @@ def test_generate_stateless_summary(request_type, transport: str = "grpc"):
     assert isinstance(response, conversation.GenerateStatelessSummaryResponse)
     assert response.latest_message == "latest_message_value"
     assert response.context_size == 1311
-
-
-def test_generate_stateless_summary_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_stateless_summary), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.generate_stateless_summary()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.GenerateStatelessSummaryRequest()
 
 
 def test_generate_stateless_summary_non_empty_request_with_auto_populated_field():
@@ -4437,32 +4117,6 @@ def test_generate_stateless_summary_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_generate_stateless_summary_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_stateless_summary), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            conversation.GenerateStatelessSummaryResponse(
-                latest_message="latest_message_value",
-                context_size=1311,
-            )
-        )
-        response = await client.generate_stateless_summary()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.GenerateStatelessSummaryRequest()
-
-
-@pytest.mark.asyncio
 async def test_generate_stateless_summary_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4470,7 +4124,7 @@ async def test_generate_stateless_summary_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConversationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4510,7 +4164,7 @@ async def test_generate_stateless_summary_async(
     request_type=conversation.GenerateStatelessSummaryRequest,
 ):
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4582,7 +4236,7 @@ def test_generate_stateless_summary_field_headers():
 @pytest.mark.asyncio
 async def test_generate_stateless_summary_field_headers_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4646,27 +4300,6 @@ def test_generate_stateless_suggestion(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, conversation.GenerateStatelessSuggestionResponse)
-
-
-def test_generate_stateless_suggestion_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_stateless_suggestion), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.generate_stateless_suggestion()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.GenerateStatelessSuggestionRequest()
 
 
 def test_generate_stateless_suggestion_non_empty_request_with_auto_populated_field():
@@ -4742,29 +4375,6 @@ def test_generate_stateless_suggestion_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_generate_stateless_suggestion_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_stateless_suggestion), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            conversation.GenerateStatelessSuggestionResponse()
-        )
-        response = await client.generate_stateless_suggestion()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.GenerateStatelessSuggestionRequest()
-
-
-@pytest.mark.asyncio
 async def test_generate_stateless_suggestion_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4772,7 +4382,7 @@ async def test_generate_stateless_suggestion_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConversationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4812,7 +4422,7 @@ async def test_generate_stateless_suggestion_async(
     request_type=conversation.GenerateStatelessSuggestionRequest,
 ):
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4879,7 +4489,7 @@ def test_generate_stateless_suggestion_field_headers():
 @pytest.mark.asyncio
 async def test_generate_stateless_suggestion_field_headers_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4944,25 +4554,6 @@ def test_search_knowledge(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, conversation.SearchKnowledgeResponse)
     assert response.rewritten_query == "rewritten_query_value"
-
-
-def test_search_knowledge_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.search_knowledge), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.search_knowledge()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.SearchKnowledgeRequest()
 
 
 def test_search_knowledge_non_empty_request_with_auto_populated_field():
@@ -5039,29 +4630,6 @@ def test_search_knowledge_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_search_knowledge_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.search_knowledge), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            conversation.SearchKnowledgeResponse(
-                rewritten_query="rewritten_query_value",
-            )
-        )
-        response = await client.search_knowledge()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == conversation.SearchKnowledgeRequest()
-
-
-@pytest.mark.asyncio
 async def test_search_knowledge_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5069,7 +4637,7 @@ async def test_search_knowledge_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ConversationsAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5108,7 +4676,7 @@ async def test_search_knowledge_async(
     transport: str = "grpc_asyncio", request_type=conversation.SearchKnowledgeRequest
 ):
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5174,7 +4742,7 @@ def test_search_knowledge_field_headers():
 @pytest.mark.asyncio
 async def test_search_knowledge_field_headers_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5201,134 +4769,6 @@ async def test_search_knowledge_field_headers_async():
         "x-goog-request-params",
         "parent=parent_value",
     ) in kw["metadata"]
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        gcd_conversation.CreateConversationRequest,
-        dict,
-    ],
-)
-def test_create_conversation_rest(request_type):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request_init["conversation"] = {
-        "name": "name_value",
-        "lifecycle_state": 1,
-        "conversation_profile": "conversation_profile_value",
-        "phone_number": {"phone_number": "phone_number_value"},
-        "conversation_stage": 1,
-        "start_time": {"seconds": 751, "nanos": 543},
-        "end_time": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = gcd_conversation.CreateConversationRequest.meta.fields["conversation"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["conversation"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["conversation"][field])):
-                    del request_init["conversation"][field][i][subfield]
-            else:
-                del request_init["conversation"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gcd_conversation.Conversation(
-            name="name_value",
-            lifecycle_state=gcd_conversation.Conversation.LifecycleState.IN_PROGRESS,
-            conversation_profile="conversation_profile_value",
-            conversation_stage=gcd_conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gcd_conversation.Conversation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_conversation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gcd_conversation.Conversation)
-    assert response.name == "name_value"
-    assert (
-        response.lifecycle_state
-        == gcd_conversation.Conversation.LifecycleState.IN_PROGRESS
-    )
-    assert response.conversation_profile == "conversation_profile_value"
-    assert (
-        response.conversation_stage
-        == gcd_conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE
-    )
 
 
 def test_create_conversation_rest_use_cached_wrapped_rpc():
@@ -5465,87 +4905,6 @@ def test_create_conversation_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_conversation_rest_interceptors(null_interceptor):
-    transport = transports.ConversationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ConversationsRestInterceptor(),
-    )
-    client = ConversationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_create_conversation"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_create_conversation"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = gcd_conversation.CreateConversationRequest.pb(
-            gcd_conversation.CreateConversationRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gcd_conversation.Conversation.to_json(
-            gcd_conversation.Conversation()
-        )
-
-        request = gcd_conversation.CreateConversationRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gcd_conversation.Conversation()
-
-        client.create_conversation(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_conversation_rest_bad_request(
-    transport: str = "rest", request_type=gcd_conversation.CreateConversationRequest
-):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_conversation(request)
-
-
 def test_create_conversation_rest_flattened():
     client = ConversationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5602,52 +4961,6 @@ def test_create_conversation_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             conversation=gcd_conversation.Conversation(name="name_value"),
         )
-
-
-def test_create_conversation_rest_error():
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        conversation.ListConversationsRequest,
-        dict,
-    ],
-)
-def test_list_conversations_rest(request_type):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = conversation.ListConversationsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = conversation.ListConversationsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_conversations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListConversationsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_conversations_rest_use_cached_wrapped_rpc():
@@ -5790,87 +5103,6 @@ def test_list_conversations_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_conversations_rest_interceptors(null_interceptor):
-    transport = transports.ConversationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ConversationsRestInterceptor(),
-    )
-    client = ConversationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_list_conversations"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_list_conversations"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = conversation.ListConversationsRequest.pb(
-            conversation.ListConversationsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = conversation.ListConversationsResponse.to_json(
-            conversation.ListConversationsResponse()
-        )
-
-        request = conversation.ListConversationsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = conversation.ListConversationsResponse()
-
-        client.list_conversations(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_conversations_rest_bad_request(
-    transport: str = "rest", request_type=conversation.ListConversationsRequest
-):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_conversations(request)
-
-
 def test_list_conversations_rest_flattened():
     client = ConversationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5988,57 +5220,6 @@ def test_list_conversations_rest_pager(transport: str = "rest"):
         pages = list(client.list_conversations(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        conversation.GetConversationRequest,
-        dict,
-    ],
-)
-def test_get_conversation_rest(request_type):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/conversations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = conversation.Conversation(
-            name="name_value",
-            lifecycle_state=conversation.Conversation.LifecycleState.IN_PROGRESS,
-            conversation_profile="conversation_profile_value",
-            conversation_stage=conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = conversation.Conversation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_conversation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, conversation.Conversation)
-    assert response.name == "name_value"
-    assert (
-        response.lifecycle_state == conversation.Conversation.LifecycleState.IN_PROGRESS
-    )
-    assert response.conversation_profile == "conversation_profile_value"
-    assert (
-        response.conversation_stage
-        == conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE
-    )
 
 
 def test_get_conversation_rest_use_cached_wrapped_rpc():
@@ -6162,87 +5343,6 @@ def test_get_conversation_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_conversation_rest_interceptors(null_interceptor):
-    transport = transports.ConversationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ConversationsRestInterceptor(),
-    )
-    client = ConversationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_get_conversation"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_get_conversation"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = conversation.GetConversationRequest.pb(
-            conversation.GetConversationRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = conversation.Conversation.to_json(
-            conversation.Conversation()
-        )
-
-        request = conversation.GetConversationRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = conversation.Conversation()
-
-        client.get_conversation(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_conversation_rest_bad_request(
-    transport: str = "rest", request_type=conversation.GetConversationRequest
-):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/conversations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_conversation(request)
-
-
 def test_get_conversation_rest_flattened():
     client = ConversationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6297,63 +5397,6 @@ def test_get_conversation_rest_flattened_error(transport: str = "rest"):
             conversation.GetConversationRequest(),
             name="name_value",
         )
-
-
-def test_get_conversation_rest_error():
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        conversation.CompleteConversationRequest,
-        dict,
-    ],
-)
-def test_complete_conversation_rest(request_type):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/conversations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = conversation.Conversation(
-            name="name_value",
-            lifecycle_state=conversation.Conversation.LifecycleState.IN_PROGRESS,
-            conversation_profile="conversation_profile_value",
-            conversation_stage=conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = conversation.Conversation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.complete_conversation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, conversation.Conversation)
-    assert response.name == "name_value"
-    assert (
-        response.lifecycle_state == conversation.Conversation.LifecycleState.IN_PROGRESS
-    )
-    assert response.conversation_profile == "conversation_profile_value"
-    assert (
-        response.conversation_stage
-        == conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE
-    )
 
 
 def test_complete_conversation_rest_use_cached_wrapped_rpc():
@@ -6481,87 +5524,6 @@ def test_complete_conversation_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_complete_conversation_rest_interceptors(null_interceptor):
-    transport = transports.ConversationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ConversationsRestInterceptor(),
-    )
-    client = ConversationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_complete_conversation"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_complete_conversation"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = conversation.CompleteConversationRequest.pb(
-            conversation.CompleteConversationRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = conversation.Conversation.to_json(
-            conversation.Conversation()
-        )
-
-        request = conversation.CompleteConversationRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = conversation.Conversation()
-
-        client.complete_conversation(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_complete_conversation_rest_bad_request(
-    transport: str = "rest", request_type=conversation.CompleteConversationRequest
-):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/conversations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.complete_conversation(request)
-
-
 def test_complete_conversation_rest_flattened():
     client = ConversationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6617,49 +5579,6 @@ def test_complete_conversation_rest_flattened_error(transport: str = "rest"):
             conversation.CompleteConversationRequest(),
             name="name_value",
         )
-
-
-def test_complete_conversation_rest_error():
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        conversation.BatchCreateMessagesRequest,
-        dict,
-    ],
-)
-def test_batch_create_messages_rest(request_type):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/conversations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = conversation.BatchCreateMessagesResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = conversation.BatchCreateMessagesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.batch_create_messages(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, conversation.BatchCreateMessagesResponse)
 
 
 def test_batch_create_messages_rest_use_cached_wrapped_rpc():
@@ -6795,87 +5714,6 @@ def test_batch_create_messages_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_create_messages_rest_interceptors(null_interceptor):
-    transport = transports.ConversationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ConversationsRestInterceptor(),
-    )
-    client = ConversationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_batch_create_messages"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_batch_create_messages"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = conversation.BatchCreateMessagesRequest.pb(
-            conversation.BatchCreateMessagesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = conversation.BatchCreateMessagesResponse.to_json(
-            conversation.BatchCreateMessagesResponse()
-        )
-
-        request = conversation.BatchCreateMessagesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = conversation.BatchCreateMessagesResponse()
-
-        client.batch_create_messages(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_create_messages_rest_bad_request(
-    transport: str = "rest", request_type=conversation.BatchCreateMessagesRequest
-):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/conversations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_create_messages(request)
-
-
 def test_batch_create_messages_rest_flattened():
     client = ConversationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6933,52 +5771,6 @@ def test_batch_create_messages_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             requests=[conversation.CreateMessageRequest(parent="parent_value")],
         )
-
-
-def test_batch_create_messages_rest_error():
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        conversation.ListMessagesRequest,
-        dict,
-    ],
-)
-def test_list_messages_rest(request_type):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/conversations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = conversation.ListMessagesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = conversation.ListMessagesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_messages(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListMessagesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_messages_rest_use_cached_wrapped_rpc():
@@ -7117,87 +5909,6 @@ def test_list_messages_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_messages_rest_interceptors(null_interceptor):
-    transport = transports.ConversationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ConversationsRestInterceptor(),
-    )
-    client = ConversationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_list_messages"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_list_messages"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = conversation.ListMessagesRequest.pb(
-            conversation.ListMessagesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = conversation.ListMessagesResponse.to_json(
-            conversation.ListMessagesResponse()
-        )
-
-        request = conversation.ListMessagesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = conversation.ListMessagesResponse()
-
-        client.list_messages(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_messages_rest_bad_request(
-    transport: str = "rest", request_type=conversation.ListMessagesRequest
-):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/conversations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_messages(request)
-
-
 def test_list_messages_rest_flattened():
     client = ConversationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7314,50 +6025,6 @@ def test_list_messages_rest_pager(transport: str = "rest"):
         pages = list(client.list_messages(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        gcd_conversation.SuggestConversationSummaryRequest,
-        dict,
-    ],
-)
-def test_suggest_conversation_summary_rest(request_type):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"conversation": "projects/sample1/conversations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gcd_conversation.SuggestConversationSummaryResponse(
-            latest_message="latest_message_value",
-            context_size=1311,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gcd_conversation.SuggestConversationSummaryResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.suggest_conversation_summary(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gcd_conversation.SuggestConversationSummaryResponse)
-    assert response.latest_message == "latest_message_value"
-    assert response.context_size == 1311
 
 
 def test_suggest_conversation_summary_rest_use_cached_wrapped_rpc():
@@ -7487,90 +6154,6 @@ def test_suggest_conversation_summary_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("conversation",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_suggest_conversation_summary_rest_interceptors(null_interceptor):
-    transport = transports.ConversationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ConversationsRestInterceptor(),
-    )
-    client = ConversationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_suggest_conversation_summary"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_suggest_conversation_summary"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = gcd_conversation.SuggestConversationSummaryRequest.pb(
-            gcd_conversation.SuggestConversationSummaryRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            gcd_conversation.SuggestConversationSummaryResponse.to_json(
-                gcd_conversation.SuggestConversationSummaryResponse()
-            )
-        )
-
-        request = gcd_conversation.SuggestConversationSummaryRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gcd_conversation.SuggestConversationSummaryResponse()
-
-        client.suggest_conversation_summary(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_suggest_conversation_summary_rest_bad_request(
-    transport: str = "rest",
-    request_type=gcd_conversation.SuggestConversationSummaryRequest,
-):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"conversation": "projects/sample1/conversations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.suggest_conversation_summary(request)
-
-
 def test_suggest_conversation_summary_rest_flattened():
     client = ConversationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7628,54 +6211,6 @@ def test_suggest_conversation_summary_rest_flattened_error(transport: str = "res
             gcd_conversation.SuggestConversationSummaryRequest(),
             conversation="conversation_value",
         )
-
-
-def test_suggest_conversation_summary_rest_error():
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        conversation.GenerateStatelessSummaryRequest,
-        dict,
-    ],
-)
-def test_generate_stateless_summary_rest(request_type):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"stateless_conversation": {"parent": "projects/sample1"}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = conversation.GenerateStatelessSummaryResponse(
-            latest_message="latest_message_value",
-            context_size=1311,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = conversation.GenerateStatelessSummaryResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.generate_stateless_summary(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, conversation.GenerateStatelessSummaryResponse)
-    assert response.latest_message == "latest_message_value"
-    assert response.context_size == 1311
 
 
 def test_generate_stateless_summary_rest_use_cached_wrapped_rpc():
@@ -7808,132 +6343,6 @@ def test_generate_stateless_summary_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_generate_stateless_summary_rest_interceptors(null_interceptor):
-    transport = transports.ConversationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ConversationsRestInterceptor(),
-    )
-    client = ConversationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_generate_stateless_summary"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_generate_stateless_summary"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = conversation.GenerateStatelessSummaryRequest.pb(
-            conversation.GenerateStatelessSummaryRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            conversation.GenerateStatelessSummaryResponse.to_json(
-                conversation.GenerateStatelessSummaryResponse()
-            )
-        )
-
-        request = conversation.GenerateStatelessSummaryRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = conversation.GenerateStatelessSummaryResponse()
-
-        client.generate_stateless_summary(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_generate_stateless_summary_rest_bad_request(
-    transport: str = "rest", request_type=conversation.GenerateStatelessSummaryRequest
-):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"stateless_conversation": {"parent": "projects/sample1"}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.generate_stateless_summary(request)
-
-
-def test_generate_stateless_summary_rest_error():
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        conversation.GenerateStatelessSuggestionRequest,
-        dict,
-    ],
-)
-def test_generate_stateless_suggestion_rest(request_type):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = conversation.GenerateStatelessSuggestionResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = conversation.GenerateStatelessSuggestionResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.generate_stateless_suggestion(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, conversation.GenerateStatelessSuggestionResponse)
-
-
 def test_generate_stateless_suggestion_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -8061,136 +6470,6 @@ def test_generate_stateless_suggestion_rest_unset_required_fields():
         {}
     )
     assert set(unset_fields) == (set(()) & set(("parent",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_generate_stateless_suggestion_rest_interceptors(null_interceptor):
-    transport = transports.ConversationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ConversationsRestInterceptor(),
-    )
-    client = ConversationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_generate_stateless_suggestion"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_generate_stateless_suggestion"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = conversation.GenerateStatelessSuggestionRequest.pb(
-            conversation.GenerateStatelessSuggestionRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            conversation.GenerateStatelessSuggestionResponse.to_json(
-                conversation.GenerateStatelessSuggestionResponse()
-            )
-        )
-
-        request = conversation.GenerateStatelessSuggestionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = conversation.GenerateStatelessSuggestionResponse()
-
-        client.generate_stateless_suggestion(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_generate_stateless_suggestion_rest_bad_request(
-    transport: str = "rest",
-    request_type=conversation.GenerateStatelessSuggestionRequest,
-):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.generate_stateless_suggestion(request)
-
-
-def test_generate_stateless_suggestion_rest_error():
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        conversation.SearchKnowledgeRequest,
-        dict,
-    ],
-)
-def test_search_knowledge_rest(request_type):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = conversation.SearchKnowledgeResponse(
-            rewritten_query="rewritten_query_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = conversation.SearchKnowledgeResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.search_knowledge(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, conversation.SearchKnowledgeResponse)
-    assert response.rewritten_query == "rewritten_query_value"
 
 
 def test_search_knowledge_rest_use_cached_wrapped_rpc():
@@ -8333,93 +6612,6 @@ def test_search_knowledge_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_search_knowledge_rest_interceptors(null_interceptor):
-    transport = transports.ConversationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ConversationsRestInterceptor(),
-    )
-    client = ConversationsClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConversationsRestInterceptor, "post_search_knowledge"
-    ) as post, mock.patch.object(
-        transports.ConversationsRestInterceptor, "pre_search_knowledge"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = conversation.SearchKnowledgeRequest.pb(
-            conversation.SearchKnowledgeRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = conversation.SearchKnowledgeResponse.to_json(
-            conversation.SearchKnowledgeResponse()
-        )
-
-        request = conversation.SearchKnowledgeRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = conversation.SearchKnowledgeResponse()
-
-        client.search_knowledge(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_search_knowledge_rest_bad_request(
-    transport: str = "rest", request_type=conversation.SearchKnowledgeRequest
-):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.search_knowledge(request)
-
-
-def test_search_knowledge_rest_error():
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ConversationsGrpcTransport(
@@ -8512,18 +6704,2383 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = ConversationsClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_conversation_empty_call_grpc():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_conversation), "__call__"
+    ) as call:
+        call.return_value = gcd_conversation.Conversation()
+        client.create_conversation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcd_conversation.CreateConversationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_conversations_empty_call_grpc():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_conversations), "__call__"
+    ) as call:
+        call.return_value = conversation.ListConversationsResponse()
+        client.list_conversations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.ListConversationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_conversation_empty_call_grpc():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_conversation), "__call__") as call:
+        call.return_value = conversation.Conversation()
+        client.get_conversation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.GetConversationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_complete_conversation_empty_call_grpc():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.complete_conversation), "__call__"
+    ) as call:
+        call.return_value = conversation.Conversation()
+        client.complete_conversation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.CompleteConversationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_create_messages_empty_call_grpc():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_messages), "__call__"
+    ) as call:
+        call.return_value = conversation.BatchCreateMessagesResponse()
+        client.batch_create_messages(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.BatchCreateMessagesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_messages_empty_call_grpc():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_messages), "__call__") as call:
+        call.return_value = conversation.ListMessagesResponse()
+        client.list_messages(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.ListMessagesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_suggest_conversation_summary_empty_call_grpc():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_conversation_summary), "__call__"
+    ) as call:
+        call.return_value = gcd_conversation.SuggestConversationSummaryResponse()
+        client.suggest_conversation_summary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcd_conversation.SuggestConversationSummaryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_generate_stateless_summary_empty_call_grpc():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_stateless_summary), "__call__"
+    ) as call:
+        call.return_value = conversation.GenerateStatelessSummaryResponse()
+        client.generate_stateless_summary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.GenerateStatelessSummaryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_generate_stateless_suggestion_empty_call_grpc():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_stateless_suggestion), "__call__"
+    ) as call:
+        call.return_value = conversation.GenerateStatelessSuggestionResponse()
+        client.generate_stateless_suggestion(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.GenerateStatelessSuggestionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_search_knowledge_empty_call_grpc():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.search_knowledge), "__call__") as call:
+        call.return_value = conversation.SearchKnowledgeResponse()
+        client.search_knowledge(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.SearchKnowledgeRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = ConversationsAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = ConversationsAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_conversation_empty_call_grpc_asyncio():
+    client = ConversationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_conversation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_conversation.Conversation(
+                name="name_value",
+                lifecycle_state=gcd_conversation.Conversation.LifecycleState.IN_PROGRESS,
+                conversation_profile="conversation_profile_value",
+                conversation_stage=gcd_conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE,
+            )
+        )
+        await client.create_conversation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcd_conversation.CreateConversationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_conversations_empty_call_grpc_asyncio():
+    client = ConversationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_conversations), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversation.ListConversationsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_conversations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.ListConversationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_conversation_empty_call_grpc_asyncio():
+    client = ConversationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_conversation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversation.Conversation(
+                name="name_value",
+                lifecycle_state=conversation.Conversation.LifecycleState.IN_PROGRESS,
+                conversation_profile="conversation_profile_value",
+                conversation_stage=conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE,
+            )
+        )
+        await client.get_conversation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.GetConversationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_complete_conversation_empty_call_grpc_asyncio():
+    client = ConversationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.complete_conversation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversation.Conversation(
+                name="name_value",
+                lifecycle_state=conversation.Conversation.LifecycleState.IN_PROGRESS,
+                conversation_profile="conversation_profile_value",
+                conversation_stage=conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE,
+            )
+        )
+        await client.complete_conversation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.CompleteConversationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_batch_create_messages_empty_call_grpc_asyncio():
+    client = ConversationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_messages), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversation.BatchCreateMessagesResponse()
+        )
+        await client.batch_create_messages(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.BatchCreateMessagesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_messages_empty_call_grpc_asyncio():
+    client = ConversationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_messages), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversation.ListMessagesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_messages(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.ListMessagesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_suggest_conversation_summary_empty_call_grpc_asyncio():
+    client = ConversationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_conversation_summary), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_conversation.SuggestConversationSummaryResponse(
+                latest_message="latest_message_value",
+                context_size=1311,
+            )
+        )
+        await client.suggest_conversation_summary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcd_conversation.SuggestConversationSummaryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_generate_stateless_summary_empty_call_grpc_asyncio():
+    client = ConversationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_stateless_summary), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversation.GenerateStatelessSummaryResponse(
+                latest_message="latest_message_value",
+                context_size=1311,
+            )
+        )
+        await client.generate_stateless_summary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.GenerateStatelessSummaryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_generate_stateless_suggestion_empty_call_grpc_asyncio():
+    client = ConversationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_stateless_suggestion), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversation.GenerateStatelessSuggestionResponse()
+        )
+        await client.generate_stateless_suggestion(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.GenerateStatelessSuggestionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_search_knowledge_empty_call_grpc_asyncio():
+    client = ConversationsAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.search_knowledge), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversation.SearchKnowledgeResponse(
+                rewritten_query="rewritten_query_value",
+            )
+        )
+        await client.search_knowledge(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.SearchKnowledgeRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = ConversationsClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_create_conversation_rest_bad_request(
+    request_type=gcd_conversation.CreateConversationRequest,
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_conversation(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        gcd_conversation.CreateConversationRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = ConversationsClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_create_conversation_rest_call_success(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request_init["conversation"] = {
+        "name": "name_value",
+        "lifecycle_state": 1,
+        "conversation_profile": "conversation_profile_value",
+        "phone_number": {"phone_number": "phone_number_value"},
+        "conversation_stage": 1,
+        "start_time": {"seconds": 751, "nanos": 543},
+        "end_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcd_conversation.CreateConversationRequest.meta.fields["conversation"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["conversation"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["conversation"][field])):
+                    del request_init["conversation"][field][i][subfield]
+            else:
+                del request_init["conversation"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcd_conversation.Conversation(
+            name="name_value",
+            lifecycle_state=gcd_conversation.Conversation.LifecycleState.IN_PROGRESS,
+            conversation_profile="conversation_profile_value",
+            conversation_stage=gcd_conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gcd_conversation.Conversation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_conversation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcd_conversation.Conversation)
+    assert response.name == "name_value"
+    assert (
+        response.lifecycle_state
+        == gcd_conversation.Conversation.LifecycleState.IN_PROGRESS
+    )
+    assert response.conversation_profile == "conversation_profile_value"
+    assert (
+        response.conversation_stage
+        == gcd_conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_conversation_rest_interceptors(null_interceptor):
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationsRestInterceptor(),
+    )
+    client = ConversationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationsRestInterceptor, "post_create_conversation"
+    ) as post, mock.patch.object(
+        transports.ConversationsRestInterceptor, "pre_create_conversation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcd_conversation.CreateConversationRequest.pb(
+            gcd_conversation.CreateConversationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = gcd_conversation.Conversation.to_json(
+            gcd_conversation.Conversation()
+        )
+        req.return_value.content = return_value
+
+        request = gcd_conversation.CreateConversationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcd_conversation.Conversation()
+
+        client.create_conversation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_conversations_rest_bad_request(
+    request_type=conversation.ListConversationsRequest,
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_conversations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.ListConversationsRequest,
+        dict,
+    ],
+)
+def test_list_conversations_rest_call_success(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversation.ListConversationsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = conversation.ListConversationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_conversations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListConversationsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_conversations_rest_interceptors(null_interceptor):
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationsRestInterceptor(),
+    )
+    client = ConversationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationsRestInterceptor, "post_list_conversations"
+    ) as post, mock.patch.object(
+        transports.ConversationsRestInterceptor, "pre_list_conversations"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversation.ListConversationsRequest.pb(
+            conversation.ListConversationsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = conversation.ListConversationsResponse.to_json(
+            conversation.ListConversationsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = conversation.ListConversationsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = conversation.ListConversationsResponse()
+
+        client.list_conversations(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_conversation_rest_bad_request(
+    request_type=conversation.GetConversationRequest,
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/conversations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_conversation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.GetConversationRequest,
+        dict,
+    ],
+)
+def test_get_conversation_rest_call_success(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/conversations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversation.Conversation(
+            name="name_value",
+            lifecycle_state=conversation.Conversation.LifecycleState.IN_PROGRESS,
+            conversation_profile="conversation_profile_value",
+            conversation_stage=conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = conversation.Conversation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_conversation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, conversation.Conversation)
+    assert response.name == "name_value"
+    assert (
+        response.lifecycle_state == conversation.Conversation.LifecycleState.IN_PROGRESS
+    )
+    assert response.conversation_profile == "conversation_profile_value"
+    assert (
+        response.conversation_stage
+        == conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_conversation_rest_interceptors(null_interceptor):
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationsRestInterceptor(),
+    )
+    client = ConversationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationsRestInterceptor, "post_get_conversation"
+    ) as post, mock.patch.object(
+        transports.ConversationsRestInterceptor, "pre_get_conversation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversation.GetConversationRequest.pb(
+            conversation.GetConversationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = conversation.Conversation.to_json(conversation.Conversation())
+        req.return_value.content = return_value
+
+        request = conversation.GetConversationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = conversation.Conversation()
+
+        client.get_conversation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_complete_conversation_rest_bad_request(
+    request_type=conversation.CompleteConversationRequest,
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/conversations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.complete_conversation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.CompleteConversationRequest,
+        dict,
+    ],
+)
+def test_complete_conversation_rest_call_success(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/conversations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversation.Conversation(
+            name="name_value",
+            lifecycle_state=conversation.Conversation.LifecycleState.IN_PROGRESS,
+            conversation_profile="conversation_profile_value",
+            conversation_stage=conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = conversation.Conversation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.complete_conversation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, conversation.Conversation)
+    assert response.name == "name_value"
+    assert (
+        response.lifecycle_state == conversation.Conversation.LifecycleState.IN_PROGRESS
+    )
+    assert response.conversation_profile == "conversation_profile_value"
+    assert (
+        response.conversation_stage
+        == conversation.Conversation.ConversationStage.VIRTUAL_AGENT_STAGE
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_complete_conversation_rest_interceptors(null_interceptor):
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationsRestInterceptor(),
+    )
+    client = ConversationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationsRestInterceptor, "post_complete_conversation"
+    ) as post, mock.patch.object(
+        transports.ConversationsRestInterceptor, "pre_complete_conversation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversation.CompleteConversationRequest.pb(
+            conversation.CompleteConversationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = conversation.Conversation.to_json(conversation.Conversation())
+        req.return_value.content = return_value
+
+        request = conversation.CompleteConversationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = conversation.Conversation()
+
+        client.complete_conversation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_create_messages_rest_bad_request(
+    request_type=conversation.BatchCreateMessagesRequest,
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/conversations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.batch_create_messages(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.BatchCreateMessagesRequest,
+        dict,
+    ],
+)
+def test_batch_create_messages_rest_call_success(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/conversations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversation.BatchCreateMessagesResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = conversation.BatchCreateMessagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_create_messages(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, conversation.BatchCreateMessagesResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_create_messages_rest_interceptors(null_interceptor):
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationsRestInterceptor(),
+    )
+    client = ConversationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationsRestInterceptor, "post_batch_create_messages"
+    ) as post, mock.patch.object(
+        transports.ConversationsRestInterceptor, "pre_batch_create_messages"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversation.BatchCreateMessagesRequest.pb(
+            conversation.BatchCreateMessagesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = conversation.BatchCreateMessagesResponse.to_json(
+            conversation.BatchCreateMessagesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = conversation.BatchCreateMessagesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = conversation.BatchCreateMessagesResponse()
+
+        client.batch_create_messages(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_messages_rest_bad_request(request_type=conversation.ListMessagesRequest):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/conversations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_messages(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.ListMessagesRequest,
+        dict,
+    ],
+)
+def test_list_messages_rest_call_success(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/conversations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversation.ListMessagesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = conversation.ListMessagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_messages(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListMessagesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_messages_rest_interceptors(null_interceptor):
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationsRestInterceptor(),
+    )
+    client = ConversationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationsRestInterceptor, "post_list_messages"
+    ) as post, mock.patch.object(
+        transports.ConversationsRestInterceptor, "pre_list_messages"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversation.ListMessagesRequest.pb(
+            conversation.ListMessagesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = conversation.ListMessagesResponse.to_json(
+            conversation.ListMessagesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = conversation.ListMessagesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = conversation.ListMessagesResponse()
+
+        client.list_messages(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_suggest_conversation_summary_rest_bad_request(
+    request_type=gcd_conversation.SuggestConversationSummaryRequest,
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"conversation": "projects/sample1/conversations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.suggest_conversation_summary(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_conversation.SuggestConversationSummaryRequest,
+        dict,
+    ],
+)
+def test_suggest_conversation_summary_rest_call_success(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"conversation": "projects/sample1/conversations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcd_conversation.SuggestConversationSummaryResponse(
+            latest_message="latest_message_value",
+            context_size=1311,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gcd_conversation.SuggestConversationSummaryResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.suggest_conversation_summary(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcd_conversation.SuggestConversationSummaryResponse)
+    assert response.latest_message == "latest_message_value"
+    assert response.context_size == 1311
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_suggest_conversation_summary_rest_interceptors(null_interceptor):
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationsRestInterceptor(),
+    )
+    client = ConversationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationsRestInterceptor, "post_suggest_conversation_summary"
+    ) as post, mock.patch.object(
+        transports.ConversationsRestInterceptor, "pre_suggest_conversation_summary"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcd_conversation.SuggestConversationSummaryRequest.pb(
+            gcd_conversation.SuggestConversationSummaryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = gcd_conversation.SuggestConversationSummaryResponse.to_json(
+            gcd_conversation.SuggestConversationSummaryResponse()
+        )
+        req.return_value.content = return_value
+
+        request = gcd_conversation.SuggestConversationSummaryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcd_conversation.SuggestConversationSummaryResponse()
+
+        client.suggest_conversation_summary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_generate_stateless_summary_rest_bad_request(
+    request_type=conversation.GenerateStatelessSummaryRequest,
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"stateless_conversation": {"parent": "projects/sample1"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.generate_stateless_summary(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.GenerateStatelessSummaryRequest,
+        dict,
+    ],
+)
+def test_generate_stateless_summary_rest_call_success(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"stateless_conversation": {"parent": "projects/sample1"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversation.GenerateStatelessSummaryResponse(
+            latest_message="latest_message_value",
+            context_size=1311,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = conversation.GenerateStatelessSummaryResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.generate_stateless_summary(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, conversation.GenerateStatelessSummaryResponse)
+    assert response.latest_message == "latest_message_value"
+    assert response.context_size == 1311
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_stateless_summary_rest_interceptors(null_interceptor):
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationsRestInterceptor(),
+    )
+    client = ConversationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationsRestInterceptor, "post_generate_stateless_summary"
+    ) as post, mock.patch.object(
+        transports.ConversationsRestInterceptor, "pre_generate_stateless_summary"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversation.GenerateStatelessSummaryRequest.pb(
+            conversation.GenerateStatelessSummaryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = conversation.GenerateStatelessSummaryResponse.to_json(
+            conversation.GenerateStatelessSummaryResponse()
+        )
+        req.return_value.content = return_value
+
+        request = conversation.GenerateStatelessSummaryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = conversation.GenerateStatelessSummaryResponse()
+
+        client.generate_stateless_summary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_generate_stateless_suggestion_rest_bad_request(
+    request_type=conversation.GenerateStatelessSuggestionRequest,
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.generate_stateless_suggestion(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.GenerateStatelessSuggestionRequest,
+        dict,
+    ],
+)
+def test_generate_stateless_suggestion_rest_call_success(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversation.GenerateStatelessSuggestionResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = conversation.GenerateStatelessSuggestionResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.generate_stateless_suggestion(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, conversation.GenerateStatelessSuggestionResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_generate_stateless_suggestion_rest_interceptors(null_interceptor):
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationsRestInterceptor(),
+    )
+    client = ConversationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationsRestInterceptor, "post_generate_stateless_suggestion"
+    ) as post, mock.patch.object(
+        transports.ConversationsRestInterceptor, "pre_generate_stateless_suggestion"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversation.GenerateStatelessSuggestionRequest.pb(
+            conversation.GenerateStatelessSuggestionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = conversation.GenerateStatelessSuggestionResponse.to_json(
+            conversation.GenerateStatelessSuggestionResponse()
+        )
+        req.return_value.content = return_value
+
+        request = conversation.GenerateStatelessSuggestionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = conversation.GenerateStatelessSuggestionResponse()
+
+        client.generate_stateless_suggestion(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_search_knowledge_rest_bad_request(
+    request_type=conversation.SearchKnowledgeRequest,
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.search_knowledge(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        conversation.SearchKnowledgeRequest,
+        dict,
+    ],
+)
+def test_search_knowledge_rest_call_success(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = conversation.SearchKnowledgeResponse(
+            rewritten_query="rewritten_query_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = conversation.SearchKnowledgeResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.search_knowledge(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, conversation.SearchKnowledgeResponse)
+    assert response.rewritten_query == "rewritten_query_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_knowledge_rest_interceptors(null_interceptor):
+    transport = transports.ConversationsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ConversationsRestInterceptor(),
+    )
+    client = ConversationsClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConversationsRestInterceptor, "post_search_knowledge"
+    ) as post, mock.patch.object(
+        transports.ConversationsRestInterceptor, "pre_search_knowledge"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = conversation.SearchKnowledgeRequest.pb(
+            conversation.SearchKnowledgeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = conversation.SearchKnowledgeResponse.to_json(
+            conversation.SearchKnowledgeResponse()
+        )
+        req.return_value.content = return_value
+
+        request = conversation.SearchKnowledgeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = conversation.SearchKnowledgeResponse()
+
+        client.search_knowledge(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    request_type=locations_pb2.ListLocationsRequest,
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    request_type=operations_pb2.ListOperationsRequest,
+):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_initialize_client_w_rest():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_conversation_empty_call_rest():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_conversation), "__call__"
+    ) as call:
+        client.create_conversation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcd_conversation.CreateConversationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_conversations_empty_call_rest():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_conversations), "__call__"
+    ) as call:
+        client.list_conversations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.ListConversationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_conversation_empty_call_rest():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_conversation), "__call__") as call:
+        client.get_conversation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.GetConversationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_complete_conversation_empty_call_rest():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.complete_conversation), "__call__"
+    ) as call:
+        client.complete_conversation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.CompleteConversationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_create_messages_empty_call_rest():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_messages), "__call__"
+    ) as call:
+        client.batch_create_messages(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.BatchCreateMessagesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_messages_empty_call_rest():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_messages), "__call__") as call:
+        client.list_messages(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.ListMessagesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_suggest_conversation_summary_empty_call_rest():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.suggest_conversation_summary), "__call__"
+    ) as call:
+        client.suggest_conversation_summary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcd_conversation.SuggestConversationSummaryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_generate_stateless_summary_empty_call_rest():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_stateless_summary), "__call__"
+    ) as call:
+        client.generate_stateless_summary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.GenerateStatelessSummaryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_generate_stateless_suggestion_empty_call_rest():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_stateless_suggestion), "__call__"
+    ) as call:
+        client.generate_stateless_suggestion(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.GenerateStatelessSuggestionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_search_knowledge_empty_call_rest():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.search_knowledge), "__call__") as call:
+        client.search_knowledge(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = conversation.SearchKnowledgeRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -9376,306 +9933,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
-def test_get_location_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
-):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_location(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.GetLocationRequest,
-        dict,
-    ],
-)
-def test_get_location_rest(request_type):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.Location()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_location(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.Location)
-
-
-def test_list_locations_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
-):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({"name": "projects/sample1"}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_locations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.ListLocationsRequest,
-        dict,
-    ],
-)
-def test_list_locations_rest(request_type):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.ListLocationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_locations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.ListLocationsResponse)
-
-
-def test_cancel_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
-):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/operations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.cancel_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.CancelOperationRequest,
-        dict,
-    ],
-)
-def test_cancel_operation_rest(request_type):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/operations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.cancel_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_get_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
-):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/operations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/operations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
-def test_list_operations_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
-):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({"name": "projects/sample1"}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_operations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.ListOperationsRequest,
-        dict,
-    ],
-)
-def test_list_operations_rest(request_type):
-    client = ConversationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.ListOperationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.ListOperationsResponse)
-
-
 def test_cancel_operation(transport: str = "grpc"):
     client = ConversationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9703,7 +9960,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9756,7 +10013,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9801,7 +10058,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -9842,7 +10099,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9897,7 +10154,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9944,7 +10201,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -9987,7 +10244,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10042,7 +10299,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10089,7 +10346,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -10132,7 +10389,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10187,7 +10444,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10234,7 +10491,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -10277,7 +10534,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10329,7 +10586,7 @@ def test_get_location_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
-    client = ConversationsAsyncClient(credentials=ga_credentials.AnonymousCredentials())
+    client = ConversationsAsyncClient(credentials=async_anonymous_credentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -10375,7 +10632,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = ConversationsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -10391,22 +10648,41 @@ async def test_get_location_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = ConversationsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = ConversationsAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+    client = ConversationsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

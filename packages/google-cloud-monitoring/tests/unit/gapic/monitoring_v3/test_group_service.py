@@ -24,9 +24,23 @@ except ImportError:  # pragma: NO COVER
 
 import math
 
+from google.api_core import api_core_version
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api import monitored_resource_pb2  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 import google.auth
@@ -35,11 +49,6 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import timestamp_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 
 from google.cloud.monitoring_v3.services.group_service import (
     GroupServiceAsyncClient,
@@ -53,8 +62,22 @@ from google.cloud.monitoring_v3.types import group as gm_group
 from google.cloud.monitoring_v3.types import group_service
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1117,25 +1140,6 @@ def test_list_groups(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_groups_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GroupServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_groups()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.ListGroupsRequest()
-
-
 def test_list_groups_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1208,29 +1212,6 @@ def test_list_groups_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_groups_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            group_service.ListGroupsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_groups()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.ListGroupsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_groups_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1238,7 +1219,7 @@ async def test_list_groups_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = GroupServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1277,7 +1258,7 @@ async def test_list_groups_async(
     transport: str = "grpc_asyncio", request_type=group_service.ListGroupsRequest
 ):
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1343,7 +1324,7 @@ def test_list_groups_field_headers():
 @pytest.mark.asyncio
 async def test_list_groups_field_headers_async():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1413,7 +1394,7 @@ def test_list_groups_flattened_error():
 @pytest.mark.asyncio
 async def test_list_groups_flattened_async():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1442,7 +1423,7 @@ async def test_list_groups_flattened_async():
 @pytest.mark.asyncio
 async def test_list_groups_flattened_error_async():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1552,7 +1533,7 @@ def test_list_groups_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_groups_async_pager():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1602,7 +1583,7 @@ async def test_list_groups_async_pager():
 @pytest.mark.asyncio
 async def test_list_groups_async_pages():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1692,25 +1673,6 @@ def test_get_group(request_type, transport: str = "grpc"):
     assert response.is_cluster is True
 
 
-def test_get_group_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GroupServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_group), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_group()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.GetGroupRequest()
-
-
 def test_get_group_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1775,39 +1737,12 @@ def test_get_group_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_group_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_group), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            group.Group(
-                name="name_value",
-                display_name="display_name_value",
-                parent_name="parent_name_value",
-                filter="filter_value",
-                is_cluster=True,
-            )
-        )
-        response = await client.get_group()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.GetGroupRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_group_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = GroupServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1846,7 +1781,7 @@ async def test_get_group_async(
     transport: str = "grpc_asyncio", request_type=group_service.GetGroupRequest
 ):
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1920,7 +1855,7 @@ def test_get_group_field_headers():
 @pytest.mark.asyncio
 async def test_get_group_field_headers_async():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1988,7 +1923,7 @@ def test_get_group_flattened_error():
 @pytest.mark.asyncio
 async def test_get_group_flattened_async():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2015,7 +1950,7 @@ async def test_get_group_flattened_async():
 @pytest.mark.asyncio
 async def test_get_group_flattened_error_async():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2069,25 +2004,6 @@ def test_create_group(request_type, transport: str = "grpc"):
     assert response.parent_name == "parent_name_value"
     assert response.filter == "filter_value"
     assert response.is_cluster is True
-
-
-def test_create_group_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GroupServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_group), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_group()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.CreateGroupRequest()
 
 
 def test_create_group_non_empty_request_with_auto_populated_field():
@@ -2154,33 +2070,6 @@ def test_create_group_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_group_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_group), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gm_group.Group(
-                name="name_value",
-                display_name="display_name_value",
-                parent_name="parent_name_value",
-                filter="filter_value",
-                is_cluster=True,
-            )
-        )
-        response = await client.create_group()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.CreateGroupRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_group_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2188,7 +2077,7 @@ async def test_create_group_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = GroupServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2227,7 +2116,7 @@ async def test_create_group_async(
     transport: str = "grpc_asyncio", request_type=group_service.CreateGroupRequest
 ):
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2301,7 +2190,7 @@ def test_create_group_field_headers():
 @pytest.mark.asyncio
 async def test_create_group_field_headers_async():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2374,7 +2263,7 @@ def test_create_group_flattened_error():
 @pytest.mark.asyncio
 async def test_create_group_flattened_async():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2405,7 +2294,7 @@ async def test_create_group_flattened_async():
 @pytest.mark.asyncio
 async def test_create_group_flattened_error_async():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2460,25 +2349,6 @@ def test_update_group(request_type, transport: str = "grpc"):
     assert response.parent_name == "parent_name_value"
     assert response.filter == "filter_value"
     assert response.is_cluster is True
-
-
-def test_update_group_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GroupServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_group()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.UpdateGroupRequest()
 
 
 def test_update_group_non_empty_request_with_auto_populated_field():
@@ -2541,33 +2411,6 @@ def test_update_group_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_group_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gm_group.Group(
-                name="name_value",
-                display_name="display_name_value",
-                parent_name="parent_name_value",
-                filter="filter_value",
-                is_cluster=True,
-            )
-        )
-        response = await client.update_group()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.UpdateGroupRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_group_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2575,7 +2418,7 @@ async def test_update_group_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = GroupServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2614,7 +2457,7 @@ async def test_update_group_async(
     transport: str = "grpc_asyncio", request_type=group_service.UpdateGroupRequest
 ):
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2688,7 +2531,7 @@ def test_update_group_field_headers():
 @pytest.mark.asyncio
 async def test_update_group_field_headers_async():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2756,7 +2599,7 @@ def test_update_group_flattened_error():
 @pytest.mark.asyncio
 async def test_update_group_flattened_async():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2783,7 +2626,7 @@ async def test_update_group_flattened_async():
 @pytest.mark.asyncio
 async def test_update_group_flattened_error_async():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2826,25 +2669,6 @@ def test_delete_group(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_group_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GroupServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_group()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.DeleteGroupRequest()
 
 
 def test_delete_group_non_empty_request_with_auto_populated_field():
@@ -2911,25 +2735,6 @@ def test_delete_group_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_group_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_group()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.DeleteGroupRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_group_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2937,7 +2742,7 @@ async def test_delete_group_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = GroupServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2976,7 +2781,7 @@ async def test_delete_group_async(
     transport: str = "grpc_asyncio", request_type=group_service.DeleteGroupRequest
 ):
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3037,7 +2842,7 @@ def test_delete_group_field_headers():
 @pytest.mark.asyncio
 async def test_delete_group_field_headers_async():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3105,7 +2910,7 @@ def test_delete_group_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_group_flattened_async():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3132,7 +2937,7 @@ async def test_delete_group_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_group_flattened_error_async():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3182,27 +2987,6 @@ def test_list_group_members(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListGroupMembersPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-def test_list_group_members_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GroupServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_group_members), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_group_members()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.ListGroupMembersRequest()
 
 
 def test_list_group_members_non_empty_request_with_auto_populated_field():
@@ -3279,32 +3063,6 @@ def test_list_group_members_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_group_members_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_group_members), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            group_service.ListGroupMembersResponse(
-                next_page_token="next_page_token_value",
-                total_size=1086,
-            )
-        )
-        response = await client.list_group_members()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == group_service.ListGroupMembersRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_group_members_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3312,7 +3070,7 @@ async def test_list_group_members_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = GroupServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3351,7 +3109,7 @@ async def test_list_group_members_async(
     transport: str = "grpc_asyncio", request_type=group_service.ListGroupMembersRequest
 ):
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3423,7 +3181,7 @@ def test_list_group_members_field_headers():
 @pytest.mark.asyncio
 async def test_list_group_members_field_headers_async():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3497,7 +3255,7 @@ def test_list_group_members_flattened_error():
 @pytest.mark.asyncio
 async def test_list_group_members_flattened_async():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3528,7 +3286,7 @@ async def test_list_group_members_flattened_async():
 @pytest.mark.asyncio
 async def test_list_group_members_flattened_error_async():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3644,7 +3402,7 @@ def test_list_group_members_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_group_members_async_pager():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3698,7 +3456,7 @@ async def test_list_group_members_async_pager():
 @pytest.mark.asyncio
 async def test_list_group_members_async_pages():
     client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3837,17 +3595,333 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
-@pytest.mark.parametrize(
-    "transport_name",
-    [
-        "grpc",
-    ],
-)
-def test_transport_kind(transport_name):
-    transport = GroupServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_transport_kind_grpc():
+    transport = GroupServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
     )
-    assert transport.kind == transport_name
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = GroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_groups_empty_call_grpc():
+    client = GroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
+        call.return_value = group_service.ListGroupsResponse()
+        client.list_groups(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = group_service.ListGroupsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_group_empty_call_grpc():
+    client = GroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_group), "__call__") as call:
+        call.return_value = group.Group()
+        client.get_group(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = group_service.GetGroupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_group_empty_call_grpc():
+    client = GroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_group), "__call__") as call:
+        call.return_value = gm_group.Group()
+        client.create_group(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = group_service.CreateGroupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_group_empty_call_grpc():
+    client = GroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
+        call.return_value = gm_group.Group()
+        client.update_group(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = group_service.UpdateGroupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_group_empty_call_grpc():
+    client = GroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
+        call.return_value = None
+        client.delete_group(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = group_service.DeleteGroupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_group_members_empty_call_grpc():
+    client = GroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_group_members), "__call__"
+    ) as call:
+        call.return_value = group_service.ListGroupMembersResponse()
+        client.list_group_members(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = group_service.ListGroupMembersRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = GroupServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = GroupServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_groups_empty_call_grpc_asyncio():
+    client = GroupServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            group_service.ListGroupsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_groups(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = group_service.ListGroupsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_group_empty_call_grpc_asyncio():
+    client = GroupServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            group.Group(
+                name="name_value",
+                display_name="display_name_value",
+                parent_name="parent_name_value",
+                filter="filter_value",
+                is_cluster=True,
+            )
+        )
+        await client.get_group(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = group_service.GetGroupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_group_empty_call_grpc_asyncio():
+    client = GroupServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gm_group.Group(
+                name="name_value",
+                display_name="display_name_value",
+                parent_name="parent_name_value",
+                filter="filter_value",
+                is_cluster=True,
+            )
+        )
+        await client.create_group(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = group_service.CreateGroupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_group_empty_call_grpc_asyncio():
+    client = GroupServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gm_group.Group(
+                name="name_value",
+                display_name="display_name_value",
+                parent_name="parent_name_value",
+                filter="filter_value",
+                is_cluster=True,
+            )
+        )
+        await client.update_group(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = group_service.UpdateGroupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_group_empty_call_grpc_asyncio():
+    client = GroupServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_group(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = group_service.DeleteGroupRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_group_members_empty_call_grpc_asyncio():
+    client = GroupServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_group_members), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            group_service.ListGroupMembersResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        await client.list_group_members(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = group_service.ListGroupMembersRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -4388,35 +4462,29 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = GroupServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = GroupServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
-        async with client:
+        with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = GroupServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = GroupServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

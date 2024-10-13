@@ -1782,6 +1782,9 @@ class Match(proto.Message):
                 Indicates an empty query.
             EVENT (6):
                 The query directly triggered an event.
+            KNOWLEDGE_CONNECTOR (8):
+                The query was matched to a Knowledge
+                Connector answer.
             PLAYBOOK (9):
                 The query was handled by a
                 [``Playbook``][google.cloud.dialogflow.cx.v3beta1.Playbook].
@@ -1793,6 +1796,7 @@ class Match(proto.Message):
         NO_MATCH = 4
         NO_INPUT = 5
         EVENT = 6
+        KNOWLEDGE_CONNECTOR = 8
         PLAYBOOK = 9
 
     intent: gcdc_intent.Intent = proto.Field(

@@ -22,9 +22,26 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
+
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import (
     future,
@@ -35,7 +52,7 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
@@ -46,15 +63,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.automl_v1beta1.services.auto_ml import (
     AutoMlAsyncClient,
@@ -89,8 +98,22 @@ from google.cloud.automl_v1beta1.types import table_spec
 from google.cloud.automl_v1beta1.types import table_spec as gca_table_spec
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1130,25 +1153,6 @@ def test_create_dataset(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
 
 
-def test_create_dataset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateDatasetRequest()
-
-
 def test_create_dataset_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1213,33 +1217,6 @@ def test_create_dataset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_dataset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gca_dataset.Dataset(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                example_count=1396,
-                etag="etag_value",
-            )
-        )
-        response = await client.create_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateDatasetRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_dataset_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1247,7 +1224,7 @@ async def test_create_dataset_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1286,7 +1263,7 @@ async def test_create_dataset_async(
     transport: str = "grpc_asyncio", request_type=service.CreateDatasetRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1360,7 +1337,7 @@ def test_create_dataset_field_headers():
 @pytest.mark.asyncio
 async def test_create_dataset_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1445,7 +1422,7 @@ def test_create_dataset_flattened_error():
 @pytest.mark.asyncio
 async def test_create_dataset_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1484,7 +1461,7 @@ async def test_create_dataset_flattened_async():
 @pytest.mark.asyncio
 async def test_create_dataset_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1543,25 +1520,6 @@ def test_get_dataset(request_type, transport: str = "grpc"):
     assert response.description == "description_value"
     assert response.example_count == 1396
     assert response.etag == "etag_value"
-
-
-def test_get_dataset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetDatasetRequest()
 
 
 def test_get_dataset_non_empty_request_with_auto_populated_field():
@@ -1628,33 +1586,6 @@ def test_get_dataset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_dataset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dataset.Dataset(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                example_count=1396,
-                etag="etag_value",
-            )
-        )
-        response = await client.get_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetDatasetRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_dataset_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1662,7 +1593,7 @@ async def test_get_dataset_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1701,7 +1632,7 @@ async def test_get_dataset_async(
     transport: str = "grpc_asyncio", request_type=service.GetDatasetRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1775,7 +1706,7 @@ def test_get_dataset_field_headers():
 @pytest.mark.asyncio
 async def test_get_dataset_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1843,7 +1774,7 @@ def test_get_dataset_flattened_error():
 @pytest.mark.asyncio
 async def test_get_dataset_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1870,7 +1801,7 @@ async def test_get_dataset_flattened_async():
 @pytest.mark.asyncio
 async def test_get_dataset_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1916,25 +1847,6 @@ def test_list_datasets(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDatasetsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_datasets_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_datasets()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListDatasetsRequest()
 
 
 def test_list_datasets_non_empty_request_with_auto_populated_field():
@@ -2005,29 +1917,6 @@ def test_list_datasets_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_datasets_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListDatasetsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_datasets()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListDatasetsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_datasets_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2035,7 +1924,7 @@ async def test_list_datasets_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2074,7 +1963,7 @@ async def test_list_datasets_async(
     transport: str = "grpc_asyncio", request_type=service.ListDatasetsRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2140,7 +2029,7 @@ def test_list_datasets_field_headers():
 @pytest.mark.asyncio
 async def test_list_datasets_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2210,7 +2099,7 @@ def test_list_datasets_flattened_error():
 @pytest.mark.asyncio
 async def test_list_datasets_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2239,7 +2128,7 @@ async def test_list_datasets_flattened_async():
 @pytest.mark.asyncio
 async def test_list_datasets_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2349,7 +2238,7 @@ def test_list_datasets_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_datasets_async_pager():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2399,7 +2288,7 @@ async def test_list_datasets_async_pager():
 @pytest.mark.asyncio
 async def test_list_datasets_async_pages():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2489,25 +2378,6 @@ def test_update_dataset(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
 
 
-def test_update_dataset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_dataset), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateDatasetRequest()
-
-
 def test_update_dataset_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -2568,33 +2438,6 @@ def test_update_dataset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_dataset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_dataset), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gca_dataset.Dataset(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                example_count=1396,
-                etag="etag_value",
-            )
-        )
-        response = await client.update_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateDatasetRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_dataset_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2602,7 +2445,7 @@ async def test_update_dataset_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2641,7 +2484,7 @@ async def test_update_dataset_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateDatasetRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2715,7 +2558,7 @@ def test_update_dataset_field_headers():
 @pytest.mark.asyncio
 async def test_update_dataset_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2795,7 +2638,7 @@ def test_update_dataset_flattened_error():
 @pytest.mark.asyncio
 async def test_update_dataset_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2830,7 +2673,7 @@ async def test_update_dataset_flattened_async():
 @pytest.mark.asyncio
 async def test_update_dataset_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2877,25 +2720,6 @@ def test_delete_dataset(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_dataset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteDatasetRequest()
 
 
 def test_delete_dataset_non_empty_request_with_auto_populated_field():
@@ -2967,27 +2791,6 @@ def test_delete_dataset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_dataset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteDatasetRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_dataset_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2995,7 +2798,7 @@ async def test_delete_dataset_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3039,7 +2842,7 @@ async def test_delete_dataset_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteDatasetRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3102,7 +2905,7 @@ def test_delete_dataset_field_headers():
 @pytest.mark.asyncio
 async def test_delete_dataset_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3172,7 +2975,7 @@ def test_delete_dataset_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_dataset_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3201,7 +3004,7 @@ async def test_delete_dataset_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_dataset_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3244,25 +3047,6 @@ def test_import_data(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_import_data_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.import_data), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.import_data()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ImportDataRequest()
 
 
 def test_import_data_non_empty_request_with_auto_populated_field():
@@ -3334,27 +3118,6 @@ def test_import_data_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_import_data_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.import_data), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.import_data()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ImportDataRequest()
-
-
-@pytest.mark.asyncio
 async def test_import_data_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3362,7 +3125,7 @@ async def test_import_data_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3406,7 +3169,7 @@ async def test_import_data_async(
     transport: str = "grpc_asyncio", request_type=service.ImportDataRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3469,7 +3232,7 @@ def test_import_data_field_headers():
 @pytest.mark.asyncio
 async def test_import_data_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3550,7 +3313,7 @@ def test_import_data_flattened_error():
 @pytest.mark.asyncio
 async def test_import_data_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3587,7 +3350,7 @@ async def test_import_data_flattened_async():
 @pytest.mark.asyncio
 async def test_import_data_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3633,25 +3396,6 @@ def test_export_data(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_export_data_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.export_data), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.export_data()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ExportDataRequest()
 
 
 def test_export_data_non_empty_request_with_auto_populated_field():
@@ -3723,27 +3467,6 @@ def test_export_data_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_export_data_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.export_data), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.export_data()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ExportDataRequest()
-
-
-@pytest.mark.asyncio
 async def test_export_data_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3751,7 +3474,7 @@ async def test_export_data_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3795,7 +3518,7 @@ async def test_export_data_async(
     transport: str = "grpc_asyncio", request_type=service.ExportDataRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3858,7 +3581,7 @@ def test_export_data_field_headers():
 @pytest.mark.asyncio
 async def test_export_data_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3945,7 +3668,7 @@ def test_export_data_flattened_error():
 @pytest.mark.asyncio
 async def test_export_data_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3986,7 +3709,7 @@ async def test_export_data_flattened_async():
 @pytest.mark.asyncio
 async def test_export_data_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4043,27 +3766,6 @@ def test_get_annotation_spec(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.example_count == 1396
-
-
-def test_get_annotation_spec_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_annotation_spec), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_annotation_spec()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetAnnotationSpecRequest()
 
 
 def test_get_annotation_spec_non_empty_request_with_auto_populated_field():
@@ -4136,33 +3838,6 @@ def test_get_annotation_spec_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_annotation_spec_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_annotation_spec), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            annotation_spec.AnnotationSpec(
-                name="name_value",
-                display_name="display_name_value",
-                example_count=1396,
-            )
-        )
-        response = await client.get_annotation_spec()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetAnnotationSpecRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_annotation_spec_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4170,7 +3845,7 @@ async def test_get_annotation_spec_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4209,7 +3884,7 @@ async def test_get_annotation_spec_async(
     transport: str = "grpc_asyncio", request_type=service.GetAnnotationSpecRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4283,7 +3958,7 @@ def test_get_annotation_spec_field_headers():
 @pytest.mark.asyncio
 async def test_get_annotation_spec_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4357,7 +4032,7 @@ def test_get_annotation_spec_flattened_error():
 @pytest.mark.asyncio
 async def test_get_annotation_spec_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4388,7 +4063,7 @@ async def test_get_annotation_spec_flattened_async():
 @pytest.mark.asyncio
 async def test_get_annotation_spec_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4444,25 +4119,6 @@ def test_get_table_spec(request_type, transport: str = "grpc"):
     assert response.valid_row_count == 1615
     assert response.column_count == 1302
     assert response.etag == "etag_value"
-
-
-def test_get_table_spec_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_table_spec), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_table_spec()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetTableSpecRequest()
 
 
 def test_get_table_spec_non_empty_request_with_auto_populated_field():
@@ -4529,34 +4185,6 @@ def test_get_table_spec_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_table_spec_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_table_spec), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            table_spec.TableSpec(
-                name="name_value",
-                time_column_spec_id="time_column_spec_id_value",
-                row_count=992,
-                valid_row_count=1615,
-                column_count=1302,
-                etag="etag_value",
-            )
-        )
-        response = await client.get_table_spec()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetTableSpecRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_table_spec_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4564,7 +4192,7 @@ async def test_get_table_spec_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4603,7 +4231,7 @@ async def test_get_table_spec_async(
     transport: str = "grpc_asyncio", request_type=service.GetTableSpecRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4679,7 +4307,7 @@ def test_get_table_spec_field_headers():
 @pytest.mark.asyncio
 async def test_get_table_spec_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4749,7 +4377,7 @@ def test_get_table_spec_flattened_error():
 @pytest.mark.asyncio
 async def test_get_table_spec_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4778,7 +4406,7 @@ async def test_get_table_spec_flattened_async():
 @pytest.mark.asyncio
 async def test_get_table_spec_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4824,25 +4452,6 @@ def test_list_table_specs(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTableSpecsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_table_specs_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_table_specs), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_table_specs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListTableSpecsRequest()
 
 
 def test_list_table_specs_non_empty_request_with_auto_populated_field():
@@ -4915,29 +4524,6 @@ def test_list_table_specs_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_table_specs_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_table_specs), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListTableSpecsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_table_specs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListTableSpecsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_table_specs_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4945,7 +4531,7 @@ async def test_list_table_specs_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4984,7 +4570,7 @@ async def test_list_table_specs_async(
     transport: str = "grpc_asyncio", request_type=service.ListTableSpecsRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5050,7 +4636,7 @@ def test_list_table_specs_field_headers():
 @pytest.mark.asyncio
 async def test_list_table_specs_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5120,7 +4706,7 @@ def test_list_table_specs_flattened_error():
 @pytest.mark.asyncio
 async def test_list_table_specs_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5149,7 +4735,7 @@ async def test_list_table_specs_flattened_async():
 @pytest.mark.asyncio
 async def test_list_table_specs_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5259,7 +4845,7 @@ def test_list_table_specs_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_table_specs_async_pager():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5309,7 +4895,7 @@ async def test_list_table_specs_async_pager():
 @pytest.mark.asyncio
 async def test_list_table_specs_async_pages():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5403,27 +4989,6 @@ def test_update_table_spec(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
 
 
-def test_update_table_spec_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_table_spec), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_table_spec()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateTableSpecRequest()
-
-
 def test_update_table_spec_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -5488,36 +5053,6 @@ def test_update_table_spec_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_table_spec_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_table_spec), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gca_table_spec.TableSpec(
-                name="name_value",
-                time_column_spec_id="time_column_spec_id_value",
-                row_count=992,
-                valid_row_count=1615,
-                column_count=1302,
-                etag="etag_value",
-            )
-        )
-        response = await client.update_table_spec()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateTableSpecRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_table_spec_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5525,7 +5060,7 @@ async def test_update_table_spec_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5564,7 +5099,7 @@ async def test_update_table_spec_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateTableSpecRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5644,7 +5179,7 @@ def test_update_table_spec_field_headers():
 @pytest.mark.asyncio
 async def test_update_table_spec_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5718,7 +5253,7 @@ def test_update_table_spec_flattened_error():
 @pytest.mark.asyncio
 async def test_update_table_spec_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5749,7 +5284,7 @@ async def test_update_table_spec_flattened_async():
 @pytest.mark.asyncio
 async def test_update_table_spec_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5799,25 +5334,6 @@ def test_get_column_spec(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.etag == "etag_value"
-
-
-def test_get_column_spec_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_column_spec), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_column_spec()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetColumnSpecRequest()
 
 
 def test_get_column_spec_non_empty_request_with_auto_populated_field():
@@ -5884,31 +5400,6 @@ def test_get_column_spec_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_column_spec_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_column_spec), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            column_spec.ColumnSpec(
-                name="name_value",
-                display_name="display_name_value",
-                etag="etag_value",
-            )
-        )
-        response = await client.get_column_spec()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetColumnSpecRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_column_spec_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5916,7 +5407,7 @@ async def test_get_column_spec_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5955,7 +5446,7 @@ async def test_get_column_spec_async(
     transport: str = "grpc_asyncio", request_type=service.GetColumnSpecRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6025,7 +5516,7 @@ def test_get_column_spec_field_headers():
 @pytest.mark.asyncio
 async def test_get_column_spec_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6095,7 +5586,7 @@ def test_get_column_spec_flattened_error():
 @pytest.mark.asyncio
 async def test_get_column_spec_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6124,7 +5615,7 @@ async def test_get_column_spec_flattened_async():
 @pytest.mark.asyncio
 async def test_get_column_spec_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6172,27 +5663,6 @@ def test_list_column_specs(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListColumnSpecsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_column_specs_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_column_specs), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_column_specs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListColumnSpecsRequest()
 
 
 def test_list_column_specs_non_empty_request_with_auto_populated_field():
@@ -6267,31 +5737,6 @@ def test_list_column_specs_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_column_specs_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_column_specs), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListColumnSpecsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_column_specs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListColumnSpecsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_column_specs_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6299,7 +5744,7 @@ async def test_list_column_specs_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6338,7 +5783,7 @@ async def test_list_column_specs_async(
     transport: str = "grpc_asyncio", request_type=service.ListColumnSpecsRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6408,7 +5853,7 @@ def test_list_column_specs_field_headers():
 @pytest.mark.asyncio
 async def test_list_column_specs_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6482,7 +5927,7 @@ def test_list_column_specs_flattened_error():
 @pytest.mark.asyncio
 async def test_list_column_specs_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6513,7 +5958,7 @@ async def test_list_column_specs_flattened_async():
 @pytest.mark.asyncio
 async def test_list_column_specs_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6627,7 +6072,7 @@ def test_list_column_specs_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_column_specs_async_pager():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6679,7 +6124,7 @@ async def test_list_column_specs_async_pager():
 @pytest.mark.asyncio
 async def test_list_column_specs_async_pages():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6769,27 +6214,6 @@ def test_update_column_spec(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
 
 
-def test_update_column_spec_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_column_spec), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_column_spec()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateColumnSpecRequest()
-
-
 def test_update_column_spec_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -6856,33 +6280,6 @@ def test_update_column_spec_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_column_spec_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_column_spec), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gca_column_spec.ColumnSpec(
-                name="name_value",
-                display_name="display_name_value",
-                etag="etag_value",
-            )
-        )
-        response = await client.update_column_spec()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateColumnSpecRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_column_spec_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6890,7 +6287,7 @@ async def test_update_column_spec_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6929,7 +6326,7 @@ async def test_update_column_spec_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateColumnSpecRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7003,7 +6400,7 @@ def test_update_column_spec_field_headers():
 @pytest.mark.asyncio
 async def test_update_column_spec_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7077,7 +6474,7 @@ def test_update_column_spec_flattened_error():
 @pytest.mark.asyncio
 async def test_update_column_spec_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7108,7 +6505,7 @@ async def test_update_column_spec_flattened_async():
 @pytest.mark.asyncio
 async def test_update_column_spec_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7151,25 +6548,6 @@ def test_create_model(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_model_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_model), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_model()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateModelRequest()
 
 
 def test_create_model_non_empty_request_with_auto_populated_field():
@@ -7241,27 +6619,6 @@ def test_create_model_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_model_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_model), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_model()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateModelRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_model_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7269,7 +6626,7 @@ async def test_create_model_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7313,7 +6670,7 @@ async def test_create_model_async(
     transport: str = "grpc_asyncio", request_type=service.CreateModelRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7376,7 +6733,7 @@ def test_create_model_field_headers():
 @pytest.mark.asyncio
 async def test_create_model_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7463,7 +6820,7 @@ def test_create_model_flattened_error():
 @pytest.mark.asyncio
 async def test_create_model_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7504,7 +6861,7 @@ async def test_create_model_flattened_async():
 @pytest.mark.asyncio
 async def test_create_model_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7561,25 +6918,6 @@ def test_get_model(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
     assert response.dataset_id == "dataset_id_value"
     assert response.deployment_state == model.Model.DeploymentState.DEPLOYED
-
-
-def test_get_model_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_model), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_model()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetModelRequest()
 
 
 def test_get_model_non_empty_request_with_auto_populated_field():
@@ -7646,38 +6984,12 @@ def test_get_model_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_model_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_model), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            model.Model(
-                name="name_value",
-                display_name="display_name_value",
-                dataset_id="dataset_id_value",
-                deployment_state=model.Model.DeploymentState.DEPLOYED,
-            )
-        )
-        response = await client.get_model()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetModelRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_model_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7716,7 +7028,7 @@ async def test_get_model_async(
     transport: str = "grpc_asyncio", request_type=service.GetModelRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7788,7 +7100,7 @@ def test_get_model_field_headers():
 @pytest.mark.asyncio
 async def test_get_model_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7856,7 +7168,7 @@ def test_get_model_flattened_error():
 @pytest.mark.asyncio
 async def test_get_model_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7883,7 +7195,7 @@ async def test_get_model_flattened_async():
 @pytest.mark.asyncio
 async def test_get_model_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7929,25 +7241,6 @@ def test_list_models(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListModelsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_models_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_models), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_models()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListModelsRequest()
 
 
 def test_list_models_non_empty_request_with_auto_populated_field():
@@ -8018,29 +7311,6 @@ def test_list_models_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_models_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_models), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListModelsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_models()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListModelsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_models_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8048,7 +7318,7 @@ async def test_list_models_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8087,7 +7357,7 @@ async def test_list_models_async(
     transport: str = "grpc_asyncio", request_type=service.ListModelsRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8153,7 +7423,7 @@ def test_list_models_field_headers():
 @pytest.mark.asyncio
 async def test_list_models_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8223,7 +7493,7 @@ def test_list_models_flattened_error():
 @pytest.mark.asyncio
 async def test_list_models_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8252,7 +7522,7 @@ async def test_list_models_flattened_async():
 @pytest.mark.asyncio
 async def test_list_models_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8362,7 +7632,7 @@ def test_list_models_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_models_async_pager():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8412,7 +7682,7 @@ async def test_list_models_async_pager():
 @pytest.mark.asyncio
 async def test_list_models_async_pages():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8491,25 +7761,6 @@ def test_delete_model(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_delete_model_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_model), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_model()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteModelRequest()
-
-
 def test_delete_model_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -8579,27 +7830,6 @@ def test_delete_model_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_model_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_model), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_model()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteModelRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_model_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8607,7 +7837,7 @@ async def test_delete_model_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8651,7 +7881,7 @@ async def test_delete_model_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteModelRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8714,7 +7944,7 @@ def test_delete_model_field_headers():
 @pytest.mark.asyncio
 async def test_delete_model_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8784,7 +8014,7 @@ def test_delete_model_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_model_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8813,7 +8043,7 @@ async def test_delete_model_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_model_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8856,25 +8086,6 @@ def test_deploy_model(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_deploy_model_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.deploy_model), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.deploy_model()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeployModelRequest()
 
 
 def test_deploy_model_non_empty_request_with_auto_populated_field():
@@ -8946,27 +8157,6 @@ def test_deploy_model_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_deploy_model_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.deploy_model), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.deploy_model()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeployModelRequest()
-
-
-@pytest.mark.asyncio
 async def test_deploy_model_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8974,7 +8164,7 @@ async def test_deploy_model_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9018,7 +8208,7 @@ async def test_deploy_model_async(
     transport: str = "grpc_asyncio", request_type=service.DeployModelRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9081,7 +8271,7 @@ def test_deploy_model_field_headers():
 @pytest.mark.asyncio
 async def test_deploy_model_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9151,7 +8341,7 @@ def test_deploy_model_flattened_error():
 @pytest.mark.asyncio
 async def test_deploy_model_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9180,7 +8370,7 @@ async def test_deploy_model_flattened_async():
 @pytest.mark.asyncio
 async def test_deploy_model_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9223,25 +8413,6 @@ def test_undeploy_model(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_undeploy_model_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.undeploy_model), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.undeploy_model()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UndeployModelRequest()
 
 
 def test_undeploy_model_non_empty_request_with_auto_populated_field():
@@ -9313,27 +8484,6 @@ def test_undeploy_model_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_undeploy_model_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.undeploy_model), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.undeploy_model()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UndeployModelRequest()
-
-
-@pytest.mark.asyncio
 async def test_undeploy_model_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9341,7 +8491,7 @@ async def test_undeploy_model_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9385,7 +8535,7 @@ async def test_undeploy_model_async(
     transport: str = "grpc_asyncio", request_type=service.UndeployModelRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9448,7 +8598,7 @@ def test_undeploy_model_field_headers():
 @pytest.mark.asyncio
 async def test_undeploy_model_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9518,7 +8668,7 @@ def test_undeploy_model_flattened_error():
 @pytest.mark.asyncio
 async def test_undeploy_model_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9547,7 +8697,7 @@ async def test_undeploy_model_flattened_async():
 @pytest.mark.asyncio
 async def test_undeploy_model_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9590,25 +8740,6 @@ def test_export_model(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_export_model_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.export_model), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.export_model()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ExportModelRequest()
 
 
 def test_export_model_non_empty_request_with_auto_populated_field():
@@ -9680,27 +8811,6 @@ def test_export_model_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_export_model_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.export_model), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.export_model()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ExportModelRequest()
-
-
-@pytest.mark.asyncio
 async def test_export_model_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9708,7 +8818,7 @@ async def test_export_model_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9752,7 +8862,7 @@ async def test_export_model_async(
     transport: str = "grpc_asyncio", request_type=service.ExportModelRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9815,7 +8925,7 @@ def test_export_model_field_headers():
 @pytest.mark.asyncio
 async def test_export_model_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9902,7 +9012,7 @@ def test_export_model_flattened_error():
 @pytest.mark.asyncio
 async def test_export_model_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9943,7 +9053,7 @@ async def test_export_model_flattened_async():
 @pytest.mark.asyncio
 async def test_export_model_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9993,27 +9103,6 @@ def test_export_evaluated_examples(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_export_evaluated_examples_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_evaluated_examples), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.export_evaluated_examples()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ExportEvaluatedExamplesRequest()
 
 
 def test_export_evaluated_examples_non_empty_request_with_auto_populated_field():
@@ -10092,29 +9181,6 @@ def test_export_evaluated_examples_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_export_evaluated_examples_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_evaluated_examples), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.export_evaluated_examples()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ExportEvaluatedExamplesRequest()
-
-
-@pytest.mark.asyncio
 async def test_export_evaluated_examples_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -10122,7 +9188,7 @@ async def test_export_evaluated_examples_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10166,7 +9232,7 @@ async def test_export_evaluated_examples_async(
     transport: str = "grpc_asyncio", request_type=service.ExportEvaluatedExamplesRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10233,7 +9299,7 @@ def test_export_evaluated_examples_field_headers():
 @pytest.mark.asyncio
 async def test_export_evaluated_examples_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10322,7 +9388,7 @@ def test_export_evaluated_examples_flattened_error():
 @pytest.mark.asyncio
 async def test_export_evaluated_examples_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10363,7 +9429,7 @@ async def test_export_evaluated_examples_flattened_async():
 @pytest.mark.asyncio
 async def test_export_evaluated_examples_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10422,27 +9488,6 @@ def test_get_model_evaluation(request_type, transport: str = "grpc"):
     assert response.annotation_spec_id == "annotation_spec_id_value"
     assert response.display_name == "display_name_value"
     assert response.evaluated_example_count == 2446
-
-
-def test_get_model_evaluation_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_model_evaluation), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_model_evaluation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetModelEvaluationRequest()
 
 
 def test_get_model_evaluation_non_empty_request_with_auto_populated_field():
@@ -10515,34 +9560,6 @@ def test_get_model_evaluation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_model_evaluation_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_model_evaluation), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            model_evaluation.ModelEvaluation(
-                name="name_value",
-                annotation_spec_id="annotation_spec_id_value",
-                display_name="display_name_value",
-                evaluated_example_count=2446,
-            )
-        )
-        response = await client.get_model_evaluation()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetModelEvaluationRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_model_evaluation_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -10550,7 +9567,7 @@ async def test_get_model_evaluation_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10589,7 +9606,7 @@ async def test_get_model_evaluation_async(
     transport: str = "grpc_asyncio", request_type=service.GetModelEvaluationRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10665,7 +9682,7 @@ def test_get_model_evaluation_field_headers():
 @pytest.mark.asyncio
 async def test_get_model_evaluation_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10739,7 +9756,7 @@ def test_get_model_evaluation_flattened_error():
 @pytest.mark.asyncio
 async def test_get_model_evaluation_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10770,7 +9787,7 @@ async def test_get_model_evaluation_flattened_async():
 @pytest.mark.asyncio
 async def test_get_model_evaluation_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10818,27 +9835,6 @@ def test_list_model_evaluations(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListModelEvaluationsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_model_evaluations_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_model_evaluations), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_model_evaluations()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListModelEvaluationsRequest()
 
 
 def test_list_model_evaluations_non_empty_request_with_auto_populated_field():
@@ -10916,31 +9912,6 @@ def test_list_model_evaluations_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_model_evaluations_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_model_evaluations), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListModelEvaluationsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_model_evaluations()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListModelEvaluationsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_model_evaluations_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -10948,7 +9919,7 @@ async def test_list_model_evaluations_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AutoMlAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10987,7 +9958,7 @@ async def test_list_model_evaluations_async(
     transport: str = "grpc_asyncio", request_type=service.ListModelEvaluationsRequest
 ):
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11057,7 +10028,7 @@ def test_list_model_evaluations_field_headers():
 @pytest.mark.asyncio
 async def test_list_model_evaluations_field_headers_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11131,7 +10102,7 @@ def test_list_model_evaluations_flattened_error():
 @pytest.mark.asyncio
 async def test_list_model_evaluations_flattened_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11162,7 +10133,7 @@ async def test_list_model_evaluations_flattened_async():
 @pytest.mark.asyncio
 async def test_list_model_evaluations_flattened_error_async():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11276,7 +10247,7 @@ def test_list_model_evaluations_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_model_evaluations_async_pager():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11328,7 +10299,7 @@ async def test_list_model_evaluations_async_pager():
 @pytest.mark.asyncio
 async def test_list_model_evaluations_async_pages():
     client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11374,148 +10345,6 @@ async def test_list_model_evaluations_async_pages():
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.CreateDatasetRequest,
-        dict,
-    ],
-)
-def test_create_dataset_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["dataset"] = {
-        "translation_dataset_metadata": {
-            "source_language_code": "source_language_code_value",
-            "target_language_code": "target_language_code_value",
-        },
-        "image_classification_dataset_metadata": {"classification_type": 1},
-        "text_classification_dataset_metadata": {"classification_type": 1},
-        "image_object_detection_dataset_metadata": {},
-        "video_classification_dataset_metadata": {},
-        "video_object_tracking_dataset_metadata": {},
-        "text_extraction_dataset_metadata": {},
-        "text_sentiment_dataset_metadata": {"sentiment_max": 1404},
-        "tables_dataset_metadata": {
-            "primary_table_spec_id": "primary_table_spec_id_value",
-            "target_column_spec_id": "target_column_spec_id_value",
-            "weight_column_spec_id": "weight_column_spec_id_value",
-            "ml_use_column_spec_id": "ml_use_column_spec_id_value",
-            "target_column_correlations": {},
-            "stats_update_time": {"seconds": 751, "nanos": 543},
-        },
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "example_count": 1396,
-        "create_time": {},
-        "etag": "etag_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = service.CreateDatasetRequest.meta.fields["dataset"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["dataset"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["dataset"][field])):
-                    del request_init["dataset"][field][i][subfield]
-            else:
-                del request_init["dataset"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gca_dataset.Dataset(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            example_count=1396,
-            etag="etag_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gca_dataset.Dataset.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_dataset(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gca_dataset.Dataset)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.example_count == 1396
-    assert response.etag == "etag_value"
 
 
 def test_create_dataset_rest_use_cached_wrapped_rpc():
@@ -11644,81 +10473,6 @@ def test_create_dataset_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_dataset_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_create_dataset"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_create_dataset"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.CreateDatasetRequest.pb(service.CreateDatasetRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gca_dataset.Dataset.to_json(gca_dataset.Dataset())
-
-        request = service.CreateDatasetRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gca_dataset.Dataset()
-
-        client.create_dataset(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_dataset_rest_bad_request(
-    transport: str = "rest", request_type=service.CreateDatasetRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_dataset(request)
-
-
 def test_create_dataset_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11784,60 +10538,6 @@ def test_create_dataset_rest_flattened_error(transport: str = "rest"):
                 )
             ),
         )
-
-
-def test_create_dataset_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.GetDatasetRequest,
-        dict,
-    ],
-)
-def test_get_dataset_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = dataset.Dataset(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            example_count=1396,
-            etag="etag_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = dataset.Dataset.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_dataset(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, dataset.Dataset)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.example_count == 1396
-    assert response.etag == "etag_value"
 
 
 def test_get_dataset_rest_use_cached_wrapped_rpc():
@@ -11957,81 +10657,6 @@ def test_get_dataset_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_dataset_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_get_dataset"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_get_dataset"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.GetDatasetRequest.pb(service.GetDatasetRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = dataset.Dataset.to_json(dataset.Dataset())
-
-        request = service.GetDatasetRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = dataset.Dataset()
-
-        client.get_dataset(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_dataset_rest_bad_request(
-    transport: str = "rest", request_type=service.GetDatasetRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_dataset(request)
-
-
 def test_get_dataset_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12087,52 +10712,6 @@ def test_get_dataset_rest_flattened_error(transport: str = "rest"):
             service.GetDatasetRequest(),
             name="name_value",
         )
-
-
-def test_get_dataset_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.ListDatasetsRequest,
-        dict,
-    ],
-)
-def test_list_datasets_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = service.ListDatasetsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = service.ListDatasetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_datasets(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListDatasetsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_datasets_rest_use_cached_wrapped_rpc():
@@ -12269,83 +10848,6 @@ def test_list_datasets_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_datasets_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_list_datasets"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_list_datasets"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.ListDatasetsRequest.pb(service.ListDatasetsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = service.ListDatasetsResponse.to_json(
-            service.ListDatasetsResponse()
-        )
-
-        request = service.ListDatasetsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = service.ListDatasetsResponse()
-
-        client.list_datasets(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_datasets_rest_bad_request(
-    transport: str = "rest", request_type=service.ListDatasetsRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_datasets(request)
-
-
 def test_list_datasets_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12464,150 +10966,6 @@ def test_list_datasets_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.UpdateDatasetRequest,
-        dict,
-    ],
-)
-def test_update_dataset_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "dataset": {"name": "projects/sample1/locations/sample2/datasets/sample3"}
-    }
-    request_init["dataset"] = {
-        "translation_dataset_metadata": {
-            "source_language_code": "source_language_code_value",
-            "target_language_code": "target_language_code_value",
-        },
-        "image_classification_dataset_metadata": {"classification_type": 1},
-        "text_classification_dataset_metadata": {"classification_type": 1},
-        "image_object_detection_dataset_metadata": {},
-        "video_classification_dataset_metadata": {},
-        "video_object_tracking_dataset_metadata": {},
-        "text_extraction_dataset_metadata": {},
-        "text_sentiment_dataset_metadata": {"sentiment_max": 1404},
-        "tables_dataset_metadata": {
-            "primary_table_spec_id": "primary_table_spec_id_value",
-            "target_column_spec_id": "target_column_spec_id_value",
-            "weight_column_spec_id": "weight_column_spec_id_value",
-            "ml_use_column_spec_id": "ml_use_column_spec_id_value",
-            "target_column_correlations": {},
-            "stats_update_time": {"seconds": 751, "nanos": 543},
-        },
-        "name": "projects/sample1/locations/sample2/datasets/sample3",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "example_count": 1396,
-        "create_time": {},
-        "etag": "etag_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = service.UpdateDatasetRequest.meta.fields["dataset"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["dataset"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["dataset"][field])):
-                    del request_init["dataset"][field][i][subfield]
-            else:
-                del request_init["dataset"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gca_dataset.Dataset(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            example_count=1396,
-            etag="etag_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gca_dataset.Dataset.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_dataset(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gca_dataset.Dataset)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.example_count == 1396
-    assert response.etag == "etag_value"
-
-
 def test_update_dataset_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -12723,83 +11081,6 @@ def test_update_dataset_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask",)) & set(("dataset",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_dataset_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_update_dataset"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_update_dataset"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.UpdateDatasetRequest.pb(service.UpdateDatasetRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gca_dataset.Dataset.to_json(gca_dataset.Dataset())
-
-        request = service.UpdateDatasetRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gca_dataset.Dataset()
-
-        client.update_dataset(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_dataset_rest_bad_request(
-    transport: str = "rest", request_type=service.UpdateDatasetRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "dataset": {"name": "projects/sample1/locations/sample2/datasets/sample3"}
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_dataset(request)
-
-
 def test_update_dataset_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12865,47 +11146,6 @@ def test_update_dataset_rest_flattened_error(transport: str = "rest"):
                 )
             ),
         )
-
-
-def test_update_dataset_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.DeleteDatasetRequest,
-        dict,
-    ],
-)
-def test_delete_dataset_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_dataset(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_delete_dataset_rest_use_cached_wrapped_rpc():
@@ -13026,85 +11266,6 @@ def test_delete_dataset_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_dataset_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_delete_dataset"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_delete_dataset"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.DeleteDatasetRequest.pb(service.DeleteDatasetRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = service.DeleteDatasetRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_dataset(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_dataset_rest_bad_request(
-    transport: str = "rest", request_type=service.DeleteDatasetRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_dataset(request)
-
-
 def test_delete_dataset_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13158,47 +11319,6 @@ def test_delete_dataset_rest_flattened_error(transport: str = "rest"):
             service.DeleteDatasetRequest(),
             name="name_value",
         )
-
-
-def test_delete_dataset_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.ImportDataRequest,
-        dict,
-    ],
-)
-def test_import_data_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.import_data(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_import_data_rest_use_cached_wrapped_rpc():
@@ -13328,85 +11448,6 @@ def test_import_data_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_import_data_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_import_data"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_import_data"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.ImportDataRequest.pb(service.ImportDataRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = service.ImportDataRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.import_data(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_import_data_rest_bad_request(
-    transport: str = "rest", request_type=service.ImportDataRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.import_data(request)
-
-
 def test_import_data_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13466,47 +11507,6 @@ def test_import_data_rest_flattened_error(transport: str = "rest"):
                 gcs_source=io.GcsSource(input_uris=["input_uris_value"])
             ),
         )
-
-
-def test_import_data_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.ExportDataRequest,
-        dict,
-    ],
-)
-def test_export_data_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.export_data(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_export_data_rest_use_cached_wrapped_rpc():
@@ -13636,85 +11636,6 @@ def test_export_data_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_export_data_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_export_data"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_export_data"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.ExportDataRequest.pb(service.ExportDataRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = service.ExportDataRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.export_data(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_export_data_rest_bad_request(
-    transport: str = "rest", request_type=service.ExportDataRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.export_data(request)
-
-
 def test_export_data_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13778,58 +11699,6 @@ def test_export_data_rest_flattened_error(transport: str = "rest"):
                 )
             ),
         )
-
-
-def test_export_data_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.GetAnnotationSpecRequest,
-        dict,
-    ],
-)
-def test_get_annotation_spec_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/datasets/sample3/annotationSpecs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = annotation_spec.AnnotationSpec(
-            name="name_value",
-            display_name="display_name_value",
-            example_count=1396,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = annotation_spec.AnnotationSpec.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_annotation_spec(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, annotation_spec.AnnotationSpec)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.example_count == 1396
 
 
 def test_get_annotation_spec_rest_use_cached_wrapped_rpc():
@@ -13955,87 +11824,6 @@ def test_get_annotation_spec_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_annotation_spec_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_get_annotation_spec"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_get_annotation_spec"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.GetAnnotationSpecRequest.pb(
-            service.GetAnnotationSpecRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = annotation_spec.AnnotationSpec.to_json(
-            annotation_spec.AnnotationSpec()
-        )
-
-        request = service.GetAnnotationSpecRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = annotation_spec.AnnotationSpec()
-
-        client.get_annotation_spec(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_annotation_spec_rest_bad_request(
-    transport: str = "rest", request_type=service.GetAnnotationSpecRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/datasets/sample3/annotationSpecs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_annotation_spec(request)
-
-
 def test_get_annotation_spec_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14093,64 +11881,6 @@ def test_get_annotation_spec_rest_flattened_error(transport: str = "rest"):
             service.GetAnnotationSpecRequest(),
             name="name_value",
         )
-
-
-def test_get_annotation_spec_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.GetTableSpecRequest,
-        dict,
-    ],
-)
-def test_get_table_spec_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = table_spec.TableSpec(
-            name="name_value",
-            time_column_spec_id="time_column_spec_id_value",
-            row_count=992,
-            valid_row_count=1615,
-            column_count=1302,
-            etag="etag_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = table_spec.TableSpec.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_table_spec(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, table_spec.TableSpec)
-    assert response.name == "name_value"
-    assert response.time_column_spec_id == "time_column_spec_id_value"
-    assert response.row_count == 992
-    assert response.valid_row_count == 1615
-    assert response.column_count == 1302
-    assert response.etag == "etag_value"
 
 
 def test_get_table_spec_rest_use_cached_wrapped_rpc():
@@ -14272,83 +12002,6 @@ def test_get_table_spec_rest_unset_required_fields():
     assert set(unset_fields) == (set(("fieldMask",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_table_spec_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_get_table_spec"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_get_table_spec"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.GetTableSpecRequest.pb(service.GetTableSpecRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = table_spec.TableSpec.to_json(table_spec.TableSpec())
-
-        request = service.GetTableSpecRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = table_spec.TableSpec()
-
-        client.get_table_spec(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_table_spec_rest_bad_request(
-    transport: str = "rest", request_type=service.GetTableSpecRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_table_spec(request)
-
-
 def test_get_table_spec_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14406,52 +12059,6 @@ def test_get_table_spec_rest_flattened_error(transport: str = "rest"):
             service.GetTableSpecRequest(),
             name="name_value",
         )
-
-
-def test_get_table_spec_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.ListTableSpecsRequest,
-        dict,
-    ],
-)
-def test_list_table_specs_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = service.ListTableSpecsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = service.ListTableSpecsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_table_specs(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListTableSpecsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_table_specs_rest_use_cached_wrapped_rpc():
@@ -14594,83 +12201,6 @@ def test_list_table_specs_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_table_specs_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_list_table_specs"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_list_table_specs"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.ListTableSpecsRequest.pb(service.ListTableSpecsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = service.ListTableSpecsResponse.to_json(
-            service.ListTableSpecsResponse()
-        )
-
-        request = service.ListTableSpecsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = service.ListTableSpecsResponse()
-
-        client.list_table_specs(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_table_specs_rest_bad_request(
-    transport: str = "rest", request_type=service.ListTableSpecsRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_table_specs(request)
-
-
 def test_list_table_specs_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14793,144 +12323,6 @@ def test_list_table_specs_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.UpdateTableSpecRequest,
-        dict,
-    ],
-)
-def test_update_table_spec_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "table_spec": {
-            "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4"
-        }
-    }
-    request_init["table_spec"] = {
-        "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4",
-        "time_column_spec_id": "time_column_spec_id_value",
-        "row_count": 992,
-        "valid_row_count": 1615,
-        "column_count": 1302,
-        "input_configs": [
-            {
-                "gcs_source": {
-                    "input_uris": ["input_uris_value1", "input_uris_value2"]
-                },
-                "bigquery_source": {"input_uri": "input_uri_value"},
-                "params": {},
-            }
-        ],
-        "etag": "etag_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = service.UpdateTableSpecRequest.meta.fields["table_spec"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["table_spec"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["table_spec"][field])):
-                    del request_init["table_spec"][field][i][subfield]
-            else:
-                del request_init["table_spec"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gca_table_spec.TableSpec(
-            name="name_value",
-            time_column_spec_id="time_column_spec_id_value",
-            row_count=992,
-            valid_row_count=1615,
-            column_count=1302,
-            etag="etag_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gca_table_spec.TableSpec.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_table_spec(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gca_table_spec.TableSpec)
-    assert response.name == "name_value"
-    assert response.time_column_spec_id == "time_column_spec_id_value"
-    assert response.row_count == 992
-    assert response.valid_row_count == 1615
-    assert response.column_count == 1302
-    assert response.etag == "etag_value"
-
-
 def test_update_table_spec_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -15050,87 +12442,6 @@ def test_update_table_spec_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask",)) & set(("tableSpec",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_table_spec_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_update_table_spec"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_update_table_spec"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.UpdateTableSpecRequest.pb(service.UpdateTableSpecRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gca_table_spec.TableSpec.to_json(
-            gca_table_spec.TableSpec()
-        )
-
-        request = service.UpdateTableSpecRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gca_table_spec.TableSpec()
-
-        client.update_table_spec(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_table_spec_rest_bad_request(
-    transport: str = "rest", request_type=service.UpdateTableSpecRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "table_spec": {
-            "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_table_spec(request)
-
-
 def test_update_table_spec_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15190,58 +12501,6 @@ def test_update_table_spec_rest_flattened_error(transport: str = "rest"):
             service.UpdateTableSpecRequest(),
             table_spec=gca_table_spec.TableSpec(name="name_value"),
         )
-
-
-def test_update_table_spec_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.GetColumnSpecRequest,
-        dict,
-    ],
-)
-def test_get_column_spec_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4/columnSpecs/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = column_spec.ColumnSpec(
-            name="name_value",
-            display_name="display_name_value",
-            etag="etag_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = column_spec.ColumnSpec.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_column_spec(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, column_spec.ColumnSpec)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.etag == "etag_value"
 
 
 def test_get_column_spec_rest_use_cached_wrapped_rpc():
@@ -15365,85 +12624,6 @@ def test_get_column_spec_rest_unset_required_fields():
     assert set(unset_fields) == (set(("fieldMask",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_column_spec_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_get_column_spec"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_get_column_spec"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.GetColumnSpecRequest.pb(service.GetColumnSpecRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = column_spec.ColumnSpec.to_json(
-            column_spec.ColumnSpec()
-        )
-
-        request = service.GetColumnSpecRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = column_spec.ColumnSpec()
-
-        client.get_column_spec(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_column_spec_rest_bad_request(
-    transport: str = "rest", request_type=service.GetColumnSpecRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4/columnSpecs/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_column_spec(request)
-
-
 def test_get_column_spec_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15501,54 +12681,6 @@ def test_get_column_spec_rest_flattened_error(transport: str = "rest"):
             service.GetColumnSpecRequest(),
             name="name_value",
         )
-
-
-def test_get_column_spec_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.ListColumnSpecsRequest,
-        dict,
-    ],
-)
-def test_list_column_specs_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = service.ListColumnSpecsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = service.ListColumnSpecsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_column_specs(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListColumnSpecsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_column_specs_rest_use_cached_wrapped_rpc():
@@ -15691,85 +12823,6 @@ def test_list_column_specs_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_column_specs_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_list_column_specs"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_list_column_specs"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.ListColumnSpecsRequest.pb(service.ListColumnSpecsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = service.ListColumnSpecsResponse.to_json(
-            service.ListColumnSpecsResponse()
-        )
-
-        request = service.ListColumnSpecsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = service.ListColumnSpecsResponse()
-
-        client.list_column_specs(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_column_specs_rest_bad_request(
-    transport: str = "rest", request_type=service.ListColumnSpecsRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_column_specs(request)
-
-
 def test_list_column_specs_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15890,159 +12943,6 @@ def test_list_column_specs_rest_pager(transport: str = "rest"):
         pages = list(client.list_column_specs(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.UpdateColumnSpecRequest,
-        dict,
-    ],
-)
-def test_update_column_spec_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "column_spec": {
-            "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4/columnSpecs/sample5"
-        }
-    }
-    request_init["column_spec"] = {
-        "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4/columnSpecs/sample5",
-        "data_type": {
-            "list_element_type": {},
-            "struct_type": {"fields": {}},
-            "time_format": "time_format_value",
-            "type_code": 3,
-            "nullable": True,
-        },
-        "display_name": "display_name_value",
-        "data_stats": {
-            "float64_stats": {
-                "mean": 0.417,
-                "standard_deviation": 0.1907,
-                "quantiles": [0.983, 0.984],
-                "histogram_buckets": [{"min_": 0.419, "max_": 0.421, "count": 553}],
-            },
-            "string_stats": {
-                "top_unigram_stats": [{"value": "value_value", "count": 553}]
-            },
-            "timestamp_stats": {"granular_stats": {}},
-            "array_stats": {"member_stats": {}},
-            "struct_stats": {"field_stats": {}},
-            "category_stats": {
-                "top_category_stats": [{"value": "value_value", "count": 553}]
-            },
-            "distinct_value_count": 2150,
-            "null_value_count": 1727,
-            "valid_value_count": 1812,
-        },
-        "top_correlated_columns": [
-            {
-                "column_spec_id": "column_spec_id_value",
-                "correlation_stats": {"cramers_v": 0.962},
-            }
-        ],
-        "etag": "etag_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = service.UpdateColumnSpecRequest.meta.fields["column_spec"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["column_spec"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["column_spec"][field])):
-                    del request_init["column_spec"][field][i][subfield]
-            else:
-                del request_init["column_spec"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gca_column_spec.ColumnSpec(
-            name="name_value",
-            display_name="display_name_value",
-            etag="etag_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gca_column_spec.ColumnSpec.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_column_spec(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gca_column_spec.ColumnSpec)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.etag == "etag_value"
 
 
 def test_update_column_spec_rest_use_cached_wrapped_rpc():
@@ -16166,89 +13066,6 @@ def test_update_column_spec_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask",)) & set(("columnSpec",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_column_spec_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_update_column_spec"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_update_column_spec"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.UpdateColumnSpecRequest.pb(
-            service.UpdateColumnSpecRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gca_column_spec.ColumnSpec.to_json(
-            gca_column_spec.ColumnSpec()
-        )
-
-        request = service.UpdateColumnSpecRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gca_column_spec.ColumnSpec()
-
-        client.update_column_spec(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_column_spec_rest_bad_request(
-    transport: str = "rest", request_type=service.UpdateColumnSpecRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "column_spec": {
-            "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4/columnSpecs/sample5"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_column_spec(request)
-
-
 def test_update_column_spec_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16308,205 +13125,6 @@ def test_update_column_spec_rest_flattened_error(transport: str = "rest"):
             service.UpdateColumnSpecRequest(),
             column_spec=gca_column_spec.ColumnSpec(name="name_value"),
         )
-
-
-def test_update_column_spec_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.CreateModelRequest,
-        dict,
-    ],
-)
-def test_create_model_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["model"] = {
-        "translation_model_metadata": {
-            "base_model": "base_model_value",
-            "source_language_code": "source_language_code_value",
-            "target_language_code": "target_language_code_value",
-        },
-        "image_classification_model_metadata": {
-            "base_model_id": "base_model_id_value",
-            "train_budget": 1272,
-            "train_cost": 1078,
-            "stop_reason": "stop_reason_value",
-            "model_type": "model_type_value",
-            "node_qps": 0.857,
-            "node_count": 1070,
-        },
-        "text_classification_model_metadata": {"classification_type": 1},
-        "image_object_detection_model_metadata": {
-            "model_type": "model_type_value",
-            "node_count": 1070,
-            "node_qps": 0.857,
-            "stop_reason": "stop_reason_value",
-            "train_budget_milli_node_hours": 3075,
-            "train_cost_milli_node_hours": 2881,
-        },
-        "video_classification_model_metadata": {},
-        "video_object_tracking_model_metadata": {},
-        "text_extraction_model_metadata": {"model_hint": "model_hint_value"},
-        "tables_model_metadata": {
-            "optimization_objective_recall_value": 0.37270000000000003,
-            "optimization_objective_precision_value": 0.4072,
-            "target_column_spec": {
-                "name": "name_value",
-                "data_type": {
-                    "list_element_type": {},
-                    "struct_type": {"fields": {}},
-                    "time_format": "time_format_value",
-                    "type_code": 3,
-                    "nullable": True,
-                },
-                "display_name": "display_name_value",
-                "data_stats": {
-                    "float64_stats": {
-                        "mean": 0.417,
-                        "standard_deviation": 0.1907,
-                        "quantiles": [0.983, 0.984],
-                        "histogram_buckets": [
-                            {"min_": 0.419, "max_": 0.421, "count": 553}
-                        ],
-                    },
-                    "string_stats": {
-                        "top_unigram_stats": [{"value": "value_value", "count": 553}]
-                    },
-                    "timestamp_stats": {"granular_stats": {}},
-                    "array_stats": {"member_stats": {}},
-                    "struct_stats": {"field_stats": {}},
-                    "category_stats": {
-                        "top_category_stats": [{"value": "value_value", "count": 553}]
-                    },
-                    "distinct_value_count": 2150,
-                    "null_value_count": 1727,
-                    "valid_value_count": 1812,
-                },
-                "top_correlated_columns": [
-                    {
-                        "column_spec_id": "column_spec_id_value",
-                        "correlation_stats": {"cramers_v": 0.962},
-                    }
-                ],
-                "etag": "etag_value",
-            },
-            "input_feature_column_specs": {},
-            "optimization_objective": "optimization_objective_value",
-            "tables_model_column_info": [
-                {
-                    "column_spec_name": "column_spec_name_value",
-                    "column_display_name": "column_display_name_value",
-                    "feature_importance": 0.1917,
-                }
-            ],
-            "train_budget_milli_node_hours": 3075,
-            "train_cost_milli_node_hours": 2881,
-            "disable_early_stopping": True,
-        },
-        "text_sentiment_model_metadata": {},
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "dataset_id": "dataset_id_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "deployment_state": 1,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = service.CreateModelRequest.meta.fields["model"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["model"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["model"][field])):
-                    del request_init["model"][field][i][subfield]
-            else:
-                del request_init["model"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_model(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_model_rest_use_cached_wrapped_rpc():
@@ -16636,85 +13254,6 @@ def test_create_model_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_model_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_create_model"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_create_model"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.CreateModelRequest.pb(service.CreateModelRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = service.CreateModelRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_model(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_model_rest_bad_request(
-    transport: str = "rest", request_type=service.CreateModelRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_model(request)
-
-
 def test_create_model_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16778,58 +13317,6 @@ def test_create_model_rest_flattened_error(transport: str = "rest"):
                 )
             ),
         )
-
-
-def test_create_model_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.GetModelRequest,
-        dict,
-    ],
-)
-def test_get_model_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = model.Model(
-            name="name_value",
-            display_name="display_name_value",
-            dataset_id="dataset_id_value",
-            deployment_state=model.Model.DeploymentState.DEPLOYED,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = model.Model.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_model(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, model.Model)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.dataset_id == "dataset_id_value"
-    assert response.deployment_state == model.Model.DeploymentState.DEPLOYED
 
 
 def test_get_model_rest_use_cached_wrapped_rpc():
@@ -16949,81 +13436,6 @@ def test_get_model_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_model_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_get_model"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_get_model"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.GetModelRequest.pb(service.GetModelRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = model.Model.to_json(model.Model())
-
-        request = service.GetModelRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = model.Model()
-
-        client.get_model(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_model_rest_bad_request(
-    transport: str = "rest", request_type=service.GetModelRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_model(request)
-
-
 def test_get_model_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17079,52 +13491,6 @@ def test_get_model_rest_flattened_error(transport: str = "rest"):
             service.GetModelRequest(),
             name="name_value",
         )
-
-
-def test_get_model_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.ListModelsRequest,
-        dict,
-    ],
-)
-def test_list_models_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = service.ListModelsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = service.ListModelsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_models(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListModelsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_models_rest_use_cached_wrapped_rpc():
@@ -17261,83 +13627,6 @@ def test_list_models_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_models_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_list_models"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_list_models"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.ListModelsRequest.pb(service.ListModelsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = service.ListModelsResponse.to_json(
-            service.ListModelsResponse()
-        )
-
-        request = service.ListModelsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = service.ListModelsResponse()
-
-        client.list_models(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_models_rest_bad_request(
-    transport: str = "rest", request_type=service.ListModelsRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_models(request)
-
-
 def test_list_models_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17454,41 +13743,6 @@ def test_list_models_rest_pager(transport: str = "rest"):
         pages = list(client.list_models(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.DeleteModelRequest,
-        dict,
-    ],
-)
-def test_delete_model_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_model(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_delete_model_rest_use_cached_wrapped_rpc():
@@ -17609,85 +13863,6 @@ def test_delete_model_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_model_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_delete_model"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_delete_model"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.DeleteModelRequest.pb(service.DeleteModelRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = service.DeleteModelRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_model(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_model_rest_bad_request(
-    transport: str = "rest", request_type=service.DeleteModelRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_model(request)
-
-
 def test_delete_model_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17741,47 +13916,6 @@ def test_delete_model_rest_flattened_error(transport: str = "rest"):
             service.DeleteModelRequest(),
             name="name_value",
         )
-
-
-def test_delete_model_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.DeployModelRequest,
-        dict,
-    ],
-)
-def test_deploy_model_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.deploy_model(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_deploy_model_rest_use_cached_wrapped_rpc():
@@ -17903,85 +14037,6 @@ def test_deploy_model_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_deploy_model_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_deploy_model"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_deploy_model"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.DeployModelRequest.pb(service.DeployModelRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = service.DeployModelRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.deploy_model(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_deploy_model_rest_bad_request(
-    transport: str = "rest", request_type=service.DeployModelRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.deploy_model(request)
-
-
 def test_deploy_model_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18035,47 +14090,6 @@ def test_deploy_model_rest_flattened_error(transport: str = "rest"):
             service.DeployModelRequest(),
             name="name_value",
         )
-
-
-def test_deploy_model_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.UndeployModelRequest,
-        dict,
-    ],
-)
-def test_undeploy_model_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.undeploy_model(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_undeploy_model_rest_use_cached_wrapped_rpc():
@@ -18197,85 +14211,6 @@ def test_undeploy_model_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_undeploy_model_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_undeploy_model"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_undeploy_model"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.UndeployModelRequest.pb(service.UndeployModelRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = service.UndeployModelRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.undeploy_model(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_undeploy_model_rest_bad_request(
-    transport: str = "rest", request_type=service.UndeployModelRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.undeploy_model(request)
-
-
 def test_undeploy_model_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18329,47 +14264,6 @@ def test_undeploy_model_rest_flattened_error(transport: str = "rest"):
             service.UndeployModelRequest(),
             name="name_value",
         )
-
-
-def test_undeploy_model_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.ExportModelRequest,
-        dict,
-    ],
-)
-def test_export_model_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.export_model(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_export_model_rest_use_cached_wrapped_rpc():
@@ -18499,85 +14393,6 @@ def test_export_model_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_export_model_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_export_model"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_export_model"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.ExportModelRequest.pb(service.ExportModelRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = service.ExportModelRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.export_model(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_export_model_rest_bad_request(
-    transport: str = "rest", request_type=service.ExportModelRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.export_model(request)
-
-
 def test_export_model_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18641,47 +14456,6 @@ def test_export_model_rest_flattened_error(transport: str = "rest"):
                 )
             ),
         )
-
-
-def test_export_model_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.ExportEvaluatedExamplesRequest,
-        dict,
-    ],
-)
-def test_export_evaluated_examples_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.export_evaluated_examples(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_export_evaluated_examples_rest_use_cached_wrapped_rpc():
@@ -18818,87 +14592,6 @@ def test_export_evaluated_examples_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_export_evaluated_examples_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_export_evaluated_examples"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_export_evaluated_examples"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.ExportEvaluatedExamplesRequest.pb(
-            service.ExportEvaluatedExamplesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = service.ExportEvaluatedExamplesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.export_evaluated_examples(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_export_evaluated_examples_rest_bad_request(
-    transport: str = "rest", request_type=service.ExportEvaluatedExamplesRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.export_evaluated_examples(request)
-
-
 def test_export_evaluated_examples_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18962,60 +14655,6 @@ def test_export_evaluated_examples_rest_flattened_error(transport: str = "rest")
                 )
             ),
         )
-
-
-def test_export_evaluated_examples_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.GetModelEvaluationRequest,
-        dict,
-    ],
-)
-def test_get_model_evaluation_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/models/sample3/modelEvaluations/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = model_evaluation.ModelEvaluation(
-            name="name_value",
-            annotation_spec_id="annotation_spec_id_value",
-            display_name="display_name_value",
-            evaluated_example_count=2446,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = model_evaluation.ModelEvaluation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_model_evaluation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, model_evaluation.ModelEvaluation)
-    assert response.name == "name_value"
-    assert response.annotation_spec_id == "annotation_spec_id_value"
-    assert response.display_name == "display_name_value"
-    assert response.evaluated_example_count == 2446
 
 
 def test_get_model_evaluation_rest_use_cached_wrapped_rpc():
@@ -19141,87 +14780,6 @@ def test_get_model_evaluation_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_model_evaluation_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_get_model_evaluation"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_get_model_evaluation"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.GetModelEvaluationRequest.pb(
-            service.GetModelEvaluationRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = model_evaluation.ModelEvaluation.to_json(
-            model_evaluation.ModelEvaluation()
-        )
-
-        request = service.GetModelEvaluationRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = model_evaluation.ModelEvaluation()
-
-        client.get_model_evaluation(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_model_evaluation_rest_bad_request(
-    transport: str = "rest", request_type=service.GetModelEvaluationRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/models/sample3/modelEvaluations/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_model_evaluation(request)
-
-
 def test_get_model_evaluation_rest_flattened():
     client = AutoMlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -19279,52 +14837,6 @@ def test_get_model_evaluation_rest_flattened_error(transport: str = "rest"):
             service.GetModelEvaluationRequest(),
             name="name_value",
         )
-
-
-def test_get_model_evaluation_rest_error():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.ListModelEvaluationsRequest,
-        dict,
-    ],
-)
-def test_list_model_evaluations_rest(request_type):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/models/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = service.ListModelEvaluationsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = service.ListModelEvaluationsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_model_evaluations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListModelEvaluationsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_model_evaluations_rest_use_cached_wrapped_rpc():
@@ -19466,85 +14978,6 @@ def test_list_model_evaluations_rest_unset_required_fields():
         )
         & set(("parent",))
     )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_model_evaluations_rest_interceptors(null_interceptor):
-    transport = transports.AutoMlRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
-    )
-    client = AutoMlClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AutoMlRestInterceptor, "post_list_model_evaluations"
-    ) as post, mock.patch.object(
-        transports.AutoMlRestInterceptor, "pre_list_model_evaluations"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.ListModelEvaluationsRequest.pb(
-            service.ListModelEvaluationsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = service.ListModelEvaluationsResponse.to_json(
-            service.ListModelEvaluationsResponse()
-        )
-
-        request = service.ListModelEvaluationsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = service.ListModelEvaluationsResponse()
-
-        client.list_model_evaluations(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_model_evaluations_rest_bad_request(
-    transport: str = "rest", request_type=service.ListModelEvaluationsRequest
-):
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/models/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_model_evaluations(request)
 
 
 def test_list_model_evaluations_rest_flattened():
@@ -19759,18 +15192,5108 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = AutoMlClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_dataset_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
+        call.return_value = gca_dataset.Dataset()
+        client.create_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_dataset_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
+        call.return_value = dataset.Dataset()
+        client.get_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_datasets_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
+        call.return_value = service.ListDatasetsResponse()
+        client.list_datasets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListDatasetsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_dataset_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_dataset), "__call__") as call:
+        call.return_value = gca_dataset.Dataset()
+        client.update_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_dataset_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_import_data_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.import_data), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.import_data(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ImportDataRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_data_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.export_data), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.export_data(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ExportDataRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_annotation_spec_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_annotation_spec), "__call__"
+    ) as call:
+        call.return_value = annotation_spec.AnnotationSpec()
+        client.get_annotation_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetAnnotationSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_table_spec_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_table_spec), "__call__") as call:
+        call.return_value = table_spec.TableSpec()
+        client.get_table_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetTableSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_table_specs_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_table_specs), "__call__") as call:
+        call.return_value = service.ListTableSpecsResponse()
+        client.list_table_specs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListTableSpecsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_table_spec_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_table_spec), "__call__"
+    ) as call:
+        call.return_value = gca_table_spec.TableSpec()
+        client.update_table_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateTableSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_column_spec_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_column_spec), "__call__") as call:
+        call.return_value = column_spec.ColumnSpec()
+        client.get_column_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetColumnSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_column_specs_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_column_specs), "__call__"
+    ) as call:
+        call.return_value = service.ListColumnSpecsResponse()
+        client.list_column_specs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListColumnSpecsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_column_spec_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_column_spec), "__call__"
+    ) as call:
+        call.return_value = gca_column_spec.ColumnSpec()
+        client.update_column_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateColumnSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_model_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_model), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_model_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_model), "__call__") as call:
+        call.return_value = model.Model()
+        client.get_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_models_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_models), "__call__") as call:
+        call.return_value = service.ListModelsResponse()
+        client.list_models(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListModelsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_model_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_model), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_deploy_model_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.deploy_model), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.deploy_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeployModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_undeploy_model_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.undeploy_model), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.undeploy_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UndeployModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_model_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.export_model), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.export_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ExportModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_evaluated_examples_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluated_examples), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.export_evaluated_examples(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ExportEvaluatedExamplesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_model_evaluation_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_model_evaluation), "__call__"
+    ) as call:
+        call.return_value = model_evaluation.ModelEvaluation()
+        client.get_model_evaluation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetModelEvaluationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_model_evaluations_empty_call_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_model_evaluations), "__call__"
+    ) as call:
+        call.return_value = service.ListModelEvaluationsResponse()
+        client.list_model_evaluations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListModelEvaluationsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = AutoMlAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_dataset_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gca_dataset.Dataset(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                example_count=1396,
+                etag="etag_value",
+            )
+        )
+        await client.create_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_dataset_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataset.Dataset(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                example_count=1396,
+                etag="etag_value",
+            )
+        )
+        await client.get_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_datasets_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListDatasetsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_datasets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListDatasetsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_dataset_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gca_dataset.Dataset(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                example_count=1396,
+                etag="etag_value",
+            )
+        )
+        await client.update_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_dataset_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_import_data_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.import_data), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.import_data(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ImportDataRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_export_data_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.export_data), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.export_data(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ExportDataRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_annotation_spec_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_annotation_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            annotation_spec.AnnotationSpec(
+                name="name_value",
+                display_name="display_name_value",
+                example_count=1396,
+            )
+        )
+        await client.get_annotation_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetAnnotationSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_table_spec_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_table_spec), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            table_spec.TableSpec(
+                name="name_value",
+                time_column_spec_id="time_column_spec_id_value",
+                row_count=992,
+                valid_row_count=1615,
+                column_count=1302,
+                etag="etag_value",
+            )
+        )
+        await client.get_table_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetTableSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_table_specs_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_table_specs), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListTableSpecsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_table_specs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListTableSpecsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_table_spec_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_table_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gca_table_spec.TableSpec(
+                name="name_value",
+                time_column_spec_id="time_column_spec_id_value",
+                row_count=992,
+                valid_row_count=1615,
+                column_count=1302,
+                etag="etag_value",
+            )
+        )
+        await client.update_table_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateTableSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_column_spec_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_column_spec), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            column_spec.ColumnSpec(
+                name="name_value",
+                display_name="display_name_value",
+                etag="etag_value",
+            )
+        )
+        await client.get_column_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetColumnSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_column_specs_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_column_specs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListColumnSpecsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_column_specs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListColumnSpecsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_column_spec_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_column_spec), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gca_column_spec.ColumnSpec(
+                name="name_value",
+                display_name="display_name_value",
+                etag="etag_value",
+            )
+        )
+        await client.update_column_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateColumnSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_model_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_model), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_model_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_model), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            model.Model(
+                name="name_value",
+                display_name="display_name_value",
+                dataset_id="dataset_id_value",
+                deployment_state=model.Model.DeploymentState.DEPLOYED,
+            )
+        )
+        await client.get_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_models_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_models), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListModelsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_models(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListModelsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_model_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_model), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_deploy_model_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.deploy_model), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.deploy_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeployModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_undeploy_model_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.undeploy_model), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.undeploy_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UndeployModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_export_model_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.export_model), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.export_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ExportModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_export_evaluated_examples_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluated_examples), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.export_evaluated_examples(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ExportEvaluatedExamplesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_model_evaluation_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_model_evaluation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            model_evaluation.ModelEvaluation(
+                name="name_value",
+                annotation_spec_id="annotation_spec_id_value",
+                display_name="display_name_value",
+                evaluated_example_count=2446,
+            )
+        )
+        await client.get_model_evaluation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetModelEvaluationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_model_evaluations_empty_call_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_model_evaluations), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListModelEvaluationsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_model_evaluations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListModelEvaluationsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = AutoMlClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_create_dataset_rest_bad_request(request_type=service.CreateDatasetRequest):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_dataset(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        service.CreateDatasetRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = AutoMlClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_create_dataset_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["dataset"] = {
+        "translation_dataset_metadata": {
+            "source_language_code": "source_language_code_value",
+            "target_language_code": "target_language_code_value",
+        },
+        "image_classification_dataset_metadata": {"classification_type": 1},
+        "text_classification_dataset_metadata": {"classification_type": 1},
+        "image_object_detection_dataset_metadata": {},
+        "video_classification_dataset_metadata": {},
+        "video_object_tracking_dataset_metadata": {},
+        "text_extraction_dataset_metadata": {},
+        "text_sentiment_dataset_metadata": {"sentiment_max": 1404},
+        "tables_dataset_metadata": {
+            "primary_table_spec_id": "primary_table_spec_id_value",
+            "target_column_spec_id": "target_column_spec_id_value",
+            "weight_column_spec_id": "weight_column_spec_id_value",
+            "ml_use_column_spec_id": "ml_use_column_spec_id_value",
+            "target_column_correlations": {},
+            "stats_update_time": {"seconds": 751, "nanos": 543},
+        },
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "example_count": 1396,
+        "create_time": {},
+        "etag": "etag_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.CreateDatasetRequest.meta.fields["dataset"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["dataset"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["dataset"][field])):
+                    del request_init["dataset"][field][i][subfield]
+            else:
+                del request_init["dataset"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gca_dataset.Dataset(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            example_count=1396,
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gca_dataset.Dataset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_dataset(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gca_dataset.Dataset)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.example_count == 1396
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_dataset_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_create_dataset"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_create_dataset"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.CreateDatasetRequest.pb(service.CreateDatasetRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = gca_dataset.Dataset.to_json(gca_dataset.Dataset())
+        req.return_value.content = return_value
+
+        request = service.CreateDatasetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gca_dataset.Dataset()
+
+        client.create_dataset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_dataset_rest_bad_request(request_type=service.GetDatasetRequest):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_dataset(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetDatasetRequest,
+        dict,
+    ],
+)
+def test_get_dataset_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dataset.Dataset(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            example_count=1396,
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = dataset.Dataset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_dataset(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, dataset.Dataset)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.example_count == 1396
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_dataset_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_get_dataset"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_get_dataset"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetDatasetRequest.pb(service.GetDatasetRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = dataset.Dataset.to_json(dataset.Dataset())
+        req.return_value.content = return_value
+
+        request = service.GetDatasetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = dataset.Dataset()
+
+        client.get_dataset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_datasets_rest_bad_request(request_type=service.ListDatasetsRequest):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_datasets(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListDatasetsRequest,
+        dict,
+    ],
+)
+def test_list_datasets_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListDatasetsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = service.ListDatasetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_datasets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDatasetsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_datasets_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_list_datasets"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_list_datasets"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListDatasetsRequest.pb(service.ListDatasetsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = service.ListDatasetsResponse.to_json(
+            service.ListDatasetsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = service.ListDatasetsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListDatasetsResponse()
+
+        client.list_datasets(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_dataset_rest_bad_request(request_type=service.UpdateDatasetRequest):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "dataset": {"name": "projects/sample1/locations/sample2/datasets/sample3"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_dataset(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateDatasetRequest,
+        dict,
+    ],
+)
+def test_update_dataset_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "dataset": {"name": "projects/sample1/locations/sample2/datasets/sample3"}
+    }
+    request_init["dataset"] = {
+        "translation_dataset_metadata": {
+            "source_language_code": "source_language_code_value",
+            "target_language_code": "target_language_code_value",
+        },
+        "image_classification_dataset_metadata": {"classification_type": 1},
+        "text_classification_dataset_metadata": {"classification_type": 1},
+        "image_object_detection_dataset_metadata": {},
+        "video_classification_dataset_metadata": {},
+        "video_object_tracking_dataset_metadata": {},
+        "text_extraction_dataset_metadata": {},
+        "text_sentiment_dataset_metadata": {"sentiment_max": 1404},
+        "tables_dataset_metadata": {
+            "primary_table_spec_id": "primary_table_spec_id_value",
+            "target_column_spec_id": "target_column_spec_id_value",
+            "weight_column_spec_id": "weight_column_spec_id_value",
+            "ml_use_column_spec_id": "ml_use_column_spec_id_value",
+            "target_column_correlations": {},
+            "stats_update_time": {"seconds": 751, "nanos": 543},
+        },
+        "name": "projects/sample1/locations/sample2/datasets/sample3",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "example_count": 1396,
+        "create_time": {},
+        "etag": "etag_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.UpdateDatasetRequest.meta.fields["dataset"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["dataset"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["dataset"][field])):
+                    del request_init["dataset"][field][i][subfield]
+            else:
+                del request_init["dataset"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gca_dataset.Dataset(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            example_count=1396,
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gca_dataset.Dataset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_dataset(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gca_dataset.Dataset)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.example_count == 1396
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_dataset_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_update_dataset"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_update_dataset"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.UpdateDatasetRequest.pb(service.UpdateDatasetRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = gca_dataset.Dataset.to_json(gca_dataset.Dataset())
+        req.return_value.content = return_value
+
+        request = service.UpdateDatasetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gca_dataset.Dataset()
+
+        client.update_dataset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_dataset_rest_bad_request(request_type=service.DeleteDatasetRequest):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_dataset(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteDatasetRequest,
+        dict,
+    ],
+)
+def test_delete_dataset_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_dataset(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_dataset_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_delete_dataset"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_delete_dataset"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.DeleteDatasetRequest.pb(service.DeleteDatasetRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = service.DeleteDatasetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_dataset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_import_data_rest_bad_request(request_type=service.ImportDataRequest):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.import_data(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ImportDataRequest,
+        dict,
+    ],
+)
+def test_import_data_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.import_data(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_import_data_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_import_data"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_import_data"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ImportDataRequest.pb(service.ImportDataRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = service.ImportDataRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.import_data(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_export_data_rest_bad_request(request_type=service.ExportDataRequest):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.export_data(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ExportDataRequest,
+        dict,
+    ],
+)
+def test_export_data_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.export_data(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_export_data_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_export_data"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_export_data"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ExportDataRequest.pb(service.ExportDataRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = service.ExportDataRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.export_data(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_annotation_spec_rest_bad_request(
+    request_type=service.GetAnnotationSpecRequest,
+):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/datasets/sample3/annotationSpecs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_annotation_spec(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetAnnotationSpecRequest,
+        dict,
+    ],
+)
+def test_get_annotation_spec_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/datasets/sample3/annotationSpecs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = annotation_spec.AnnotationSpec(
+            name="name_value",
+            display_name="display_name_value",
+            example_count=1396,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = annotation_spec.AnnotationSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_annotation_spec(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, annotation_spec.AnnotationSpec)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.example_count == 1396
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_annotation_spec_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_get_annotation_spec"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_get_annotation_spec"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetAnnotationSpecRequest.pb(
+            service.GetAnnotationSpecRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = annotation_spec.AnnotationSpec.to_json(
+            annotation_spec.AnnotationSpec()
+        )
+        req.return_value.content = return_value
+
+        request = service.GetAnnotationSpecRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = annotation_spec.AnnotationSpec()
+
+        client.get_annotation_spec(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_table_spec_rest_bad_request(request_type=service.GetTableSpecRequest):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_table_spec(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetTableSpecRequest,
+        dict,
+    ],
+)
+def test_get_table_spec_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = table_spec.TableSpec(
+            name="name_value",
+            time_column_spec_id="time_column_spec_id_value",
+            row_count=992,
+            valid_row_count=1615,
+            column_count=1302,
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = table_spec.TableSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_table_spec(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, table_spec.TableSpec)
+    assert response.name == "name_value"
+    assert response.time_column_spec_id == "time_column_spec_id_value"
+    assert response.row_count == 992
+    assert response.valid_row_count == 1615
+    assert response.column_count == 1302
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_table_spec_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_get_table_spec"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_get_table_spec"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetTableSpecRequest.pb(service.GetTableSpecRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = table_spec.TableSpec.to_json(table_spec.TableSpec())
+        req.return_value.content = return_value
+
+        request = service.GetTableSpecRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = table_spec.TableSpec()
+
+        client.get_table_spec(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_table_specs_rest_bad_request(request_type=service.ListTableSpecsRequest):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_table_specs(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListTableSpecsRequest,
+        dict,
+    ],
+)
+def test_list_table_specs_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListTableSpecsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = service.ListTableSpecsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_table_specs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListTableSpecsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_table_specs_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_list_table_specs"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_list_table_specs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListTableSpecsRequest.pb(service.ListTableSpecsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = service.ListTableSpecsResponse.to_json(
+            service.ListTableSpecsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = service.ListTableSpecsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListTableSpecsResponse()
+
+        client.list_table_specs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_table_spec_rest_bad_request(
+    request_type=service.UpdateTableSpecRequest,
+):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "table_spec": {
+            "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_table_spec(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateTableSpecRequest,
+        dict,
+    ],
+)
+def test_update_table_spec_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "table_spec": {
+            "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4"
+        }
+    }
+    request_init["table_spec"] = {
+        "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4",
+        "time_column_spec_id": "time_column_spec_id_value",
+        "row_count": 992,
+        "valid_row_count": 1615,
+        "column_count": 1302,
+        "input_configs": [
+            {
+                "gcs_source": {
+                    "input_uris": ["input_uris_value1", "input_uris_value2"]
+                },
+                "bigquery_source": {"input_uri": "input_uri_value"},
+                "params": {},
+            }
+        ],
+        "etag": "etag_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.UpdateTableSpecRequest.meta.fields["table_spec"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["table_spec"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["table_spec"][field])):
+                    del request_init["table_spec"][field][i][subfield]
+            else:
+                del request_init["table_spec"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gca_table_spec.TableSpec(
+            name="name_value",
+            time_column_spec_id="time_column_spec_id_value",
+            row_count=992,
+            valid_row_count=1615,
+            column_count=1302,
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gca_table_spec.TableSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_table_spec(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gca_table_spec.TableSpec)
+    assert response.name == "name_value"
+    assert response.time_column_spec_id == "time_column_spec_id_value"
+    assert response.row_count == 992
+    assert response.valid_row_count == 1615
+    assert response.column_count == 1302
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_table_spec_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_update_table_spec"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_update_table_spec"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.UpdateTableSpecRequest.pb(service.UpdateTableSpecRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = gca_table_spec.TableSpec.to_json(gca_table_spec.TableSpec())
+        req.return_value.content = return_value
+
+        request = service.UpdateTableSpecRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gca_table_spec.TableSpec()
+
+        client.update_table_spec(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_column_spec_rest_bad_request(request_type=service.GetColumnSpecRequest):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4/columnSpecs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_column_spec(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetColumnSpecRequest,
+        dict,
+    ],
+)
+def test_get_column_spec_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4/columnSpecs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = column_spec.ColumnSpec(
+            name="name_value",
+            display_name="display_name_value",
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = column_spec.ColumnSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_column_spec(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, column_spec.ColumnSpec)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_column_spec_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_get_column_spec"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_get_column_spec"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetColumnSpecRequest.pb(service.GetColumnSpecRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = column_spec.ColumnSpec.to_json(column_spec.ColumnSpec())
+        req.return_value.content = return_value
+
+        request = service.GetColumnSpecRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = column_spec.ColumnSpec()
+
+        client.get_column_spec(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_column_specs_rest_bad_request(
+    request_type=service.ListColumnSpecsRequest,
+):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_column_specs(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListColumnSpecsRequest,
+        dict,
+    ],
+)
+def test_list_column_specs_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListColumnSpecsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = service.ListColumnSpecsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_column_specs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListColumnSpecsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_column_specs_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_list_column_specs"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_list_column_specs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListColumnSpecsRequest.pb(service.ListColumnSpecsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = service.ListColumnSpecsResponse.to_json(
+            service.ListColumnSpecsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = service.ListColumnSpecsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListColumnSpecsResponse()
+
+        client.list_column_specs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_column_spec_rest_bad_request(
+    request_type=service.UpdateColumnSpecRequest,
+):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "column_spec": {
+            "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4/columnSpecs/sample5"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_column_spec(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateColumnSpecRequest,
+        dict,
+    ],
+)
+def test_update_column_spec_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "column_spec": {
+            "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4/columnSpecs/sample5"
+        }
+    }
+    request_init["column_spec"] = {
+        "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4/columnSpecs/sample5",
+        "data_type": {
+            "list_element_type": {},
+            "struct_type": {"fields": {}},
+            "time_format": "time_format_value",
+            "type_code": 3,
+            "nullable": True,
+        },
+        "display_name": "display_name_value",
+        "data_stats": {
+            "float64_stats": {
+                "mean": 0.417,
+                "standard_deviation": 0.1907,
+                "quantiles": [0.983, 0.984],
+                "histogram_buckets": [{"min_": 0.419, "max_": 0.421, "count": 553}],
+            },
+            "string_stats": {
+                "top_unigram_stats": [{"value": "value_value", "count": 553}]
+            },
+            "timestamp_stats": {"granular_stats": {}},
+            "array_stats": {"member_stats": {}},
+            "struct_stats": {"field_stats": {}},
+            "category_stats": {
+                "top_category_stats": [{"value": "value_value", "count": 553}]
+            },
+            "distinct_value_count": 2150,
+            "null_value_count": 1727,
+            "valid_value_count": 1812,
+        },
+        "top_correlated_columns": [
+            {
+                "column_spec_id": "column_spec_id_value",
+                "correlation_stats": {"cramers_v": 0.962},
+            }
+        ],
+        "etag": "etag_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.UpdateColumnSpecRequest.meta.fields["column_spec"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["column_spec"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["column_spec"][field])):
+                    del request_init["column_spec"][field][i][subfield]
+            else:
+                del request_init["column_spec"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gca_column_spec.ColumnSpec(
+            name="name_value",
+            display_name="display_name_value",
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gca_column_spec.ColumnSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_column_spec(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gca_column_spec.ColumnSpec)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_column_spec_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_update_column_spec"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_update_column_spec"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.UpdateColumnSpecRequest.pb(
+            service.UpdateColumnSpecRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = gca_column_spec.ColumnSpec.to_json(gca_column_spec.ColumnSpec())
+        req.return_value.content = return_value
+
+        request = service.UpdateColumnSpecRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gca_column_spec.ColumnSpec()
+
+        client.update_column_spec(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_model_rest_bad_request(request_type=service.CreateModelRequest):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_model(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateModelRequest,
+        dict,
+    ],
+)
+def test_create_model_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["model"] = {
+        "translation_model_metadata": {
+            "base_model": "base_model_value",
+            "source_language_code": "source_language_code_value",
+            "target_language_code": "target_language_code_value",
+        },
+        "image_classification_model_metadata": {
+            "base_model_id": "base_model_id_value",
+            "train_budget": 1272,
+            "train_cost": 1078,
+            "stop_reason": "stop_reason_value",
+            "model_type": "model_type_value",
+            "node_qps": 0.857,
+            "node_count": 1070,
+        },
+        "text_classification_model_metadata": {"classification_type": 1},
+        "image_object_detection_model_metadata": {
+            "model_type": "model_type_value",
+            "node_count": 1070,
+            "node_qps": 0.857,
+            "stop_reason": "stop_reason_value",
+            "train_budget_milli_node_hours": 3075,
+            "train_cost_milli_node_hours": 2881,
+        },
+        "video_classification_model_metadata": {},
+        "video_object_tracking_model_metadata": {},
+        "text_extraction_model_metadata": {"model_hint": "model_hint_value"},
+        "tables_model_metadata": {
+            "optimization_objective_recall_value": 0.37270000000000003,
+            "optimization_objective_precision_value": 0.4072,
+            "target_column_spec": {
+                "name": "name_value",
+                "data_type": {
+                    "list_element_type": {},
+                    "struct_type": {"fields": {}},
+                    "time_format": "time_format_value",
+                    "type_code": 3,
+                    "nullable": True,
+                },
+                "display_name": "display_name_value",
+                "data_stats": {
+                    "float64_stats": {
+                        "mean": 0.417,
+                        "standard_deviation": 0.1907,
+                        "quantiles": [0.983, 0.984],
+                        "histogram_buckets": [
+                            {"min_": 0.419, "max_": 0.421, "count": 553}
+                        ],
+                    },
+                    "string_stats": {
+                        "top_unigram_stats": [{"value": "value_value", "count": 553}]
+                    },
+                    "timestamp_stats": {"granular_stats": {}},
+                    "array_stats": {"member_stats": {}},
+                    "struct_stats": {"field_stats": {}},
+                    "category_stats": {
+                        "top_category_stats": [{"value": "value_value", "count": 553}]
+                    },
+                    "distinct_value_count": 2150,
+                    "null_value_count": 1727,
+                    "valid_value_count": 1812,
+                },
+                "top_correlated_columns": [
+                    {
+                        "column_spec_id": "column_spec_id_value",
+                        "correlation_stats": {"cramers_v": 0.962},
+                    }
+                ],
+                "etag": "etag_value",
+            },
+            "input_feature_column_specs": {},
+            "optimization_objective": "optimization_objective_value",
+            "tables_model_column_info": [
+                {
+                    "column_spec_name": "column_spec_name_value",
+                    "column_display_name": "column_display_name_value",
+                    "feature_importance": 0.1917,
+                }
+            ],
+            "train_budget_milli_node_hours": 3075,
+            "train_cost_milli_node_hours": 2881,
+            "disable_early_stopping": True,
+        },
+        "text_sentiment_model_metadata": {},
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "dataset_id": "dataset_id_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "deployment_state": 1,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.CreateModelRequest.meta.fields["model"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["model"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["model"][field])):
+                    del request_init["model"][field][i][subfield]
+            else:
+                del request_init["model"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_model(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_model_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_create_model"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_create_model"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.CreateModelRequest.pb(service.CreateModelRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = service.CreateModelRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_model(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_model_rest_bad_request(request_type=service.GetModelRequest):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_model(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetModelRequest,
+        dict,
+    ],
+)
+def test_get_model_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = model.Model(
+            name="name_value",
+            display_name="display_name_value",
+            dataset_id="dataset_id_value",
+            deployment_state=model.Model.DeploymentState.DEPLOYED,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = model.Model.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_model(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, model.Model)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.dataset_id == "dataset_id_value"
+    assert response.deployment_state == model.Model.DeploymentState.DEPLOYED
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_model_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_get_model"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_get_model"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetModelRequest.pb(service.GetModelRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = model.Model.to_json(model.Model())
+        req.return_value.content = return_value
+
+        request = service.GetModelRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = model.Model()
+
+        client.get_model(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_models_rest_bad_request(request_type=service.ListModelsRequest):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_models(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListModelsRequest,
+        dict,
+    ],
+)
+def test_list_models_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListModelsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = service.ListModelsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_models(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListModelsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_models_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_list_models"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_list_models"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListModelsRequest.pb(service.ListModelsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = service.ListModelsResponse.to_json(service.ListModelsResponse())
+        req.return_value.content = return_value
+
+        request = service.ListModelsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListModelsResponse()
+
+        client.list_models(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_model_rest_bad_request(request_type=service.DeleteModelRequest):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_model(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteModelRequest,
+        dict,
+    ],
+)
+def test_delete_model_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_model(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_model_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_delete_model"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_delete_model"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.DeleteModelRequest.pb(service.DeleteModelRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = service.DeleteModelRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_model(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_deploy_model_rest_bad_request(request_type=service.DeployModelRequest):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.deploy_model(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeployModelRequest,
+        dict,
+    ],
+)
+def test_deploy_model_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.deploy_model(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_deploy_model_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_deploy_model"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_deploy_model"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.DeployModelRequest.pb(service.DeployModelRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = service.DeployModelRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.deploy_model(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_undeploy_model_rest_bad_request(request_type=service.UndeployModelRequest):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.undeploy_model(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UndeployModelRequest,
+        dict,
+    ],
+)
+def test_undeploy_model_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.undeploy_model(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_undeploy_model_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_undeploy_model"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_undeploy_model"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.UndeployModelRequest.pb(service.UndeployModelRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = service.UndeployModelRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.undeploy_model(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_export_model_rest_bad_request(request_type=service.ExportModelRequest):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.export_model(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ExportModelRequest,
+        dict,
+    ],
+)
+def test_export_model_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.export_model(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_export_model_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_export_model"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_export_model"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ExportModelRequest.pb(service.ExportModelRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = service.ExportModelRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.export_model(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_export_evaluated_examples_rest_bad_request(
+    request_type=service.ExportEvaluatedExamplesRequest,
+):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.export_evaluated_examples(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ExportEvaluatedExamplesRequest,
+        dict,
+    ],
+)
+def test_export_evaluated_examples_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.export_evaluated_examples(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_export_evaluated_examples_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_export_evaluated_examples"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_export_evaluated_examples"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ExportEvaluatedExamplesRequest.pb(
+            service.ExportEvaluatedExamplesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = service.ExportEvaluatedExamplesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.export_evaluated_examples(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_model_evaluation_rest_bad_request(
+    request_type=service.GetModelEvaluationRequest,
+):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/models/sample3/modelEvaluations/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_model_evaluation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetModelEvaluationRequest,
+        dict,
+    ],
+)
+def test_get_model_evaluation_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/models/sample3/modelEvaluations/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = model_evaluation.ModelEvaluation(
+            name="name_value",
+            annotation_spec_id="annotation_spec_id_value",
+            display_name="display_name_value",
+            evaluated_example_count=2446,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = model_evaluation.ModelEvaluation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_model_evaluation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, model_evaluation.ModelEvaluation)
+    assert response.name == "name_value"
+    assert response.annotation_spec_id == "annotation_spec_id_value"
+    assert response.display_name == "display_name_value"
+    assert response.evaluated_example_count == 2446
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_model_evaluation_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_get_model_evaluation"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_get_model_evaluation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetModelEvaluationRequest.pb(
+            service.GetModelEvaluationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = model_evaluation.ModelEvaluation.to_json(
+            model_evaluation.ModelEvaluation()
+        )
+        req.return_value.content = return_value
+
+        request = service.GetModelEvaluationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = model_evaluation.ModelEvaluation()
+
+        client.get_model_evaluation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_model_evaluations_rest_bad_request(
+    request_type=service.ListModelEvaluationsRequest,
+):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/models/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_model_evaluations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListModelEvaluationsRequest,
+        dict,
+    ],
+)
+def test_list_model_evaluations_rest_call_success(request_type):
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/models/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListModelEvaluationsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = service.ListModelEvaluationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_model_evaluations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListModelEvaluationsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_model_evaluations_rest_interceptors(null_interceptor):
+    transport = transports.AutoMlRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AutoMlRestInterceptor(),
+    )
+    client = AutoMlClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AutoMlRestInterceptor, "post_list_model_evaluations"
+    ) as post, mock.patch.object(
+        transports.AutoMlRestInterceptor, "pre_list_model_evaluations"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListModelEvaluationsRequest.pb(
+            service.ListModelEvaluationsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = service.ListModelEvaluationsResponse.to_json(
+            service.ListModelEvaluationsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = service.ListModelEvaluationsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListModelEvaluationsResponse()
+
+        client.list_model_evaluations(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_initialize_client_w_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_dataset_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
+        client.create_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_dataset_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
+        client.get_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_datasets_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
+        client.list_datasets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListDatasetsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_dataset_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_dataset), "__call__") as call:
+        client.update_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_dataset_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
+        client.delete_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_import_data_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.import_data), "__call__") as call:
+        client.import_data(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ImportDataRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_data_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.export_data), "__call__") as call:
+        client.export_data(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ExportDataRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_annotation_spec_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_annotation_spec), "__call__"
+    ) as call:
+        client.get_annotation_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetAnnotationSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_table_spec_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_table_spec), "__call__") as call:
+        client.get_table_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetTableSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_table_specs_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_table_specs), "__call__") as call:
+        client.list_table_specs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListTableSpecsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_table_spec_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_table_spec), "__call__"
+    ) as call:
+        client.update_table_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateTableSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_column_spec_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_column_spec), "__call__") as call:
+        client.get_column_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetColumnSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_column_specs_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_column_specs), "__call__"
+    ) as call:
+        client.list_column_specs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListColumnSpecsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_column_spec_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_column_spec), "__call__"
+    ) as call:
+        client.update_column_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateColumnSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_model_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_model), "__call__") as call:
+        client.create_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_model_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_model), "__call__") as call:
+        client.get_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_models_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_models), "__call__") as call:
+        client.list_models(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListModelsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_model_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_model), "__call__") as call:
+        client.delete_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_deploy_model_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.deploy_model), "__call__") as call:
+        client.deploy_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeployModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_undeploy_model_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.undeploy_model), "__call__") as call:
+        client.undeploy_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UndeployModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_model_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.export_model), "__call__") as call:
+        client.export_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ExportModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_evaluated_examples_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_evaluated_examples), "__call__"
+    ) as call:
+        client.export_evaluated_examples(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ExportEvaluatedExamplesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_model_evaluation_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_model_evaluation), "__call__"
+    ) as call:
+        client.get_model_evaluation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetModelEvaluationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_model_evaluations_empty_call_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_model_evaluations), "__call__"
+    ) as call:
+        client.list_model_evaluations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListModelEvaluationsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_auto_ml_rest_lro_client():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 def test_transport_grpc_default():
@@ -20025,23 +20548,6 @@ def test_auto_ml_http_transport_client_cert_source_for_mtls():
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_auto_ml_rest_lro_client():
-    client = AutoMlClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -20636,36 +21142,41 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = AutoMlAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = AutoMlAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = AutoMlClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = AutoMlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

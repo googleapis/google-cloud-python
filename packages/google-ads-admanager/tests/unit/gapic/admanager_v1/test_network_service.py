@@ -22,19 +22,11 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account
+from google.api_core import api_core_version
 from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
@@ -44,6 +36,23 @@ import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import client_options
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+import google.auth
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account
+
 from google.ads.admanager_v1.services.network_service import (
     NetworkServiceClient,
     transports,
@@ -51,8 +60,22 @@ from google.ads.admanager_v1.services.network_service import (
 from google.ads.admanager_v1.types import network_messages, network_service
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -951,64 +974,6 @@ def test_network_service_client_client_options_credentials_file(
         )
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        network_service.GetNetworkRequest,
-        dict,
-    ],
-)
-def test_get_network_rest(request_type):
-    client = NetworkServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "networks/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = network_messages.Network(
-            name="name_value",
-            display_name="display_name_value",
-            network_code="network_code_value",
-            property_code="property_code_value",
-            time_zone="time_zone_value",
-            currency_code="currency_code_value",
-            secondary_currency_codes=["secondary_currency_codes_value"],
-            effective_root_ad_unit="effective_root_ad_unit_value",
-            test_network=True,
-            network_id=1078,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = network_messages.Network.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_network(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, network_messages.Network)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.network_code == "network_code_value"
-    assert response.property_code == "property_code_value"
-    assert response.time_zone == "time_zone_value"
-    assert response.currency_code == "currency_code_value"
-    assert response.secondary_currency_codes == ["secondary_currency_codes_value"]
-    assert response.effective_root_ad_unit == "effective_root_ad_unit_value"
-    assert response.test_network is True
-    assert response.network_id == 1078
-
-
 def test_get_network_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -1128,87 +1093,6 @@ def test_get_network_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_network_rest_interceptors(null_interceptor):
-    transport = transports.NetworkServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.NetworkServiceRestInterceptor(),
-    )
-    client = NetworkServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkServiceRestInterceptor, "post_get_network"
-    ) as post, mock.patch.object(
-        transports.NetworkServiceRestInterceptor, "pre_get_network"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = network_service.GetNetworkRequest.pb(
-            network_service.GetNetworkRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = network_messages.Network.to_json(
-            network_messages.Network()
-        )
-
-        request = network_service.GetNetworkRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = network_messages.Network()
-
-        client.get_network(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_network_rest_bad_request(
-    transport: str = "rest", request_type=network_service.GetNetworkRequest
-):
-    client = NetworkServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "networks/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_network(request)
-
-
 def test_get_network_rest_flattened():
     client = NetworkServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1264,49 +1148,6 @@ def test_get_network_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_get_network_rest_error():
-    client = NetworkServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        network_service.ListNetworksRequest,
-        dict,
-    ],
-)
-def test_list_networks_rest(request_type):
-    client = NetworkServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = network_service.ListNetworksResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = network_service.ListNetworksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_networks(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, network_service.ListNetworksResponse)
-
-
 def test_list_networks_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -1341,93 +1182,6 @@ def test_list_networks_rest_use_cached_wrapped_rpc():
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_networks_rest_interceptors(null_interceptor):
-    transport = transports.NetworkServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.NetworkServiceRestInterceptor(),
-    )
-    client = NetworkServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.NetworkServiceRestInterceptor, "post_list_networks"
-    ) as post, mock.patch.object(
-        transports.NetworkServiceRestInterceptor, "pre_list_networks"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = network_service.ListNetworksRequest.pb(
-            network_service.ListNetworksRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = network_service.ListNetworksResponse.to_json(
-            network_service.ListNetworksResponse()
-        )
-
-        request = network_service.ListNetworksRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = network_service.ListNetworksResponse()
-
-        client.list_networks(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_networks_rest_bad_request(
-    transport: str = "rest", request_type=network_service.ListNetworksRequest
-):
-    client = NetworkServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_networks(request)
-
-
-def test_list_networks_rest_error():
-    client = NetworkServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
 
 
 def test_credentials_transport_error():
@@ -1505,17 +1259,371 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_rest():
+    transport = NetworkServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_get_network_rest_bad_request(request_type=network_service.GetNetworkRequest):
+    client = NetworkServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_network(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "rest",
+        network_service.GetNetworkRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = NetworkServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_get_network_rest_call_success(request_type):
+    client = NetworkServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = network_messages.Network(
+            name="name_value",
+            display_name="display_name_value",
+            network_code="network_code_value",
+            property_code="property_code_value",
+            time_zone="time_zone_value",
+            currency_code="currency_code_value",
+            secondary_currency_codes=["secondary_currency_codes_value"],
+            effective_root_ad_unit="effective_root_ad_unit_value",
+            test_network=True,
+            network_id=1078,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = network_messages.Network.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_network(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, network_messages.Network)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.network_code == "network_code_value"
+    assert response.property_code == "property_code_value"
+    assert response.time_zone == "time_zone_value"
+    assert response.currency_code == "currency_code_value"
+    assert response.secondary_currency_codes == ["secondary_currency_codes_value"]
+    assert response.effective_root_ad_unit == "effective_root_ad_unit_value"
+    assert response.test_network is True
+    assert response.network_id == 1078
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_network_rest_interceptors(null_interceptor):
+    transport = transports.NetworkServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.NetworkServiceRestInterceptor(),
+    )
+    client = NetworkServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.NetworkServiceRestInterceptor, "post_get_network"
+    ) as post, mock.patch.object(
+        transports.NetworkServiceRestInterceptor, "pre_get_network"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = network_service.GetNetworkRequest.pb(
+            network_service.GetNetworkRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = network_messages.Network.to_json(network_messages.Network())
+        req.return_value.content = return_value
+
+        request = network_service.GetNetworkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = network_messages.Network()
+
+        client.get_network(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_networks_rest_bad_request(
+    request_type=network_service.ListNetworksRequest,
+):
+    client = NetworkServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_networks(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        network_service.ListNetworksRequest,
+        dict,
+    ],
+)
+def test_list_networks_rest_call_success(request_type):
+    client = NetworkServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = network_service.ListNetworksResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = network_service.ListNetworksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_networks(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, network_service.ListNetworksResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_networks_rest_interceptors(null_interceptor):
+    transport = transports.NetworkServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.NetworkServiceRestInterceptor(),
+    )
+    client = NetworkServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.NetworkServiceRestInterceptor, "post_list_networks"
+    ) as post, mock.patch.object(
+        transports.NetworkServiceRestInterceptor, "pre_list_networks"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = network_service.ListNetworksRequest.pb(
+            network_service.ListNetworksRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = network_service.ListNetworksResponse.to_json(
+            network_service.ListNetworksResponse()
+        )
+        req.return_value.content = return_value
+
+        request = network_service.ListNetworksRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = network_service.ListNetworksResponse()
+
+        client.list_networks(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = NetworkServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "networks/sample1/operations/reports/runs/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = NetworkServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "networks/sample1/operations/reports/runs/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_initialize_client_w_rest():
+    client = NetworkServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_network_empty_call_rest():
+    client = NetworkServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_network), "__call__") as call:
+        client.get_network(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = network_service.GetNetworkRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_networks_empty_call_rest():
+    client = NetworkServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_networks), "__call__") as call:
+        client.list_networks(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = network_service.ListNetworksRequest()
+
+        assert args[0] == request_msg
 
 
 def test_network_service_base_transport_error():
@@ -1851,79 +1959,16 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-def test_get_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
-):
+def test_transport_close_rest():
     client = NetworkServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "networks/sample1/operations/reports/runs/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = NetworkServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "networks/sample1/operations/reports/runs/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-    }
-
-    for transport, close_name in transports.items():
-        client = NetworkServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

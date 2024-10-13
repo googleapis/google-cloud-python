@@ -16,32 +16,28 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.container_v1.types import cluster_service
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseClusterManagerRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.protobuf import empty_pb2  # type: ignore
-
-from google.cloud.container_v1.types import cluster_service
-
-from .base import ClusterManagerTransport
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -1111,8 +1107,8 @@ class ClusterManagerRestStub:
     _interceptor: ClusterManagerRestInterceptor
 
 
-class ClusterManagerRestTransport(ClusterManagerTransport):
-    """REST backend transport for ClusterManager.
+class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
+    """REST backend synchronous transport for ClusterManager.
 
     Google Kubernetes Engine Cluster Manager v1
 
@@ -1121,7 +1117,6 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -1175,21 +1170,12 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -1200,9 +1186,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
         self._interceptor = interceptor or ClusterManagerRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CancelOperation(ClusterManagerRestStub):
+    class _CancelOperation(
+        _BaseClusterManagerRestTransport._BaseCancelOperation, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("CancelOperation")
+            return hash("ClusterManagerRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1225,51 +1236,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/operations/{operation_id}:cancel",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseCancelOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            pb_request = cluster_service.CancelOperationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseClusterManagerRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseClusterManagerRestTransport._BaseCancelOperation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1277,9 +1271,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _CheckAutopilotCompatibility(ClusterManagerRestStub):
+    class _CheckAutopilotCompatibility(
+        _BaseClusterManagerRestTransport._BaseCheckAutopilotCompatibility,
+        ClusterManagerRestStub,
+    ):
         def __hash__(self):
-            return hash("CheckAutopilotCompatibility")
+            return hash("ClusterManagerRestTransport.CheckAutopilotCompatibility")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1310,39 +1329,31 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}:checkAutopilotCompatibility",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseCheckAutopilotCompatibility._get_http_options()
+            )
             request, metadata = self._interceptor.pre_check_autopilot_compatibility(
                 request, metadata
             )
-            pb_request = cluster_service.CheckAutopilotCompatibilityRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseCheckAutopilotCompatibility._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseClusterManagerRestTransport._BaseCheckAutopilotCompatibility._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ClusterManagerRestTransport._CheckAutopilotCompatibility._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1358,9 +1369,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_check_autopilot_compatibility(resp)
             return resp
 
-    class _CompleteIPRotation(ClusterManagerRestStub):
+    class _CompleteIPRotation(
+        _BaseClusterManagerRestTransport._BaseCompleteIPRotation, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("CompleteIPRotation")
+            return hash("ClusterManagerRestTransport.CompleteIPRotation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1391,51 +1427,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}:completeIpRotation",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:completeIpRotation",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseCompleteIPRotation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_complete_ip_rotation(
                 request, metadata
             )
-            pb_request = cluster_service.CompleteIPRotationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseClusterManagerRestTransport._BaseCompleteIPRotation._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseClusterManagerRestTransport._BaseCompleteIPRotation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseCompleteIPRotation._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._CompleteIPRotation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1451,9 +1470,35 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_complete_ip_rotation(resp)
             return resp
 
-    class _CompleteNodePoolUpgrade(ClusterManagerRestStub):
+    class _CompleteNodePoolUpgrade(
+        _BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade,
+        ClusterManagerRestStub,
+    ):
         def __hash__(self):
-            return hash("CompleteNodePoolUpgrade")
+            return hash("ClusterManagerRestTransport.CompleteNodePoolUpgrade")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1478,46 +1523,36 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:completeUpgrade",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade._get_http_options()
+            )
             request, metadata = self._interceptor.pre_complete_node_pool_upgrade(
                 request, metadata
             )
-            pb_request = cluster_service.CompleteNodePoolUpgradeRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseCompleteNodePoolUpgrade._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                ClusterManagerRestTransport._CompleteNodePoolUpgrade._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1525,19 +1560,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _CreateCluster(ClusterManagerRestStub):
+    class _CreateCluster(
+        _BaseClusterManagerRestTransport._BaseCreateCluster, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("CreateCluster")
+            return hash("ClusterManagerRestTransport.CreateCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1568,50 +1618,32 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/clusters",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_cluster(request, metadata)
-            pb_request = cluster_service.CreateClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseCreateCluster._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_cluster(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseCreateCluster._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseClusterManagerRestTransport._BaseCreateCluster._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseCreateCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._CreateCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1627,19 +1659,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_create_cluster(resp)
             return resp
 
-    class _CreateNodePool(ClusterManagerRestStub):
+    class _CreateNodePool(
+        _BaseClusterManagerRestTransport._BaseCreateNodePool, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("CreateNodePool")
+            return hash("ClusterManagerRestTransport.CreateNodePool")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1670,52 +1717,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/clusters/*}/nodePools",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseCreateNodePool._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_node_pool(
                 request, metadata
             )
-            pb_request = cluster_service.CreateNodePoolRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseClusterManagerRestTransport._BaseCreateNodePool._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseClusterManagerRestTransport._BaseCreateNodePool._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseCreateNodePool._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._CreateNodePool._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1731,9 +1760,33 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_create_node_pool(resp)
             return resp
 
-    class _DeleteCluster(ClusterManagerRestStub):
+    class _DeleteCluster(
+        _BaseClusterManagerRestTransport._BaseDeleteCluster, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteCluster")
+            return hash("ClusterManagerRestTransport.DeleteCluster")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1764,41 +1817,27 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseDeleteCluster._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_cluster(request, metadata)
-            pb_request = cluster_service.DeleteClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseDeleteCluster._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseClusterManagerRestTransport._BaseDeleteCluster._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ClusterManagerRestTransport._DeleteCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1814,9 +1853,33 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_delete_cluster(resp)
             return resp
 
-    class _DeleteNodePool(ClusterManagerRestStub):
+    class _DeleteNodePool(
+        _BaseClusterManagerRestTransport._BaseDeleteNodePool, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteNodePool")
+            return hash("ClusterManagerRestTransport.DeleteNodePool")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1847,43 +1910,29 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseDeleteNodePool._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_node_pool(
                 request, metadata
             )
-            pb_request = cluster_service.DeleteNodePoolRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseDeleteNodePool._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseClusterManagerRestTransport._BaseDeleteNodePool._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ClusterManagerRestTransport._DeleteNodePool._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1899,9 +1948,33 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_delete_node_pool(resp)
             return resp
 
-    class _GetCluster(ClusterManagerRestStub):
+    class _GetCluster(
+        _BaseClusterManagerRestTransport._BaseGetCluster, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("GetCluster")
+            return hash("ClusterManagerRestTransport.GetCluster")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1928,41 +2001,29 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
                     A Google Kubernetes Engine cluster.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseGetCluster._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_cluster(request, metadata)
-            pb_request = cluster_service.GetClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseClusterManagerRestTransport._BaseGetCluster._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseClusterManagerRestTransport._BaseGetCluster._get_query_params_json(
+                    transcoded_request
                 )
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ClusterManagerRestTransport._GetCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1978,9 +2039,33 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_get_cluster(resp)
             return resp
 
-    class _GetJSONWebKeys(ClusterManagerRestStub):
+    class _GetJSONWebKeys(
+        _BaseClusterManagerRestTransport._BaseGetJSONWebKeys, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("GetJSONWebKeys")
+            return hash("ClusterManagerRestTransport.GetJSONWebKeys")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2013,39 +2098,29 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/clusters/*}/jwks",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseGetJSONWebKeys._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_json_web_keys(
                 request, metadata
             )
-            pb_request = cluster_service.GetJSONWebKeysRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseGetJSONWebKeys._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseClusterManagerRestTransport._BaseGetJSONWebKeys._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ClusterManagerRestTransport._GetJSONWebKeys._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2061,9 +2136,33 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_get_json_web_keys(resp)
             return resp
 
-    class _GetNodePool(ClusterManagerRestStub):
+    class _GetNodePool(
+        _BaseClusterManagerRestTransport._BaseGetNodePool, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("GetNodePool")
+            return hash("ClusterManagerRestTransport.GetNodePool")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2100,41 +2199,27 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseGetNodePool._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_node_pool(request, metadata)
-            pb_request = cluster_service.GetNodePoolRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseGetNodePool._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseClusterManagerRestTransport._BaseGetNodePool._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ClusterManagerRestTransport._GetNodePool._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2150,9 +2235,33 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_get_node_pool(resp)
             return resp
 
-    class _GetOperation(ClusterManagerRestStub):
+    class _GetOperation(
+        _BaseClusterManagerRestTransport._BaseGetOperation, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("GetOperation")
+            return hash("ClusterManagerRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2183,41 +2292,27 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/operations/{operation_id}",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseGetOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            pb_request = cluster_service.GetOperationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseClusterManagerRestTransport._BaseGetOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ClusterManagerRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2233,9 +2328,33 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
-    class _GetServerConfig(ClusterManagerRestStub):
+    class _GetServerConfig(
+        _BaseClusterManagerRestTransport._BaseGetServerConfig, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("GetServerConfig")
+            return hash("ClusterManagerRestTransport.GetServerConfig")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2264,43 +2383,29 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}/serverConfig",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/serverconfig",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseGetServerConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_server_config(
                 request, metadata
             )
-            pb_request = cluster_service.GetServerConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseGetServerConfig._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseClusterManagerRestTransport._BaseGetServerConfig._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ClusterManagerRestTransport._GetServerConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2316,9 +2421,33 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_get_server_config(resp)
             return resp
 
-    class _ListClusters(ClusterManagerRestStub):
+    class _ListClusters(
+        _BaseClusterManagerRestTransport._BaseListClusters, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("ListClusters")
+            return hash("ClusterManagerRestTransport.ListClusters")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2346,41 +2475,27 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/clusters",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseListClusters._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_clusters(request, metadata)
-            pb_request = cluster_service.ListClustersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseListClusters._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseClusterManagerRestTransport._BaseListClusters._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ClusterManagerRestTransport._ListClusters._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2396,9 +2511,33 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_list_clusters(resp)
             return resp
 
-    class _ListNodePools(ClusterManagerRestStub):
+    class _ListNodePools(
+        _BaseClusterManagerRestTransport._BaseListNodePools, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("ListNodePools")
+            return hash("ClusterManagerRestTransport.ListNodePools")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2427,41 +2566,27 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/clusters/*}/nodePools",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseListNodePools._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_node_pools(request, metadata)
-            pb_request = cluster_service.ListNodePoolsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseListNodePools._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseClusterManagerRestTransport._BaseListNodePools._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ClusterManagerRestTransport._ListNodePools._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2477,9 +2602,33 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_list_node_pools(resp)
             return resp
 
-    class _ListOperations(ClusterManagerRestStub):
+    class _ListOperations(
+        _BaseClusterManagerRestTransport._BaseListOperations, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("ListOperations")
+            return hash("ClusterManagerRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2508,41 +2657,27 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/operations",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseListOperations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            pb_request = cluster_service.ListOperationsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseClusterManagerRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ClusterManagerRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2558,9 +2693,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_list_operations(resp)
             return resp
 
-    class _ListUsableSubnetworks(ClusterManagerRestStub):
+    class _ListUsableSubnetworks(
+        _BaseClusterManagerRestTransport._BaseListUsableSubnetworks,
+        ClusterManagerRestStub,
+    ):
         def __hash__(self):
-            return hash("ListUsableSubnetworks")
+            return hash("ClusterManagerRestTransport.ListUsableSubnetworks")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2591,39 +2751,29 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*}/aggregated/usableSubnetworks",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseListUsableSubnetworks._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_usable_subnetworks(
                 request, metadata
             )
-            pb_request = cluster_service.ListUsableSubnetworksRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseClusterManagerRestTransport._BaseListUsableSubnetworks._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseClusterManagerRestTransport._BaseListUsableSubnetworks._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ClusterManagerRestTransport._ListUsableSubnetworks._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2639,9 +2789,35 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_list_usable_subnetworks(resp)
             return resp
 
-    class _RollbackNodePoolUpgrade(ClusterManagerRestStub):
+    class _RollbackNodePoolUpgrade(
+        _BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade,
+        ClusterManagerRestStub,
+    ):
         def __hash__(self):
-            return hash("RollbackNodePoolUpgrade")
+            return hash("ClusterManagerRestTransport.RollbackNodePoolUpgrade")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2676,51 +2852,36 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:rollback",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}:rollback",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade._get_http_options()
+            )
             request, metadata = self._interceptor.pre_rollback_node_pool_upgrade(
                 request, metadata
             )
-            pb_request = cluster_service.RollbackNodePoolUpgradeRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseRollbackNodePoolUpgrade._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                ClusterManagerRestTransport._RollbackNodePoolUpgrade._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2736,19 +2897,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_rollback_node_pool_upgrade(resp)
             return resp
 
-    class _SetAddonsConfig(ClusterManagerRestStub):
+    class _SetAddonsConfig(
+        _BaseClusterManagerRestTransport._BaseSetAddonsConfig, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("SetAddonsConfig")
+            return hash("ClusterManagerRestTransport.SetAddonsConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2779,52 +2955,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}:setAddons",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/addons",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseSetAddonsConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_addons_config(
                 request, metadata
             )
-            pb_request = cluster_service.SetAddonsConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetAddonsConfig._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseClusterManagerRestTransport._BaseSetAddonsConfig._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseSetAddonsConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._SetAddonsConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2840,19 +2998,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_set_addons_config(resp)
             return resp
 
-    class _SetLabels(ClusterManagerRestStub):
+    class _SetLabels(
+        _BaseClusterManagerRestTransport._BaseSetLabels, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("SetLabels")
+            return hash("ClusterManagerRestTransport.SetLabels")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2886,50 +3059,38 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}:setResourceLabels",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/resourceLabels",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_set_labels(request, metadata)
-            pb_request = cluster_service.SetLabelsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseSetLabels._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_set_labels(request, metadata)
+            transcoded_request = (
+                _BaseClusterManagerRestTransport._BaseSetLabels._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = (
+                _BaseClusterManagerRestTransport._BaseSetLabels._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseClusterManagerRestTransport._BaseSetLabels._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._SetLabels._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2945,19 +3106,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_set_labels(resp)
             return resp
 
-    class _SetLegacyAbac(ClusterManagerRestStub):
+    class _SetLegacyAbac(
+        _BaseClusterManagerRestTransport._BaseSetLegacyAbac, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("SetLegacyAbac")
+            return hash("ClusterManagerRestTransport.SetLegacyAbac")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2989,50 +3165,32 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}:setLegacyAbac",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/legacyAbac",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_set_legacy_abac(request, metadata)
-            pb_request = cluster_service.SetLegacyAbacRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseSetLegacyAbac._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_set_legacy_abac(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetLegacyAbac._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseClusterManagerRestTransport._BaseSetLegacyAbac._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseSetLegacyAbac._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._SetLegacyAbac._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3048,19 +3206,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_set_legacy_abac(resp)
             return resp
 
-    class _SetLocations(ClusterManagerRestStub):
+    class _SetLocations(
+        _BaseClusterManagerRestTransport._BaseSetLocations, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("SetLocations")
+            return hash("ClusterManagerRestTransport.SetLocations")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3091,50 +3264,32 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}:setLocations",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/locations",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_set_locations(request, metadata)
-            pb_request = cluster_service.SetLocationsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseSetLocations._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_set_locations(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetLocations._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseClusterManagerRestTransport._BaseSetLocations._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseSetLocations._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._SetLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3150,19 +3305,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_set_locations(resp)
             return resp
 
-    class _SetLoggingService(ClusterManagerRestStub):
+    class _SetLoggingService(
+        _BaseClusterManagerRestTransport._BaseSetLoggingService, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("SetLoggingService")
+            return hash("ClusterManagerRestTransport.SetLoggingService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3193,52 +3363,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}:setLogging",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/logging",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseSetLoggingService._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_logging_service(
                 request, metadata
             )
-            pb_request = cluster_service.SetLoggingServiceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetLoggingService._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseClusterManagerRestTransport._BaseSetLoggingService._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseSetLoggingService._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._SetLoggingService._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3254,19 +3406,35 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_set_logging_service(resp)
             return resp
 
-    class _SetMaintenancePolicy(ClusterManagerRestStub):
+    class _SetMaintenancePolicy(
+        _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy,
+        ClusterManagerRestStub,
+    ):
         def __hash__(self):
-            return hash("SetMaintenancePolicy")
+            return hash("ClusterManagerRestTransport.SetMaintenancePolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3297,52 +3465,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}:setMaintenancePolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setMaintenancePolicy",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_maintenance_policy(
                 request, metadata
             )
-            pb_request = cluster_service.SetMaintenancePolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._SetMaintenancePolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3358,19 +3508,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_set_maintenance_policy(resp)
             return resp
 
-    class _SetMasterAuth(ClusterManagerRestStub):
+    class _SetMasterAuth(
+        _BaseClusterManagerRestTransport._BaseSetMasterAuth, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("SetMasterAuth")
+            return hash("ClusterManagerRestTransport.SetMasterAuth")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3401,50 +3566,32 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}:setMasterAuth",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setMasterAuth",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_set_master_auth(request, metadata)
-            pb_request = cluster_service.SetMasterAuthRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseSetMasterAuth._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_set_master_auth(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetMasterAuth._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseClusterManagerRestTransport._BaseSetMasterAuth._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseSetMasterAuth._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._SetMasterAuth._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3460,19 +3607,35 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_set_master_auth(resp)
             return resp
 
-    class _SetMonitoringService(ClusterManagerRestStub):
+    class _SetMonitoringService(
+        _BaseClusterManagerRestTransport._BaseSetMonitoringService,
+        ClusterManagerRestStub,
+    ):
         def __hash__(self):
-            return hash("SetMonitoringService")
+            return hash("ClusterManagerRestTransport.SetMonitoringService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3503,52 +3666,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}:setMonitoring",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/monitoring",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseSetMonitoringService._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_monitoring_service(
                 request, metadata
             )
-            pb_request = cluster_service.SetMonitoringServiceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetMonitoringService._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseClusterManagerRestTransport._BaseSetMonitoringService._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseSetMonitoringService._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._SetMonitoringService._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3564,19 +3709,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_set_monitoring_service(resp)
             return resp
 
-    class _SetNetworkPolicy(ClusterManagerRestStub):
+    class _SetNetworkPolicy(
+        _BaseClusterManagerRestTransport._BaseSetNetworkPolicy, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("SetNetworkPolicy")
+            return hash("ClusterManagerRestTransport.SetNetworkPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3608,52 +3768,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}:setNetworkPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:setNetworkPolicy",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseSetNetworkPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_network_policy(
                 request, metadata
             )
-            pb_request = cluster_service.SetNetworkPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetNetworkPolicy._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseClusterManagerRestTransport._BaseSetNetworkPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseSetNetworkPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._SetNetworkPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3669,19 +3811,35 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_set_network_policy(resp)
             return resp
 
-    class _SetNodePoolAutoscaling(ClusterManagerRestStub):
+    class _SetNodePoolAutoscaling(
+        _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling,
+        ClusterManagerRestStub,
+    ):
         def __hash__(self):
-            return hash("SetNodePoolAutoscaling")
+            return hash("ClusterManagerRestTransport.SetNodePoolAutoscaling")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3712,52 +3870,36 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:setAutoscaling",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/autoscaling",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_node_pool_autoscaling(
                 request, metadata
             )
-            pb_request = cluster_service.SetNodePoolAutoscalingRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                ClusterManagerRestTransport._SetNodePoolAutoscaling._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3773,19 +3915,35 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_set_node_pool_autoscaling(resp)
             return resp
 
-    class _SetNodePoolManagement(ClusterManagerRestStub):
+    class _SetNodePoolManagement(
+        _BaseClusterManagerRestTransport._BaseSetNodePoolManagement,
+        ClusterManagerRestStub,
+    ):
         def __hash__(self):
-            return hash("SetNodePoolManagement")
+            return hash("ClusterManagerRestTransport.SetNodePoolManagement")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3817,52 +3975,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:setManagement",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/setManagement",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseSetNodePoolManagement._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_node_pool_management(
                 request, metadata
             )
-            pb_request = cluster_service.SetNodePoolManagementRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetNodePoolManagement._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseClusterManagerRestTransport._BaseSetNodePoolManagement._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseSetNodePoolManagement._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._SetNodePoolManagement._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3878,19 +4018,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_set_node_pool_management(resp)
             return resp
 
-    class _SetNodePoolSize(ClusterManagerRestStub):
+    class _SetNodePoolSize(
+        _BaseClusterManagerRestTransport._BaseSetNodePoolSize, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("SetNodePoolSize")
+            return hash("ClusterManagerRestTransport.SetNodePoolSize")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3921,52 +4076,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}:setSize",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/setSize",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseSetNodePoolSize._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_node_pool_size(
                 request, metadata
             )
-            pb_request = cluster_service.SetNodePoolSizeRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseClusterManagerRestTransport._BaseSetNodePoolSize._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseClusterManagerRestTransport._BaseSetNodePoolSize._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseSetNodePoolSize._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._SetNodePoolSize._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3982,9 +4119,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_set_node_pool_size(resp)
             return resp
 
-    class _StartIPRotation(ClusterManagerRestStub):
+    class _StartIPRotation(
+        _BaseClusterManagerRestTransport._BaseStartIPRotation, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("StartIPRotation")
+            return hash("ClusterManagerRestTransport.StartIPRotation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4017,51 +4179,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}:startIpRotation",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}:startIpRotation",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseStartIPRotation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_start_ip_rotation(
                 request, metadata
             )
-            pb_request = cluster_service.StartIPRotationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseClusterManagerRestTransport._BaseStartIPRotation._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseClusterManagerRestTransport._BaseStartIPRotation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseStartIPRotation._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._StartIPRotation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4077,19 +4222,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_start_ip_rotation(resp)
             return resp
 
-    class _UpdateCluster(ClusterManagerRestStub):
+    class _UpdateCluster(
+        _BaseClusterManagerRestTransport._BaseUpdateCluster, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateCluster")
+            return hash("ClusterManagerRestTransport.UpdateCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4120,50 +4280,32 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "put",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}",
-                    "body": "*",
-                },
-                {
-                    "method": "put",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_cluster(request, metadata)
-            pb_request = cluster_service.UpdateClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseUpdateCluster._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_cluster(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseUpdateCluster._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseClusterManagerRestTransport._BaseUpdateCluster._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseUpdateCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._UpdateCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4179,19 +4321,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_update_cluster(resp)
             return resp
 
-    class _UpdateMaster(ClusterManagerRestStub):
+    class _UpdateMaster(
+        _BaseClusterManagerRestTransport._BaseUpdateMaster, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateMaster")
+            return hash("ClusterManagerRestTransport.UpdateMaster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4222,50 +4379,32 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}:updateMaster",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/master",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_master(request, metadata)
-            pb_request = cluster_service.UpdateMasterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseUpdateMaster._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_master(request, metadata)
+            transcoded_request = _BaseClusterManagerRestTransport._BaseUpdateMaster._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseClusterManagerRestTransport._BaseUpdateMaster._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseUpdateMaster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._UpdateMaster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4281,19 +4420,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
             resp = self._interceptor.post_update_master(resp)
             return resp
 
-    class _UpdateNodePool(ClusterManagerRestStub):
+    class _UpdateNodePool(
+        _BaseClusterManagerRestTransport._BaseUpdateNodePool, ClusterManagerRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateNodePool")
+            return hash("ClusterManagerRestTransport.UpdateNodePool")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4324,52 +4478,34 @@ class ClusterManagerRestTransport(ClusterManagerTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "put",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/nodePools/*}",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/projects/{project_id}/zones/{zone}/clusters/{cluster_id}/nodePools/{node_pool_id}/update",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseClusterManagerRestTransport._BaseUpdateNodePool._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_node_pool(
                 request, metadata
             )
-            pb_request = cluster_service.UpdateNodePoolRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseClusterManagerRestTransport._BaseUpdateNodePool._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseClusterManagerRestTransport._BaseUpdateNodePool._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClusterManagerRestTransport._BaseUpdateNodePool._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ClusterManagerRestTransport._UpdateNodePool._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

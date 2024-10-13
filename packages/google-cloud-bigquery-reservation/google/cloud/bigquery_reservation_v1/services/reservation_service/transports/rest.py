@@ -16,33 +16,29 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.bigquery_reservation_v1.types import reservation as gcbr_reservation
+from google.cloud.bigquery_reservation_v1.types import reservation
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseReservationServiceRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.protobuf import empty_pb2  # type: ignore
-
-from google.cloud.bigquery_reservation_v1.types import reservation as gcbr_reservation
-from google.cloud.bigquery_reservation_v1.types import reservation
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import ReservationServiceTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -686,8 +682,8 @@ class ReservationServiceRestStub:
     _interceptor: ReservationServiceRestInterceptor
 
 
-class ReservationServiceRestTransport(ReservationServiceTransport):
-    """REST backend transport for ReservationService.
+class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
+    """REST backend synchronous transport for ReservationService.
 
     This API allows users to manage their BigQuery reservations.
 
@@ -711,7 +707,6 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -765,21 +760,12 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -790,19 +776,35 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
         self._interceptor = interceptor or ReservationServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateAssignment(ReservationServiceRestStub):
+    class _CreateAssignment(
+        _BaseReservationServiceRestTransport._BaseCreateAssignment,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateAssignment")
+            return hash("ReservationServiceRestTransport.CreateAssignment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -834,47 +836,34 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/reservations/*}/assignments",
-                    "body": "assignment",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseCreateAssignment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_assignment(
                 request, metadata
             )
-            pb_request = reservation.CreateAssignmentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseReservationServiceRestTransport._BaseCreateAssignment._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseReservationServiceRestTransport._BaseCreateAssignment._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseCreateAssignment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ReservationServiceRestTransport._CreateAssignment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -890,19 +879,35 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             resp = self._interceptor.post_create_assignment(resp)
             return resp
 
-    class _CreateCapacityCommitment(ReservationServiceRestStub):
+    class _CreateCapacityCommitment(
+        _BaseReservationServiceRestTransport._BaseCreateCapacityCommitment,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateCapacityCommitment")
+            return hash("ReservationServiceRestTransport.CreateCapacityCommitment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -944,47 +949,36 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/capacityCommitments",
-                    "body": "capacity_commitment",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseCreateCapacityCommitment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_capacity_commitment(
                 request, metadata
             )
-            pb_request = reservation.CreateCapacityCommitmentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseReservationServiceRestTransport._BaseCreateCapacityCommitment._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseReservationServiceRestTransport._BaseCreateCapacityCommitment._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseCreateCapacityCommitment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                ReservationServiceRestTransport._CreateCapacityCommitment._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1000,19 +994,35 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             resp = self._interceptor.post_create_capacity_commitment(resp)
             return resp
 
-    class _CreateReservation(ReservationServiceRestStub):
+    class _CreateReservation(
+        _BaseReservationServiceRestTransport._BaseCreateReservation,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateReservation")
+            return hash("ReservationServiceRestTransport.CreateReservation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1041,47 +1051,34 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/reservations",
-                    "body": "reservation",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseCreateReservation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_reservation(
                 request, metadata
             )
-            pb_request = gcbr_reservation.CreateReservationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseReservationServiceRestTransport._BaseCreateReservation._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseReservationServiceRestTransport._BaseCreateReservation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseCreateReservation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ReservationServiceRestTransport._CreateReservation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1097,19 +1094,34 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             resp = self._interceptor.post_create_reservation(resp)
             return resp
 
-    class _DeleteAssignment(ReservationServiceRestStub):
+    class _DeleteAssignment(
+        _BaseReservationServiceRestTransport._BaseDeleteAssignment,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteAssignment")
+            return hash("ReservationServiceRestTransport.DeleteAssignment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1134,40 +1146,29 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/reservations/*/assignments/*}",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseDeleteAssignment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_assignment(
                 request, metadata
             )
-            pb_request = reservation.DeleteAssignmentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseReservationServiceRestTransport._BaseDeleteAssignment._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseDeleteAssignment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ReservationServiceRestTransport._DeleteAssignment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1175,19 +1176,34 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteCapacityCommitment(ReservationServiceRestStub):
+    class _DeleteCapacityCommitment(
+        _BaseReservationServiceRestTransport._BaseDeleteCapacityCommitment,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteCapacityCommitment")
+            return hash("ReservationServiceRestTransport.DeleteCapacityCommitment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1211,40 +1227,31 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/capacityCommitments/*}",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseDeleteCapacityCommitment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_capacity_commitment(
                 request, metadata
             )
-            pb_request = reservation.DeleteCapacityCommitmentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseReservationServiceRestTransport._BaseDeleteCapacityCommitment._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseDeleteCapacityCommitment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ReservationServiceRestTransport._DeleteCapacityCommitment._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1252,19 +1259,34 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteReservation(ReservationServiceRestStub):
+    class _DeleteReservation(
+        _BaseReservationServiceRestTransport._BaseDeleteReservation,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteReservation")
+            return hash("ReservationServiceRestTransport.DeleteReservation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1287,40 +1309,29 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/reservations/*}",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseDeleteReservation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_reservation(
                 request, metadata
             )
-            pb_request = reservation.DeleteReservationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseReservationServiceRestTransport._BaseDeleteReservation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseDeleteReservation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ReservationServiceRestTransport._DeleteReservation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1328,19 +1339,34 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetBiReservation(ReservationServiceRestStub):
+    class _GetBiReservation(
+        _BaseReservationServiceRestTransport._BaseGetBiReservation,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetBiReservation")
+            return hash("ReservationServiceRestTransport.GetBiReservation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1367,40 +1393,29 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                     Represents a BI Reservation.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/biReservation}",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseGetBiReservation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_bi_reservation(
                 request, metadata
             )
-            pb_request = reservation.GetBiReservationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseReservationServiceRestTransport._BaseGetBiReservation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseGetBiReservation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ReservationServiceRestTransport._GetBiReservation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1416,19 +1431,34 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             resp = self._interceptor.post_get_bi_reservation(resp)
             return resp
 
-    class _GetCapacityCommitment(ReservationServiceRestStub):
+    class _GetCapacityCommitment(
+        _BaseReservationServiceRestTransport._BaseGetCapacityCommitment,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetCapacityCommitment")
+            return hash("ReservationServiceRestTransport.GetCapacityCommitment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1469,40 +1499,31 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/capacityCommitments/*}",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseGetCapacityCommitment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_capacity_commitment(
                 request, metadata
             )
-            pb_request = reservation.GetCapacityCommitmentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseReservationServiceRestTransport._BaseGetCapacityCommitment._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseGetCapacityCommitment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ReservationServiceRestTransport._GetCapacityCommitment._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1518,19 +1539,34 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             resp = self._interceptor.post_get_capacity_commitment(resp)
             return resp
 
-    class _GetReservation(ReservationServiceRestStub):
+    class _GetReservation(
+        _BaseReservationServiceRestTransport._BaseGetReservation,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetReservation")
+            return hash("ReservationServiceRestTransport.GetReservation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1559,38 +1595,27 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/reservations/*}",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseGetReservation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_reservation(request, metadata)
-            pb_request = reservation.GetReservationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseReservationServiceRestTransport._BaseGetReservation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseGetReservation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ReservationServiceRestTransport._GetReservation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1606,19 +1631,34 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             resp = self._interceptor.post_get_reservation(resp)
             return resp
 
-    class _ListAssignments(ReservationServiceRestStub):
+    class _ListAssignments(
+        _BaseReservationServiceRestTransport._BaseListAssignments,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListAssignments")
+            return hash("ReservationServiceRestTransport.ListAssignments")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1647,40 +1687,29 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/reservations/*}/assignments",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseListAssignments._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_assignments(
                 request, metadata
             )
-            pb_request = reservation.ListAssignmentsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseReservationServiceRestTransport._BaseListAssignments._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseListAssignments._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ReservationServiceRestTransport._ListAssignments._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1696,19 +1725,34 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             resp = self._interceptor.post_list_assignments(resp)
             return resp
 
-    class _ListCapacityCommitments(ReservationServiceRestStub):
+    class _ListCapacityCommitments(
+        _BaseReservationServiceRestTransport._BaseListCapacityCommitments,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListCapacityCommitments")
+            return hash("ReservationServiceRestTransport.ListCapacityCommitments")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1737,40 +1781,31 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/capacityCommitments",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseListCapacityCommitments._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_capacity_commitments(
                 request, metadata
             )
-            pb_request = reservation.ListCapacityCommitmentsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseReservationServiceRestTransport._BaseListCapacityCommitments._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseListCapacityCommitments._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ReservationServiceRestTransport._ListCapacityCommitments._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1786,19 +1821,34 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             resp = self._interceptor.post_list_capacity_commitments(resp)
             return resp
 
-    class _ListReservations(ReservationServiceRestStub):
+    class _ListReservations(
+        _BaseReservationServiceRestTransport._BaseListReservations,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListReservations")
+            return hash("ReservationServiceRestTransport.ListReservations")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1827,40 +1877,29 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/reservations",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseListReservations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_reservations(
                 request, metadata
             )
-            pb_request = reservation.ListReservationsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseReservationServiceRestTransport._BaseListReservations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseListReservations._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ReservationServiceRestTransport._ListReservations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1876,9 +1915,35 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             resp = self._interceptor.post_list_reservations(resp)
             return resp
 
-    class _MergeCapacityCommitments(ReservationServiceRestStub):
+    class _MergeCapacityCommitments(
+        _BaseReservationServiceRestTransport._BaseMergeCapacityCommitments,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("MergeCapacityCommitments")
+            return hash("ReservationServiceRestTransport.MergeCapacityCommitments")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1920,46 +1985,36 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/capacityCommitments:merge",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseMergeCapacityCommitments._get_http_options()
+            )
             request, metadata = self._interceptor.pre_merge_capacity_commitments(
                 request, metadata
             )
-            pb_request = reservation.MergeCapacityCommitmentsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseReservationServiceRestTransport._BaseMergeCapacityCommitments._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseReservationServiceRestTransport._BaseMergeCapacityCommitments._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseMergeCapacityCommitments._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                ReservationServiceRestTransport._MergeCapacityCommitments._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1975,19 +2030,35 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             resp = self._interceptor.post_merge_capacity_commitments(resp)
             return resp
 
-    class _MoveAssignment(ReservationServiceRestStub):
+    class _MoveAssignment(
+        _BaseReservationServiceRestTransport._BaseMoveAssignment,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("MoveAssignment")
+            return hash("ReservationServiceRestTransport.MoveAssignment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2024,45 +2095,32 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/reservations/*/assignments/*}:move",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_move_assignment(request, metadata)
-            pb_request = reservation.MoveAssignmentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseMoveAssignment._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_move_assignment(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseMoveAssignment._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseReservationServiceRestTransport._BaseMoveAssignment._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseMoveAssignment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ReservationServiceRestTransport._MoveAssignment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2078,19 +2136,34 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             resp = self._interceptor.post_move_assignment(resp)
             return resp
 
-    class _SearchAllAssignments(ReservationServiceRestStub):
+    class _SearchAllAssignments(
+        _BaseReservationServiceRestTransport._BaseSearchAllAssignments,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("SearchAllAssignments")
+            return hash("ReservationServiceRestTransport.SearchAllAssignments")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2121,40 +2194,31 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}:searchAllAssignments",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseSearchAllAssignments._get_http_options()
+            )
             request, metadata = self._interceptor.pre_search_all_assignments(
                 request, metadata
             )
-            pb_request = reservation.SearchAllAssignmentsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseReservationServiceRestTransport._BaseSearchAllAssignments._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseSearchAllAssignments._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ReservationServiceRestTransport._SearchAllAssignments._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2170,19 +2234,34 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             resp = self._interceptor.post_search_all_assignments(resp)
             return resp
 
-    class _SearchAssignments(ReservationServiceRestStub):
+    class _SearchAssignments(
+        _BaseReservationServiceRestTransport._BaseSearchAssignments,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("SearchAssignments")
+            return hash("ReservationServiceRestTransport.SearchAssignments")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2213,40 +2292,29 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}:searchAssignments",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseSearchAssignments._get_http_options()
+            )
             request, metadata = self._interceptor.pre_search_assignments(
                 request, metadata
             )
-            pb_request = reservation.SearchAssignmentsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseReservationServiceRestTransport._BaseSearchAssignments._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseSearchAssignments._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ReservationServiceRestTransport._SearchAssignments._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2262,19 +2330,35 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             resp = self._interceptor.post_search_assignments(resp)
             return resp
 
-    class _SplitCapacityCommitment(ReservationServiceRestStub):
+    class _SplitCapacityCommitment(
+        _BaseReservationServiceRestTransport._BaseSplitCapacityCommitment,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("SplitCapacityCommitment")
+            return hash("ReservationServiceRestTransport.SplitCapacityCommitment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2303,47 +2387,36 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/capacityCommitments/*}:split",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseSplitCapacityCommitment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_split_capacity_commitment(
                 request, metadata
             )
-            pb_request = reservation.SplitCapacityCommitmentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseReservationServiceRestTransport._BaseSplitCapacityCommitment._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseReservationServiceRestTransport._BaseSplitCapacityCommitment._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseSplitCapacityCommitment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                ReservationServiceRestTransport._SplitCapacityCommitment._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2359,9 +2432,35 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             resp = self._interceptor.post_split_capacity_commitment(resp)
             return resp
 
-    class _UpdateAssignment(ReservationServiceRestStub):
+    class _UpdateAssignment(
+        _BaseReservationServiceRestTransport._BaseUpdateAssignment,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateAssignment")
+            return hash("ReservationServiceRestTransport.UpdateAssignment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2391,46 +2490,34 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{assignment.name=projects/*/locations/*/reservations/*/assignments/*}",
-                    "body": "assignment",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseUpdateAssignment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_assignment(
                 request, metadata
             )
-            pb_request = reservation.UpdateAssignmentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseReservationServiceRestTransport._BaseUpdateAssignment._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseReservationServiceRestTransport._BaseUpdateAssignment._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseUpdateAssignment._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ReservationServiceRestTransport._UpdateAssignment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2446,9 +2533,35 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             resp = self._interceptor.post_update_assignment(resp)
             return resp
 
-    class _UpdateBiReservation(ReservationServiceRestStub):
+    class _UpdateBiReservation(
+        _BaseReservationServiceRestTransport._BaseUpdateBiReservation,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateBiReservation")
+            return hash("ReservationServiceRestTransport.UpdateBiReservation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2474,46 +2587,36 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
                     Represents a BI Reservation.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{bi_reservation.name=projects/*/locations/*/biReservation}",
-                    "body": "bi_reservation",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseUpdateBiReservation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_bi_reservation(
                 request, metadata
             )
-            pb_request = reservation.UpdateBiReservationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseReservationServiceRestTransport._BaseUpdateBiReservation._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseReservationServiceRestTransport._BaseUpdateBiReservation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseUpdateBiReservation._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                ReservationServiceRestTransport._UpdateBiReservation._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2529,9 +2632,35 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             resp = self._interceptor.post_update_bi_reservation(resp)
             return resp
 
-    class _UpdateCapacityCommitment(ReservationServiceRestStub):
+    class _UpdateCapacityCommitment(
+        _BaseReservationServiceRestTransport._BaseUpdateCapacityCommitment,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateCapacityCommitment")
+            return hash("ReservationServiceRestTransport.UpdateCapacityCommitment")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2573,46 +2702,36 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{capacity_commitment.name=projects/*/locations/*/capacityCommitments/*}",
-                    "body": "capacity_commitment",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseUpdateCapacityCommitment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_capacity_commitment(
                 request, metadata
             )
-            pb_request = reservation.UpdateCapacityCommitmentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseReservationServiceRestTransport._BaseUpdateCapacityCommitment._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseReservationServiceRestTransport._BaseUpdateCapacityCommitment._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseUpdateCapacityCommitment._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                ReservationServiceRestTransport._UpdateCapacityCommitment._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2628,9 +2747,35 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
             resp = self._interceptor.post_update_capacity_commitment(resp)
             return resp
 
-    class _UpdateReservation(ReservationServiceRestStub):
+    class _UpdateReservation(
+        _BaseReservationServiceRestTransport._BaseUpdateReservation,
+        ReservationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateReservation")
+            return hash("ReservationServiceRestTransport.UpdateReservation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2659,46 +2804,34 @@ class ReservationServiceRestTransport(ReservationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{reservation.name=projects/*/locations/*/reservations/*}",
-                    "body": "reservation",
-                },
-            ]
+            http_options = (
+                _BaseReservationServiceRestTransport._BaseUpdateReservation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_reservation(
                 request, metadata
             )
-            pb_request = gcbr_reservation.UpdateReservationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseReservationServiceRestTransport._BaseUpdateReservation._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseReservationServiceRestTransport._BaseUpdateReservation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseReservationServiceRestTransport._BaseUpdateReservation._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ReservationServiceRestTransport._UpdateReservation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

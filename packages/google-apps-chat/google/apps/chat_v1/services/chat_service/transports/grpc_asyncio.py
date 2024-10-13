@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -240,6 +241,9 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1383,7 +1387,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_message: gapic_v1.method_async.wrap_method(
+            self.create_message: self._wrap_method(
                 self.create_message,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1397,7 +1401,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_messages: gapic_v1.method_async.wrap_method(
+            self.list_messages: self._wrap_method(
                 self.list_messages,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1411,7 +1415,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_memberships: gapic_v1.method_async.wrap_method(
+            self.list_memberships: self._wrap_method(
                 self.list_memberships,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1425,7 +1429,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_membership: gapic_v1.method_async.wrap_method(
+            self.get_membership: self._wrap_method(
                 self.get_membership,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1439,7 +1443,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_message: gapic_v1.method_async.wrap_method(
+            self.get_message: self._wrap_method(
                 self.get_message,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1453,7 +1457,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.update_message: gapic_v1.method_async.wrap_method(
+            self.update_message: self._wrap_method(
                 self.update_message,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1467,7 +1471,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.delete_message: gapic_v1.method_async.wrap_method(
+            self.delete_message: self._wrap_method(
                 self.delete_message,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1481,7 +1485,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_attachment: gapic_v1.method_async.wrap_method(
+            self.get_attachment: self._wrap_method(
                 self.get_attachment,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1495,7 +1499,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.upload_attachment: gapic_v1.method_async.wrap_method(
+            self.upload_attachment: self._wrap_method(
                 self.upload_attachment,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1509,7 +1513,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_spaces: gapic_v1.method_async.wrap_method(
+            self.list_spaces: self._wrap_method(
                 self.list_spaces,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1523,7 +1527,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.search_spaces: gapic_v1.method_async.wrap_method(
+            self.search_spaces: self._wrap_method(
                 self.search_spaces,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1537,7 +1541,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_space: gapic_v1.method_async.wrap_method(
+            self.get_space: self._wrap_method(
                 self.get_space,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1551,7 +1555,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.create_space: gapic_v1.method_async.wrap_method(
+            self.create_space: self._wrap_method(
                 self.create_space,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1565,7 +1569,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.set_up_space: gapic_v1.method_async.wrap_method(
+            self.set_up_space: self._wrap_method(
                 self.set_up_space,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1579,7 +1583,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.update_space: gapic_v1.method_async.wrap_method(
+            self.update_space: self._wrap_method(
                 self.update_space,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1593,7 +1597,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.delete_space: gapic_v1.method_async.wrap_method(
+            self.delete_space: self._wrap_method(
                 self.delete_space,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1607,7 +1611,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.complete_import_space: gapic_v1.method_async.wrap_method(
+            self.complete_import_space: self._wrap_method(
                 self.complete_import_space,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1621,7 +1625,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.find_direct_message: gapic_v1.method_async.wrap_method(
+            self.find_direct_message: self._wrap_method(
                 self.find_direct_message,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1635,7 +1639,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.create_membership: gapic_v1.method_async.wrap_method(
+            self.create_membership: self._wrap_method(
                 self.create_membership,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1649,7 +1653,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.update_membership: gapic_v1.method_async.wrap_method(
+            self.update_membership: self._wrap_method(
                 self.update_membership,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1663,7 +1667,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.delete_membership: gapic_v1.method_async.wrap_method(
+            self.delete_membership: self._wrap_method(
                 self.delete_membership,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1677,7 +1681,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.create_reaction: gapic_v1.method_async.wrap_method(
+            self.create_reaction: self._wrap_method(
                 self.create_reaction,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1691,7 +1695,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_reactions: gapic_v1.method_async.wrap_method(
+            self.list_reactions: self._wrap_method(
                 self.list_reactions,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1705,7 +1709,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.delete_reaction: gapic_v1.method_async.wrap_method(
+            self.delete_reaction: self._wrap_method(
                 self.delete_reaction,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1719,7 +1723,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_space_read_state: gapic_v1.method_async.wrap_method(
+            self.get_space_read_state: self._wrap_method(
                 self.get_space_read_state,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1733,7 +1737,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.update_space_read_state: gapic_v1.method_async.wrap_method(
+            self.update_space_read_state: self._wrap_method(
                 self.update_space_read_state,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1747,7 +1751,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_thread_read_state: gapic_v1.method_async.wrap_method(
+            self.get_thread_read_state: self._wrap_method(
                 self.get_thread_read_state,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1761,7 +1765,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_space_event: gapic_v1.method_async.wrap_method(
+            self.get_space_event: self._wrap_method(
                 self.get_space_event,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1775,7 +1779,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_space_events: gapic_v1.method_async.wrap_method(
+            self.list_space_events: self._wrap_method(
                 self.list_space_events,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1791,8 +1795,17 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("ChatServiceGrpcAsyncIOTransport",)

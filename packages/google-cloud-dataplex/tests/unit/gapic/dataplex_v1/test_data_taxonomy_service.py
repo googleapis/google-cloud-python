@@ -24,6 +24,20 @@ except ImportError:  # pragma: NO COVER
 
 import math
 
+from google.api_core import api_core_version
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api_core import (
     future,
     gapic_v1,
@@ -33,7 +47,7 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
@@ -49,11 +63,6 @@ from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 
 from google.cloud.dataplex_v1.services.data_taxonomy_service import (
     DataTaxonomyServiceAsyncClient,
@@ -66,8 +75,22 @@ from google.cloud.dataplex_v1.types import data_taxonomy as gcd_data_taxonomy
 from google.cloud.dataplex_v1.types import security, service
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1189,27 +1212,6 @@ def test_create_data_taxonomy(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_create_data_taxonomy_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_data_taxonomy), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_data_taxonomy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_data_taxonomy.CreateDataTaxonomyRequest()
-
-
 def test_create_data_taxonomy_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1287,29 +1289,6 @@ def test_create_data_taxonomy_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_data_taxonomy_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_data_taxonomy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_data_taxonomy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_data_taxonomy.CreateDataTaxonomyRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_data_taxonomy_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1317,7 +1296,7 @@ async def test_create_data_taxonomy_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataTaxonomyServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1362,7 +1341,7 @@ async def test_create_data_taxonomy_async(
     request_type=gcd_data_taxonomy.CreateDataTaxonomyRequest,
 ):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1429,7 +1408,7 @@ def test_create_data_taxonomy_field_headers():
 @pytest.mark.asyncio
 async def test_create_data_taxonomy_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1513,7 +1492,7 @@ def test_create_data_taxonomy_flattened_error():
 @pytest.mark.asyncio
 async def test_create_data_taxonomy_flattened_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1552,7 +1531,7 @@ async def test_create_data_taxonomy_flattened_async():
 @pytest.mark.asyncio
 async def test_create_data_taxonomy_flattened_error_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1599,27 +1578,6 @@ def test_update_data_taxonomy(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_data_taxonomy_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_data_taxonomy), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_data_taxonomy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_data_taxonomy.UpdateDataTaxonomyRequest()
 
 
 def test_update_data_taxonomy_non_empty_request_with_auto_populated_field():
@@ -1693,29 +1651,6 @@ def test_update_data_taxonomy_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_data_taxonomy_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_data_taxonomy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_data_taxonomy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_data_taxonomy.UpdateDataTaxonomyRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_data_taxonomy_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1723,7 +1658,7 @@ async def test_update_data_taxonomy_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataTaxonomyServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1768,7 +1703,7 @@ async def test_update_data_taxonomy_async(
     request_type=gcd_data_taxonomy.UpdateDataTaxonomyRequest,
 ):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1835,7 +1770,7 @@ def test_update_data_taxonomy_field_headers():
 @pytest.mark.asyncio
 async def test_update_data_taxonomy_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1914,7 +1849,7 @@ def test_update_data_taxonomy_flattened_error():
 @pytest.mark.asyncio
 async def test_update_data_taxonomy_flattened_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1949,7 +1884,7 @@ async def test_update_data_taxonomy_flattened_async():
 @pytest.mark.asyncio
 async def test_update_data_taxonomy_flattened_error_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1995,27 +1930,6 @@ def test_delete_data_taxonomy(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_data_taxonomy_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_data_taxonomy), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_data_taxonomy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.DeleteDataTaxonomyRequest()
 
 
 def test_delete_data_taxonomy_non_empty_request_with_auto_populated_field():
@@ -2095,29 +2009,6 @@ def test_delete_data_taxonomy_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_data_taxonomy_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_data_taxonomy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_data_taxonomy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.DeleteDataTaxonomyRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_data_taxonomy_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2125,7 +2016,7 @@ async def test_delete_data_taxonomy_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataTaxonomyServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2170,7 +2061,7 @@ async def test_delete_data_taxonomy_async(
     request_type=data_taxonomy.DeleteDataTaxonomyRequest,
 ):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2237,7 +2128,7 @@ def test_delete_data_taxonomy_field_headers():
 @pytest.mark.asyncio
 async def test_delete_data_taxonomy_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2311,7 +2202,7 @@ def test_delete_data_taxonomy_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_data_taxonomy_flattened_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2342,7 +2233,7 @@ async def test_delete_data_taxonomy_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_data_taxonomy_flattened_error_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2392,27 +2283,6 @@ def test_list_data_taxonomies(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListDataTaxonomiesPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-def test_list_data_taxonomies_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_data_taxonomies), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_data_taxonomies()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.ListDataTaxonomiesRequest()
 
 
 def test_list_data_taxonomies_non_empty_request_with_auto_populated_field():
@@ -2491,32 +2361,6 @@ def test_list_data_taxonomies_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_data_taxonomies_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_data_taxonomies), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            data_taxonomy.ListDataTaxonomiesResponse(
-                next_page_token="next_page_token_value",
-                unreachable_locations=["unreachable_locations_value"],
-            )
-        )
-        response = await client.list_data_taxonomies()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.ListDataTaxonomiesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_data_taxonomies_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2524,7 +2368,7 @@ async def test_list_data_taxonomies_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataTaxonomyServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2564,7 +2408,7 @@ async def test_list_data_taxonomies_async(
     request_type=data_taxonomy.ListDataTaxonomiesRequest,
 ):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2636,7 +2480,7 @@ def test_list_data_taxonomies_field_headers():
 @pytest.mark.asyncio
 async def test_list_data_taxonomies_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2710,7 +2554,7 @@ def test_list_data_taxonomies_flattened_error():
 @pytest.mark.asyncio
 async def test_list_data_taxonomies_flattened_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2741,7 +2585,7 @@ async def test_list_data_taxonomies_flattened_async():
 @pytest.mark.asyncio
 async def test_list_data_taxonomies_flattened_error_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2855,7 +2699,7 @@ def test_list_data_taxonomies_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_data_taxonomies_async_pager():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2907,7 +2751,7 @@ async def test_list_data_taxonomies_async_pager():
 @pytest.mark.asyncio
 async def test_list_data_taxonomies_async_pages():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3005,27 +2849,6 @@ def test_get_data_taxonomy(request_type, transport: str = "grpc"):
     assert response.class_count == 1182
 
 
-def test_get_data_taxonomy_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_data_taxonomy), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_data_taxonomy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.GetDataTaxonomyRequest()
-
-
 def test_get_data_taxonomy_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -3094,37 +2917,6 @@ def test_get_data_taxonomy_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_data_taxonomy_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_data_taxonomy), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            data_taxonomy.DataTaxonomy(
-                name="name_value",
-                uid="uid_value",
-                description="description_value",
-                display_name="display_name_value",
-                attribute_count=1628,
-                etag="etag_value",
-                class_count=1182,
-            )
-        )
-        response = await client.get_data_taxonomy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.GetDataTaxonomyRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_data_taxonomy_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3132,7 +2924,7 @@ async def test_get_data_taxonomy_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataTaxonomyServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3171,7 +2963,7 @@ async def test_get_data_taxonomy_async(
     transport: str = "grpc_asyncio", request_type=data_taxonomy.GetDataTaxonomyRequest
 ):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3253,7 +3045,7 @@ def test_get_data_taxonomy_field_headers():
 @pytest.mark.asyncio
 async def test_get_data_taxonomy_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3327,7 +3119,7 @@ def test_get_data_taxonomy_flattened_error():
 @pytest.mark.asyncio
 async def test_get_data_taxonomy_flattened_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3358,7 +3150,7 @@ async def test_get_data_taxonomy_flattened_async():
 @pytest.mark.asyncio
 async def test_get_data_taxonomy_flattened_error_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3403,27 +3195,6 @@ def test_create_data_attribute_binding(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_data_attribute_binding_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_data_attribute_binding), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_data_attribute_binding()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.CreateDataAttributeBindingRequest()
 
 
 def test_create_data_attribute_binding_non_empty_request_with_auto_populated_field():
@@ -3504,29 +3275,6 @@ def test_create_data_attribute_binding_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_data_attribute_binding_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_data_attribute_binding), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_data_attribute_binding()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.CreateDataAttributeBindingRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_data_attribute_binding_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3534,7 +3282,7 @@ async def test_create_data_attribute_binding_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataTaxonomyServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3579,7 +3327,7 @@ async def test_create_data_attribute_binding_async(
     request_type=data_taxonomy.CreateDataAttributeBindingRequest,
 ):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3646,7 +3394,7 @@ def test_create_data_attribute_binding_field_headers():
 @pytest.mark.asyncio
 async def test_create_data_attribute_binding_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3734,7 +3482,7 @@ def test_create_data_attribute_binding_flattened_error():
 @pytest.mark.asyncio
 async def test_create_data_attribute_binding_flattened_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3775,7 +3523,7 @@ async def test_create_data_attribute_binding_flattened_async():
 @pytest.mark.asyncio
 async def test_create_data_attribute_binding_flattened_error_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3824,27 +3572,6 @@ def test_update_data_attribute_binding(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_data_attribute_binding_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_data_attribute_binding), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_data_attribute_binding()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.UpdateDataAttributeBindingRequest()
 
 
 def test_update_data_attribute_binding_non_empty_request_with_auto_populated_field():
@@ -3919,29 +3646,6 @@ def test_update_data_attribute_binding_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_data_attribute_binding_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_data_attribute_binding), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_data_attribute_binding()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.UpdateDataAttributeBindingRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_data_attribute_binding_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3949,7 +3653,7 @@ async def test_update_data_attribute_binding_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataTaxonomyServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3994,7 +3698,7 @@ async def test_update_data_attribute_binding_async(
     request_type=data_taxonomy.UpdateDataAttributeBindingRequest,
 ):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4061,7 +3765,7 @@ def test_update_data_attribute_binding_field_headers():
 @pytest.mark.asyncio
 async def test_update_data_attribute_binding_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4144,7 +3848,7 @@ def test_update_data_attribute_binding_flattened_error():
 @pytest.mark.asyncio
 async def test_update_data_attribute_binding_flattened_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4181,7 +3885,7 @@ async def test_update_data_attribute_binding_flattened_async():
 @pytest.mark.asyncio
 async def test_update_data_attribute_binding_flattened_error_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4229,27 +3933,6 @@ def test_delete_data_attribute_binding(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_data_attribute_binding_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_data_attribute_binding), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_data_attribute_binding()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.DeleteDataAttributeBindingRequest()
 
 
 def test_delete_data_attribute_binding_non_empty_request_with_auto_populated_field():
@@ -4330,29 +4013,6 @@ def test_delete_data_attribute_binding_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_data_attribute_binding_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_data_attribute_binding), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_data_attribute_binding()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.DeleteDataAttributeBindingRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_data_attribute_binding_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4360,7 +4020,7 @@ async def test_delete_data_attribute_binding_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataTaxonomyServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4405,7 +4065,7 @@ async def test_delete_data_attribute_binding_async(
     request_type=data_taxonomy.DeleteDataAttributeBindingRequest,
 ):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4472,7 +4132,7 @@ def test_delete_data_attribute_binding_field_headers():
 @pytest.mark.asyncio
 async def test_delete_data_attribute_binding_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4546,7 +4206,7 @@ def test_delete_data_attribute_binding_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_data_attribute_binding_flattened_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4577,7 +4237,7 @@ async def test_delete_data_attribute_binding_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_data_attribute_binding_flattened_error_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4627,27 +4287,6 @@ def test_list_data_attribute_bindings(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListDataAttributeBindingsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-def test_list_data_attribute_bindings_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_data_attribute_bindings), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_data_attribute_bindings()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.ListDataAttributeBindingsRequest()
 
 
 def test_list_data_attribute_bindings_non_empty_request_with_auto_populated_field():
@@ -4727,32 +4366,6 @@ def test_list_data_attribute_bindings_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_data_attribute_bindings_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_data_attribute_bindings), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            data_taxonomy.ListDataAttributeBindingsResponse(
-                next_page_token="next_page_token_value",
-                unreachable_locations=["unreachable_locations_value"],
-            )
-        )
-        response = await client.list_data_attribute_bindings()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.ListDataAttributeBindingsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_data_attribute_bindings_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4760,7 +4373,7 @@ async def test_list_data_attribute_bindings_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataTaxonomyServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4800,7 +4413,7 @@ async def test_list_data_attribute_bindings_async(
     request_type=data_taxonomy.ListDataAttributeBindingsRequest,
 ):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4872,7 +4485,7 @@ def test_list_data_attribute_bindings_field_headers():
 @pytest.mark.asyncio
 async def test_list_data_attribute_bindings_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4946,7 +4559,7 @@ def test_list_data_attribute_bindings_flattened_error():
 @pytest.mark.asyncio
 async def test_list_data_attribute_bindings_flattened_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4977,7 +4590,7 @@ async def test_list_data_attribute_bindings_flattened_async():
 @pytest.mark.asyncio
 async def test_list_data_attribute_bindings_flattened_error_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5093,7 +4706,7 @@ def test_list_data_attribute_bindings_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_data_attribute_bindings_async_pager():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5145,7 +4758,7 @@ async def test_list_data_attribute_bindings_async_pager():
 @pytest.mark.asyncio
 async def test_list_data_attribute_bindings_async_pages():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5242,27 +4855,6 @@ def test_get_data_attribute_binding(request_type, transport: str = "grpc"):
     assert response.attributes == ["attributes_value"]
 
 
-def test_get_data_attribute_binding_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_data_attribute_binding), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_data_attribute_binding()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.GetDataAttributeBindingRequest()
-
-
 def test_get_data_attribute_binding_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -5334,36 +4926,6 @@ def test_get_data_attribute_binding_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_data_attribute_binding_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_data_attribute_binding), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            data_taxonomy.DataAttributeBinding(
-                name="name_value",
-                uid="uid_value",
-                description="description_value",
-                display_name="display_name_value",
-                etag="etag_value",
-                attributes=["attributes_value"],
-            )
-        )
-        response = await client.get_data_attribute_binding()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.GetDataAttributeBindingRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_data_attribute_binding_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5371,7 +4933,7 @@ async def test_get_data_attribute_binding_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataTaxonomyServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5411,7 +4973,7 @@ async def test_get_data_attribute_binding_async(
     request_type=data_taxonomy.GetDataAttributeBindingRequest,
 ):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5491,7 +5053,7 @@ def test_get_data_attribute_binding_field_headers():
 @pytest.mark.asyncio
 async def test_get_data_attribute_binding_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5565,7 +5127,7 @@ def test_get_data_attribute_binding_flattened_error():
 @pytest.mark.asyncio
 async def test_get_data_attribute_binding_flattened_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5596,7 +5158,7 @@ async def test_get_data_attribute_binding_flattened_async():
 @pytest.mark.asyncio
 async def test_get_data_attribute_binding_flattened_error_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5641,27 +5203,6 @@ def test_create_data_attribute(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_data_attribute_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_data_attribute), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_data_attribute()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.CreateDataAttributeRequest()
 
 
 def test_create_data_attribute_non_empty_request_with_auto_populated_field():
@@ -5742,29 +5283,6 @@ def test_create_data_attribute_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_data_attribute_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_data_attribute), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_data_attribute()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.CreateDataAttributeRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_data_attribute_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5772,7 +5290,7 @@ async def test_create_data_attribute_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataTaxonomyServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5817,7 +5335,7 @@ async def test_create_data_attribute_async(
     request_type=data_taxonomy.CreateDataAttributeRequest,
 ):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5884,7 +5402,7 @@ def test_create_data_attribute_field_headers():
 @pytest.mark.asyncio
 async def test_create_data_attribute_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5968,7 +5486,7 @@ def test_create_data_attribute_flattened_error():
 @pytest.mark.asyncio
 async def test_create_data_attribute_flattened_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6007,7 +5525,7 @@ async def test_create_data_attribute_flattened_async():
 @pytest.mark.asyncio
 async def test_create_data_attribute_flattened_error_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6054,27 +5572,6 @@ def test_update_data_attribute(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_data_attribute_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_data_attribute), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_data_attribute()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.UpdateDataAttributeRequest()
 
 
 def test_update_data_attribute_non_empty_request_with_auto_populated_field():
@@ -6149,29 +5646,6 @@ def test_update_data_attribute_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_data_attribute_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_data_attribute), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_data_attribute()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.UpdateDataAttributeRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_data_attribute_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6179,7 +5653,7 @@ async def test_update_data_attribute_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataTaxonomyServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6224,7 +5698,7 @@ async def test_update_data_attribute_async(
     request_type=data_taxonomy.UpdateDataAttributeRequest,
 ):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6291,7 +5765,7 @@ def test_update_data_attribute_field_headers():
 @pytest.mark.asyncio
 async def test_update_data_attribute_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6370,7 +5844,7 @@ def test_update_data_attribute_flattened_error():
 @pytest.mark.asyncio
 async def test_update_data_attribute_flattened_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6405,7 +5879,7 @@ async def test_update_data_attribute_flattened_async():
 @pytest.mark.asyncio
 async def test_update_data_attribute_flattened_error_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6451,27 +5925,6 @@ def test_delete_data_attribute(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_data_attribute_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_data_attribute), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_data_attribute()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.DeleteDataAttributeRequest()
 
 
 def test_delete_data_attribute_non_empty_request_with_auto_populated_field():
@@ -6552,29 +6005,6 @@ def test_delete_data_attribute_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_data_attribute_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_data_attribute), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_data_attribute()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.DeleteDataAttributeRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_data_attribute_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6582,7 +6012,7 @@ async def test_delete_data_attribute_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataTaxonomyServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6627,7 +6057,7 @@ async def test_delete_data_attribute_async(
     request_type=data_taxonomy.DeleteDataAttributeRequest,
 ):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6694,7 +6124,7 @@ def test_delete_data_attribute_field_headers():
 @pytest.mark.asyncio
 async def test_delete_data_attribute_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6768,7 +6198,7 @@ def test_delete_data_attribute_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_data_attribute_flattened_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6799,7 +6229,7 @@ async def test_delete_data_attribute_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_data_attribute_flattened_error_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6849,27 +6279,6 @@ def test_list_data_attributes(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListDataAttributesPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-def test_list_data_attributes_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_data_attributes), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_data_attributes()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.ListDataAttributesRequest()
 
 
 def test_list_data_attributes_non_empty_request_with_auto_populated_field():
@@ -6948,32 +6357,6 @@ def test_list_data_attributes_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_data_attributes_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_data_attributes), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            data_taxonomy.ListDataAttributesResponse(
-                next_page_token="next_page_token_value",
-                unreachable_locations=["unreachable_locations_value"],
-            )
-        )
-        response = await client.list_data_attributes()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.ListDataAttributesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_data_attributes_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6981,7 +6364,7 @@ async def test_list_data_attributes_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataTaxonomyServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7021,7 +6404,7 @@ async def test_list_data_attributes_async(
     request_type=data_taxonomy.ListDataAttributesRequest,
 ):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7093,7 +6476,7 @@ def test_list_data_attributes_field_headers():
 @pytest.mark.asyncio
 async def test_list_data_attributes_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7167,7 +6550,7 @@ def test_list_data_attributes_flattened_error():
 @pytest.mark.asyncio
 async def test_list_data_attributes_flattened_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7198,7 +6581,7 @@ async def test_list_data_attributes_flattened_async():
 @pytest.mark.asyncio
 async def test_list_data_attributes_flattened_error_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7312,7 +6695,7 @@ def test_list_data_attributes_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_data_attributes_async_pager():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7364,7 +6747,7 @@ async def test_list_data_attributes_async_pager():
 @pytest.mark.asyncio
 async def test_list_data_attributes_async_pages():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7462,27 +6845,6 @@ def test_get_data_attribute(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
 
 
-def test_get_data_attribute_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_data_attribute), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_data_attribute()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.GetDataAttributeRequest()
-
-
 def test_get_data_attribute_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -7553,37 +6915,6 @@ def test_get_data_attribute_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_data_attribute_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_data_attribute), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            data_taxonomy.DataAttribute(
-                name="name_value",
-                uid="uid_value",
-                description="description_value",
-                display_name="display_name_value",
-                parent_id="parent_id_value",
-                attribute_count=1628,
-                etag="etag_value",
-            )
-        )
-        response = await client.get_data_attribute()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == data_taxonomy.GetDataAttributeRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_data_attribute_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7591,7 +6922,7 @@ async def test_get_data_attribute_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataTaxonomyServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7630,7 +6961,7 @@ async def test_get_data_attribute_async(
     transport: str = "grpc_asyncio", request_type=data_taxonomy.GetDataAttributeRequest
 ):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7712,7 +7043,7 @@ def test_get_data_attribute_field_headers():
 @pytest.mark.asyncio
 async def test_get_data_attribute_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7786,7 +7117,7 @@ def test_get_data_attribute_flattened_error():
 @pytest.mark.asyncio
 async def test_get_data_attribute_flattened_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7817,7 +7148,7 @@ async def test_get_data_attribute_flattened_async():
 @pytest.mark.asyncio
 async def test_get_data_attribute_flattened_error_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7920,17 +7251,814 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
-@pytest.mark.parametrize(
-    "transport_name",
-    [
-        "grpc",
-    ],
-)
-def test_transport_kind(transport_name):
-    transport = DataTaxonomyServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_transport_kind_grpc():
+    transport = DataTaxonomyServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
     )
-    assert transport.kind == transport_name
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_data_taxonomy_empty_call_grpc():
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_taxonomy), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_data_taxonomy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcd_data_taxonomy.CreateDataTaxonomyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_data_taxonomy_empty_call_grpc():
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_taxonomy), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_data_taxonomy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcd_data_taxonomy.UpdateDataTaxonomyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_data_taxonomy_empty_call_grpc():
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_taxonomy), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_data_taxonomy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.DeleteDataTaxonomyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_data_taxonomies_empty_call_grpc():
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_taxonomies), "__call__"
+    ) as call:
+        call.return_value = data_taxonomy.ListDataTaxonomiesResponse()
+        client.list_data_taxonomies(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.ListDataTaxonomiesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_data_taxonomy_empty_call_grpc():
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_taxonomy), "__call__"
+    ) as call:
+        call.return_value = data_taxonomy.DataTaxonomy()
+        client.get_data_taxonomy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.GetDataTaxonomyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_data_attribute_binding_empty_call_grpc():
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_attribute_binding), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_data_attribute_binding(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.CreateDataAttributeBindingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_data_attribute_binding_empty_call_grpc():
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_attribute_binding), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_data_attribute_binding(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.UpdateDataAttributeBindingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_data_attribute_binding_empty_call_grpc():
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_attribute_binding), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_data_attribute_binding(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.DeleteDataAttributeBindingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_data_attribute_bindings_empty_call_grpc():
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_attribute_bindings), "__call__"
+    ) as call:
+        call.return_value = data_taxonomy.ListDataAttributeBindingsResponse()
+        client.list_data_attribute_bindings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.ListDataAttributeBindingsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_data_attribute_binding_empty_call_grpc():
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_attribute_binding), "__call__"
+    ) as call:
+        call.return_value = data_taxonomy.DataAttributeBinding()
+        client.get_data_attribute_binding(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.GetDataAttributeBindingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_data_attribute_empty_call_grpc():
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_attribute), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_data_attribute(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.CreateDataAttributeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_data_attribute_empty_call_grpc():
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_attribute), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_data_attribute(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.UpdateDataAttributeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_data_attribute_empty_call_grpc():
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_attribute), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_data_attribute(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.DeleteDataAttributeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_data_attributes_empty_call_grpc():
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_attributes), "__call__"
+    ) as call:
+        call.return_value = data_taxonomy.ListDataAttributesResponse()
+        client.list_data_attributes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.ListDataAttributesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_data_attribute_empty_call_grpc():
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_attribute), "__call__"
+    ) as call:
+        call.return_value = data_taxonomy.DataAttribute()
+        client.get_data_attribute(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.GetDataAttributeRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = DataTaxonomyServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_data_taxonomy_empty_call_grpc_asyncio():
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_taxonomy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_data_taxonomy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcd_data_taxonomy.CreateDataTaxonomyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_data_taxonomy_empty_call_grpc_asyncio():
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_taxonomy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_data_taxonomy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcd_data_taxonomy.UpdateDataTaxonomyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_data_taxonomy_empty_call_grpc_asyncio():
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_taxonomy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_data_taxonomy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.DeleteDataTaxonomyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_data_taxonomies_empty_call_grpc_asyncio():
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_taxonomies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_taxonomy.ListDataTaxonomiesResponse(
+                next_page_token="next_page_token_value",
+                unreachable_locations=["unreachable_locations_value"],
+            )
+        )
+        await client.list_data_taxonomies(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.ListDataTaxonomiesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_data_taxonomy_empty_call_grpc_asyncio():
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_taxonomy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_taxonomy.DataTaxonomy(
+                name="name_value",
+                uid="uid_value",
+                description="description_value",
+                display_name="display_name_value",
+                attribute_count=1628,
+                etag="etag_value",
+                class_count=1182,
+            )
+        )
+        await client.get_data_taxonomy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.GetDataTaxonomyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_data_attribute_binding_empty_call_grpc_asyncio():
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_attribute_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_data_attribute_binding(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.CreateDataAttributeBindingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_data_attribute_binding_empty_call_grpc_asyncio():
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_attribute_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_data_attribute_binding(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.UpdateDataAttributeBindingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_data_attribute_binding_empty_call_grpc_asyncio():
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_attribute_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_data_attribute_binding(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.DeleteDataAttributeBindingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_data_attribute_bindings_empty_call_grpc_asyncio():
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_attribute_bindings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_taxonomy.ListDataAttributeBindingsResponse(
+                next_page_token="next_page_token_value",
+                unreachable_locations=["unreachable_locations_value"],
+            )
+        )
+        await client.list_data_attribute_bindings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.ListDataAttributeBindingsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_data_attribute_binding_empty_call_grpc_asyncio():
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_attribute_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_taxonomy.DataAttributeBinding(
+                name="name_value",
+                uid="uid_value",
+                description="description_value",
+                display_name="display_name_value",
+                etag="etag_value",
+                attributes=["attributes_value"],
+            )
+        )
+        await client.get_data_attribute_binding(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.GetDataAttributeBindingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_data_attribute_empty_call_grpc_asyncio():
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_data_attribute), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_data_attribute(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.CreateDataAttributeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_data_attribute_empty_call_grpc_asyncio():
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_data_attribute), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_data_attribute(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.UpdateDataAttributeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_data_attribute_empty_call_grpc_asyncio():
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_data_attribute), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_data_attribute(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.DeleteDataAttributeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_data_attributes_empty_call_grpc_asyncio():
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_data_attributes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_taxonomy.ListDataAttributesResponse(
+                next_page_token="next_page_token_value",
+                unreachable_locations=["unreachable_locations_value"],
+            )
+        )
+        await client.list_data_attributes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.ListDataAttributesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_data_attribute_empty_call_grpc_asyncio():
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_attribute), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_taxonomy.DataAttribute(
+                name="name_value",
+                uid="uid_value",
+                description="description_value",
+                display_name="display_name_value",
+                parent_id="parent_id_value",
+                attribute_count=1628,
+                etag="etag_value",
+            )
+        )
+        await client.get_data_attribute(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = data_taxonomy.GetDataAttributeRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -8586,20 +8714,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
 def test_delete_operation(transport: str = "grpc"):
     client = DataTaxonomyServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8627,7 +8741,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8680,7 +8794,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8725,7 +8839,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -8766,7 +8880,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8819,7 +8933,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8864,7 +8978,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -8905,7 +9019,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8960,7 +9074,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9007,7 +9121,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -9050,7 +9164,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9105,7 +9219,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9152,7 +9266,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -9195,7 +9309,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9250,7 +9364,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9297,7 +9411,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -9340,7 +9454,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9394,9 +9508,7 @@ def test_get_location_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
-    client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    client = DataTaxonomyServiceAsyncClient(credentials=async_anonymous_credentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -9442,7 +9554,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = DataTaxonomyServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -9458,21 +9570,29 @@ async def test_get_location_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = DataTaxonomyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = DataTaxonomyServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = DataTaxonomyServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -229,6 +230,9 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1165,7 +1169,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_orders: gapic_v1.method_async.wrap_method(
+            self.list_orders: self._wrap_method(
                 self.list_orders,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1179,7 +1183,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_order: gapic_v1.method_async.wrap_method(
+            self.get_order: self._wrap_method(
                 self.get_order,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1193,12 +1197,12 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_order: gapic_v1.method_async.wrap_method(
+            self.create_order: self._wrap_method(
                 self.create_order,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_order: gapic_v1.method_async.wrap_method(
+            self.update_order: self._wrap_method(
                 self.update_order,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1212,7 +1216,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_order: gapic_v1.method_async.wrap_method(
+            self.delete_order: self._wrap_method(
                 self.delete_order,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1226,7 +1230,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.submit_order: gapic_v1.method_async.wrap_method(
+            self.submit_order: self._wrap_method(
                 self.submit_order,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1240,7 +1244,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_sites: gapic_v1.method_async.wrap_method(
+            self.list_sites: self._wrap_method(
                 self.list_sites,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1254,7 +1258,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_site: gapic_v1.method_async.wrap_method(
+            self.get_site: self._wrap_method(
                 self.get_site,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1268,12 +1272,12 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_site: gapic_v1.method_async.wrap_method(
+            self.create_site: self._wrap_method(
                 self.create_site,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_site: gapic_v1.method_async.wrap_method(
+            self.update_site: self._wrap_method(
                 self.update_site,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1287,7 +1291,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_hardware_groups: gapic_v1.method_async.wrap_method(
+            self.list_hardware_groups: self._wrap_method(
                 self.list_hardware_groups,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1301,7 +1305,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_hardware_group: gapic_v1.method_async.wrap_method(
+            self.get_hardware_group: self._wrap_method(
                 self.get_hardware_group,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1315,12 +1319,12 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_hardware_group: gapic_v1.method_async.wrap_method(
+            self.create_hardware_group: self._wrap_method(
                 self.create_hardware_group,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_hardware_group: gapic_v1.method_async.wrap_method(
+            self.update_hardware_group: self._wrap_method(
                 self.update_hardware_group,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1334,7 +1338,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_hardware_group: gapic_v1.method_async.wrap_method(
+            self.delete_hardware_group: self._wrap_method(
                 self.delete_hardware_group,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1348,7 +1352,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_hardware: gapic_v1.method_async.wrap_method(
+            self.list_hardware: self._wrap_method(
                 self.list_hardware,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1362,7 +1366,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_hardware: gapic_v1.method_async.wrap_method(
+            self.get_hardware: self._wrap_method(
                 self.get_hardware,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1376,12 +1380,12 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_hardware: gapic_v1.method_async.wrap_method(
+            self.create_hardware: self._wrap_method(
                 self.create_hardware,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_hardware: gapic_v1.method_async.wrap_method(
+            self.update_hardware: self._wrap_method(
                 self.update_hardware,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1395,7 +1399,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_hardware: gapic_v1.method_async.wrap_method(
+            self.delete_hardware: self._wrap_method(
                 self.delete_hardware,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1409,7 +1413,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_comments: gapic_v1.method_async.wrap_method(
+            self.list_comments: self._wrap_method(
                 self.list_comments,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1423,7 +1427,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_comment: gapic_v1.method_async.wrap_method(
+            self.get_comment: self._wrap_method(
                 self.get_comment,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1437,17 +1441,17 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_comment: gapic_v1.method_async.wrap_method(
+            self.create_comment: self._wrap_method(
                 self.create_comment,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.record_action_on_comment: gapic_v1.method_async.wrap_method(
+            self.record_action_on_comment: self._wrap_method(
                 self.record_action_on_comment,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_change_log_entries: gapic_v1.method_async.wrap_method(
+            self.list_change_log_entries: self._wrap_method(
                 self.list_change_log_entries,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1461,7 +1465,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_change_log_entry: gapic_v1.method_async.wrap_method(
+            self.get_change_log_entry: self._wrap_method(
                 self.get_change_log_entry,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1475,7 +1479,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_skus: gapic_v1.method_async.wrap_method(
+            self.list_skus: self._wrap_method(
                 self.list_skus,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1489,7 +1493,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_sku: gapic_v1.method_async.wrap_method(
+            self.get_sku: self._wrap_method(
                 self.get_sku,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1503,7 +1507,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_zones: gapic_v1.method_async.wrap_method(
+            self.list_zones: self._wrap_method(
                 self.list_zones,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1517,7 +1521,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_zone: gapic_v1.method_async.wrap_method(
+            self.get_zone: self._wrap_method(
                 self.get_zone,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1531,12 +1535,12 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_zone: gapic_v1.method_async.wrap_method(
+            self.create_zone: self._wrap_method(
                 self.create_zone,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_zone: gapic_v1.method_async.wrap_method(
+            self.update_zone: self._wrap_method(
                 self.update_zone,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1550,7 +1554,7 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_zone: gapic_v1.method_async.wrap_method(
+            self.delete_zone: self._wrap_method(
                 self.delete_zone,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1564,15 +1568,54 @@ class GDCHardwareManagementGrpcAsyncIOTransport(GDCHardwareManagementTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.signal_zone_state: gapic_v1.method_async.wrap_method(
+            self.signal_zone_state: self._wrap_method(
                 self.signal_zone_state,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(

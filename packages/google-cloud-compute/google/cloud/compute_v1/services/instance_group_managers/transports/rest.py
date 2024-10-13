@@ -16,30 +16,27 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.compute_v1.types import compute
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseInstanceGroupManagersRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.cloud.compute_v1.types import compute
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import InstanceGroupManagersTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -714,8 +711,8 @@ class InstanceGroupManagersRestStub:
     _interceptor: InstanceGroupManagersRestInterceptor
 
 
-class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
-    """REST backend transport for InstanceGroupManagers.
+class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport):
+    """REST backend synchronous transport for InstanceGroupManagers.
 
     The InstanceGroupManagers API.
 
@@ -724,10 +721,6 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
-    NOTE: This REST transport functionality is currently in a beta
-    state (preview). We welcome your feedback via an issue in this
-    library's source repository. Thank you!
     """
 
     def __init__(
@@ -785,21 +778,12 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -810,19 +794,35 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         self._interceptor = interceptor or InstanceGroupManagersRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AbandonInstances(InstanceGroupManagersRestStub):
+    class _AbandonInstances(
+        _BaseInstanceGroupManagersRestTransport._BaseAbandonInstances,
+        InstanceGroupManagersRestStub,
+    ):
         def __hash__(self):
-            return hash("AbandonInstances")
+            return hash("InstanceGroupManagersRestTransport.AbandonInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -867,45 +867,36 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/abandonInstances",
-                    "body": "instance_group_managers_abandon_instances_request_resource",
-                },
-            ]
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseAbandonInstances._get_http_options()
+            )
             request, metadata = self._interceptor.pre_abandon_instances(
                 request, metadata
             )
-            pb_request = compute.AbandonInstancesInstanceGroupManagerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseAbandonInstances._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseInstanceGroupManagersRestTransport._BaseAbandonInstances._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseAbandonInstances._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                InstanceGroupManagersRestTransport._AbandonInstances._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -921,19 +912,34 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_abandon_instances(resp)
             return resp
 
-    class _AggregatedList(InstanceGroupManagersRestStub):
+    class _AggregatedList(
+        _BaseInstanceGroupManagersRestTransport._BaseAggregatedList,
+        InstanceGroupManagersRestStub,
+    ):
         def __hash__(self):
-            return hash("AggregatedList")
+            return hash("InstanceGroupManagersRestTransport.AggregatedList")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -961,36 +967,27 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/compute/v1/projects/{project}/aggregated/instanceGroupManagers",
-                },
-            ]
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseAggregatedList._get_http_options()
+            )
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            pb_request = compute.AggregatedListInstanceGroupManagersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseAggregatedList._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseAggregatedList._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = InstanceGroupManagersRestTransport._AggregatedList._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1006,19 +1003,35 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_aggregated_list(resp)
             return resp
 
-    class _ApplyUpdatesToInstances(InstanceGroupManagersRestStub):
+    class _ApplyUpdatesToInstances(
+        _BaseInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances,
+        InstanceGroupManagersRestStub,
+    ):
         def __hash__(self):
-            return hash("ApplyUpdatesToInstances")
+            return hash("InstanceGroupManagersRestTransport.ApplyUpdatesToInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1064,47 +1077,34 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/applyUpdatesToInstances",
-                    "body": "instance_group_managers_apply_updates_request_resource",
-                },
-            ]
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances._get_http_options()
+            )
             request, metadata = self._interceptor.pre_apply_updates_to_instances(
                 request, metadata
             )
-            pb_request = compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest.pb(
-                request
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+            body = _BaseInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = InstanceGroupManagersRestTransport._ApplyUpdatesToInstances._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1120,19 +1120,35 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_apply_updates_to_instances(resp)
             return resp
 
-    class _CreateInstances(InstanceGroupManagersRestStub):
+    class _CreateInstances(
+        _BaseInstanceGroupManagersRestTransport._BaseCreateInstances,
+        InstanceGroupManagersRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateInstances")
+            return hash("InstanceGroupManagersRestTransport.CreateInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1177,45 +1193,36 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/createInstances",
-                    "body": "instance_group_managers_create_instances_request_resource",
-                },
-            ]
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseCreateInstances._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_instances(
                 request, metadata
             )
-            pb_request = compute.CreateInstancesInstanceGroupManagerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseCreateInstances._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseInstanceGroupManagersRestTransport._BaseCreateInstances._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseCreateInstances._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                InstanceGroupManagersRestTransport._CreateInstances._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1231,19 +1238,34 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_create_instances(resp)
             return resp
 
-    class _Delete(InstanceGroupManagersRestStub):
+    class _Delete(
+        _BaseInstanceGroupManagersRestTransport._BaseDelete,
+        InstanceGroupManagersRestStub,
+    ):
         def __hash__(self):
-            return hash("Delete")
+            return hash("InstanceGroupManagersRestTransport.Delete")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1288,36 +1310,27 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}",
-                },
-            ]
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseDelete._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            pb_request = compute.DeleteInstanceGroupManagerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseDelete._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseDelete._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = InstanceGroupManagersRestTransport._Delete._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1333,19 +1346,35 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_delete(resp)
             return resp
 
-    class _DeleteInstances(InstanceGroupManagersRestStub):
+    class _DeleteInstances(
+        _BaseInstanceGroupManagersRestTransport._BaseDeleteInstances,
+        InstanceGroupManagersRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteInstances")
+            return hash("InstanceGroupManagersRestTransport.DeleteInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1390,45 +1419,36 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/deleteInstances",
-                    "body": "instance_group_managers_delete_instances_request_resource",
-                },
-            ]
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseDeleteInstances._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_instances(
                 request, metadata
             )
-            pb_request = compute.DeleteInstancesInstanceGroupManagerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseDeleteInstances._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseInstanceGroupManagersRestTransport._BaseDeleteInstances._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseDeleteInstances._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                InstanceGroupManagersRestTransport._DeleteInstances._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1444,19 +1464,35 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_delete_instances(resp)
             return resp
 
-    class _DeletePerInstanceConfigs(InstanceGroupManagersRestStub):
+    class _DeletePerInstanceConfigs(
+        _BaseInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs,
+        InstanceGroupManagersRestStub,
+    ):
         def __hash__(self):
-            return hash("DeletePerInstanceConfigs")
+            return hash("InstanceGroupManagersRestTransport.DeletePerInstanceConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1502,47 +1538,34 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/deletePerInstanceConfigs",
-                    "body": "instance_group_managers_delete_per_instance_configs_req_resource",
-                },
-            ]
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_per_instance_configs(
                 request, metadata
             )
-            pb_request = compute.DeletePerInstanceConfigsInstanceGroupManagerRequest.pb(
-                request
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+            body = _BaseInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = InstanceGroupManagersRestTransport._DeletePerInstanceConfigs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1558,19 +1581,33 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_delete_per_instance_configs(resp)
             return resp
 
-    class _Get(InstanceGroupManagersRestStub):
+    class _Get(
+        _BaseInstanceGroupManagersRestTransport._BaseGet, InstanceGroupManagersRestStub
+    ):
         def __hash__(self):
-            return hash("Get")
+            return hash("InstanceGroupManagersRestTransport.Get")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1607,36 +1644,29 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}",
-                },
-            ]
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseGet._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get(request, metadata)
-            pb_request = compute.GetInstanceGroupManagerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseGet._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+            query_params = (
+                _BaseInstanceGroupManagersRestTransport._BaseGet._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = InstanceGroupManagersRestTransport._Get._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1652,19 +1682,35 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_get(resp)
             return resp
 
-    class _Insert(InstanceGroupManagersRestStub):
+    class _Insert(
+        _BaseInstanceGroupManagersRestTransport._BaseInsert,
+        InstanceGroupManagersRestStub,
+    ):
         def __hash__(self):
-            return hash("Insert")
+            return hash("InstanceGroupManagersRestTransport.Insert")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1709,43 +1755,32 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers",
-                    "body": "instance_group_manager_resource",
-                },
-            ]
-            request, metadata = self._interceptor.pre_insert(request, metadata)
-            pb_request = compute.InsertInstanceGroupManagerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseInsert._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_insert(request, metadata)
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseInsert._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseInstanceGroupManagersRestTransport._BaseInsert._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseInsert._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = InstanceGroupManagersRestTransport._Insert._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1761,19 +1796,33 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_insert(resp)
             return resp
 
-    class _List(InstanceGroupManagersRestStub):
+    class _List(
+        _BaseInstanceGroupManagersRestTransport._BaseList, InstanceGroupManagersRestStub
+    ):
         def __hash__(self):
-            return hash("List")
+            return hash("InstanceGroupManagersRestTransport.List")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1801,36 +1850,27 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                     [Output Only] A list of managed instance groups.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers",
-                },
-            ]
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseList._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list(request, metadata)
-            pb_request = compute.ListInstanceGroupManagersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseList._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseList._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = InstanceGroupManagersRestTransport._List._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1846,19 +1886,34 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_list(resp)
             return resp
 
-    class _ListErrors(InstanceGroupManagersRestStub):
+    class _ListErrors(
+        _BaseInstanceGroupManagersRestTransport._BaseListErrors,
+        InstanceGroupManagersRestStub,
+    ):
         def __hash__(self):
-            return hash("ListErrors")
+            return hash("InstanceGroupManagersRestTransport.ListErrors")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1886,36 +1941,27 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/listErrors",
-                },
-            ]
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseListErrors._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_errors(request, metadata)
-            pb_request = compute.ListErrorsInstanceGroupManagersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseListErrors._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseListErrors._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = InstanceGroupManagersRestTransport._ListErrors._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1931,19 +1977,34 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_list_errors(resp)
             return resp
 
-    class _ListManagedInstances(InstanceGroupManagersRestStub):
+    class _ListManagedInstances(
+        _BaseInstanceGroupManagersRestTransport._BaseListManagedInstances,
+        InstanceGroupManagersRestStub,
+    ):
         def __hash__(self):
-            return hash("ListManagedInstances")
+            return hash("InstanceGroupManagersRestTransport.ListManagedInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1971,40 +2032,31 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/listManagedInstances",
-                },
-            ]
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseListManagedInstances._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_managed_instances(
                 request, metadata
             )
-            pb_request = compute.ListManagedInstancesInstanceGroupManagersRequest.pb(
-                request
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseListManagedInstances._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseListManagedInstances._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                InstanceGroupManagersRestTransport._ListManagedInstances._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2020,19 +2072,34 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_list_managed_instances(resp)
             return resp
 
-    class _ListPerInstanceConfigs(InstanceGroupManagersRestStub):
+    class _ListPerInstanceConfigs(
+        _BaseInstanceGroupManagersRestTransport._BaseListPerInstanceConfigs,
+        InstanceGroupManagersRestStub,
+    ):
         def __hash__(self):
-            return hash("ListPerInstanceConfigs")
+            return hash("InstanceGroupManagersRestTransport.ListPerInstanceConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2060,40 +2127,29 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/listPerInstanceConfigs",
-                },
-            ]
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseListPerInstanceConfigs._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_per_instance_configs(
                 request, metadata
             )
-            pb_request = compute.ListPerInstanceConfigsInstanceGroupManagersRequest.pb(
-                request
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseListPerInstanceConfigs._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseListPerInstanceConfigs._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = InstanceGroupManagersRestTransport._ListPerInstanceConfigs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2109,19 +2165,35 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_list_per_instance_configs(resp)
             return resp
 
-    class _Patch(InstanceGroupManagersRestStub):
+    class _Patch(
+        _BaseInstanceGroupManagersRestTransport._BasePatch,
+        InstanceGroupManagersRestStub,
+    ):
         def __hash__(self):
-            return hash("Patch")
+            return hash("InstanceGroupManagersRestTransport.Patch")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2166,43 +2238,32 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}",
-                    "body": "instance_group_manager_resource",
-                },
-            ]
-            request, metadata = self._interceptor.pre_patch(request, metadata)
-            pb_request = compute.PatchInstanceGroupManagerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BasePatch._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_patch(request, metadata)
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BasePatch._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseInstanceGroupManagersRestTransport._BasePatch._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BasePatch._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = InstanceGroupManagersRestTransport._Patch._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2218,19 +2279,35 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_patch(resp)
             return resp
 
-    class _PatchPerInstanceConfigs(InstanceGroupManagersRestStub):
+    class _PatchPerInstanceConfigs(
+        _BaseInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs,
+        InstanceGroupManagersRestStub,
+    ):
         def __hash__(self):
-            return hash("PatchPerInstanceConfigs")
+            return hash("InstanceGroupManagersRestTransport.PatchPerInstanceConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2276,47 +2353,34 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/patchPerInstanceConfigs",
-                    "body": "instance_group_managers_patch_per_instance_configs_req_resource",
-                },
-            ]
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs._get_http_options()
+            )
             request, metadata = self._interceptor.pre_patch_per_instance_configs(
                 request, metadata
             )
-            pb_request = compute.PatchPerInstanceConfigsInstanceGroupManagerRequest.pb(
-                request
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+            body = _BaseInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = InstanceGroupManagersRestTransport._PatchPerInstanceConfigs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2332,19 +2396,35 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_patch_per_instance_configs(resp)
             return resp
 
-    class _RecreateInstances(InstanceGroupManagersRestStub):
+    class _RecreateInstances(
+        _BaseInstanceGroupManagersRestTransport._BaseRecreateInstances,
+        InstanceGroupManagersRestStub,
+    ):
         def __hash__(self):
-            return hash("RecreateInstances")
+            return hash("InstanceGroupManagersRestTransport.RecreateInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2389,47 +2469,36 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/recreateInstances",
-                    "body": "instance_group_managers_recreate_instances_request_resource",
-                },
-            ]
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseRecreateInstances._get_http_options()
+            )
             request, metadata = self._interceptor.pre_recreate_instances(
                 request, metadata
             )
-            pb_request = compute.RecreateInstancesInstanceGroupManagerRequest.pb(
-                request
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseRecreateInstances._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+            body = _BaseInstanceGroupManagersRestTransport._BaseRecreateInstances._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseRecreateInstances._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                InstanceGroupManagersRestTransport._RecreateInstances._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2445,21 +2514,34 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_recreate_instances(resp)
             return resp
 
-    class _Resize(InstanceGroupManagersRestStub):
+    class _Resize(
+        _BaseInstanceGroupManagersRestTransport._BaseResize,
+        InstanceGroupManagersRestStub,
+    ):
         def __hash__(self):
-            return hash("Resize")
+            return hash("InstanceGroupManagersRestTransport.Resize")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "size": 0,
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2504,36 +2586,27 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/resize",
-                },
-            ]
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseResize._get_http_options()
+            )
             request, metadata = self._interceptor.pre_resize(request, metadata)
-            pb_request = compute.ResizeInstanceGroupManagerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseResize._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseResize._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = InstanceGroupManagersRestTransport._Resize._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2549,19 +2622,35 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_resize(resp)
             return resp
 
-    class _SetInstanceTemplate(InstanceGroupManagersRestStub):
+    class _SetInstanceTemplate(
+        _BaseInstanceGroupManagersRestTransport._BaseSetInstanceTemplate,
+        InstanceGroupManagersRestStub,
+    ):
         def __hash__(self):
-            return hash("SetInstanceTemplate")
+            return hash("InstanceGroupManagersRestTransport.SetInstanceTemplate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2606,47 +2695,36 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/setInstanceTemplate",
-                    "body": "instance_group_managers_set_instance_template_request_resource",
-                },
-            ]
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseSetInstanceTemplate._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_instance_template(
                 request, metadata
             )
-            pb_request = compute.SetInstanceTemplateInstanceGroupManagerRequest.pb(
-                request
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseSetInstanceTemplate._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+            body = _BaseInstanceGroupManagersRestTransport._BaseSetInstanceTemplate._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseSetInstanceTemplate._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                InstanceGroupManagersRestTransport._SetInstanceTemplate._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2662,19 +2740,35 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_set_instance_template(resp)
             return resp
 
-    class _SetTargetPools(InstanceGroupManagersRestStub):
+    class _SetTargetPools(
+        _BaseInstanceGroupManagersRestTransport._BaseSetTargetPools,
+        InstanceGroupManagersRestStub,
+    ):
         def __hash__(self):
-            return hash("SetTargetPools")
+            return hash("InstanceGroupManagersRestTransport.SetTargetPools")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2719,45 +2813,34 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/setTargetPools",
-                    "body": "instance_group_managers_set_target_pools_request_resource",
-                },
-            ]
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseSetTargetPools._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_target_pools(
                 request, metadata
             )
-            pb_request = compute.SetTargetPoolsInstanceGroupManagerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseSetTargetPools._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseInstanceGroupManagersRestTransport._BaseSetTargetPools._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseSetTargetPools._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = InstanceGroupManagersRestTransport._SetTargetPools._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2773,19 +2856,35 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             resp = self._interceptor.post_set_target_pools(resp)
             return resp
 
-    class _UpdatePerInstanceConfigs(InstanceGroupManagersRestStub):
+    class _UpdatePerInstanceConfigs(
+        _BaseInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs,
+        InstanceGroupManagersRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdatePerInstanceConfigs")
+            return hash("InstanceGroupManagersRestTransport.UpdatePerInstanceConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2831,47 +2930,34 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/zones/{zone}/instanceGroupManagers/{instance_group_manager}/updatePerInstanceConfigs",
-                    "body": "instance_group_managers_update_per_instance_configs_req_resource",
-                },
-            ]
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_per_instance_configs(
                 request, metadata
             )
-            pb_request = compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest.pb(
-                request
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+            body = _BaseInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = InstanceGroupManagersRestTransport._UpdatePerInstanceConfigs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

@@ -22,25 +22,11 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
-from google.api_core import (
-    future,
-    gapic_v1,
-    grpc_helpers,
-    grpc_helpers_async,
-    path_template,
-)
-from google.api_core import api_core_version, client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import extended_operation  # type: ignore
-from google.api_core import retry as retries
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.oauth2 import service_account
+from google.api_core import api_core_version
 from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
@@ -50,6 +36,29 @@ import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
+from google.api_core import (
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
+from google.api_core import client_options
+from google.api_core import exceptions as core_exceptions
+from google.api_core import extended_operation  # type: ignore
+from google.api_core import retry as retries
+import google.auth
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.oauth2 import service_account
+
 from google.cloud.compute_v1.services.region_target_http_proxies import (
     RegionTargetHttpProxiesClient,
     pagers,
@@ -58,8 +67,22 @@ from google.cloud.compute_v1.services.region_target_http_proxies import (
 from google.cloud.compute_v1.types import compute
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1008,92 +1031,6 @@ def test_region_target_http_proxies_client_client_options_credentials_file(
         )
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.DeleteRegionTargetHttpProxyRequest,
-        dict,
-    ],
-)
-def test_delete_rest(request_type):
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "project": "sample1",
-        "region": "sample2",
-        "target_http_proxy": "sample3",
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, extended_operation.ExtendedOperation)
-    assert response.client_operation_id == "client_operation_id_value"
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.end_time == "end_time_value"
-    assert response.http_error_message == "http_error_message_value"
-    assert response.http_error_status_code == 2374
-    assert response.id == 205
-    assert response.insert_time == "insert_time_value"
-    assert response.kind == "kind_value"
-    assert response.name == "name_value"
-    assert response.operation_group_id == "operation_group_id_value"
-    assert response.operation_type == "operation_type_value"
-    assert response.progress == 885
-    assert response.region == "region_value"
-    assert response.self_link == "self_link_value"
-    assert response.start_time == "start_time_value"
-    assert response.status == compute.Operation.Status.DONE
-    assert response.status_message == "status_message_value"
-    assert response.target_id == 947
-    assert response.target_link == "target_link_value"
-    assert response.user == "user_value"
-    assert response.zone == "zone_value"
-
-
 def test_delete_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -1236,89 +1173,6 @@ def test_delete_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_rest_interceptors(null_interceptor):
-    transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionTargetHttpProxiesRestInterceptor(),
-    )
-    client = RegionTargetHttpProxiesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionTargetHttpProxiesRestInterceptor, "post_delete"
-    ) as post, mock.patch.object(
-        transports.RegionTargetHttpProxiesRestInterceptor, "pre_delete"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.DeleteRegionTargetHttpProxyRequest.pb(
-            compute.DeleteRegionTargetHttpProxyRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.DeleteRegionTargetHttpProxyRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.delete(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_rest_bad_request(
-    transport: str = "rest", request_type=compute.DeleteRegionTargetHttpProxyRequest
-):
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "project": "sample1",
-        "region": "sample2",
-        "target_http_proxy": "sample3",
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete(request)
-
-
 def test_delete_rest_flattened():
     client = RegionTargetHttpProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1382,76 +1236,6 @@ def test_delete_rest_flattened_error(transport: str = "rest"):
             region="region_value",
             target_http_proxy="target_http_proxy_value",
         )
-
-
-def test_delete_rest_error():
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.DeleteRegionTargetHttpProxyRequest,
-        dict,
-    ],
-)
-def test_delete_unary_rest(request_type):
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "project": "sample1",
-        "region": "sample2",
-        "target_http_proxy": "sample3",
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_unary(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.Operation)
 
 
 def test_delete_unary_rest_use_cached_wrapped_rpc():
@@ -1596,89 +1380,6 @@ def test_delete_unary_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_unary_rest_interceptors(null_interceptor):
-    transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionTargetHttpProxiesRestInterceptor(),
-    )
-    client = RegionTargetHttpProxiesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionTargetHttpProxiesRestInterceptor, "post_delete"
-    ) as post, mock.patch.object(
-        transports.RegionTargetHttpProxiesRestInterceptor, "pre_delete"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.DeleteRegionTargetHttpProxyRequest.pb(
-            compute.DeleteRegionTargetHttpProxyRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.DeleteRegionTargetHttpProxyRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.delete_unary(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_unary_rest_bad_request(
-    transport: str = "rest", request_type=compute.DeleteRegionTargetHttpProxyRequest
-):
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "project": "sample1",
-        "region": "sample2",
-        "target_http_proxy": "sample3",
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_unary(request)
-
-
 def test_delete_unary_rest_flattened():
     client = RegionTargetHttpProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1742,76 +1443,6 @@ def test_delete_unary_rest_flattened_error(transport: str = "rest"):
             region="region_value",
             target_http_proxy="target_http_proxy_value",
         )
-
-
-def test_delete_unary_rest_error():
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.GetRegionTargetHttpProxyRequest,
-        dict,
-    ],
-)
-def test_get_rest(request_type):
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "project": "sample1",
-        "region": "sample2",
-        "target_http_proxy": "sample3",
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.TargetHttpProxy(
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            fingerprint="fingerprint_value",
-            http_keep_alive_timeout_sec=2868,
-            id=205,
-            kind="kind_value",
-            name="name_value",
-            proxy_bind=True,
-            region="region_value",
-            self_link="self_link_value",
-            url_map="url_map_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.TargetHttpProxy.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.TargetHttpProxy)
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.fingerprint == "fingerprint_value"
-    assert response.http_keep_alive_timeout_sec == 2868
-    assert response.id == 205
-    assert response.kind == "kind_value"
-    assert response.name == "name_value"
-    assert response.proxy_bind is True
-    assert response.region == "region_value"
-    assert response.self_link == "self_link_value"
-    assert response.url_map == "url_map_value"
 
 
 def test_get_rest_use_cached_wrapped_rpc():
@@ -1948,91 +1579,6 @@ def test_get_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_rest_interceptors(null_interceptor):
-    transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionTargetHttpProxiesRestInterceptor(),
-    )
-    client = RegionTargetHttpProxiesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionTargetHttpProxiesRestInterceptor, "post_get"
-    ) as post, mock.patch.object(
-        transports.RegionTargetHttpProxiesRestInterceptor, "pre_get"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.GetRegionTargetHttpProxyRequest.pb(
-            compute.GetRegionTargetHttpProxyRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.TargetHttpProxy.to_json(
-            compute.TargetHttpProxy()
-        )
-
-        request = compute.GetRegionTargetHttpProxyRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.TargetHttpProxy()
-
-        client.get(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_rest_bad_request(
-    transport: str = "rest", request_type=compute.GetRegionTargetHttpProxyRequest
-):
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "project": "sample1",
-        "region": "sample2",
-        "target_http_proxy": "sample3",
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get(request)
-
-
 def test_get_rest_flattened():
     client = RegionTargetHttpProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2096,180 +1642,6 @@ def test_get_rest_flattened_error(transport: str = "rest"):
             region="region_value",
             target_http_proxy="target_http_proxy_value",
         )
-
-
-def test_get_rest_error():
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.InsertRegionTargetHttpProxyRequest,
-        dict,
-    ],
-)
-def test_insert_rest(request_type):
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2"}
-    request_init["target_http_proxy_resource"] = {
-        "creation_timestamp": "creation_timestamp_value",
-        "description": "description_value",
-        "fingerprint": "fingerprint_value",
-        "http_keep_alive_timeout_sec": 2868,
-        "id": 205,
-        "kind": "kind_value",
-        "name": "name_value",
-        "proxy_bind": True,
-        "region": "region_value",
-        "self_link": "self_link_value",
-        "url_map": "url_map_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = compute.InsertRegionTargetHttpProxyRequest.meta.fields[
-        "target_http_proxy_resource"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "target_http_proxy_resource"
-    ].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(
-                    0, len(request_init["target_http_proxy_resource"][field])
-                ):
-                    del request_init["target_http_proxy_resource"][field][i][subfield]
-            else:
-                del request_init["target_http_proxy_resource"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.insert(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, extended_operation.ExtendedOperation)
-    assert response.client_operation_id == "client_operation_id_value"
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.end_time == "end_time_value"
-    assert response.http_error_message == "http_error_message_value"
-    assert response.http_error_status_code == 2374
-    assert response.id == 205
-    assert response.insert_time == "insert_time_value"
-    assert response.kind == "kind_value"
-    assert response.name == "name_value"
-    assert response.operation_group_id == "operation_group_id_value"
-    assert response.operation_type == "operation_type_value"
-    assert response.progress == 885
-    assert response.region == "region_value"
-    assert response.self_link == "self_link_value"
-    assert response.start_time == "start_time_value"
-    assert response.status == compute.Operation.Status.DONE
-    assert response.status_message == "status_message_value"
-    assert response.target_id == 947
-    assert response.target_link == "target_link_value"
-    assert response.user == "user_value"
-    assert response.zone == "zone_value"
 
 
 def test_insert_rest_use_cached_wrapped_rpc():
@@ -2411,85 +1783,6 @@ def test_insert_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_insert_rest_interceptors(null_interceptor):
-    transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionTargetHttpProxiesRestInterceptor(),
-    )
-    client = RegionTargetHttpProxiesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionTargetHttpProxiesRestInterceptor, "post_insert"
-    ) as post, mock.patch.object(
-        transports.RegionTargetHttpProxiesRestInterceptor, "pre_insert"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.InsertRegionTargetHttpProxyRequest.pb(
-            compute.InsertRegionTargetHttpProxyRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.InsertRegionTargetHttpProxyRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.insert(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_insert_rest_bad_request(
-    transport: str = "rest", request_type=compute.InsertRegionTargetHttpProxyRequest
-):
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.insert(request)
-
-
 def test_insert_rest_flattened():
     client = RegionTargetHttpProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2553,158 +1846,6 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
                 creation_timestamp="creation_timestamp_value"
             ),
         )
-
-
-def test_insert_rest_error():
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.InsertRegionTargetHttpProxyRequest,
-        dict,
-    ],
-)
-def test_insert_unary_rest(request_type):
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2"}
-    request_init["target_http_proxy_resource"] = {
-        "creation_timestamp": "creation_timestamp_value",
-        "description": "description_value",
-        "fingerprint": "fingerprint_value",
-        "http_keep_alive_timeout_sec": 2868,
-        "id": 205,
-        "kind": "kind_value",
-        "name": "name_value",
-        "proxy_bind": True,
-        "region": "region_value",
-        "self_link": "self_link_value",
-        "url_map": "url_map_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = compute.InsertRegionTargetHttpProxyRequest.meta.fields[
-        "target_http_proxy_resource"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "target_http_proxy_resource"
-    ].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(
-                    0, len(request_init["target_http_proxy_resource"][field])
-                ):
-                    del request_init["target_http_proxy_resource"][field][i][subfield]
-            else:
-                del request_init["target_http_proxy_resource"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.insert_unary(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.Operation)
 
 
 def test_insert_unary_rest_use_cached_wrapped_rpc():
@@ -2846,85 +1987,6 @@ def test_insert_unary_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_insert_unary_rest_interceptors(null_interceptor):
-    transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionTargetHttpProxiesRestInterceptor(),
-    )
-    client = RegionTargetHttpProxiesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionTargetHttpProxiesRestInterceptor, "post_insert"
-    ) as post, mock.patch.object(
-        transports.RegionTargetHttpProxiesRestInterceptor, "pre_insert"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.InsertRegionTargetHttpProxyRequest.pb(
-            compute.InsertRegionTargetHttpProxyRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.InsertRegionTargetHttpProxyRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.insert_unary(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_insert_unary_rest_bad_request(
-    transport: str = "rest", request_type=compute.InsertRegionTargetHttpProxyRequest
-):
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.insert_unary(request)
-
-
 def test_insert_unary_rest_flattened():
     client = RegionTargetHttpProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2988,58 +2050,6 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
                 creation_timestamp="creation_timestamp_value"
             ),
         )
-
-
-def test_insert_unary_rest_error():
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.ListRegionTargetHttpProxiesRequest,
-        dict,
-    ],
-)
-def test_list_rest(request_type):
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.TargetHttpProxyList(
-            id="id_value",
-            kind="kind_value",
-            next_page_token="next_page_token_value",
-            self_link="self_link_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.TargetHttpProxyList.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListPager)
-    assert response.id == "id_value"
-    assert response.kind == "kind_value"
-    assert response.next_page_token == "next_page_token_value"
-    assert response.self_link == "self_link_value"
 
 
 def test_list_rest_use_cached_wrapped_rpc():
@@ -3191,87 +2201,6 @@ def test_list_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_rest_interceptors(null_interceptor):
-    transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionTargetHttpProxiesRestInterceptor(),
-    )
-    client = RegionTargetHttpProxiesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionTargetHttpProxiesRestInterceptor, "post_list"
-    ) as post, mock.patch.object(
-        transports.RegionTargetHttpProxiesRestInterceptor, "pre_list"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.ListRegionTargetHttpProxiesRequest.pb(
-            compute.ListRegionTargetHttpProxiesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.TargetHttpProxyList.to_json(
-            compute.TargetHttpProxyList()
-        )
-
-        request = compute.ListRegionTargetHttpProxiesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.TargetHttpProxyList()
-
-        client.list(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_rest_bad_request(
-    transport: str = "rest", request_type=compute.ListRegionTargetHttpProxiesRequest
-):
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "region": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list(request)
-
-
 def test_list_rest_flattened():
     client = RegionTargetHttpProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3390,166 +2319,6 @@ def test_list_rest_pager(transport: str = "rest"):
         pages = list(client.list(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.SetUrlMapRegionTargetHttpProxyRequest,
-        dict,
-    ],
-)
-def test_set_url_map_rest(request_type):
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "project": "sample1",
-        "region": "sample2",
-        "target_http_proxy": "sample3",
-    }
-    request_init["url_map_reference_resource"] = {"url_map": "url_map_value"}
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = compute.SetUrlMapRegionTargetHttpProxyRequest.meta.fields[
-        "url_map_reference_resource"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "url_map_reference_resource"
-    ].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(
-                    0, len(request_init["url_map_reference_resource"][field])
-                ):
-                    del request_init["url_map_reference_resource"][field][i][subfield]
-            else:
-                del request_init["url_map_reference_resource"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.set_url_map(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, extended_operation.ExtendedOperation)
-    assert response.client_operation_id == "client_operation_id_value"
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.end_time == "end_time_value"
-    assert response.http_error_message == "http_error_message_value"
-    assert response.http_error_status_code == 2374
-    assert response.id == 205
-    assert response.insert_time == "insert_time_value"
-    assert response.kind == "kind_value"
-    assert response.name == "name_value"
-    assert response.operation_group_id == "operation_group_id_value"
-    assert response.operation_type == "operation_type_value"
-    assert response.progress == 885
-    assert response.region == "region_value"
-    assert response.self_link == "self_link_value"
-    assert response.start_time == "start_time_value"
-    assert response.status == compute.Operation.Status.DONE
-    assert response.status_message == "status_message_value"
-    assert response.target_id == 947
-    assert response.target_link == "target_link_value"
-    assert response.user == "user_value"
-    assert response.zone == "zone_value"
 
 
 def test_set_url_map_rest_use_cached_wrapped_rpc():
@@ -3696,89 +2465,6 @@ def test_set_url_map_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_set_url_map_rest_interceptors(null_interceptor):
-    transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionTargetHttpProxiesRestInterceptor(),
-    )
-    client = RegionTargetHttpProxiesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionTargetHttpProxiesRestInterceptor, "post_set_url_map"
-    ) as post, mock.patch.object(
-        transports.RegionTargetHttpProxiesRestInterceptor, "pre_set_url_map"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.SetUrlMapRegionTargetHttpProxyRequest.pb(
-            compute.SetUrlMapRegionTargetHttpProxyRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.SetUrlMapRegionTargetHttpProxyRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.set_url_map(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_set_url_map_rest_bad_request(
-    transport: str = "rest", request_type=compute.SetUrlMapRegionTargetHttpProxyRequest
-):
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "project": "sample1",
-        "region": "sample2",
-        "target_http_proxy": "sample3",
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.set_url_map(request)
-
-
 def test_set_url_map_rest_flattened():
     client = RegionTargetHttpProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3844,150 +2530,6 @@ def test_set_url_map_rest_flattened_error(transport: str = "rest"):
             target_http_proxy="target_http_proxy_value",
             url_map_reference_resource=compute.UrlMapReference(url_map="url_map_value"),
         )
-
-
-def test_set_url_map_rest_error():
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.SetUrlMapRegionTargetHttpProxyRequest,
-        dict,
-    ],
-)
-def test_set_url_map_unary_rest(request_type):
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "project": "sample1",
-        "region": "sample2",
-        "target_http_proxy": "sample3",
-    }
-    request_init["url_map_reference_resource"] = {"url_map": "url_map_value"}
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = compute.SetUrlMapRegionTargetHttpProxyRequest.meta.fields[
-        "url_map_reference_resource"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "url_map_reference_resource"
-    ].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(
-                    0, len(request_init["url_map_reference_resource"][field])
-                ):
-                    del request_init["url_map_reference_resource"][field][i][subfield]
-            else:
-                del request_init["url_map_reference_resource"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.set_url_map_unary(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.Operation)
 
 
 def test_set_url_map_unary_rest_use_cached_wrapped_rpc():
@@ -4134,89 +2676,6 @@ def test_set_url_map_unary_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_set_url_map_unary_rest_interceptors(null_interceptor):
-    transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionTargetHttpProxiesRestInterceptor(),
-    )
-    client = RegionTargetHttpProxiesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionTargetHttpProxiesRestInterceptor, "post_set_url_map"
-    ) as post, mock.patch.object(
-        transports.RegionTargetHttpProxiesRestInterceptor, "pre_set_url_map"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.SetUrlMapRegionTargetHttpProxyRequest.pb(
-            compute.SetUrlMapRegionTargetHttpProxyRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.SetUrlMapRegionTargetHttpProxyRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.set_url_map_unary(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_set_url_map_unary_rest_bad_request(
-    transport: str = "rest", request_type=compute.SetUrlMapRegionTargetHttpProxyRequest
-):
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "project": "sample1",
-        "region": "sample2",
-        "target_http_proxy": "sample3",
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.set_url_map_unary(request)
-
-
 def test_set_url_map_unary_rest_flattened():
     client = RegionTargetHttpProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4282,12 +2741,6 @@ def test_set_url_map_unary_rest_flattened_error(transport: str = "rest"):
             target_http_proxy="target_http_proxy_value",
             url_map_reference_resource=compute.UrlMapReference(url_map="url_map_value"),
         )
-
-
-def test_set_url_map_unary_rest_error():
-    client = RegionTargetHttpProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
 
 
 def test_credentials_transport_error():
@@ -4365,17 +2818,1047 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_rest():
+    transport = RegionTargetHttpProxiesClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_delete_rest_bad_request(
+    request_type=compute.DeleteRegionTargetHttpProxyRequest,
+):
+    client = RegionTargetHttpProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "target_http_proxy": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "rest",
+        compute.DeleteRegionTargetHttpProxyRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = RegionTargetHttpProxiesClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_delete_rest_call_success(request_type):
+    client = RegionTargetHttpProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "target_http_proxy": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_rest_interceptors(null_interceptor):
+    transport = transports.RegionTargetHttpProxiesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionTargetHttpProxiesRestInterceptor(),
+    )
+    client = RegionTargetHttpProxiesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionTargetHttpProxiesRestInterceptor, "post_delete"
+    ) as post, mock.patch.object(
+        transports.RegionTargetHttpProxiesRestInterceptor, "pre_delete"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.DeleteRegionTargetHttpProxyRequest.pb(
+            compute.DeleteRegionTargetHttpProxyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = compute.Operation.to_json(compute.Operation())
+        req.return_value.content = return_value
+
+        request = compute.DeleteRegionTargetHttpProxyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.delete(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_rest_bad_request(request_type=compute.GetRegionTargetHttpProxyRequest):
+    client = RegionTargetHttpProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "target_http_proxy": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetRegionTargetHttpProxyRequest,
+        dict,
+    ],
+)
+def test_get_rest_call_success(request_type):
+    client = RegionTargetHttpProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "target_http_proxy": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.TargetHttpProxy(
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            fingerprint="fingerprint_value",
+            http_keep_alive_timeout_sec=2868,
+            id=205,
+            kind="kind_value",
+            name="name_value",
+            proxy_bind=True,
+            region="region_value",
+            self_link="self_link_value",
+            url_map="url_map_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.TargetHttpProxy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.TargetHttpProxy)
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.fingerprint == "fingerprint_value"
+    assert response.http_keep_alive_timeout_sec == 2868
+    assert response.id == 205
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.proxy_bind is True
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.url_map == "url_map_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_rest_interceptors(null_interceptor):
+    transport = transports.RegionTargetHttpProxiesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionTargetHttpProxiesRestInterceptor(),
+    )
+    client = RegionTargetHttpProxiesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionTargetHttpProxiesRestInterceptor, "post_get"
+    ) as post, mock.patch.object(
+        transports.RegionTargetHttpProxiesRestInterceptor, "pre_get"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.GetRegionTargetHttpProxyRequest.pb(
+            compute.GetRegionTargetHttpProxyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = compute.TargetHttpProxy.to_json(compute.TargetHttpProxy())
+        req.return_value.content = return_value
+
+        request = compute.GetRegionTargetHttpProxyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.TargetHttpProxy()
+
+        client.get(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_insert_rest_bad_request(
+    request_type=compute.InsertRegionTargetHttpProxyRequest,
+):
+    client = RegionTargetHttpProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.insert(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.InsertRegionTargetHttpProxyRequest,
+        dict,
+    ],
+)
+def test_insert_rest_call_success(request_type):
+    client = RegionTargetHttpProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2"}
+    request_init["target_http_proxy_resource"] = {
+        "creation_timestamp": "creation_timestamp_value",
+        "description": "description_value",
+        "fingerprint": "fingerprint_value",
+        "http_keep_alive_timeout_sec": 2868,
+        "id": 205,
+        "kind": "kind_value",
+        "name": "name_value",
+        "proxy_bind": True,
+        "region": "region_value",
+        "self_link": "self_link_value",
+        "url_map": "url_map_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.InsertRegionTargetHttpProxyRequest.meta.fields[
+        "target_http_proxy_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "target_http_proxy_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["target_http_proxy_resource"][field])
+                ):
+                    del request_init["target_http_proxy_resource"][field][i][subfield]
+            else:
+                del request_init["target_http_proxy_resource"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.insert(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_insert_rest_interceptors(null_interceptor):
+    transport = transports.RegionTargetHttpProxiesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionTargetHttpProxiesRestInterceptor(),
+    )
+    client = RegionTargetHttpProxiesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionTargetHttpProxiesRestInterceptor, "post_insert"
+    ) as post, mock.patch.object(
+        transports.RegionTargetHttpProxiesRestInterceptor, "pre_insert"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.InsertRegionTargetHttpProxyRequest.pb(
+            compute.InsertRegionTargetHttpProxyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = compute.Operation.to_json(compute.Operation())
+        req.return_value.content = return_value
+
+        request = compute.InsertRegionTargetHttpProxyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.insert(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_rest_bad_request(request_type=compute.ListRegionTargetHttpProxiesRequest):
+    client = RegionTargetHttpProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.ListRegionTargetHttpProxiesRequest,
+        dict,
+    ],
+)
+def test_list_rest_call_success(request_type):
+    client = RegionTargetHttpProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.TargetHttpProxyList(
+            id="id_value",
+            kind="kind_value",
+            next_page_token="next_page_token_value",
+            self_link="self_link_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.TargetHttpProxyList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListPager)
+    assert response.id == "id_value"
+    assert response.kind == "kind_value"
+    assert response.next_page_token == "next_page_token_value"
+    assert response.self_link == "self_link_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_rest_interceptors(null_interceptor):
+    transport = transports.RegionTargetHttpProxiesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionTargetHttpProxiesRestInterceptor(),
+    )
+    client = RegionTargetHttpProxiesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionTargetHttpProxiesRestInterceptor, "post_list"
+    ) as post, mock.patch.object(
+        transports.RegionTargetHttpProxiesRestInterceptor, "pre_list"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.ListRegionTargetHttpProxiesRequest.pb(
+            compute.ListRegionTargetHttpProxiesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = compute.TargetHttpProxyList.to_json(
+            compute.TargetHttpProxyList()
+        )
+        req.return_value.content = return_value
+
+        request = compute.ListRegionTargetHttpProxiesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.TargetHttpProxyList()
+
+        client.list(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_set_url_map_rest_bad_request(
+    request_type=compute.SetUrlMapRegionTargetHttpProxyRequest,
+):
+    client = RegionTargetHttpProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "target_http_proxy": "sample3",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.set_url_map(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.SetUrlMapRegionTargetHttpProxyRequest,
+        dict,
+    ],
+)
+def test_set_url_map_rest_call_success(request_type):
+    client = RegionTargetHttpProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "project": "sample1",
+        "region": "sample2",
+        "target_http_proxy": "sample3",
+    }
+    request_init["url_map_reference_resource"] = {"url_map": "url_map_value"}
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.SetUrlMapRegionTargetHttpProxyRequest.meta.fields[
+        "url_map_reference_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "url_map_reference_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["url_map_reference_resource"][field])
+                ):
+                    del request_init["url_map_reference_resource"][field][i][subfield]
+            else:
+                del request_init["url_map_reference_resource"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.set_url_map(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_url_map_rest_interceptors(null_interceptor):
+    transport = transports.RegionTargetHttpProxiesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionTargetHttpProxiesRestInterceptor(),
+    )
+    client = RegionTargetHttpProxiesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionTargetHttpProxiesRestInterceptor, "post_set_url_map"
+    ) as post, mock.patch.object(
+        transports.RegionTargetHttpProxiesRestInterceptor, "pre_set_url_map"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.SetUrlMapRegionTargetHttpProxyRequest.pb(
+            compute.SetUrlMapRegionTargetHttpProxyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = compute.Operation.to_json(compute.Operation())
+        req.return_value.content = return_value
+
+        request = compute.SetUrlMapRegionTargetHttpProxyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.set_url_map(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_initialize_client_w_rest():
+    client = RegionTargetHttpProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_unary_empty_call_rest():
+    client = RegionTargetHttpProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete), "__call__") as call:
+        client.delete_unary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.DeleteRegionTargetHttpProxyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_empty_call_rest():
+    client = RegionTargetHttpProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get), "__call__") as call:
+        client.get(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.GetRegionTargetHttpProxyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_insert_unary_empty_call_rest():
+    client = RegionTargetHttpProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.insert), "__call__") as call:
+        client.insert_unary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.InsertRegionTargetHttpProxyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_empty_call_rest():
+    client = RegionTargetHttpProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list), "__call__") as call:
+        client.list(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.ListRegionTargetHttpProxiesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_set_url_map_unary_empty_call_rest():
+    client = RegionTargetHttpProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.set_url_map), "__call__") as call:
+        client.set_url_map_unary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.SetUrlMapRegionTargetHttpProxyRequest()
+
+        assert args[0] == request_msg
 
 
 def test_region_target_http_proxies_base_transport_error():
@@ -4685,21 +4168,16 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-    }
-
-    for transport, close_name in transports.items():
-        client = RegionTargetHttpProxiesClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = RegionTargetHttpProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():
