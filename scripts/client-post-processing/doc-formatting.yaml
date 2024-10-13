@@ -324,3 +324,25 @@ replacements:
     before: projects\/\\ \*\/locations\/\*\/operations\/\*.
     after: "`projects/*/locations/*/operations/*.`"
     count: 1
+  - paths: [
+      packages/google-cloud-enterpriseknowledgegraph/google/cloud/enterpriseknowledgegraph_v1/types/service.py,
+    ]
+    before: |
+      If true, separate clusters by their
+      \                geographic region \(from geocoding\). Uses the
+      \                following entity features:\n
+      \                - schema.org/addressLocality
+      \                - schema.org/addressRegion
+      \                - schema.org/addressCountry
+      \                Warning: processing will no longer be
+      \                regionalized!
+    after: |
+      If true, separate clusters by their
+                      geographic region (from geocoding). Uses the
+                      following entity features:\n
+                      - schema.org/addressLocality
+                      - schema.org/addressRegion
+                      - schema.org/addressCountry\n
+                      Warning: processing will no longer be
+                      regionalized!
+    count: 1
