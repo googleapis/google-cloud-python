@@ -16,40 +16,30 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.retail_v2alpha.types import merchant_center_account_link_service
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseMerchantCenterAccountLinkServiceRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-
-from google.cloud.retail_v2alpha.types import merchant_center_account_link_service
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import MerchantCenterAccountLinkServiceTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -222,9 +212,9 @@ class MerchantCenterAccountLinkServiceRestStub:
 
 
 class MerchantCenterAccountLinkServiceRestTransport(
-    MerchantCenterAccountLinkServiceTransport
+    _BaseMerchantCenterAccountLinkServiceRestTransport
 ):
-    """REST backend transport for MerchantCenterAccountLinkService.
+    """REST backend synchronous transport for MerchantCenterAccountLinkService.
 
     Merchant Center Link service to link a Branch to a Merchant
     Center Account.
@@ -234,7 +224,6 @@ class MerchantCenterAccountLinkServiceRestTransport(
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -288,21 +277,12 @@ class MerchantCenterAccountLinkServiceRestTransport(
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -380,19 +360,37 @@ class MerchantCenterAccountLinkServiceRestTransport(
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateMerchantCenterAccountLink(MerchantCenterAccountLinkServiceRestStub):
+    class _CreateMerchantCenterAccountLink(
+        _BaseMerchantCenterAccountLinkServiceRestTransport._BaseCreateMerchantCenterAccountLink,
+        MerchantCenterAccountLinkServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateMerchantCenterAccountLink")
+            return hash(
+                "MerchantCenterAccountLinkServiceRestTransport.CreateMerchantCenterAccountLink"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -424,52 +422,37 @@ class MerchantCenterAccountLinkServiceRestTransport(
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2alpha/{parent=projects/*/locations/*/catalogs/*}/merchantCenterAccountLinks",
-                    "body": "merchant_center_account_link",
-                },
-            ]
+            http_options = (
+                _BaseMerchantCenterAccountLinkServiceRestTransport._BaseCreateMerchantCenterAccountLink._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_create_merchant_center_account_link(
                 request, metadata
             )
-            pb_request = merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest.pb(
-                request
+            transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseCreateMerchantCenterAccountLink._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseCreateMerchantCenterAccountLink._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseCreateMerchantCenterAccountLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = MerchantCenterAccountLinkServiceRestTransport._CreateMerchantCenterAccountLink._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -483,19 +466,36 @@ class MerchantCenterAccountLinkServiceRestTransport(
             resp = self._interceptor.post_create_merchant_center_account_link(resp)
             return resp
 
-    class _DeleteMerchantCenterAccountLink(MerchantCenterAccountLinkServiceRestStub):
+    class _DeleteMerchantCenterAccountLink(
+        _BaseMerchantCenterAccountLinkServiceRestTransport._BaseDeleteMerchantCenterAccountLink,
+        MerchantCenterAccountLinkServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteMerchantCenterAccountLink")
+            return hash(
+                "MerchantCenterAccountLinkServiceRestTransport.DeleteMerchantCenterAccountLink"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -520,45 +520,32 @@ class MerchantCenterAccountLinkServiceRestTransport(
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v2alpha/{name=projects/*/locations/*/catalogs/*/merchantCenterAccountLinks/*}",
-                },
-            ]
+            http_options = (
+                _BaseMerchantCenterAccountLinkServiceRestTransport._BaseDeleteMerchantCenterAccountLink._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_delete_merchant_center_account_link(
                 request, metadata
             )
-            pb_request = merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest.pb(
-                request
+            transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseDeleteMerchantCenterAccountLink._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseDeleteMerchantCenterAccountLink._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = MerchantCenterAccountLinkServiceRestTransport._DeleteMerchantCenterAccountLink._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -566,19 +553,36 @@ class MerchantCenterAccountLinkServiceRestTransport(
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _ListMerchantCenterAccountLinks(MerchantCenterAccountLinkServiceRestStub):
+    class _ListMerchantCenterAccountLinks(
+        _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListMerchantCenterAccountLinks,
+        MerchantCenterAccountLinkServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListMerchantCenterAccountLinks")
+            return hash(
+                "MerchantCenterAccountLinkServiceRestTransport.ListMerchantCenterAccountLinks"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -612,45 +616,32 @@ class MerchantCenterAccountLinkServiceRestTransport(
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2alpha/{parent=projects/*/locations/*/catalogs/*}/merchantCenterAccountLinks",
-                },
-            ]
+            http_options = (
+                _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListMerchantCenterAccountLinks._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_list_merchant_center_account_links(
                 request, metadata
             )
-            pb_request = merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest.pb(
-                request
+            transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListMerchantCenterAccountLinks._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListMerchantCenterAccountLinks._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = MerchantCenterAccountLinkServiceRestTransport._ListMerchantCenterAccountLinks._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -707,7 +698,35 @@ class MerchantCenterAccountLinkServiceRestTransport(
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(MerchantCenterAccountLinkServiceRestStub):
+    class _GetOperation(
+        _BaseMerchantCenterAccountLinkServiceRestTransport._BaseGetOperation,
+        MerchantCenterAccountLinkServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("MerchantCenterAccountLinkServiceRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -731,48 +750,27 @@ class MerchantCenterAccountLinkServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2alpha/{name=projects/*/locations/*/catalogs/*/branches/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2alpha/{name=projects/*/locations/*/catalogs/*/branches/*/places/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2alpha/{name=projects/*/locations/*/catalogs/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2alpha/{name=projects/*/locations/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2alpha/{name=projects/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseMerchantCenterAccountLinkServiceRestTransport._BaseGetOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseGetOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = MerchantCenterAccountLinkServiceRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -780,8 +778,9 @@ class MerchantCenterAccountLinkServiceRestTransport(
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -789,7 +788,35 @@ class MerchantCenterAccountLinkServiceRestTransport(
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(MerchantCenterAccountLinkServiceRestStub):
+    class _ListOperations(
+        _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListOperations,
+        MerchantCenterAccountLinkServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("MerchantCenterAccountLinkServiceRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -813,40 +840,27 @@ class MerchantCenterAccountLinkServiceRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2alpha/{name=projects/*/locations/*/catalogs/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2alpha/{name=projects/*/locations/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2alpha/{name=projects/*}/operations",
-                },
-            ]
-
+            http_options = (
+                _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListOperations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = MerchantCenterAccountLinkServiceRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -854,8 +868,9 @@ class MerchantCenterAccountLinkServiceRestTransport(
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 
