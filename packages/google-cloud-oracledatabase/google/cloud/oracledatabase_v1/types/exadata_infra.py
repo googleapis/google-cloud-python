@@ -363,6 +363,7 @@ class MaintenanceWindow(proto.Message):
             Optional. The window of hours during the day
             when maintenance should be performed. The window
             is a 4 hour slot. Valid values are:
+
             0 - represents time slot 0:00 - 3:59 UTC
             4 - represents time slot 4:00 - 7:59 UTC
             8 - represents time slot 8:00 - 11:59 UTC

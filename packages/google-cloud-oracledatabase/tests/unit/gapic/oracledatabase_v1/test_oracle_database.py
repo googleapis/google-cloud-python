@@ -22,9 +22,26 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
+
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import (
     future,
@@ -35,7 +52,7 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
@@ -47,19 +64,11 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
 from google.type import dayofweek_pb2  # type: ignore
 from google.type import month_pb2  # type: ignore
 from google.type import timeofday_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.oracledatabase_v1.services.oracle_database import (
     OracleDatabaseClient,
@@ -86,8 +95,22 @@ from google.cloud.oracledatabase_v1.types import (
 from google.cloud.oracledatabase_v1.types import autonomous_database
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -986,48 +1009,6 @@ def test_oracle_database_client_client_options_credentials_file(
         )
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        oracledatabase.ListCloudExadataInfrastructuresRequest,
-        dict,
-    ],
-)
-def test_list_cloud_exadata_infrastructures_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = oracledatabase.ListCloudExadataInfrastructuresResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = oracledatabase.ListCloudExadataInfrastructuresResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_cloud_exadata_infrastructures(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListCloudExadataInfrastructuresPager)
-    assert response.next_page_token == "next_page_token_value"
-
-
 def test_list_cloud_exadata_infrastructures_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -1171,92 +1152,6 @@ def test_list_cloud_exadata_infrastructures_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_cloud_exadata_infrastructures_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_list_cloud_exadata_infrastructures",
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "pre_list_cloud_exadata_infrastructures",
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = oracledatabase.ListCloudExadataInfrastructuresRequest.pb(
-            oracledatabase.ListCloudExadataInfrastructuresRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            oracledatabase.ListCloudExadataInfrastructuresResponse.to_json(
-                oracledatabase.ListCloudExadataInfrastructuresResponse()
-            )
-        )
-
-        request = oracledatabase.ListCloudExadataInfrastructuresRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = oracledatabase.ListCloudExadataInfrastructuresResponse()
-
-        client.list_cloud_exadata_infrastructures(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_cloud_exadata_infrastructures_rest_bad_request(
-    transport: str = "rest",
-    request_type=oracledatabase.ListCloudExadataInfrastructuresRequest,
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_cloud_exadata_infrastructures(request)
-
-
 def test_list_cloud_exadata_infrastructures_rest_flattened():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1386,54 +1281,6 @@ def test_list_cloud_exadata_infrastructures_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        oracledatabase.GetCloudExadataInfrastructureRequest,
-        dict,
-    ],
-)
-def test_get_cloud_exadata_infrastructure_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/cloudExadataInfrastructures/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = exadata_infra.CloudExadataInfrastructure(
-            name="name_value",
-            display_name="display_name_value",
-            gcp_oracle_zone="gcp_oracle_zone_value",
-            entitlement_id="entitlement_id_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = exadata_infra.CloudExadataInfrastructure.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_cloud_exadata_infrastructure(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, exadata_infra.CloudExadataInfrastructure)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.gcp_oracle_zone == "gcp_oracle_zone_value"
-    assert response.entitlement_id == "entitlement_id_value"
-
-
 def test_get_cloud_exadata_infrastructure_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -1560,91 +1407,6 @@ def test_get_cloud_exadata_infrastructure_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_cloud_exadata_infrastructure_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_get_cloud_exadata_infrastructure",
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_get_cloud_exadata_infrastructure"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = oracledatabase.GetCloudExadataInfrastructureRequest.pb(
-            oracledatabase.GetCloudExadataInfrastructureRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = exadata_infra.CloudExadataInfrastructure.to_json(
-            exadata_infra.CloudExadataInfrastructure()
-        )
-
-        request = oracledatabase.GetCloudExadataInfrastructureRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = exadata_infra.CloudExadataInfrastructure()
-
-        client.get_cloud_exadata_infrastructure(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_cloud_exadata_infrastructure_rest_bad_request(
-    transport: str = "rest",
-    request_type=oracledatabase.GetCloudExadataInfrastructureRequest,
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/cloudExadataInfrastructures/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_cloud_exadata_infrastructure(request)
-
-
 def test_get_cloud_exadata_infrastructure_rest_flattened():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1702,167 +1464,6 @@ def test_get_cloud_exadata_infrastructure_rest_flattened_error(transport: str = 
             oracledatabase.GetCloudExadataInfrastructureRequest(),
             name="name_value",
         )
-
-
-def test_get_cloud_exadata_infrastructure_rest_error():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        oracledatabase.CreateCloudExadataInfrastructureRequest,
-        dict,
-    ],
-)
-def test_create_cloud_exadata_infrastructure_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["cloud_exadata_infrastructure"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "gcp_oracle_zone": "gcp_oracle_zone_value",
-        "entitlement_id": "entitlement_id_value",
-        "properties": {
-            "ocid": "ocid_value",
-            "compute_count": 1413,
-            "storage_count": 1405,
-            "total_storage_size_gb": 2234,
-            "available_storage_size_gb": 2615,
-            "maintenance_window": {
-                "preference": 1,
-                "months": [1],
-                "weeks_of_month": [1497, 1498],
-                "days_of_week": [1],
-                "hours_of_day": [1283, 1284],
-                "lead_time_week": 1455,
-                "patching_mode": 1,
-                "custom_action_timeout_mins": 2804,
-                "is_custom_action_timeout_enabled": True,
-            },
-            "state": 1,
-            "shape": "shape_value",
-            "oci_url": "oci_url_value",
-            "cpu_count": 976,
-            "max_cpu_count": 1397,
-            "memory_size_gb": 1499,
-            "max_memory_gb": 1382,
-            "db_node_storage_size_gb": 2401,
-            "max_db_node_storage_size_gb": 2822,
-            "data_storage_size_tb": 0.2109,
-            "max_data_storage_tb": 0.19920000000000002,
-            "activated_storage_count": 2449,
-            "additional_storage_count": 2549,
-            "db_server_version": "db_server_version_value",
-            "storage_server_version": "storage_server_version_value",
-            "next_maintenance_run_id": "next_maintenance_run_id_value",
-            "next_maintenance_run_time": {"seconds": 751, "nanos": 543},
-            "next_security_maintenance_run_time": {},
-            "customer_contacts": [{"email": "email_value"}],
-            "monthly_storage_server_version": "monthly_storage_server_version_value",
-            "monthly_db_server_version": "monthly_db_server_version_value",
-        },
-        "labels": {},
-        "create_time": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = oracledatabase.CreateCloudExadataInfrastructureRequest.meta.fields[
-        "cloud_exadata_infrastructure"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "cloud_exadata_infrastructure"
-    ].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(
-                    0, len(request_init["cloud_exadata_infrastructure"][field])
-                ):
-                    del request_init["cloud_exadata_infrastructure"][field][i][subfield]
-            else:
-                del request_init["cloud_exadata_infrastructure"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_cloud_exadata_infrastructure(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_cloud_exadata_infrastructure_rest_use_cached_wrapped_rpc():
@@ -2035,92 +1636,6 @@ def test_create_cloud_exadata_infrastructure_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_cloud_exadata_infrastructure_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_create_cloud_exadata_infrastructure",
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "pre_create_cloud_exadata_infrastructure",
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = oracledatabase.CreateCloudExadataInfrastructureRequest.pb(
-            oracledatabase.CreateCloudExadataInfrastructureRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = oracledatabase.CreateCloudExadataInfrastructureRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_cloud_exadata_infrastructure(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_cloud_exadata_infrastructure_rest_bad_request(
-    transport: str = "rest",
-    request_type=oracledatabase.CreateCloudExadataInfrastructureRequest,
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_cloud_exadata_infrastructure(request)
-
-
 def test_create_cloud_exadata_infrastructure_rest_flattened():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2184,49 +1699,6 @@ def test_create_cloud_exadata_infrastructure_rest_flattened_error(
             ),
             cloud_exadata_infrastructure_id="cloud_exadata_infrastructure_id_value",
         )
-
-
-def test_create_cloud_exadata_infrastructure_rest_error():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        oracledatabase.DeleteCloudExadataInfrastructureRequest,
-        dict,
-    ],
-)
-def test_delete_cloud_exadata_infrastructure_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/cloudExadataInfrastructures/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_cloud_exadata_infrastructure(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_delete_cloud_exadata_infrastructure_rest_use_cached_wrapped_rpc():
@@ -2371,94 +1843,6 @@ def test_delete_cloud_exadata_infrastructure_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_cloud_exadata_infrastructure_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "post_delete_cloud_exadata_infrastructure",
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor,
-        "pre_delete_cloud_exadata_infrastructure",
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = oracledatabase.DeleteCloudExadataInfrastructureRequest.pb(
-            oracledatabase.DeleteCloudExadataInfrastructureRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = oracledatabase.DeleteCloudExadataInfrastructureRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_cloud_exadata_infrastructure(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_cloud_exadata_infrastructure_rest_bad_request(
-    transport: str = "rest",
-    request_type=oracledatabase.DeleteCloudExadataInfrastructureRequest,
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/cloudExadataInfrastructures/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_cloud_exadata_infrastructure(request)
-
-
 def test_delete_cloud_exadata_infrastructure_rest_flattened():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2516,52 +1900,6 @@ def test_delete_cloud_exadata_infrastructure_rest_flattened_error(
             oracledatabase.DeleteCloudExadataInfrastructureRequest(),
             name="name_value",
         )
-
-
-def test_delete_cloud_exadata_infrastructure_rest_error():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        oracledatabase.ListCloudVmClustersRequest,
-        dict,
-    ],
-)
-def test_list_cloud_vm_clusters_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = oracledatabase.ListCloudVmClustersResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = oracledatabase.ListCloudVmClustersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_cloud_vm_clusters(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListCloudVmClustersPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_cloud_vm_clusters_rest_use_cached_wrapped_rpc():
@@ -2705,87 +2043,6 @@ def test_list_cloud_vm_clusters_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_cloud_vm_clusters_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_cloud_vm_clusters"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_cloud_vm_clusters"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = oracledatabase.ListCloudVmClustersRequest.pb(
-            oracledatabase.ListCloudVmClustersRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = oracledatabase.ListCloudVmClustersResponse.to_json(
-            oracledatabase.ListCloudVmClustersResponse()
-        )
-
-        request = oracledatabase.ListCloudVmClustersRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = oracledatabase.ListCloudVmClustersResponse()
-
-        client.list_cloud_vm_clusters(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_cloud_vm_clusters_rest_bad_request(
-    transport: str = "rest", request_type=oracledatabase.ListCloudVmClustersRequest
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_cloud_vm_clusters(request)
-
-
 def test_list_cloud_vm_clusters_rest_flattened():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2904,60 +2161,6 @@ def test_list_cloud_vm_clusters_rest_pager(transport: str = "rest"):
         pages = list(client.list_cloud_vm_clusters(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        oracledatabase.GetCloudVmClusterRequest,
-        dict,
-    ],
-)
-def test_get_cloud_vm_cluster_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/cloudVmClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = vm_cluster.CloudVmCluster(
-            name="name_value",
-            exadata_infrastructure="exadata_infrastructure_value",
-            display_name="display_name_value",
-            gcp_oracle_zone="gcp_oracle_zone_value",
-            cidr="cidr_value",
-            backup_subnet_cidr="backup_subnet_cidr_value",
-            network="network_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = vm_cluster.CloudVmCluster.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_cloud_vm_cluster(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, vm_cluster.CloudVmCluster)
-    assert response.name == "name_value"
-    assert response.exadata_infrastructure == "exadata_infrastructure_value"
-    assert response.display_name == "display_name_value"
-    assert response.gcp_oracle_zone == "gcp_oracle_zone_value"
-    assert response.cidr == "cidr_value"
-    assert response.backup_subnet_cidr == "backup_subnet_cidr_value"
-    assert response.network == "network_value"
 
 
 def test_get_cloud_vm_cluster_rest_use_cached_wrapped_rpc():
@@ -3083,89 +2286,6 @@ def test_get_cloud_vm_cluster_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_cloud_vm_cluster_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_get_cloud_vm_cluster"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_get_cloud_vm_cluster"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = oracledatabase.GetCloudVmClusterRequest.pb(
-            oracledatabase.GetCloudVmClusterRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = vm_cluster.CloudVmCluster.to_json(
-            vm_cluster.CloudVmCluster()
-        )
-
-        request = oracledatabase.GetCloudVmClusterRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = vm_cluster.CloudVmCluster()
-
-        client.get_cloud_vm_cluster(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_cloud_vm_cluster_rest_bad_request(
-    transport: str = "rest", request_type=oracledatabase.GetCloudVmClusterRequest
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/cloudVmClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_cloud_vm_cluster(request)
-
-
 def test_get_cloud_vm_cluster_rest_flattened():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3223,165 +2343,6 @@ def test_get_cloud_vm_cluster_rest_flattened_error(transport: str = "rest"):
             oracledatabase.GetCloudVmClusterRequest(),
             name="name_value",
         )
-
-
-def test_get_cloud_vm_cluster_rest_error():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        oracledatabase.CreateCloudVmClusterRequest,
-        dict,
-    ],
-)
-def test_create_cloud_vm_cluster_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["cloud_vm_cluster"] = {
-        "name": "name_value",
-        "exadata_infrastructure": "exadata_infrastructure_value",
-        "display_name": "display_name_value",
-        "gcp_oracle_zone": "gcp_oracle_zone_value",
-        "properties": {
-            "ocid": "ocid_value",
-            "license_type": 1,
-            "gi_version": "gi_version_value",
-            "time_zone": {"id": "id_value", "version": "version_value"},
-            "ssh_public_keys": ["ssh_public_keys_value1", "ssh_public_keys_value2"],
-            "node_count": 1070,
-            "shape": "shape_value",
-            "ocpu_count": 0.1087,
-            "memory_size_gb": 1499,
-            "db_node_storage_size_gb": 2401,
-            "storage_size_gb": 1591,
-            "data_storage_size_tb": 0.2109,
-            "disk_redundancy": 1,
-            "sparse_diskgroup_enabled": True,
-            "local_backup_enabled": True,
-            "hostname_prefix": "hostname_prefix_value",
-            "diagnostics_data_collection_options": {
-                "diagnostics_events_enabled": True,
-                "health_monitoring_enabled": True,
-                "incident_logs_enabled": True,
-            },
-            "state": 1,
-            "scan_listener_port_tcp": 2356,
-            "scan_listener_port_tcp_ssl": 2789,
-            "domain": "domain_value",
-            "scan_dns": "scan_dns_value",
-            "hostname": "hostname_value",
-            "cpu_core_count": 1496,
-            "system_version": "system_version_value",
-            "scan_ip_ids": ["scan_ip_ids_value1", "scan_ip_ids_value2"],
-            "scan_dns_record_id": "scan_dns_record_id_value",
-            "oci_url": "oci_url_value",
-            "db_server_ocids": ["db_server_ocids_value1", "db_server_ocids_value2"],
-            "compartment_id": "compartment_id_value",
-            "dns_listener_ip": "dns_listener_ip_value",
-            "cluster_name": "cluster_name_value",
-        },
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "cidr": "cidr_value",
-        "backup_subnet_cidr": "backup_subnet_cidr_value",
-        "network": "network_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = oracledatabase.CreateCloudVmClusterRequest.meta.fields[
-        "cloud_vm_cluster"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["cloud_vm_cluster"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["cloud_vm_cluster"][field])):
-                    del request_init["cloud_vm_cluster"][field][i][subfield]
-            else:
-                del request_init["cloud_vm_cluster"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_cloud_vm_cluster(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_cloud_vm_cluster_rest_use_cached_wrapped_rpc():
@@ -3544,89 +2505,6 @@ def test_create_cloud_vm_cluster_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_cloud_vm_cluster_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_create_cloud_vm_cluster"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_create_cloud_vm_cluster"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = oracledatabase.CreateCloudVmClusterRequest.pb(
-            oracledatabase.CreateCloudVmClusterRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = oracledatabase.CreateCloudVmClusterRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_cloud_vm_cluster(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_cloud_vm_cluster_rest_bad_request(
-    transport: str = "rest", request_type=oracledatabase.CreateCloudVmClusterRequest
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_cloud_vm_cluster(request)
-
-
 def test_create_cloud_vm_cluster_rest_flattened():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3684,49 +2562,6 @@ def test_create_cloud_vm_cluster_rest_flattened_error(transport: str = "rest"):
             cloud_vm_cluster=vm_cluster.CloudVmCluster(name="name_value"),
             cloud_vm_cluster_id="cloud_vm_cluster_id_value",
         )
-
-
-def test_create_cloud_vm_cluster_rest_error():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        oracledatabase.DeleteCloudVmClusterRequest,
-        dict,
-    ],
-)
-def test_delete_cloud_vm_cluster_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/cloudVmClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_cloud_vm_cluster(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_delete_cloud_vm_cluster_rest_use_cached_wrapped_rpc():
@@ -3869,91 +2704,6 @@ def test_delete_cloud_vm_cluster_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_cloud_vm_cluster_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_delete_cloud_vm_cluster"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_delete_cloud_vm_cluster"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = oracledatabase.DeleteCloudVmClusterRequest.pb(
-            oracledatabase.DeleteCloudVmClusterRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = oracledatabase.DeleteCloudVmClusterRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_cloud_vm_cluster(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_cloud_vm_cluster_rest_bad_request(
-    transport: str = "rest", request_type=oracledatabase.DeleteCloudVmClusterRequest
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/cloudVmClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_cloud_vm_cluster(request)
-
-
 def test_delete_cloud_vm_cluster_rest_flattened():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4009,52 +2759,6 @@ def test_delete_cloud_vm_cluster_rest_flattened_error(transport: str = "rest"):
             oracledatabase.DeleteCloudVmClusterRequest(),
             name="name_value",
         )
-
-
-def test_delete_cloud_vm_cluster_rest_error():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        oracledatabase.ListEntitlementsRequest,
-        dict,
-    ],
-)
-def test_list_entitlements_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = oracledatabase.ListEntitlementsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = oracledatabase.ListEntitlementsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_entitlements(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListEntitlementsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_entitlements_rest_use_cached_wrapped_rpc():
@@ -4193,87 +2897,6 @@ def test_list_entitlements_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_entitlements_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_entitlements"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_entitlements"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = oracledatabase.ListEntitlementsRequest.pb(
-            oracledatabase.ListEntitlementsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = oracledatabase.ListEntitlementsResponse.to_json(
-            oracledatabase.ListEntitlementsResponse()
-        )
-
-        request = oracledatabase.ListEntitlementsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = oracledatabase.ListEntitlementsResponse()
-
-        client.list_entitlements(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_entitlements_rest_bad_request(
-    transport: str = "rest", request_type=oracledatabase.ListEntitlementsRequest
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_entitlements(request)
-
-
 def test_list_entitlements_rest_flattened():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4392,48 +3015,6 @@ def test_list_entitlements_rest_pager(transport: str = "rest"):
         pages = list(client.list_entitlements(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        oracledatabase.ListDbServersRequest,
-        dict,
-    ],
-)
-def test_list_db_servers_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/cloudExadataInfrastructures/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = oracledatabase.ListDbServersResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = oracledatabase.ListDbServersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_db_servers(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListDbServersPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_db_servers_rest_use_cached_wrapped_rpc():
@@ -4570,89 +3151,6 @@ def test_list_db_servers_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_db_servers_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_db_servers"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_db_servers"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = oracledatabase.ListDbServersRequest.pb(
-            oracledatabase.ListDbServersRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = oracledatabase.ListDbServersResponse.to_json(
-            oracledatabase.ListDbServersResponse()
-        )
-
-        request = oracledatabase.ListDbServersRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = oracledatabase.ListDbServersResponse()
-
-        client.list_db_servers(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_db_servers_rest_bad_request(
-    transport: str = "rest", request_type=oracledatabase.ListDbServersRequest
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/cloudExadataInfrastructures/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_db_servers(request)
-
-
 def test_list_db_servers_rest_flattened():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4775,48 +3273,6 @@ def test_list_db_servers_rest_pager(transport: str = "rest"):
         pages = list(client.list_db_servers(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        oracledatabase.ListDbNodesRequest,
-        dict,
-    ],
-)
-def test_list_db_nodes_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/cloudVmClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = oracledatabase.ListDbNodesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = oracledatabase.ListDbNodesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_db_nodes(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListDbNodesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_db_nodes_rest_use_cached_wrapped_rpc():
@@ -4953,89 +3409,6 @@ def test_list_db_nodes_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_db_nodes_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_db_nodes"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_db_nodes"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = oracledatabase.ListDbNodesRequest.pb(
-            oracledatabase.ListDbNodesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = oracledatabase.ListDbNodesResponse.to_json(
-            oracledatabase.ListDbNodesResponse()
-        )
-
-        request = oracledatabase.ListDbNodesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = oracledatabase.ListDbNodesResponse()
-
-        client.list_db_nodes(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_db_nodes_rest_bad_request(
-    transport: str = "rest", request_type=oracledatabase.ListDbNodesRequest
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/cloudVmClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_db_nodes(request)
-
-
 def test_list_db_nodes_rest_flattened():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5158,46 +3531,6 @@ def test_list_db_nodes_rest_pager(transport: str = "rest"):
         pages = list(client.list_db_nodes(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        oracledatabase.ListGiVersionsRequest,
-        dict,
-    ],
-)
-def test_list_gi_versions_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = oracledatabase.ListGiVersionsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = oracledatabase.ListGiVersionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_gi_versions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListGiVersionsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_gi_versions_rest_use_cached_wrapped_rpc():
@@ -5336,87 +3669,6 @@ def test_list_gi_versions_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_gi_versions_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_gi_versions"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_gi_versions"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = oracledatabase.ListGiVersionsRequest.pb(
-            oracledatabase.ListGiVersionsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = oracledatabase.ListGiVersionsResponse.to_json(
-            oracledatabase.ListGiVersionsResponse()
-        )
-
-        request = oracledatabase.ListGiVersionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = oracledatabase.ListGiVersionsResponse()
-
-        client.list_gi_versions(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_gi_versions_rest_bad_request(
-    transport: str = "rest", request_type=oracledatabase.ListGiVersionsRequest
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_gi_versions(request)
-
-
 def test_list_gi_versions_rest_flattened():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5534,46 +3786,6 @@ def test_list_gi_versions_rest_pager(transport: str = "rest"):
         pages = list(client.list_gi_versions(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        oracledatabase.ListDbSystemShapesRequest,
-        dict,
-    ],
-)
-def test_list_db_system_shapes_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = oracledatabase.ListDbSystemShapesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = oracledatabase.ListDbSystemShapesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_db_system_shapes(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListDbSystemShapesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_db_system_shapes_rest_use_cached_wrapped_rpc():
@@ -5715,87 +3927,6 @@ def test_list_db_system_shapes_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_db_system_shapes_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_db_system_shapes"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_db_system_shapes"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = oracledatabase.ListDbSystemShapesRequest.pb(
-            oracledatabase.ListDbSystemShapesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = oracledatabase.ListDbSystemShapesResponse.to_json(
-            oracledatabase.ListDbSystemShapesResponse()
-        )
-
-        request = oracledatabase.ListDbSystemShapesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = oracledatabase.ListDbSystemShapesResponse()
-
-        client.list_db_system_shapes(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_db_system_shapes_rest_bad_request(
-    transport: str = "rest", request_type=oracledatabase.ListDbSystemShapesRequest
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_db_system_shapes(request)
-
-
 def test_list_db_system_shapes_rest_flattened():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5914,46 +4045,6 @@ def test_list_db_system_shapes_rest_pager(transport: str = "rest"):
         pages = list(client.list_db_system_shapes(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        oracledatabase.ListAutonomousDatabasesRequest,
-        dict,
-    ],
-)
-def test_list_autonomous_databases_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = oracledatabase.ListAutonomousDatabasesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = oracledatabase.ListAutonomousDatabasesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_autonomous_databases(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAutonomousDatabasesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_autonomous_databases_rest_use_cached_wrapped_rpc():
@@ -6101,89 +4192,6 @@ def test_list_autonomous_databases_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_autonomous_databases_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_list_autonomous_databases"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_list_autonomous_databases"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = oracledatabase.ListAutonomousDatabasesRequest.pb(
-            oracledatabase.ListAutonomousDatabasesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            oracledatabase.ListAutonomousDatabasesResponse.to_json(
-                oracledatabase.ListAutonomousDatabasesResponse()
-            )
-        )
-
-        request = oracledatabase.ListAutonomousDatabasesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = oracledatabase.ListAutonomousDatabasesResponse()
-
-        client.list_autonomous_databases(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_autonomous_databases_rest_bad_request(
-    transport: str = "rest", request_type=oracledatabase.ListAutonomousDatabasesRequest
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_autonomous_databases(request)
-
-
 def test_list_autonomous_databases_rest_flattened():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6304,60 +4312,6 @@ def test_list_autonomous_databases_rest_pager(transport: str = "rest"):
         pages = list(client.list_autonomous_databases(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        oracledatabase.GetAutonomousDatabaseRequest,
-        dict,
-    ],
-)
-def test_get_autonomous_database_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = autonomous_database.AutonomousDatabase(
-            name="name_value",
-            database="database_value",
-            display_name="display_name_value",
-            entitlement_id="entitlement_id_value",
-            admin_password="admin_password_value",
-            network="network_value",
-            cidr="cidr_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = autonomous_database.AutonomousDatabase.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_autonomous_database(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, autonomous_database.AutonomousDatabase)
-    assert response.name == "name_value"
-    assert response.database == "database_value"
-    assert response.display_name == "display_name_value"
-    assert response.entitlement_id == "entitlement_id_value"
-    assert response.admin_password == "admin_password_value"
-    assert response.network == "network_value"
-    assert response.cidr == "cidr_value"
 
 
 def test_get_autonomous_database_rest_use_cached_wrapped_rpc():
@@ -6484,89 +4438,6 @@ def test_get_autonomous_database_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_autonomous_database_rest_interceptors(null_interceptor):
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OracleDatabaseRestInterceptor(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "post_get_autonomous_database"
-    ) as post, mock.patch.object(
-        transports.OracleDatabaseRestInterceptor, "pre_get_autonomous_database"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = oracledatabase.GetAutonomousDatabaseRequest.pb(
-            oracledatabase.GetAutonomousDatabaseRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = autonomous_database.AutonomousDatabase.to_json(
-            autonomous_database.AutonomousDatabase()
-        )
-
-        request = oracledatabase.GetAutonomousDatabaseRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = autonomous_database.AutonomousDatabase()
-
-        client.get_autonomous_database(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_autonomous_database_rest_bad_request(
-    transport: str = "rest", request_type=oracledatabase.GetAutonomousDatabaseRequest
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_autonomous_database(request)
-
-
 def test_get_autonomous_database_rest_flattened():
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6626,10 +4497,3834 @@ def test_get_autonomous_database_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_get_autonomous_database_rest_error():
+def test_create_autonomous_database_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OracleDatabaseClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_autonomous_database
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_autonomous_database
+        ] = mock_rpc
+
+        request = {}
+        client.create_autonomous_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.create_autonomous_database(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_autonomous_database_rest_required_fields(
+    request_type=oracledatabase.CreateAutonomousDatabaseRequest,
+):
+    transport_class = transports.OracleDatabaseRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["autonomous_database_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+    assert "autonomousDatabaseId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_autonomous_database._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "autonomousDatabaseId" in jsonified_request
+    assert (
+        jsonified_request["autonomousDatabaseId"]
+        == request_init["autonomous_database_id"]
+    )
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["autonomousDatabaseId"] = "autonomous_database_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_autonomous_database._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "autonomous_database_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "autonomousDatabaseId" in jsonified_request
+    assert jsonified_request["autonomousDatabaseId"] == "autonomous_database_id_value"
+
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_autonomous_database(request)
+
+            expected_params = [
+                (
+                    "autonomousDatabaseId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_autonomous_database_rest_unset_required_fields():
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_autonomous_database._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "autonomousDatabaseId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "autonomousDatabaseId",
+                "autonomousDatabase",
+            )
+        )
+    )
+
+
+def test_create_autonomous_database_rest_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            autonomous_database=gco_autonomous_database.AutonomousDatabase(
+                name="name_value"
+            ),
+            autonomous_database_id="autonomous_database_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_autonomous_database(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/autonomousDatabases"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_autonomous_database_rest_flattened_error(transport: str = "rest"):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_autonomous_database(
+            oracledatabase.CreateAutonomousDatabaseRequest(),
+            parent="parent_value",
+            autonomous_database=gco_autonomous_database.AutonomousDatabase(
+                name="name_value"
+            ),
+            autonomous_database_id="autonomous_database_id_value",
+        )
+
+
+def test_delete_autonomous_database_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OracleDatabaseClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_autonomous_database
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_autonomous_database
+        ] = mock_rpc
+
+        request = {}
+        client.delete_autonomous_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_autonomous_database(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_autonomous_database_rest_required_fields(
+    request_type=oracledatabase.DeleteAutonomousDatabaseRequest,
+):
+    transport_class = transports.OracleDatabaseRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_autonomous_database._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_autonomous_database._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_autonomous_database(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_autonomous_database_rest_unset_required_fields():
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_autonomous_database._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+def test_delete_autonomous_database_rest_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_autonomous_database(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/autonomousDatabases/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_autonomous_database_rest_flattened_error(transport: str = "rest"):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_autonomous_database(
+            oracledatabase.DeleteAutonomousDatabaseRequest(),
+            name="name_value",
+        )
+
+
+def test_restore_autonomous_database_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OracleDatabaseClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.restore_autonomous_database
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.restore_autonomous_database
+        ] = mock_rpc
+
+        request = {}
+        client.restore_autonomous_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.restore_autonomous_database(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_restore_autonomous_database_rest_required_fields(
+    request_type=oracledatabase.RestoreAutonomousDatabaseRequest,
+):
+    transport_class = transports.OracleDatabaseRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).restore_autonomous_database._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).restore_autonomous_database._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.restore_autonomous_database(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_restore_autonomous_database_rest_unset_required_fields():
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.restore_autonomous_database._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "restoreTime",
+            )
+        )
+    )
+
+
+def test_restore_autonomous_database_rest_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            restore_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.restore_autonomous_database(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/autonomousDatabases/*}:restore"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_restore_autonomous_database_rest_flattened_error(transport: str = "rest"):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.restore_autonomous_database(
+            oracledatabase.RestoreAutonomousDatabaseRequest(),
+            name="name_value",
+            restore_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+
+def test_generate_autonomous_database_wallet_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OracleDatabaseClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.generate_autonomous_database_wallet
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.generate_autonomous_database_wallet
+        ] = mock_rpc
+
+        request = {}
+        client.generate_autonomous_database_wallet(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.generate_autonomous_database_wallet(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_generate_autonomous_database_wallet_rest_required_fields(
+    request_type=oracledatabase.GenerateAutonomousDatabaseWalletRequest,
+):
+    transport_class = transports.OracleDatabaseRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["password"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_autonomous_database_wallet._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["password"] = "password_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).generate_autonomous_database_wallet._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "password" in jsonified_request
+    assert jsonified_request["password"] == "password_value"
+
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = oracledatabase.GenerateAutonomousDatabaseWalletResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = oracledatabase.GenerateAutonomousDatabaseWalletResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.generate_autonomous_database_wallet(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_generate_autonomous_database_wallet_rest_unset_required_fields():
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.generate_autonomous_database_wallet._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "password",
+            )
+        )
+    )
+
+
+def test_generate_autonomous_database_wallet_rest_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = oracledatabase.GenerateAutonomousDatabaseWalletResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            type_=autonomous_database.GenerateType.ALL,
+            is_regional=True,
+            password="password_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = oracledatabase.GenerateAutonomousDatabaseWalletResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.generate_autonomous_database_wallet(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/autonomousDatabases/*}:generateWallet"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_generate_autonomous_database_wallet_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.generate_autonomous_database_wallet(
+            oracledatabase.GenerateAutonomousDatabaseWalletRequest(),
+            name="name_value",
+            type_=autonomous_database.GenerateType.ALL,
+            is_regional=True,
+            password="password_value",
+        )
+
+
+def test_list_autonomous_db_versions_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OracleDatabaseClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_autonomous_db_versions
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_autonomous_db_versions
+        ] = mock_rpc
+
+        request = {}
+        client.list_autonomous_db_versions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_autonomous_db_versions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_autonomous_db_versions_rest_required_fields(
+    request_type=oracledatabase.ListAutonomousDbVersionsRequest,
+):
+    transport_class = transports.OracleDatabaseRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_autonomous_db_versions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_autonomous_db_versions._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = oracledatabase.ListAutonomousDbVersionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = oracledatabase.ListAutonomousDbVersionsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_autonomous_db_versions(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_autonomous_db_versions_rest_unset_required_fields():
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_autonomous_db_versions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_autonomous_db_versions_rest_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = oracledatabase.ListAutonomousDbVersionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = oracledatabase.ListAutonomousDbVersionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_autonomous_db_versions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/autonomousDbVersions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_autonomous_db_versions_rest_flattened_error(transport: str = "rest"):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_autonomous_db_versions(
+            oracledatabase.ListAutonomousDbVersionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_autonomous_db_versions_rest_pager(transport: str = "rest"):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            oracledatabase.ListAutonomousDbVersionsResponse(
+                autonomous_db_versions=[
+                    autonomous_db_version.AutonomousDbVersion(),
+                    autonomous_db_version.AutonomousDbVersion(),
+                    autonomous_db_version.AutonomousDbVersion(),
+                ],
+                next_page_token="abc",
+            ),
+            oracledatabase.ListAutonomousDbVersionsResponse(
+                autonomous_db_versions=[],
+                next_page_token="def",
+            ),
+            oracledatabase.ListAutonomousDbVersionsResponse(
+                autonomous_db_versions=[
+                    autonomous_db_version.AutonomousDbVersion(),
+                ],
+                next_page_token="ghi",
+            ),
+            oracledatabase.ListAutonomousDbVersionsResponse(
+                autonomous_db_versions=[
+                    autonomous_db_version.AutonomousDbVersion(),
+                    autonomous_db_version.AutonomousDbVersion(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            oracledatabase.ListAutonomousDbVersionsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_autonomous_db_versions(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, autonomous_db_version.AutonomousDbVersion) for i in results
+        )
+
+        pages = list(client.list_autonomous_db_versions(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_list_autonomous_database_character_sets_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OracleDatabaseClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_autonomous_database_character_sets
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_autonomous_database_character_sets
+        ] = mock_rpc
+
+        request = {}
+        client.list_autonomous_database_character_sets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_autonomous_database_character_sets(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_autonomous_database_character_sets_rest_required_fields(
+    request_type=oracledatabase.ListAutonomousDatabaseCharacterSetsRequest,
+):
+    transport_class = transports.OracleDatabaseRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_autonomous_database_character_sets._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_autonomous_database_character_sets._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = oracledatabase.ListAutonomousDatabaseCharacterSetsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = (
+                oracledatabase.ListAutonomousDatabaseCharacterSetsResponse.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_autonomous_database_character_sets(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_autonomous_database_character_sets_rest_unset_required_fields():
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.list_autonomous_database_character_sets._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_autonomous_database_character_sets_rest_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = oracledatabase.ListAutonomousDatabaseCharacterSetsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = oracledatabase.ListAutonomousDatabaseCharacterSetsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_autonomous_database_character_sets(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/autonomousDatabaseCharacterSets"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_autonomous_database_character_sets_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_autonomous_database_character_sets(
+            oracledatabase.ListAutonomousDatabaseCharacterSetsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_autonomous_database_character_sets_rest_pager(transport: str = "rest"):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            oracledatabase.ListAutonomousDatabaseCharacterSetsResponse(
+                autonomous_database_character_sets=[
+                    autonomous_database_character_set.AutonomousDatabaseCharacterSet(),
+                    autonomous_database_character_set.AutonomousDatabaseCharacterSet(),
+                    autonomous_database_character_set.AutonomousDatabaseCharacterSet(),
+                ],
+                next_page_token="abc",
+            ),
+            oracledatabase.ListAutonomousDatabaseCharacterSetsResponse(
+                autonomous_database_character_sets=[],
+                next_page_token="def",
+            ),
+            oracledatabase.ListAutonomousDatabaseCharacterSetsResponse(
+                autonomous_database_character_sets=[
+                    autonomous_database_character_set.AutonomousDatabaseCharacterSet(),
+                ],
+                next_page_token="ghi",
+            ),
+            oracledatabase.ListAutonomousDatabaseCharacterSetsResponse(
+                autonomous_database_character_sets=[
+                    autonomous_database_character_set.AutonomousDatabaseCharacterSet(),
+                    autonomous_database_character_set.AutonomousDatabaseCharacterSet(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            oracledatabase.ListAutonomousDatabaseCharacterSetsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_autonomous_database_character_sets(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(
+                i, autonomous_database_character_set.AutonomousDatabaseCharacterSet
+            )
+            for i in results
+        )
+
+        pages = list(
+            client.list_autonomous_database_character_sets(request=sample_request).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_list_autonomous_database_backups_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = OracleDatabaseClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.list_autonomous_database_backups
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.list_autonomous_database_backups
+        ] = mock_rpc
+
+        request = {}
+        client.list_autonomous_database_backups(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list_autonomous_database_backups(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_autonomous_database_backups_rest_required_fields(
+    request_type=oracledatabase.ListAutonomousDatabaseBackupsRequest,
+):
+    transport_class = transports.OracleDatabaseRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_autonomous_database_backups._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_autonomous_database_backups._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = oracledatabase.ListAutonomousDatabaseBackupsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = oracledatabase.ListAutonomousDatabaseBackupsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_autonomous_database_backups(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_autonomous_database_backups_rest_unset_required_fields():
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.list_autonomous_database_backups._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+def test_list_autonomous_database_backups_rest_flattened():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = oracledatabase.ListAutonomousDatabaseBackupsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = oracledatabase.ListAutonomousDatabaseBackupsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_autonomous_database_backups(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/autonomousDatabaseBackups"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_autonomous_database_backups_rest_flattened_error(transport: str = "rest"):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_autonomous_database_backups(
+            oracledatabase.ListAutonomousDatabaseBackupsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_autonomous_database_backups_rest_pager(transport: str = "rest"):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            oracledatabase.ListAutonomousDatabaseBackupsResponse(
+                autonomous_database_backups=[
+                    autonomous_db_backup.AutonomousDatabaseBackup(),
+                    autonomous_db_backup.AutonomousDatabaseBackup(),
+                    autonomous_db_backup.AutonomousDatabaseBackup(),
+                ],
+                next_page_token="abc",
+            ),
+            oracledatabase.ListAutonomousDatabaseBackupsResponse(
+                autonomous_database_backups=[],
+                next_page_token="def",
+            ),
+            oracledatabase.ListAutonomousDatabaseBackupsResponse(
+                autonomous_database_backups=[
+                    autonomous_db_backup.AutonomousDatabaseBackup(),
+                ],
+                next_page_token="ghi",
+            ),
+            oracledatabase.ListAutonomousDatabaseBackupsResponse(
+                autonomous_database_backups=[
+                    autonomous_db_backup.AutonomousDatabaseBackup(),
+                    autonomous_db_backup.AutonomousDatabaseBackup(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            oracledatabase.ListAutonomousDatabaseBackupsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_autonomous_database_backups(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, autonomous_db_backup.AutonomousDatabaseBackup)
+            for i in results
+        )
+
+        pages = list(
+            client.list_autonomous_database_backups(request=sample_request).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_credentials_transport_error():
+    # It is an error to provide credentials and a transport instance.
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = OracleDatabaseClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+    # It is an error to provide a credentials file and a transport instance.
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = OracleDatabaseClient(
+            client_options={"credentials_file": "credentials.json"},
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a transport instance.
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = OracleDatabaseClient(
+            client_options=options,
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a credential.
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = OracleDatabaseClient(
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
+        )
+
+    # It is an error to provide scopes and a transport instance.
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = OracleDatabaseClient(
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
+        )
+
+
+def test_transport_instance():
+    # A client may be instantiated with a custom transport instance.
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+    assert client.transport is transport
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.OracleDatabaseRestTransport,
+    ],
+)
+def test_transport_adc(transport_class):
+    # Test default credentials are used if not provided.
+    with mock.patch.object(google.auth, "default") as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class()
+        adc.assert_called_once()
+
+
+def test_transport_kind_rest():
+    transport = OracleDatabaseClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_list_cloud_exadata_infrastructures_rest_bad_request(
+    request_type=oracledatabase.ListCloudExadataInfrastructuresRequest,
+):
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_cloud_exadata_infrastructures(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListCloudExadataInfrastructuresRequest,
+        dict,
+    ],
+)
+def test_list_cloud_exadata_infrastructures_rest_call_success(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = oracledatabase.ListCloudExadataInfrastructuresResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = oracledatabase.ListCloudExadataInfrastructuresResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_cloud_exadata_infrastructures(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCloudExadataInfrastructuresPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_cloud_exadata_infrastructures_rest_interceptors(null_interceptor):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "post_list_cloud_exadata_infrastructures",
+    ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "pre_list_cloud_exadata_infrastructures",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = oracledatabase.ListCloudExadataInfrastructuresRequest.pb(
+            oracledatabase.ListCloudExadataInfrastructuresRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = oracledatabase.ListCloudExadataInfrastructuresResponse.to_json(
+            oracledatabase.ListCloudExadataInfrastructuresResponse()
+        )
+        req.return_value.content = return_value
+
+        request = oracledatabase.ListCloudExadataInfrastructuresRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = oracledatabase.ListCloudExadataInfrastructuresResponse()
+
+        client.list_cloud_exadata_infrastructures(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_cloud_exadata_infrastructure_rest_bad_request(
+    request_type=oracledatabase.GetCloudExadataInfrastructureRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/cloudExadataInfrastructures/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_cloud_exadata_infrastructure(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.GetCloudExadataInfrastructureRequest,
+        dict,
+    ],
+)
+def test_get_cloud_exadata_infrastructure_rest_call_success(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/cloudExadataInfrastructures/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = exadata_infra.CloudExadataInfrastructure(
+            name="name_value",
+            display_name="display_name_value",
+            gcp_oracle_zone="gcp_oracle_zone_value",
+            entitlement_id="entitlement_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = exadata_infra.CloudExadataInfrastructure.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_cloud_exadata_infrastructure(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, exadata_infra.CloudExadataInfrastructure)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.gcp_oracle_zone == "gcp_oracle_zone_value"
+    assert response.entitlement_id == "entitlement_id_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_cloud_exadata_infrastructure_rest_interceptors(null_interceptor):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "post_get_cloud_exadata_infrastructure",
+    ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "pre_get_cloud_exadata_infrastructure"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = oracledatabase.GetCloudExadataInfrastructureRequest.pb(
+            oracledatabase.GetCloudExadataInfrastructureRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = exadata_infra.CloudExadataInfrastructure.to_json(
+            exadata_infra.CloudExadataInfrastructure()
+        )
+        req.return_value.content = return_value
+
+        request = oracledatabase.GetCloudExadataInfrastructureRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = exadata_infra.CloudExadataInfrastructure()
+
+        client.get_cloud_exadata_infrastructure(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_cloud_exadata_infrastructure_rest_bad_request(
+    request_type=oracledatabase.CreateCloudExadataInfrastructureRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_cloud_exadata_infrastructure(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.CreateCloudExadataInfrastructureRequest,
+        dict,
+    ],
+)
+def test_create_cloud_exadata_infrastructure_rest_call_success(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["cloud_exadata_infrastructure"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "gcp_oracle_zone": "gcp_oracle_zone_value",
+        "entitlement_id": "entitlement_id_value",
+        "properties": {
+            "ocid": "ocid_value",
+            "compute_count": 1413,
+            "storage_count": 1405,
+            "total_storage_size_gb": 2234,
+            "available_storage_size_gb": 2615,
+            "maintenance_window": {
+                "preference": 1,
+                "months": [1],
+                "weeks_of_month": [1497, 1498],
+                "days_of_week": [1],
+                "hours_of_day": [1283, 1284],
+                "lead_time_week": 1455,
+                "patching_mode": 1,
+                "custom_action_timeout_mins": 2804,
+                "is_custom_action_timeout_enabled": True,
+            },
+            "state": 1,
+            "shape": "shape_value",
+            "oci_url": "oci_url_value",
+            "cpu_count": 976,
+            "max_cpu_count": 1397,
+            "memory_size_gb": 1499,
+            "max_memory_gb": 1382,
+            "db_node_storage_size_gb": 2401,
+            "max_db_node_storage_size_gb": 2822,
+            "data_storage_size_tb": 0.2109,
+            "max_data_storage_tb": 0.19920000000000002,
+            "activated_storage_count": 2449,
+            "additional_storage_count": 2549,
+            "db_server_version": "db_server_version_value",
+            "storage_server_version": "storage_server_version_value",
+            "next_maintenance_run_id": "next_maintenance_run_id_value",
+            "next_maintenance_run_time": {"seconds": 751, "nanos": 543},
+            "next_security_maintenance_run_time": {},
+            "customer_contacts": [{"email": "email_value"}],
+            "monthly_storage_server_version": "monthly_storage_server_version_value",
+            "monthly_db_server_version": "monthly_db_server_version_value",
+        },
+        "labels": {},
+        "create_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = oracledatabase.CreateCloudExadataInfrastructureRequest.meta.fields[
+        "cloud_exadata_infrastructure"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "cloud_exadata_infrastructure"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["cloud_exadata_infrastructure"][field])
+                ):
+                    del request_init["cloud_exadata_infrastructure"][field][i][subfield]
+            else:
+                del request_init["cloud_exadata_infrastructure"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_cloud_exadata_infrastructure(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_cloud_exadata_infrastructure_rest_interceptors(null_interceptor):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "post_create_cloud_exadata_infrastructure",
+    ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "pre_create_cloud_exadata_infrastructure",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = oracledatabase.CreateCloudExadataInfrastructureRequest.pb(
+            oracledatabase.CreateCloudExadataInfrastructureRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = oracledatabase.CreateCloudExadataInfrastructureRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_cloud_exadata_infrastructure(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_cloud_exadata_infrastructure_rest_bad_request(
+    request_type=oracledatabase.DeleteCloudExadataInfrastructureRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/cloudExadataInfrastructures/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_cloud_exadata_infrastructure(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.DeleteCloudExadataInfrastructureRequest,
+        dict,
+    ],
+)
+def test_delete_cloud_exadata_infrastructure_rest_call_success(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/cloudExadataInfrastructures/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_cloud_exadata_infrastructure(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_cloud_exadata_infrastructure_rest_interceptors(null_interceptor):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "post_delete_cloud_exadata_infrastructure",
+    ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor,
+        "pre_delete_cloud_exadata_infrastructure",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = oracledatabase.DeleteCloudExadataInfrastructureRequest.pb(
+            oracledatabase.DeleteCloudExadataInfrastructureRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = oracledatabase.DeleteCloudExadataInfrastructureRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_cloud_exadata_infrastructure(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_cloud_vm_clusters_rest_bad_request(
+    request_type=oracledatabase.ListCloudVmClustersRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_cloud_vm_clusters(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListCloudVmClustersRequest,
+        dict,
+    ],
+)
+def test_list_cloud_vm_clusters_rest_call_success(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = oracledatabase.ListCloudVmClustersResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = oracledatabase.ListCloudVmClustersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_cloud_vm_clusters(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCloudVmClustersPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_cloud_vm_clusters_rest_interceptors(null_interceptor):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "post_list_cloud_vm_clusters"
+    ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "pre_list_cloud_vm_clusters"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = oracledatabase.ListCloudVmClustersRequest.pb(
+            oracledatabase.ListCloudVmClustersRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = oracledatabase.ListCloudVmClustersResponse.to_json(
+            oracledatabase.ListCloudVmClustersResponse()
+        )
+        req.return_value.content = return_value
+
+        request = oracledatabase.ListCloudVmClustersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = oracledatabase.ListCloudVmClustersResponse()
+
+        client.list_cloud_vm_clusters(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_cloud_vm_cluster_rest_bad_request(
+    request_type=oracledatabase.GetCloudVmClusterRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/cloudVmClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_cloud_vm_cluster(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.GetCloudVmClusterRequest,
+        dict,
+    ],
+)
+def test_get_cloud_vm_cluster_rest_call_success(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/cloudVmClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vm_cluster.CloudVmCluster(
+            name="name_value",
+            exadata_infrastructure="exadata_infrastructure_value",
+            display_name="display_name_value",
+            gcp_oracle_zone="gcp_oracle_zone_value",
+            cidr="cidr_value",
+            backup_subnet_cidr="backup_subnet_cidr_value",
+            network="network_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = vm_cluster.CloudVmCluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_cloud_vm_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vm_cluster.CloudVmCluster)
+    assert response.name == "name_value"
+    assert response.exadata_infrastructure == "exadata_infrastructure_value"
+    assert response.display_name == "display_name_value"
+    assert response.gcp_oracle_zone == "gcp_oracle_zone_value"
+    assert response.cidr == "cidr_value"
+    assert response.backup_subnet_cidr == "backup_subnet_cidr_value"
+    assert response.network == "network_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_cloud_vm_cluster_rest_interceptors(null_interceptor):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "post_get_cloud_vm_cluster"
+    ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "pre_get_cloud_vm_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = oracledatabase.GetCloudVmClusterRequest.pb(
+            oracledatabase.GetCloudVmClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = vm_cluster.CloudVmCluster.to_json(vm_cluster.CloudVmCluster())
+        req.return_value.content = return_value
+
+        request = oracledatabase.GetCloudVmClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vm_cluster.CloudVmCluster()
+
+        client.get_cloud_vm_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_cloud_vm_cluster_rest_bad_request(
+    request_type=oracledatabase.CreateCloudVmClusterRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_cloud_vm_cluster(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.CreateCloudVmClusterRequest,
+        dict,
+    ],
+)
+def test_create_cloud_vm_cluster_rest_call_success(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["cloud_vm_cluster"] = {
+        "name": "name_value",
+        "exadata_infrastructure": "exadata_infrastructure_value",
+        "display_name": "display_name_value",
+        "gcp_oracle_zone": "gcp_oracle_zone_value",
+        "properties": {
+            "ocid": "ocid_value",
+            "license_type": 1,
+            "gi_version": "gi_version_value",
+            "time_zone": {"id": "id_value", "version": "version_value"},
+            "ssh_public_keys": ["ssh_public_keys_value1", "ssh_public_keys_value2"],
+            "node_count": 1070,
+            "shape": "shape_value",
+            "ocpu_count": 0.1087,
+            "memory_size_gb": 1499,
+            "db_node_storage_size_gb": 2401,
+            "storage_size_gb": 1591,
+            "data_storage_size_tb": 0.2109,
+            "disk_redundancy": 1,
+            "sparse_diskgroup_enabled": True,
+            "local_backup_enabled": True,
+            "hostname_prefix": "hostname_prefix_value",
+            "diagnostics_data_collection_options": {
+                "diagnostics_events_enabled": True,
+                "health_monitoring_enabled": True,
+                "incident_logs_enabled": True,
+            },
+            "state": 1,
+            "scan_listener_port_tcp": 2356,
+            "scan_listener_port_tcp_ssl": 2789,
+            "domain": "domain_value",
+            "scan_dns": "scan_dns_value",
+            "hostname": "hostname_value",
+            "cpu_core_count": 1496,
+            "system_version": "system_version_value",
+            "scan_ip_ids": ["scan_ip_ids_value1", "scan_ip_ids_value2"],
+            "scan_dns_record_id": "scan_dns_record_id_value",
+            "oci_url": "oci_url_value",
+            "db_server_ocids": ["db_server_ocids_value1", "db_server_ocids_value2"],
+            "compartment_id": "compartment_id_value",
+            "dns_listener_ip": "dns_listener_ip_value",
+            "cluster_name": "cluster_name_value",
+        },
+        "labels": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "cidr": "cidr_value",
+        "backup_subnet_cidr": "backup_subnet_cidr_value",
+        "network": "network_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = oracledatabase.CreateCloudVmClusterRequest.meta.fields[
+        "cloud_vm_cluster"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["cloud_vm_cluster"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["cloud_vm_cluster"][field])):
+                    del request_init["cloud_vm_cluster"][field][i][subfield]
+            else:
+                del request_init["cloud_vm_cluster"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_cloud_vm_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_cloud_vm_cluster_rest_interceptors(null_interceptor):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "post_create_cloud_vm_cluster"
+    ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "pre_create_cloud_vm_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = oracledatabase.CreateCloudVmClusterRequest.pb(
+            oracledatabase.CreateCloudVmClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = oracledatabase.CreateCloudVmClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_cloud_vm_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_cloud_vm_cluster_rest_bad_request(
+    request_type=oracledatabase.DeleteCloudVmClusterRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/cloudVmClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_cloud_vm_cluster(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.DeleteCloudVmClusterRequest,
+        dict,
+    ],
+)
+def test_delete_cloud_vm_cluster_rest_call_success(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/cloudVmClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_cloud_vm_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_cloud_vm_cluster_rest_interceptors(null_interceptor):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "post_delete_cloud_vm_cluster"
+    ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "pre_delete_cloud_vm_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = oracledatabase.DeleteCloudVmClusterRequest.pb(
+            oracledatabase.DeleteCloudVmClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = oracledatabase.DeleteCloudVmClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_cloud_vm_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_entitlements_rest_bad_request(
+    request_type=oracledatabase.ListEntitlementsRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_entitlements(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListEntitlementsRequest,
+        dict,
+    ],
+)
+def test_list_entitlements_rest_call_success(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = oracledatabase.ListEntitlementsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = oracledatabase.ListEntitlementsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_entitlements(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListEntitlementsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_entitlements_rest_interceptors(null_interceptor):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "post_list_entitlements"
+    ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "pre_list_entitlements"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = oracledatabase.ListEntitlementsRequest.pb(
+            oracledatabase.ListEntitlementsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = oracledatabase.ListEntitlementsResponse.to_json(
+            oracledatabase.ListEntitlementsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = oracledatabase.ListEntitlementsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = oracledatabase.ListEntitlementsResponse()
+
+        client.list_entitlements(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_db_servers_rest_bad_request(
+    request_type=oracledatabase.ListDbServersRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/cloudExadataInfrastructures/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_db_servers(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListDbServersRequest,
+        dict,
+    ],
+)
+def test_list_db_servers_rest_call_success(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/cloudExadataInfrastructures/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = oracledatabase.ListDbServersResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = oracledatabase.ListDbServersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_db_servers(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDbServersPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_db_servers_rest_interceptors(null_interceptor):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "post_list_db_servers"
+    ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "pre_list_db_servers"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = oracledatabase.ListDbServersRequest.pb(
+            oracledatabase.ListDbServersRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = oracledatabase.ListDbServersResponse.to_json(
+            oracledatabase.ListDbServersResponse()
+        )
+        req.return_value.content = return_value
+
+        request = oracledatabase.ListDbServersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = oracledatabase.ListDbServersResponse()
+
+        client.list_db_servers(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_db_nodes_rest_bad_request(request_type=oracledatabase.ListDbNodesRequest):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/cloudVmClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_db_nodes(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListDbNodesRequest,
+        dict,
+    ],
+)
+def test_list_db_nodes_rest_call_success(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/cloudVmClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = oracledatabase.ListDbNodesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = oracledatabase.ListDbNodesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_db_nodes(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDbNodesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_db_nodes_rest_interceptors(null_interceptor):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "post_list_db_nodes"
+    ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "pre_list_db_nodes"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = oracledatabase.ListDbNodesRequest.pb(
+            oracledatabase.ListDbNodesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = oracledatabase.ListDbNodesResponse.to_json(
+            oracledatabase.ListDbNodesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = oracledatabase.ListDbNodesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = oracledatabase.ListDbNodesResponse()
+
+        client.list_db_nodes(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_gi_versions_rest_bad_request(
+    request_type=oracledatabase.ListGiVersionsRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_gi_versions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListGiVersionsRequest,
+        dict,
+    ],
+)
+def test_list_gi_versions_rest_call_success(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = oracledatabase.ListGiVersionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = oracledatabase.ListGiVersionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_gi_versions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListGiVersionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_gi_versions_rest_interceptors(null_interceptor):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "post_list_gi_versions"
+    ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "pre_list_gi_versions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = oracledatabase.ListGiVersionsRequest.pb(
+            oracledatabase.ListGiVersionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = oracledatabase.ListGiVersionsResponse.to_json(
+            oracledatabase.ListGiVersionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = oracledatabase.ListGiVersionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = oracledatabase.ListGiVersionsResponse()
+
+        client.list_gi_versions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_db_system_shapes_rest_bad_request(
+    request_type=oracledatabase.ListDbSystemShapesRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_db_system_shapes(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListDbSystemShapesRequest,
+        dict,
+    ],
+)
+def test_list_db_system_shapes_rest_call_success(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = oracledatabase.ListDbSystemShapesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = oracledatabase.ListDbSystemShapesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_db_system_shapes(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDbSystemShapesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_db_system_shapes_rest_interceptors(null_interceptor):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "post_list_db_system_shapes"
+    ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "pre_list_db_system_shapes"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = oracledatabase.ListDbSystemShapesRequest.pb(
+            oracledatabase.ListDbSystemShapesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = oracledatabase.ListDbSystemShapesResponse.to_json(
+            oracledatabase.ListDbSystemShapesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = oracledatabase.ListDbSystemShapesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = oracledatabase.ListDbSystemShapesResponse()
+
+        client.list_db_system_shapes(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_autonomous_databases_rest_bad_request(
+    request_type=oracledatabase.ListAutonomousDatabasesRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_autonomous_databases(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.ListAutonomousDatabasesRequest,
+        dict,
+    ],
+)
+def test_list_autonomous_databases_rest_call_success(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = oracledatabase.ListAutonomousDatabasesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = oracledatabase.ListAutonomousDatabasesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_autonomous_databases(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAutonomousDatabasesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_autonomous_databases_rest_interceptors(null_interceptor):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "post_list_autonomous_databases"
+    ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "pre_list_autonomous_databases"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = oracledatabase.ListAutonomousDatabasesRequest.pb(
+            oracledatabase.ListAutonomousDatabasesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = oracledatabase.ListAutonomousDatabasesResponse.to_json(
+            oracledatabase.ListAutonomousDatabasesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = oracledatabase.ListAutonomousDatabasesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = oracledatabase.ListAutonomousDatabasesResponse()
+
+        client.list_autonomous_databases(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_autonomous_database_rest_bad_request(
+    request_type=oracledatabase.GetAutonomousDatabaseRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_autonomous_database(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        oracledatabase.GetAutonomousDatabaseRequest,
+        dict,
+    ],
+)
+def test_get_autonomous_database_rest_call_success(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = autonomous_database.AutonomousDatabase(
+            name="name_value",
+            database="database_value",
+            display_name="display_name_value",
+            entitlement_id="entitlement_id_value",
+            admin_password="admin_password_value",
+            network="network_value",
+            cidr="cidr_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = autonomous_database.AutonomousDatabase.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_autonomous_database(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, autonomous_database.AutonomousDatabase)
+    assert response.name == "name_value"
+    assert response.database == "database_value"
+    assert response.display_name == "display_name_value"
+    assert response.entitlement_id == "entitlement_id_value"
+    assert response.admin_password == "admin_password_value"
+    assert response.network == "network_value"
+    assert response.cidr == "cidr_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_autonomous_database_rest_interceptors(null_interceptor):
+    transport = transports.OracleDatabaseRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.OracleDatabaseRestInterceptor(),
+    )
+    client = OracleDatabaseClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "post_get_autonomous_database"
+    ) as post, mock.patch.object(
+        transports.OracleDatabaseRestInterceptor, "pre_get_autonomous_database"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = oracledatabase.GetAutonomousDatabaseRequest.pb(
+            oracledatabase.GetAutonomousDatabaseRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = autonomous_database.AutonomousDatabase.to_json(
+            autonomous_database.AutonomousDatabase()
+        )
+        req.return_value.content = return_value
+
+        request = oracledatabase.GetAutonomousDatabaseRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = autonomous_database.AutonomousDatabase()
+
+        client.get_autonomous_database(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_autonomous_database_rest_bad_request(
+    request_type=oracledatabase.CreateAutonomousDatabaseRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_autonomous_database(request)
 
 
 @pytest.mark.parametrize(
@@ -6639,10 +8334,9 @@ def test_get_autonomous_database_rest_error():
         dict,
     ],
 )
-def test_create_autonomous_database_rest(request_type):
+def test_create_autonomous_database_rest_call_success(request_type):
     client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -6852,179 +8546,15 @@ def test_create_autonomous_database_rest(request_type):
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.create_autonomous_database(request)
 
     # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
-def test_create_autonomous_database_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.create_autonomous_database
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_autonomous_database
-        ] = mock_rpc
-
-        request = {}
-        client.create_autonomous_database(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.create_autonomous_database(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_create_autonomous_database_rest_required_fields(
-    request_type=oracledatabase.CreateAutonomousDatabaseRequest,
-):
-    transport_class = transports.OracleDatabaseRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request_init["autonomous_database_id"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-    assert "autonomousDatabaseId" not in jsonified_request
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_autonomous_database._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-    assert "autonomousDatabaseId" in jsonified_request
-    assert (
-        jsonified_request["autonomousDatabaseId"]
-        == request_init["autonomous_database_id"]
-    )
-
-    jsonified_request["parent"] = "parent_value"
-    jsonified_request["autonomousDatabaseId"] = "autonomous_database_id_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_autonomous_database._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "autonomous_database_id",
-            "request_id",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-    assert "autonomousDatabaseId" in jsonified_request
-    assert jsonified_request["autonomousDatabaseId"] == "autonomous_database_id_value"
-
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = operations_pb2.Operation(name="operations/spam")
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.create_autonomous_database(request)
-
-            expected_params = [
-                (
-                    "autonomousDatabaseId",
-                    "",
-                ),
-                ("$alt", "json;enum-encoding=int"),
-            ]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_create_autonomous_database_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_autonomous_database._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "autonomousDatabaseId",
-                "requestId",
-            )
-        )
-        & set(
-            (
-                "parent",
-                "autonomousDatabaseId",
-                "autonomousDatabase",
-            )
-        )
-    )
+    json_return_value = json_format.MessageToJson(return_value)
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -7036,6 +8566,7 @@ def test_create_autonomous_database_rest_interceptors(null_interceptor):
         else transports.OracleDatabaseRestInterceptor(),
     )
     client = OracleDatabaseClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -7059,12 +8590,10 @@ def test_create_autonomous_database_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
 
         request = oracledatabase.CreateAutonomousDatabaseRequest()
         metadata = [
@@ -7086,16 +8615,16 @@ def test_create_autonomous_database_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_create_autonomous_database_rest_bad_request(
-    transport: str = "rest", request_type=oracledatabase.CreateAutonomousDatabaseRequest
+def test_delete_autonomous_database_rest_bad_request(
+    request_type=oracledatabase.DeleteAutonomousDatabaseRequest,
 ):
     client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init = {
+        "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
+    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -7103,80 +8632,13 @@ def test_create_autonomous_database_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.create_autonomous_database(request)
-
-
-def test_create_autonomous_database_rest_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"parent": "projects/sample1/locations/sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent="parent_value",
-            autonomous_database=gco_autonomous_database.AutonomousDatabase(
-                name="name_value"
-            ),
-            autonomous_database_id="autonomous_database_id_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.create_autonomous_database(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*}/autonomousDatabases"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_create_autonomous_database_rest_flattened_error(transport: str = "rest"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.create_autonomous_database(
-            oracledatabase.CreateAutonomousDatabaseRequest(),
-            parent="parent_value",
-            autonomous_database=gco_autonomous_database.AutonomousDatabase(
-                name="name_value"
-            ),
-            autonomous_database_id="autonomous_database_id_value",
-        )
-
-
-def test_create_autonomous_database_rest_error():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.delete_autonomous_database(request)
 
 
 @pytest.mark.parametrize(
@@ -7186,10 +8648,9 @@ def test_create_autonomous_database_rest_error():
         dict,
     ],
 )
-def test_delete_autonomous_database_rest(request_type):
+def test_delete_autonomous_database_rest_call_success(request_type):
     client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -7204,143 +8665,15 @@ def test_delete_autonomous_database_rest(request_type):
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.delete_autonomous_database(request)
 
     # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
-def test_delete_autonomous_database_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.delete_autonomous_database
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_autonomous_database
-        ] = mock_rpc
-
-        request = {}
-        client.delete_autonomous_database(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.delete_autonomous_database(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_delete_autonomous_database_rest_required_fields(
-    request_type=oracledatabase.DeleteAutonomousDatabaseRequest,
-):
-    transport_class = transports.OracleDatabaseRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_autonomous_database._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_autonomous_database._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = operations_pb2.Operation(name="operations/spam")
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "delete",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.delete_autonomous_database(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_delete_autonomous_database_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_autonomous_database._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+    json_return_value = json_format.MessageToJson(return_value)
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -7352,6 +8685,7 @@ def test_delete_autonomous_database_rest_interceptors(null_interceptor):
         else transports.OracleDatabaseRestInterceptor(),
     )
     client = OracleDatabaseClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -7375,12 +8709,10 @@ def test_delete_autonomous_database_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
 
         request = oracledatabase.DeleteAutonomousDatabaseRequest()
         metadata = [
@@ -7402,14 +8734,12 @@ def test_delete_autonomous_database_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_delete_autonomous_database_rest_bad_request(
-    transport: str = "rest", request_type=oracledatabase.DeleteAutonomousDatabaseRequest
+def test_restore_autonomous_database_rest_bad_request(
+    request_type=oracledatabase.RestoreAutonomousDatabaseRequest,
 ):
     client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
     request_init = {
         "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
@@ -7421,74 +8751,13 @@ def test_delete_autonomous_database_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.delete_autonomous_database(request)
-
-
-def test_delete_autonomous_database_rest_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.delete_autonomous_database(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/autonomousDatabases/*}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_delete_autonomous_database_rest_flattened_error(transport: str = "rest"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_autonomous_database(
-            oracledatabase.DeleteAutonomousDatabaseRequest(),
-            name="name_value",
-        )
-
-
-def test_delete_autonomous_database_rest_error():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.restore_autonomous_database(request)
 
 
 @pytest.mark.parametrize(
@@ -7498,10 +8767,9 @@ def test_delete_autonomous_database_rest_error():
         dict,
     ],
 )
-def test_restore_autonomous_database_rest(request_type):
+def test_restore_autonomous_database_rest_call_success(request_type):
     client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -7516,150 +8784,15 @@ def test_restore_autonomous_database_rest(request_type):
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.restore_autonomous_database(request)
 
     # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
-def test_restore_autonomous_database_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.restore_autonomous_database
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.restore_autonomous_database
-        ] = mock_rpc
-
-        request = {}
-        client.restore_autonomous_database(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.restore_autonomous_database(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_restore_autonomous_database_rest_required_fields(
-    request_type=oracledatabase.RestoreAutonomousDatabaseRequest,
-):
-    transport_class = transports.OracleDatabaseRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).restore_autonomous_database._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).restore_autonomous_database._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = operations_pb2.Operation(name="operations/spam")
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.restore_autonomous_database(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_restore_autonomous_database_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.restore_autonomous_database._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "restoreTime",
-            )
-        )
-    )
+    json_return_value = json_format.MessageToJson(return_value)
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -7671,6 +8804,7 @@ def test_restore_autonomous_database_rest_interceptors(null_interceptor):
         else transports.OracleDatabaseRestInterceptor(),
     )
     client = OracleDatabaseClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -7694,12 +8828,10 @@ def test_restore_autonomous_database_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
 
         request = oracledatabase.RestoreAutonomousDatabaseRequest()
         metadata = [
@@ -7721,15 +8853,12 @@ def test_restore_autonomous_database_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_restore_autonomous_database_rest_bad_request(
-    transport: str = "rest",
-    request_type=oracledatabase.RestoreAutonomousDatabaseRequest,
+def test_generate_autonomous_database_wallet_rest_bad_request(
+    request_type=oracledatabase.GenerateAutonomousDatabaseWalletRequest,
 ):
     client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
     request_init = {
         "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
@@ -7741,76 +8870,13 @@ def test_restore_autonomous_database_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.restore_autonomous_database(request)
-
-
-def test_restore_autonomous_database_rest_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-            restore_time=timestamp_pb2.Timestamp(seconds=751),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.restore_autonomous_database(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/autonomousDatabases/*}:restore"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_restore_autonomous_database_rest_flattened_error(transport: str = "rest"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.restore_autonomous_database(
-            oracledatabase.RestoreAutonomousDatabaseRequest(),
-            name="name_value",
-            restore_time=timestamp_pb2.Timestamp(seconds=751),
-        )
-
-
-def test_restore_autonomous_database_rest_error():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.generate_autonomous_database_wallet(request)
 
 
 @pytest.mark.parametrize(
@@ -7820,10 +8886,9 @@ def test_restore_autonomous_database_rest_error():
         dict,
     ],
 )
-def test_generate_autonomous_database_wallet_rest(request_type):
+def test_generate_autonomous_database_wallet_rest_call_success(request_type):
     client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -7840,162 +8905,21 @@ def test_generate_autonomous_database_wallet_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = oracledatabase.GenerateAutonomousDatabaseWalletResponse.pb(
             return_value
         )
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.generate_autonomous_database_wallet(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, oracledatabase.GenerateAutonomousDatabaseWalletResponse)
     assert response.archive_content == b"archive_content_blob"
-
-
-def test_generate_autonomous_database_wallet_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.generate_autonomous_database_wallet
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.generate_autonomous_database_wallet
-        ] = mock_rpc
-
-        request = {}
-        client.generate_autonomous_database_wallet(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.generate_autonomous_database_wallet(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_generate_autonomous_database_wallet_rest_required_fields(
-    request_type=oracledatabase.GenerateAutonomousDatabaseWalletRequest,
-):
-    transport_class = transports.OracleDatabaseRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request_init["password"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).generate_autonomous_database_wallet._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-    jsonified_request["password"] = "password_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).generate_autonomous_database_wallet._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-    assert "password" in jsonified_request
-    assert jsonified_request["password"] == "password_value"
-
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = oracledatabase.GenerateAutonomousDatabaseWalletResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = oracledatabase.GenerateAutonomousDatabaseWalletResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.generate_autonomous_database_wallet(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_generate_autonomous_database_wallet_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.generate_autonomous_database_wallet._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "name",
-                "password",
-            )
-        )
-    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8007,6 +8931,7 @@ def test_generate_autonomous_database_wallet_rest_interceptors(null_interceptor)
         else transports.OracleDatabaseRestInterceptor(),
     )
     client = OracleDatabaseClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -8030,14 +8955,12 @@ def test_generate_autonomous_database_wallet_rest_interceptors(null_interceptor)
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            oracledatabase.GenerateAutonomousDatabaseWalletResponse.to_json(
-                oracledatabase.GenerateAutonomousDatabaseWalletResponse()
-            )
+        return_value = oracledatabase.GenerateAutonomousDatabaseWalletResponse.to_json(
+            oracledatabase.GenerateAutonomousDatabaseWalletResponse()
         )
+        req.return_value.content = return_value
 
         request = oracledatabase.GenerateAutonomousDatabaseWalletRequest()
         metadata = [
@@ -8059,19 +8982,14 @@ def test_generate_autonomous_database_wallet_rest_interceptors(null_interceptor)
         post.assert_called_once()
 
 
-def test_generate_autonomous_database_wallet_rest_bad_request(
-    transport: str = "rest",
-    request_type=oracledatabase.GenerateAutonomousDatabaseWalletRequest,
+def test_list_autonomous_db_versions_rest_bad_request(
+    request_type=oracledatabase.ListAutonomousDbVersionsRequest,
 ):
     client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -8079,86 +8997,13 @@ def test_generate_autonomous_database_wallet_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.generate_autonomous_database_wallet(request)
-
-
-def test_generate_autonomous_database_wallet_rest_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = oracledatabase.GenerateAutonomousDatabaseWalletResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/autonomousDatabases/sample3"
-        }
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-            type_=autonomous_database.GenerateType.ALL,
-            is_regional=True,
-            password="password_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = oracledatabase.GenerateAutonomousDatabaseWalletResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.generate_autonomous_database_wallet(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/autonomousDatabases/*}:generateWallet"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_generate_autonomous_database_wallet_rest_flattened_error(
-    transport: str = "rest",
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.generate_autonomous_database_wallet(
-            oracledatabase.GenerateAutonomousDatabaseWalletRequest(),
-            name="name_value",
-            type_=autonomous_database.GenerateType.ALL,
-            is_regional=True,
-            password="password_value",
-        )
-
-
-def test_generate_autonomous_database_wallet_rest_error():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.list_autonomous_db_versions(request)
 
 
 @pytest.mark.parametrize(
@@ -8168,10 +9013,9 @@ def test_generate_autonomous_database_wallet_rest_error():
         dict,
     ],
 )
-def test_list_autonomous_db_versions_rest(request_type):
+def test_list_autonomous_db_versions_rest_call_success(request_type):
     client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -8186,160 +9030,19 @@ def test_list_autonomous_db_versions_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = oracledatabase.ListAutonomousDbVersionsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list_autonomous_db_versions(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAutonomousDbVersionsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_autonomous_db_versions_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.list_autonomous_db_versions
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_autonomous_db_versions
-        ] = mock_rpc
-
-        request = {}
-        client.list_autonomous_db_versions(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.list_autonomous_db_versions(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_list_autonomous_db_versions_rest_required_fields(
-    request_type=oracledatabase.ListAutonomousDbVersionsRequest,
-):
-    transport_class = transports.OracleDatabaseRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_autonomous_db_versions._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_autonomous_db_versions._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "page_size",
-            "page_token",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = oracledatabase.ListAutonomousDbVersionsResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = oracledatabase.ListAutonomousDbVersionsResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.list_autonomous_db_versions(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_list_autonomous_db_versions_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list_autonomous_db_versions._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8351,6 +9054,7 @@ def test_list_autonomous_db_versions_rest_interceptors(null_interceptor):
         else transports.OracleDatabaseRestInterceptor(),
     )
     client = OracleDatabaseClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -8372,14 +9076,12 @@ def test_list_autonomous_db_versions_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            oracledatabase.ListAutonomousDbVersionsResponse.to_json(
-                oracledatabase.ListAutonomousDbVersionsResponse()
-            )
+        return_value = oracledatabase.ListAutonomousDbVersionsResponse.to_json(
+            oracledatabase.ListAutonomousDbVersionsResponse()
         )
+        req.return_value.content = return_value
 
         request = oracledatabase.ListAutonomousDbVersionsRequest()
         metadata = [
@@ -8401,14 +9103,12 @@ def test_list_autonomous_db_versions_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_list_autonomous_db_versions_rest_bad_request(
-    transport: str = "rest", request_type=oracledatabase.ListAutonomousDbVersionsRequest
+def test_list_autonomous_database_character_sets_rest_bad_request(
+    request_type=oracledatabase.ListAutonomousDatabaseCharacterSetsRequest,
 ):
     client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
@@ -8418,133 +9118,13 @@ def test_list_autonomous_db_versions_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.list_autonomous_db_versions(request)
-
-
-def test_list_autonomous_db_versions_rest_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = oracledatabase.ListAutonomousDbVersionsResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"parent": "projects/sample1/locations/sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent="parent_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = oracledatabase.ListAutonomousDbVersionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.list_autonomous_db_versions(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*}/autonomousDbVersions"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_list_autonomous_db_versions_rest_flattened_error(transport: str = "rest"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_autonomous_db_versions(
-            oracledatabase.ListAutonomousDbVersionsRequest(),
-            parent="parent_value",
-        )
-
-
-def test_list_autonomous_db_versions_rest_pager(transport: str = "rest"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        # with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            oracledatabase.ListAutonomousDbVersionsResponse(
-                autonomous_db_versions=[
-                    autonomous_db_version.AutonomousDbVersion(),
-                    autonomous_db_version.AutonomousDbVersion(),
-                    autonomous_db_version.AutonomousDbVersion(),
-                ],
-                next_page_token="abc",
-            ),
-            oracledatabase.ListAutonomousDbVersionsResponse(
-                autonomous_db_versions=[],
-                next_page_token="def",
-            ),
-            oracledatabase.ListAutonomousDbVersionsResponse(
-                autonomous_db_versions=[
-                    autonomous_db_version.AutonomousDbVersion(),
-                ],
-                next_page_token="ghi",
-            ),
-            oracledatabase.ListAutonomousDbVersionsResponse(
-                autonomous_db_versions=[
-                    autonomous_db_version.AutonomousDbVersion(),
-                    autonomous_db_version.AutonomousDbVersion(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(
-            oracledatabase.ListAutonomousDbVersionsResponse.to_json(x) for x in response
-        )
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode("UTF-8")
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {"parent": "projects/sample1/locations/sample2"}
-
-        pager = client.list_autonomous_db_versions(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(
-            isinstance(i, autonomous_db_version.AutonomousDbVersion) for i in results
-        )
-
-        pages = list(client.list_autonomous_db_versions(request=sample_request).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
+        client.list_autonomous_database_character_sets(request)
 
 
 @pytest.mark.parametrize(
@@ -8554,10 +9134,9 @@ def test_list_autonomous_db_versions_rest_pager(transport: str = "rest"):
         dict,
     ],
 )
-def test_list_autonomous_database_character_sets_rest(request_type):
+def test_list_autonomous_database_character_sets_rest_call_success(request_type):
     client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -8572,172 +9151,21 @@ def test_list_autonomous_database_character_sets_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = oracledatabase.ListAutonomousDatabaseCharacterSetsResponse.pb(
             return_value
         )
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list_autonomous_database_character_sets(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAutonomousDatabaseCharacterSetsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_autonomous_database_character_sets_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.list_autonomous_database_character_sets
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_autonomous_database_character_sets
-        ] = mock_rpc
-
-        request = {}
-        client.list_autonomous_database_character_sets(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.list_autonomous_database_character_sets(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_list_autonomous_database_character_sets_rest_required_fields(
-    request_type=oracledatabase.ListAutonomousDatabaseCharacterSetsRequest,
-):
-    transport_class = transports.OracleDatabaseRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_autonomous_database_character_sets._get_unset_required_fields(
-        jsonified_request
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_autonomous_database_character_sets._get_unset_required_fields(
-        jsonified_request
-    )
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "filter",
-            "page_size",
-            "page_token",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = oracledatabase.ListAutonomousDatabaseCharacterSetsResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = (
-                oracledatabase.ListAutonomousDatabaseCharacterSetsResponse.pb(
-                    return_value
-                )
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.list_autonomous_database_character_sets(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_list_autonomous_database_character_sets_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.list_autonomous_database_character_sets._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -8749,6 +9177,7 @@ def test_list_autonomous_database_character_sets_rest_interceptors(null_intercep
         else transports.OracleDatabaseRestInterceptor(),
     )
     client = OracleDatabaseClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -8772,14 +9201,14 @@ def test_list_autonomous_database_character_sets_rest_interceptors(null_intercep
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
+        return_value = (
             oracledatabase.ListAutonomousDatabaseCharacterSetsResponse.to_json(
                 oracledatabase.ListAutonomousDatabaseCharacterSetsResponse()
             )
         )
+        req.return_value.content = return_value
 
         request = oracledatabase.ListAutonomousDatabaseCharacterSetsRequest()
         metadata = [
@@ -8801,15 +9230,12 @@ def test_list_autonomous_database_character_sets_rest_interceptors(null_intercep
         post.assert_called_once()
 
 
-def test_list_autonomous_database_character_sets_rest_bad_request(
-    transport: str = "rest",
-    request_type=oracledatabase.ListAutonomousDatabaseCharacterSetsRequest,
+def test_list_autonomous_database_backups_rest_bad_request(
+    request_type=oracledatabase.ListAutonomousDatabaseBackupsRequest,
 ):
     client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
@@ -8819,143 +9245,13 @@ def test_list_autonomous_database_character_sets_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.list_autonomous_database_character_sets(request)
-
-
-def test_list_autonomous_database_character_sets_rest_flattened():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = oracledatabase.ListAutonomousDatabaseCharacterSetsResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"parent": "projects/sample1/locations/sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent="parent_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = oracledatabase.ListAutonomousDatabaseCharacterSetsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.list_autonomous_database_character_sets(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*}/autonomousDatabaseCharacterSets"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_list_autonomous_database_character_sets_rest_flattened_error(
-    transport: str = "rest",
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_autonomous_database_character_sets(
-            oracledatabase.ListAutonomousDatabaseCharacterSetsRequest(),
-            parent="parent_value",
-        )
-
-
-def test_list_autonomous_database_character_sets_rest_pager(transport: str = "rest"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        # with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            oracledatabase.ListAutonomousDatabaseCharacterSetsResponse(
-                autonomous_database_character_sets=[
-                    autonomous_database_character_set.AutonomousDatabaseCharacterSet(),
-                    autonomous_database_character_set.AutonomousDatabaseCharacterSet(),
-                    autonomous_database_character_set.AutonomousDatabaseCharacterSet(),
-                ],
-                next_page_token="abc",
-            ),
-            oracledatabase.ListAutonomousDatabaseCharacterSetsResponse(
-                autonomous_database_character_sets=[],
-                next_page_token="def",
-            ),
-            oracledatabase.ListAutonomousDatabaseCharacterSetsResponse(
-                autonomous_database_character_sets=[
-                    autonomous_database_character_set.AutonomousDatabaseCharacterSet(),
-                ],
-                next_page_token="ghi",
-            ),
-            oracledatabase.ListAutonomousDatabaseCharacterSetsResponse(
-                autonomous_database_character_sets=[
-                    autonomous_database_character_set.AutonomousDatabaseCharacterSet(),
-                    autonomous_database_character_set.AutonomousDatabaseCharacterSet(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(
-            oracledatabase.ListAutonomousDatabaseCharacterSetsResponse.to_json(x)
-            for x in response
-        )
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode("UTF-8")
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {"parent": "projects/sample1/locations/sample2"}
-
-        pager = client.list_autonomous_database_character_sets(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(
-            isinstance(
-                i, autonomous_database_character_set.AutonomousDatabaseCharacterSet
-            )
-            for i in results
-        )
-
-        pages = list(
-            client.list_autonomous_database_character_sets(request=sample_request).pages
-        )
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
+        client.list_autonomous_database_backups(request)
 
 
 @pytest.mark.parametrize(
@@ -8965,10 +9261,9 @@ def test_list_autonomous_database_character_sets_rest_pager(transport: str = "re
         dict,
     ],
 )
-def test_list_autonomous_database_backups_rest(request_type):
+def test_list_autonomous_database_backups_rest_call_success(request_type):
     client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -8983,166 +9278,21 @@ def test_list_autonomous_database_backups_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = oracledatabase.ListAutonomousDatabaseBackupsResponse.pb(
             return_value
         )
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list_autonomous_database_backups(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAutonomousDatabaseBackupsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_autonomous_database_backups_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.list_autonomous_database_backups
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_autonomous_database_backups
-        ] = mock_rpc
-
-        request = {}
-        client.list_autonomous_database_backups(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.list_autonomous_database_backups(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_list_autonomous_database_backups_rest_required_fields(
-    request_type=oracledatabase.ListAutonomousDatabaseBackupsRequest,
-):
-    transport_class = transports.OracleDatabaseRestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_autonomous_database_backups._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = "parent_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_autonomous_database_backups._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "filter",
-            "page_size",
-            "page_token",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == "parent_value"
-
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = oracledatabase.ListAutonomousDatabaseBackupsResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = oracledatabase.ListAutonomousDatabaseBackupsResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.list_autonomous_database_backups(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_list_autonomous_database_backups_rest_unset_required_fields():
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = (
-        transport.list_autonomous_database_backups._get_unset_required_fields({})
-    )
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "pageSize",
-                "pageToken",
-            )
-        )
-        & set(("parent",))
-    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -9154,6 +9304,7 @@ def test_list_autonomous_database_backups_rest_interceptors(null_interceptor):
         else transports.OracleDatabaseRestInterceptor(),
     )
     client = OracleDatabaseClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -9176,14 +9327,12 @@ def test_list_autonomous_database_backups_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            oracledatabase.ListAutonomousDatabaseBackupsResponse.to_json(
-                oracledatabase.ListAutonomousDatabaseBackupsResponse()
-            )
+        return_value = oracledatabase.ListAutonomousDatabaseBackupsResponse.to_json(
+            oracledatabase.ListAutonomousDatabaseBackupsResponse()
         )
+        req.return_value.content = return_value
 
         request = oracledatabase.ListAutonomousDatabaseBackupsRequest()
         metadata = [
@@ -9205,18 +9354,15 @@ def test_list_autonomous_database_backups_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_list_autonomous_database_backups_rest_bad_request(
-    transport: str = "rest",
-    request_type=oracledatabase.ListAutonomousDatabaseBackupsRequest,
-):
+def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        transport="rest",
     )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
 
     # Mock the http request call within the method and fake a BadRequest error.
     with mock.patch.object(Session, "request") as req, pytest.raises(
@@ -9224,226 +9370,846 @@ def test_list_autonomous_database_backups_rest_bad_request(
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.list_autonomous_database_backups(request)
+        client.get_location(request)
 
 
-def test_list_autonomous_database_backups_rest_flattened():
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
     client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = oracledatabase.ListAutonomousDatabaseBackupsResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"parent": "projects/sample1/locations/sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent="parent_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = oracledatabase.ListAutonomousDatabaseBackupsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.list_autonomous_database_backups(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*}/autonomousDatabaseBackups"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_list_autonomous_database_backups_rest_flattened_error(transport: str = "rest"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_autonomous_database_backups(
-            oracledatabase.ListAutonomousDatabaseBackupsRequest(),
-            parent="parent_value",
-        )
-
-
-def test_list_autonomous_database_backups_rest_pager(transport: str = "rest"):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        # with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            oracledatabase.ListAutonomousDatabaseBackupsResponse(
-                autonomous_database_backups=[
-                    autonomous_db_backup.AutonomousDatabaseBackup(),
-                    autonomous_db_backup.AutonomousDatabaseBackup(),
-                    autonomous_db_backup.AutonomousDatabaseBackup(),
-                ],
-                next_page_token="abc",
-            ),
-            oracledatabase.ListAutonomousDatabaseBackupsResponse(
-                autonomous_database_backups=[],
-                next_page_token="def",
-            ),
-            oracledatabase.ListAutonomousDatabaseBackupsResponse(
-                autonomous_database_backups=[
-                    autonomous_db_backup.AutonomousDatabaseBackup(),
-                ],
-                next_page_token="ghi",
-            ),
-            oracledatabase.ListAutonomousDatabaseBackupsResponse(
-                autonomous_database_backups=[
-                    autonomous_db_backup.AutonomousDatabaseBackup(),
-                    autonomous_db_backup.AutonomousDatabaseBackup(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
 
-        # Wrap the values into proper Response objs
-        response = tuple(
-            oracledatabase.ListAutonomousDatabaseBackupsResponse.to_json(x)
-            for x in response
-        )
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode("UTF-8")
-            return_val.status_code = 200
-        req.side_effect = return_values
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
 
-        sample_request = {"parent": "projects/sample1/locations/sample2"}
+        req.return_value = response_value
 
-        pager = client.list_autonomous_database_backups(request=sample_request)
+        response = client.get_location(request)
 
-        results = list(pager)
-        assert len(results) == 6
-        assert all(
-            isinstance(i, autonomous_db_backup.AutonomousDatabaseBackup)
-            for i in results
-        )
-
-        pages = list(
-            client.list_autonomous_database_backups(request=sample_request).pages
-        )
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
 
 
-def test_credentials_transport_error():
-    # It is an error to provide credentials and a transport instance.
-    transport = transports.OracleDatabaseRestTransport(
+def test_list_locations_rest_bad_request(
+    request_type=locations_pb2.ListLocationsRequest,
+):
+    client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    with pytest.raises(ValueError):
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
-    # It is an error to provide a credentials file and a transport instance.
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    with pytest.raises(ValueError):
-        client = OracleDatabaseClient(
-            client_options={"credentials_file": "credentials.json"},
-            transport=transport,
-        )
-
-    # It is an error to provide an api_key and a transport instance.
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    options = client_options.ClientOptions()
-    options.api_key = "api_key"
-    with pytest.raises(ValueError):
-        client = OracleDatabaseClient(
-            client_options=options,
-            transport=transport,
-        )
-
-    # It is an error to provide an api_key and a credential.
-    options = client_options.ClientOptions()
-    options.api_key = "api_key"
-    with pytest.raises(ValueError):
-        client = OracleDatabaseClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
-
-    # It is an error to provide scopes and a transport instance.
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    with pytest.raises(ValueError):
-        client = OracleDatabaseClient(
-            client_options={"scopes": ["1", "2"]},
-            transport=transport,
-        )
-
-
-def test_transport_instance():
-    # A client may be instantiated with a custom transport instance.
-    transport = transports.OracleDatabaseRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    client = OracleDatabaseClient(transport=transport)
-    assert client.transport is transport
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
 
 
 @pytest.mark.parametrize(
-    "transport_class",
+    "request_type",
     [
-        transports.OracleDatabaseRestTransport,
+        locations_pb2.ListLocationsRequest,
+        dict,
     ],
 )
-def test_transport_adc(transport_class):
-    # Test default credentials are used if not provided.
-    with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport_class()
-        adc.assert_called_once()
+def test_list_locations_rest(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
 
 
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "rest",
+        operations_pb2.CancelOperationRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = OracleDatabaseClient.get_transport_class(transport_name)(
+def test_cancel_operation_rest(request_type):
+    client = OracleDatabaseClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    assert transport.kind == transport_name
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_rest_bad_request(
+    request_type=operations_pb2.DeleteOperationRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.DeleteOperationRequest,
+        dict,
+    ],
+)
+def test_delete_operation_rest(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    request_type=operations_pb2.ListOperationsRequest,
+):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_initialize_client_w_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_cloud_exadata_infrastructures_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_cloud_exadata_infrastructures), "__call__"
+    ) as call:
+        client.list_cloud_exadata_infrastructures(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.ListCloudExadataInfrastructuresRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_cloud_exadata_infrastructure_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_cloud_exadata_infrastructure), "__call__"
+    ) as call:
+        client.get_cloud_exadata_infrastructure(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.GetCloudExadataInfrastructureRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_cloud_exadata_infrastructure_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_cloud_exadata_infrastructure), "__call__"
+    ) as call:
+        client.create_cloud_exadata_infrastructure(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.CreateCloudExadataInfrastructureRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_cloud_exadata_infrastructure_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_cloud_exadata_infrastructure), "__call__"
+    ) as call:
+        client.delete_cloud_exadata_infrastructure(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.DeleteCloudExadataInfrastructureRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_cloud_vm_clusters_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_cloud_vm_clusters), "__call__"
+    ) as call:
+        client.list_cloud_vm_clusters(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.ListCloudVmClustersRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_cloud_vm_cluster_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_cloud_vm_cluster), "__call__"
+    ) as call:
+        client.get_cloud_vm_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.GetCloudVmClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_cloud_vm_cluster_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_cloud_vm_cluster), "__call__"
+    ) as call:
+        client.create_cloud_vm_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.CreateCloudVmClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_cloud_vm_cluster_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_cloud_vm_cluster), "__call__"
+    ) as call:
+        client.delete_cloud_vm_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.DeleteCloudVmClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_entitlements_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entitlements), "__call__"
+    ) as call:
+        client.list_entitlements(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.ListEntitlementsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_db_servers_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_db_servers), "__call__") as call:
+        client.list_db_servers(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.ListDbServersRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_db_nodes_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_db_nodes), "__call__") as call:
+        client.list_db_nodes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.ListDbNodesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_gi_versions_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_gi_versions), "__call__") as call:
+        client.list_gi_versions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.ListGiVersionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_db_system_shapes_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_db_system_shapes), "__call__"
+    ) as call:
+        client.list_db_system_shapes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.ListDbSystemShapesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_autonomous_databases_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_autonomous_databases), "__call__"
+    ) as call:
+        client.list_autonomous_databases(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.ListAutonomousDatabasesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_autonomous_database_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_autonomous_database), "__call__"
+    ) as call:
+        client.get_autonomous_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.GetAutonomousDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_autonomous_database_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_autonomous_database), "__call__"
+    ) as call:
+        client.create_autonomous_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.CreateAutonomousDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_autonomous_database_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_autonomous_database), "__call__"
+    ) as call:
+        client.delete_autonomous_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.DeleteAutonomousDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_restore_autonomous_database_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.restore_autonomous_database), "__call__"
+    ) as call:
+        client.restore_autonomous_database(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.RestoreAutonomousDatabaseRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_generate_autonomous_database_wallet_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_autonomous_database_wallet), "__call__"
+    ) as call:
+        client.generate_autonomous_database_wallet(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.GenerateAutonomousDatabaseWalletRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_autonomous_db_versions_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_autonomous_db_versions), "__call__"
+    ) as call:
+        client.list_autonomous_db_versions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.ListAutonomousDbVersionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_autonomous_database_character_sets_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_autonomous_database_character_sets), "__call__"
+    ) as call:
+        client.list_autonomous_database_character_sets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.ListAutonomousDatabaseCharacterSetsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_autonomous_database_backups_empty_call_rest():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_autonomous_database_backups), "__call__"
+    ) as call:
+        client.list_autonomous_database_backups(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = oracledatabase.ListAutonomousDatabaseBackupsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_oracle_database_rest_lro_client():
+    client = OracleDatabaseClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 def test_oracle_database_base_transport_error():
@@ -9571,23 +10337,6 @@ def test_oracle_database_http_transport_client_cert_source_for_mtls():
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_oracle_database_rest_lro_client():
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -10178,367 +10927,16 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-def test_get_location_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
-):
+def test_transport_close_rest():
     client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_location(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.GetLocationRequest,
-        dict,
-    ],
-)
-def test_get_location_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.Location()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_location(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.Location)
-
-
-def test_list_locations_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({"name": "projects/sample1"}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_locations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.ListLocationsRequest,
-        dict,
-    ],
-)
-def test_list_locations_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.ListLocationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_locations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.ListLocationsResponse)
-
-
-def test_cancel_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.cancel_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.CancelOperationRequest,
-        dict,
-    ],
-)
-def test_cancel_operation_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.cancel_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.DeleteOperationRequest,
-        dict,
-    ],
-)
-def test_delete_operation_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.delete_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_get_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
-def test_list_operations_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
-):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_operations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.ListOperationsRequest,
-        dict,
-    ],
-)
-def test_list_operations_rest(request_type):
-    client = OracleDatabaseClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.ListOperationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.ListOperationsResponse)
-
-
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-    }
-
-    for transport, close_name in transports.items():
-        client = OracleDatabaseClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():
