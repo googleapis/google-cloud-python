@@ -424,3 +424,17 @@ replacements:
                       1234567890. A value of 0 indicates no project
                       number is found.
     count: 1
+  - paths: [
+      packages/google-maps-routing/google/maps/routing_v2/types/toll_passes.py,
+    ]
+    before: |
+      E-card provided by multiple banks used to pay
+      \            for tolls. All e-cards via banks are charged the
+      \            same so only one enum value is needed. E.g.
+      \            - Bank Mandiri
+    after: |
+      E-card provided by multiple banks used to pay
+                  for tolls. All e-cards via banks are charged the
+                  same so only one enum value is needed. E.g.\n
+                  - Bank Mandiri
+    count: 1
