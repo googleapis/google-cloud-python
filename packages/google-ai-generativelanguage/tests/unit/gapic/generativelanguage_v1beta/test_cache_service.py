@@ -22,12 +22,29 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 import google.auth
@@ -37,16 +54,8 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.ai.generativelanguage_v1beta.services.cache_service import (
     CacheServiceAsyncClient,
@@ -62,8 +71,22 @@ from google.ai.generativelanguage_v1beta.types import cached_content
 from google.ai.generativelanguage_v1beta.types import content
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1142,27 +1165,6 @@ def test_list_cached_contents(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_cached_contents_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_cached_contents), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_cached_contents()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cache_service.ListCachedContentsRequest()
-
-
 def test_list_cached_contents_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1233,31 +1235,6 @@ def test_list_cached_contents_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_cached_contents_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_cached_contents), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cache_service.ListCachedContentsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_cached_contents()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cache_service.ListCachedContentsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_cached_contents_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1265,7 +1242,7 @@ async def test_list_cached_contents_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CacheServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1305,7 +1282,7 @@ async def test_list_cached_contents_async(
     request_type=cache_service.ListCachedContentsRequest,
 ):
     client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1440,7 +1417,7 @@ def test_list_cached_contents_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_cached_contents_async_pager():
     client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1492,7 +1469,7 @@ async def test_list_cached_contents_async_pager():
 @pytest.mark.asyncio
 async def test_list_cached_contents_async_pages():
     client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1582,27 +1559,6 @@ def test_create_cached_content(request_type, transport: str = "grpc"):
     assert response.model == "model_value"
 
 
-def test_create_cached_content_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_cached_content), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_cached_content()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cache_service.CreateCachedContentRequest()
-
-
 def test_create_cached_content_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1670,33 +1626,6 @@ def test_create_cached_content_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_cached_content_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_cached_content), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gag_cached_content.CachedContent(
-                name="name_value",
-                display_name="display_name_value",
-                model="model_value",
-            )
-        )
-        response = await client.create_cached_content()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cache_service.CreateCachedContentRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_cached_content_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1704,7 +1633,7 @@ async def test_create_cached_content_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CacheServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1744,7 +1673,7 @@ async def test_create_cached_content_async(
     request_type=cache_service.CreateCachedContentRequest,
 ):
     client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1833,7 +1762,7 @@ def test_create_cached_content_flattened_error():
 @pytest.mark.asyncio
 async def test_create_cached_content_flattened_async():
     client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1868,7 +1797,7 @@ async def test_create_cached_content_flattened_async():
 @pytest.mark.asyncio
 async def test_create_cached_content_flattened_error_async():
     client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1922,27 +1851,6 @@ def test_get_cached_content(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.model == "model_value"
-
-
-def test_get_cached_content_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_cached_content), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_cached_content()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cache_service.GetCachedContentRequest()
 
 
 def test_get_cached_content_non_empty_request_with_auto_populated_field():
@@ -2015,33 +1923,6 @@ def test_get_cached_content_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_cached_content_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_cached_content), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cached_content.CachedContent(
-                name="name_value",
-                display_name="display_name_value",
-                model="model_value",
-            )
-        )
-        response = await client.get_cached_content()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cache_service.GetCachedContentRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_cached_content_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2049,7 +1930,7 @@ async def test_get_cached_content_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CacheServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2088,7 +1969,7 @@ async def test_get_cached_content_async(
     transport: str = "grpc_asyncio", request_type=cache_service.GetCachedContentRequest
 ):
     client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2162,7 +2043,7 @@ def test_get_cached_content_field_headers():
 @pytest.mark.asyncio
 async def test_get_cached_content_field_headers_async():
     client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2236,7 +2117,7 @@ def test_get_cached_content_flattened_error():
 @pytest.mark.asyncio
 async def test_get_cached_content_flattened_async():
     client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2267,7 +2148,7 @@ async def test_get_cached_content_flattened_async():
 @pytest.mark.asyncio
 async def test_get_cached_content_flattened_error_async():
     client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2319,27 +2200,6 @@ def test_update_cached_content(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.model == "model_value"
-
-
-def test_update_cached_content_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_cached_content), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_cached_content()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cache_service.UpdateCachedContentRequest()
 
 
 def test_update_cached_content_non_empty_request_with_auto_populated_field():
@@ -2409,33 +2269,6 @@ def test_update_cached_content_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_cached_content_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_cached_content), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gag_cached_content.CachedContent(
-                name="name_value",
-                display_name="display_name_value",
-                model="model_value",
-            )
-        )
-        response = await client.update_cached_content()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cache_service.UpdateCachedContentRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_cached_content_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2443,7 +2276,7 @@ async def test_update_cached_content_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CacheServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2483,7 +2316,7 @@ async def test_update_cached_content_async(
     request_type=cache_service.UpdateCachedContentRequest,
 ):
     client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2557,7 +2390,7 @@ def test_update_cached_content_field_headers():
 @pytest.mark.asyncio
 async def test_update_cached_content_field_headers_async():
     client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2642,7 +2475,7 @@ def test_update_cached_content_flattened_error():
 @pytest.mark.asyncio
 async def test_update_cached_content_flattened_async():
     client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2681,7 +2514,7 @@ async def test_update_cached_content_flattened_async():
 @pytest.mark.asyncio
 async def test_update_cached_content_flattened_error_async():
     client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2729,27 +2562,6 @@ def test_delete_cached_content(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_cached_content_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_cached_content), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_cached_content()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cache_service.DeleteCachedContentRequest()
 
 
 def test_delete_cached_content_non_empty_request_with_auto_populated_field():
@@ -2823,27 +2635,6 @@ def test_delete_cached_content_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_cached_content_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_cached_content), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_cached_content()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == cache_service.DeleteCachedContentRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_cached_content_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2851,7 +2642,7 @@ async def test_delete_cached_content_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = CacheServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2891,7 +2682,7 @@ async def test_delete_cached_content_async(
     request_type=cache_service.DeleteCachedContentRequest,
 ):
     client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2956,7 +2747,7 @@ def test_delete_cached_content_field_headers():
 @pytest.mark.asyncio
 async def test_delete_cached_content_field_headers_async():
     client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3028,7 +2819,7 @@ def test_delete_cached_content_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_cached_content_flattened_async():
     client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3057,7 +2848,7 @@ async def test_delete_cached_content_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_cached_content_flattened_error_async():
     client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3067,46 +2858,6 @@ async def test_delete_cached_content_flattened_error_async():
             cache_service.DeleteCachedContentRequest(),
             name="name_value",
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        cache_service.ListCachedContentsRequest,
-        dict,
-    ],
-)
-def test_list_cached_contents_rest(request_type):
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = cache_service.ListCachedContentsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = cache_service.ListCachedContentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_cached_contents(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListCachedContentsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_cached_contents_rest_use_cached_wrapped_rpc():
@@ -3147,87 +2898,6 @@ def test_list_cached_contents_rest_use_cached_wrapped_rpc():
         # Establish that a new wrapper was not created for this call
         assert wrapper_fn.call_count == 0
         assert mock_rpc.call_count == 2
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_cached_contents_rest_interceptors(null_interceptor):
-    transport = transports.CacheServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.CacheServiceRestInterceptor(),
-    )
-    client = CacheServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CacheServiceRestInterceptor, "post_list_cached_contents"
-    ) as post, mock.patch.object(
-        transports.CacheServiceRestInterceptor, "pre_list_cached_contents"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = cache_service.ListCachedContentsRequest.pb(
-            cache_service.ListCachedContentsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = cache_service.ListCachedContentsResponse.to_json(
-            cache_service.ListCachedContentsResponse()
-        )
-
-        request = cache_service.ListCachedContentsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = cache_service.ListCachedContentsResponse()
-
-        client.list_cached_contents(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_cached_contents_rest_bad_request(
-    transport: str = "rest", request_type=cache_service.ListCachedContentsRequest
-):
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_cached_contents(request)
 
 
 def test_list_cached_contents_rest_pager(transport: str = "rest"):
@@ -3293,6 +2963,1255 @@ def test_list_cached_contents_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
+def test_create_cached_content_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CacheServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.create_cached_content
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.create_cached_content
+        ] = mock_rpc
+
+        request = {}
+        client.create_cached_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.create_cached_content(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_create_cached_content_rest_required_fields(
+    request_type=cache_service.CreateCachedContentRequest,
+):
+    transport_class = transports.CacheServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_cached_content._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_cached_content._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gag_cached_content.CachedContent()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = gag_cached_content.CachedContent.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_cached_content(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_cached_content_rest_unset_required_fields():
+    transport = transports.CacheServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_cached_content._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("cachedContent",)))
+
+
+def test_create_cached_content_rest_flattened():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gag_cached_content.CachedContent()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            cached_content=gag_cached_content.CachedContent(
+                expire_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gag_cached_content.CachedContent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_cached_content(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/cachedContents" % client.transport._host, args[1]
+        )
+
+
+def test_create_cached_content_rest_flattened_error(transport: str = "rest"):
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_cached_content(
+            cache_service.CreateCachedContentRequest(),
+            cached_content=gag_cached_content.CachedContent(
+                expire_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+        )
+
+
+def test_get_cached_content_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CacheServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.get_cached_content in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.get_cached_content
+        ] = mock_rpc
+
+        request = {}
+        client.get_cached_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.get_cached_content(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_get_cached_content_rest_required_fields(
+    request_type=cache_service.GetCachedContentRequest,
+):
+    transport_class = transports.CacheServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_cached_content._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_cached_content._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cached_content.CachedContent()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = cached_content.CachedContent.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_cached_content(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_cached_content_rest_unset_required_fields():
+    transport = transports.CacheServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_cached_content._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_get_cached_content_rest_flattened():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cached_content.CachedContent()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "cachedContents/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = cached_content.CachedContent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_cached_content(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=cachedContents/*}" % client.transport._host, args[1]
+        )
+
+
+def test_get_cached_content_rest_flattened_error(transport: str = "rest"):
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_cached_content(
+            cache_service.GetCachedContentRequest(),
+            name="name_value",
+        )
+
+
+def test_update_cached_content_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CacheServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.update_cached_content
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.update_cached_content
+        ] = mock_rpc
+
+        request = {}
+        client.update_cached_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.update_cached_content(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_update_cached_content_rest_required_fields(
+    request_type=cache_service.UpdateCachedContentRequest,
+):
+    transport_class = transports.CacheServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_cached_content._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_cached_content._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gag_cached_content.CachedContent()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = gag_cached_content.CachedContent.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_cached_content(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_cached_content_rest_unset_required_fields():
+    transport = transports.CacheServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_cached_content._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask",)) & set(("cachedContent",)))
+
+
+def test_update_cached_content_rest_flattened():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gag_cached_content.CachedContent()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"cached_content": {"name": "cachedContents/sample1"}}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            cached_content=gag_cached_content.CachedContent(
+                expire_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gag_cached_content.CachedContent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_cached_content(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{cached_content.name=cachedContents/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_cached_content_rest_flattened_error(transport: str = "rest"):
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_cached_content(
+            cache_service.UpdateCachedContentRequest(),
+            cached_content=gag_cached_content.CachedContent(
+                expire_time=timestamp_pb2.Timestamp(seconds=751)
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_delete_cached_content_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = CacheServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_cached_content
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_cached_content
+        ] = mock_rpc
+
+        request = {}
+        client.delete_cached_content(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.delete_cached_content(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_delete_cached_content_rest_required_fields(
+    request_type=cache_service.DeleteCachedContentRequest,
+):
+    transport_class = transports.CacheServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_cached_content._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_cached_content._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_cached_content(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_cached_content_rest_unset_required_fields():
+    transport = transports.CacheServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_cached_content._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+def test_delete_cached_content_rest_flattened():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "cachedContents/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_cached_content(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta/{name=cachedContents/*}" % client.transport._host, args[1]
+        )
+
+
+def test_delete_cached_content_rest_flattened_error(transport: str = "rest"):
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_cached_content(
+            cache_service.DeleteCachedContentRequest(),
+            name="name_value",
+        )
+
+
+def test_credentials_transport_error():
+    # It is an error to provide credentials and a transport instance.
+    transport = transports.CacheServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = CacheServiceClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+    # It is an error to provide a credentials file and a transport instance.
+    transport = transports.CacheServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = CacheServiceClient(
+            client_options={"credentials_file": "credentials.json"},
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a transport instance.
+    transport = transports.CacheServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = CacheServiceClient(
+            client_options=options,
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a credential.
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = CacheServiceClient(
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
+        )
+
+    # It is an error to provide scopes and a transport instance.
+    transport = transports.CacheServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = CacheServiceClient(
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
+        )
+
+
+def test_transport_instance():
+    # A client may be instantiated with a custom transport instance.
+    transport = transports.CacheServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    client = CacheServiceClient(transport=transport)
+    assert client.transport is transport
+
+
+def test_transport_get_channel():
+    # A client may be instantiated with a custom transport instance.
+    transport = transports.CacheServiceGrpcTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    channel = transport.grpc_channel
+    assert channel
+
+    transport = transports.CacheServiceGrpcAsyncIOTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    channel = transport.grpc_channel
+    assert channel
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.CacheServiceGrpcTransport,
+        transports.CacheServiceGrpcAsyncIOTransport,
+        transports.CacheServiceRestTransport,
+    ],
+)
+def test_transport_adc(transport_class):
+    # Test default credentials are used if not provided.
+    with mock.patch.object(google.auth, "default") as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class()
+        adc.assert_called_once()
+
+
+def test_transport_kind_grpc():
+    transport = CacheServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_cached_contents_empty_call_grpc():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_cached_contents), "__call__"
+    ) as call:
+        call.return_value = cache_service.ListCachedContentsResponse()
+        client.list_cached_contents(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cache_service.ListCachedContentsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_cached_content_empty_call_grpc():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_cached_content), "__call__"
+    ) as call:
+        call.return_value = gag_cached_content.CachedContent()
+        client.create_cached_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cache_service.CreateCachedContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_cached_content_empty_call_grpc():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_cached_content), "__call__"
+    ) as call:
+        call.return_value = cached_content.CachedContent()
+        client.get_cached_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cache_service.GetCachedContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_cached_content_empty_call_grpc():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_cached_content), "__call__"
+    ) as call:
+        call.return_value = gag_cached_content.CachedContent()
+        client.update_cached_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cache_service.UpdateCachedContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_cached_content_empty_call_grpc():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_cached_content), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_cached_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cache_service.DeleteCachedContentRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = CacheServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = CacheServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_cached_contents_empty_call_grpc_asyncio():
+    client = CacheServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_cached_contents), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cache_service.ListCachedContentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_cached_contents(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cache_service.ListCachedContentsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_cached_content_empty_call_grpc_asyncio():
+    client = CacheServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_cached_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gag_cached_content.CachedContent(
+                name="name_value",
+                display_name="display_name_value",
+                model="model_value",
+            )
+        )
+        await client.create_cached_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cache_service.CreateCachedContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_cached_content_empty_call_grpc_asyncio():
+    client = CacheServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_cached_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cached_content.CachedContent(
+                name="name_value",
+                display_name="display_name_value",
+                model="model_value",
+            )
+        )
+        await client.get_cached_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cache_service.GetCachedContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_cached_content_empty_call_grpc_asyncio():
+    client = CacheServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_cached_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gag_cached_content.CachedContent(
+                name="name_value",
+                display_name="display_name_value",
+                model="model_value",
+            )
+        )
+        await client.update_cached_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cache_service.UpdateCachedContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_cached_content_empty_call_grpc_asyncio():
+    client = CacheServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_cached_content), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_cached_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cache_service.DeleteCachedContentRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = CacheServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_list_cached_contents_rest_bad_request(
+    request_type=cache_service.ListCachedContentsRequest,
+):
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_cached_contents(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cache_service.ListCachedContentsRequest,
+        dict,
+    ],
+)
+def test_list_cached_contents_rest_call_success(request_type):
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cache_service.ListCachedContentsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = cache_service.ListCachedContentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_cached_contents(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCachedContentsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_cached_contents_rest_interceptors(null_interceptor):
+    transport = transports.CacheServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CacheServiceRestInterceptor(),
+    )
+    client = CacheServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CacheServiceRestInterceptor, "post_list_cached_contents"
+    ) as post, mock.patch.object(
+        transports.CacheServiceRestInterceptor, "pre_list_cached_contents"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cache_service.ListCachedContentsRequest.pb(
+            cache_service.ListCachedContentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = cache_service.ListCachedContentsResponse.to_json(
+            cache_service.ListCachedContentsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = cache_service.ListCachedContentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cache_service.ListCachedContentsResponse()
+
+        client.list_cached_contents(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_cached_content_rest_bad_request(
+    request_type=cache_service.CreateCachedContentRequest,
+):
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_cached_content(request)
+
+
 @pytest.mark.parametrize(
     "request_type",
     [
@@ -3300,10 +4219,9 @@ def test_list_cached_contents_rest_pager(transport: str = "rest"):
         dict,
     ],
 )
-def test_create_cached_content_rest(request_type):
+def test_create_cached_content_rest_call_success(request_type):
     client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -3453,13 +4371,13 @@ def test_create_cached_content_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = gag_cached_content.CachedContent.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.create_cached_content(request)
 
@@ -3468,126 +4386,6 @@ def test_create_cached_content_rest(request_type):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.model == "model_value"
-
-
-def test_create_cached_content_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = CacheServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.create_cached_content
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_cached_content
-        ] = mock_rpc
-
-        request = {}
-        client.create_cached_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.create_cached_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_create_cached_content_rest_required_fields(
-    request_type=cache_service.CreateCachedContentRequest,
-):
-    transport_class = transports.CacheServiceRestTransport
-
-    request_init = {}
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_cached_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_cached_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = gag_cached_content.CachedContent()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = gag_cached_content.CachedContent.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.create_cached_content(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_create_cached_content_rest_unset_required_fields():
-    transport = transports.CacheServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.create_cached_content._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("cachedContent",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -3599,6 +4397,7 @@ def test_create_cached_content_rest_interceptors(null_interceptor):
         else transports.CacheServiceRestInterceptor(),
     )
     client = CacheServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -3620,12 +4419,12 @@ def test_create_cached_content_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gag_cached_content.CachedContent.to_json(
+        return_value = gag_cached_content.CachedContent.to_json(
             gag_cached_content.CachedContent()
         )
+        req.return_value.content = return_value
 
         request = cache_service.CreateCachedContentRequest()
         metadata = [
@@ -3647,16 +4446,14 @@ def test_create_cached_content_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_create_cached_content_rest_bad_request(
-    transport: str = "rest", request_type=cache_service.CreateCachedContentRequest
+def test_get_cached_content_rest_bad_request(
+    request_type=cache_service.GetCachedContentRequest,
 ):
     client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
-    request_init = {}
+    request_init = {"name": "cachedContents/sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3664,76 +4461,13 @@ def test_create_cached_content_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.create_cached_content(request)
-
-
-def test_create_cached_content_rest_flattened():
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gag_cached_content.CachedContent()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            cached_content=gag_cached_content.CachedContent(
-                expire_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gag_cached_content.CachedContent.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.create_cached_content(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1beta/cachedContents" % client.transport._host, args[1]
-        )
-
-
-def test_create_cached_content_rest_flattened_error(transport: str = "rest"):
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.create_cached_content(
-            cache_service.CreateCachedContentRequest(),
-            cached_content=gag_cached_content.CachedContent(
-                expire_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
-        )
-
-
-def test_create_cached_content_rest_error():
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.get_cached_content(request)
 
 
 @pytest.mark.parametrize(
@@ -3743,10 +4477,9 @@ def test_create_cached_content_rest_error():
         dict,
     ],
 )
-def test_get_cached_content_rest(request_type):
+def test_get_cached_content_rest_call_success(request_type):
     client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -3763,13 +4496,13 @@ def test_get_cached_content_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = cached_content.CachedContent.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.get_cached_content(request)
 
@@ -3778,129 +4511,6 @@ def test_get_cached_content_rest(request_type):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.model == "model_value"
-
-
-def test_get_cached_content_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = CacheServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.get_cached_content in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_cached_content
-        ] = mock_rpc
-
-        request = {}
-        client.get_cached_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.get_cached_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_get_cached_content_rest_required_fields(
-    request_type=cache_service.GetCachedContentRequest,
-):
-    transport_class = transports.CacheServiceRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_cached_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_cached_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = cached_content.CachedContent()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = cached_content.CachedContent.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.get_cached_content(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_get_cached_content_rest_unset_required_fields():
-    transport = transports.CacheServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.get_cached_content._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -3912,6 +4522,7 @@ def test_get_cached_content_rest_interceptors(null_interceptor):
         else transports.CacheServiceRestInterceptor(),
     )
     client = CacheServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -3933,12 +4544,12 @@ def test_get_cached_content_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = cached_content.CachedContent.to_json(
+        return_value = cached_content.CachedContent.to_json(
             cached_content.CachedContent()
         )
+        req.return_value.content = return_value
 
         request = cache_service.GetCachedContentRequest()
         metadata = [
@@ -3960,16 +4571,14 @@ def test_get_cached_content_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_get_cached_content_rest_bad_request(
-    transport: str = "rest", request_type=cache_service.GetCachedContentRequest
+def test_update_cached_content_rest_bad_request(
+    request_type=cache_service.UpdateCachedContentRequest,
 ):
     client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
-    request_init = {"name": "cachedContents/sample1"}
+    request_init = {"cached_content": {"name": "cachedContents/sample1"}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3977,72 +4586,13 @@ def test_get_cached_content_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.get_cached_content(request)
-
-
-def test_get_cached_content_rest_flattened():
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = cached_content.CachedContent()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"name": "cachedContents/sample1"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = cached_content.CachedContent.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.get_cached_content(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1beta/{name=cachedContents/*}" % client.transport._host, args[1]
-        )
-
-
-def test_get_cached_content_rest_flattened_error(transport: str = "rest"):
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_cached_content(
-            cache_service.GetCachedContentRequest(),
-            name="name_value",
-        )
-
-
-def test_get_cached_content_rest_error():
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.update_cached_content(request)
 
 
 @pytest.mark.parametrize(
@@ -4052,10 +4602,9 @@ def test_get_cached_content_rest_error():
         dict,
     ],
 )
-def test_update_cached_content_rest(request_type):
+def test_update_cached_content_rest_call_success(request_type):
     client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -4205,13 +4754,13 @@ def test_update_cached_content_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = gag_cached_content.CachedContent.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.update_cached_content(request)
 
@@ -4220,128 +4769,6 @@ def test_update_cached_content_rest(request_type):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.model == "model_value"
-
-
-def test_update_cached_content_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = CacheServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.update_cached_content
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_cached_content
-        ] = mock_rpc
-
-        request = {}
-        client.update_cached_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.update_cached_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_update_cached_content_rest_required_fields(
-    request_type=cache_service.UpdateCachedContentRequest,
-):
-    transport_class = transports.CacheServiceRestTransport
-
-    request_init = {}
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_cached_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_cached_content._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("update_mask",))
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = gag_cached_content.CachedContent()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "patch",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = gag_cached_content.CachedContent.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.update_cached_content(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_update_cached_content_rest_unset_required_fields():
-    transport = transports.CacheServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.update_cached_content._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("updateMask",)) & set(("cachedContent",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4353,6 +4780,7 @@ def test_update_cached_content_rest_interceptors(null_interceptor):
         else transports.CacheServiceRestInterceptor(),
     )
     client = CacheServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -4374,12 +4802,12 @@ def test_update_cached_content_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gag_cached_content.CachedContent.to_json(
+        return_value = gag_cached_content.CachedContent.to_json(
             gag_cached_content.CachedContent()
         )
+        req.return_value.content = return_value
 
         request = cache_service.UpdateCachedContentRequest()
         metadata = [
@@ -4401,16 +4829,14 @@ def test_update_cached_content_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_update_cached_content_rest_bad_request(
-    transport: str = "rest", request_type=cache_service.UpdateCachedContentRequest
+def test_delete_cached_content_rest_bad_request(
+    request_type=cache_service.DeleteCachedContentRequest,
 ):
     client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
-    request_init = {"cached_content": {"name": "cachedContents/sample1"}}
+    request_init = {"name": "cachedContents/sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4418,79 +4844,13 @@ def test_update_cached_content_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.update_cached_content(request)
-
-
-def test_update_cached_content_rest_flattened():
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gag_cached_content.CachedContent()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"cached_content": {"name": "cachedContents/sample1"}}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            cached_content=gag_cached_content.CachedContent(
-                expire_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gag_cached_content.CachedContent.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.update_cached_content(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1beta/{cached_content.name=cachedContents/*}" % client.transport._host,
-            args[1],
-        )
-
-
-def test_update_cached_content_rest_flattened_error(transport: str = "rest"):
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.update_cached_content(
-            cache_service.UpdateCachedContentRequest(),
-            cached_content=gag_cached_content.CachedContent(
-                expire_time=timestamp_pb2.Timestamp(seconds=751)
-            ),
-            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
-        )
-
-
-def test_update_cached_content_rest_error():
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.delete_cached_content(request)
 
 
 @pytest.mark.parametrize(
@@ -4500,10 +4860,9 @@ def test_update_cached_content_rest_error():
         dict,
     ],
 )
-def test_delete_cached_content_rest(request_type):
+def test_delete_cached_content_rest_call_success(request_type):
     client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -4516,137 +4875,15 @@ def test_delete_cached_content_rest(request_type):
         return_value = None
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
         json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.delete_cached_content(request)
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_cached_content_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = CacheServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.delete_cached_content
-            in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_cached_content
-        ] = mock_rpc
-
-        request = {}
-        client.delete_cached_content(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.delete_cached_content(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_delete_cached_content_rest_required_fields(
-    request_type=cache_service.DeleteCachedContentRequest,
-):
-    transport_class = transports.CacheServiceRestTransport
-
-    request_init = {}
-    request_init["name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_cached_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["name"] = "name_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_cached_content._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "name" in jsonified_request
-    assert jsonified_request["name"] == "name_value"
-
-    client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = None
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "delete",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = ""
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.delete_cached_content(request)
-
-            expected_params = [("$alt", "json;enum-encoding=int")]
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_delete_cached_content_rest_unset_required_fields():
-    transport = transports.CacheServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.delete_cached_content._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4658,6 +4895,7 @@ def test_delete_cached_content_rest_interceptors(null_interceptor):
         else transports.CacheServiceRestInterceptor(),
     )
     client = CacheServiceClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -4676,9 +4914,8 @@ def test_delete_cached_content_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
 
         request = cache_service.DeleteCachedContentRequest()
         metadata = [
@@ -4698,193 +4935,121 @@ def test_delete_cached_content_rest_interceptors(null_interceptor):
         pre.assert_called_once()
 
 
-def test_delete_cached_content_rest_bad_request(
-    transport: str = "rest", request_type=cache_service.DeleteCachedContentRequest
-):
+def test_initialize_client_w_rest():
     client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "cachedContents/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_cached_content(request)
+    assert client is not None
 
 
-def test_delete_cached_content_rest_flattened():
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_cached_contents_empty_call_rest():
     client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_cached_contents), "__call__"
+    ) as call:
+        client.list_cached_contents(request=None)
 
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"name": "cachedContents/sample1"}
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cache_service.ListCachedContentsRequest()
 
-        # get truthy value for each flattened field
-        mock_args = dict(
-            name="name_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.delete_cached_content(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1beta/{name=cachedContents/*}" % client.transport._host, args[1]
-        )
+        assert args[0] == request_msg
 
 
-def test_delete_cached_content_rest_flattened_error(transport: str = "rest"):
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_cached_content_empty_call_rest():
     client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        transport="rest",
     )
 
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_cached_content(
-            cache_service.DeleteCachedContentRequest(),
-            name="name_value",
-        )
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_cached_content), "__call__"
+    ) as call:
+        client.create_cached_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cache_service.CreateCachedContentRequest()
+
+        assert args[0] == request_msg
 
 
-def test_delete_cached_content_rest_error():
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_cached_content_empty_call_rest():
     client = CacheServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-def test_credentials_transport_error():
-    # It is an error to provide credentials and a transport instance.
-    transport = transports.CacheServiceGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    with pytest.raises(ValueError):
-        client = CacheServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
 
-    # It is an error to provide a credentials file and a transport instance.
-    transport = transports.CacheServiceGrpcTransport(
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_cached_content), "__call__"
+    ) as call:
+        client.get_cached_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cache_service.GetCachedContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_cached_content_empty_call_rest():
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    with pytest.raises(ValueError):
-        client = CacheServiceClient(
-            client_options={"credentials_file": "credentials.json"},
-            transport=transport,
-        )
 
-    # It is an error to provide an api_key and a transport instance.
-    transport = transports.CacheServiceGrpcTransport(
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_cached_content), "__call__"
+    ) as call:
+        client.update_cached_content(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cache_service.UpdateCachedContentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_cached_content_empty_call_rest():
+    client = CacheServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    options = client_options.ClientOptions()
-    options.api_key = "api_key"
-    with pytest.raises(ValueError):
-        client = CacheServiceClient(
-            client_options=options,
-            transport=transport,
-        )
 
-    # It is an error to provide an api_key and a credential.
-    options = client_options.ClientOptions()
-    options.api_key = "api_key"
-    with pytest.raises(ValueError):
-        client = CacheServiceClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_cached_content), "__call__"
+    ) as call:
+        client.delete_cached_content(request=None)
 
-    # It is an error to provide scopes and a transport instance.
-    transport = transports.CacheServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    with pytest.raises(ValueError):
-        client = CacheServiceClient(
-            client_options={"scopes": ["1", "2"]},
-            transport=transport,
-        )
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cache_service.DeleteCachedContentRequest()
 
-
-def test_transport_instance():
-    # A client may be instantiated with a custom transport instance.
-    transport = transports.CacheServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    client = CacheServiceClient(transport=transport)
-    assert client.transport is transport
-
-
-def test_transport_get_channel():
-    # A client may be instantiated with a custom transport instance.
-    transport = transports.CacheServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    channel = transport.grpc_channel
-    assert channel
-
-    transport = transports.CacheServiceGrpcAsyncIOTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    channel = transport.grpc_channel
-    assert channel
-
-
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.CacheServiceGrpcTransport,
-        transports.CacheServiceGrpcAsyncIOTransport,
-        transports.CacheServiceRestTransport,
-    ],
-)
-def test_transport_adc(transport_class):
-    # Test default credentials are used if not provided.
-    with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport_class()
-        adc.assert_called_once()
-
-
-@pytest.mark.parametrize(
-    "transport_name",
-    [
-        "grpc",
-        "rest",
-    ],
-)
-def test_transport_kind(transport_name):
-    transport = CacheServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    assert transport.kind == transport_name
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -5481,36 +5646,41 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = CacheServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = CacheServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = CacheServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = CacheServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

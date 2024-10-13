@@ -22,9 +22,26 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
+
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import (
     future,
@@ -35,7 +52,7 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
@@ -45,22 +62,28 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.apihub_v1.services.provisioning import ProvisioningClient, transports
 from google.cloud.apihub_v1.types import common_fields, provisioning_service
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -942,120 +965,6 @@ def test_provisioning_client_client_options_credentials_file(
         )
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        provisioning_service.CreateApiHubInstanceRequest,
-        dict,
-    ],
-)
-def test_create_api_hub_instance_rest(request_type):
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["api_hub_instance"] = {
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "state": 1,
-        "state_message": "state_message_value",
-        "config": {"cmek_key_name": "cmek_key_name_value"},
-        "labels": {},
-        "description": "description_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = provisioning_service.CreateApiHubInstanceRequest.meta.fields[
-        "api_hub_instance"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["api_hub_instance"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["api_hub_instance"][field])):
-                    del request_init["api_hub_instance"][field][i][subfield]
-            else:
-                del request_init["api_hub_instance"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_api_hub_instance(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
 def test_create_api_hub_instance_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -1192,90 +1101,6 @@ def test_create_api_hub_instance_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_api_hub_instance_rest_interceptors(null_interceptor):
-    transport = transports.ProvisioningRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ProvisioningRestInterceptor(),
-    )
-    client = ProvisioningClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ProvisioningRestInterceptor, "post_create_api_hub_instance"
-    ) as post, mock.patch.object(
-        transports.ProvisioningRestInterceptor, "pre_create_api_hub_instance"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = provisioning_service.CreateApiHubInstanceRequest.pb(
-            provisioning_service.CreateApiHubInstanceRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = provisioning_service.CreateApiHubInstanceRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_api_hub_instance(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_api_hub_instance_rest_bad_request(
-    transport: str = "rest",
-    request_type=provisioning_service.CreateApiHubInstanceRequest,
-):
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_api_hub_instance(request)
-
-
 def test_create_api_hub_instance_rest_flattened():
     client = ProvisioningClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1333,60 +1158,6 @@ def test_create_api_hub_instance_rest_flattened_error(transport: str = "rest"):
             api_hub_instance=common_fields.ApiHubInstance(name="name_value"),
             api_hub_instance_id="api_hub_instance_id_value",
         )
-
-
-def test_create_api_hub_instance_rest_error():
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        provisioning_service.GetApiHubInstanceRequest,
-        dict,
-    ],
-)
-def test_get_api_hub_instance_rest(request_type):
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apiHubInstances/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.ApiHubInstance(
-            name="name_value",
-            state=common_fields.ApiHubInstance.State.INACTIVE,
-            state_message="state_message_value",
-            description="description_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.ApiHubInstance.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_api_hub_instance(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.ApiHubInstance)
-    assert response.name == "name_value"
-    assert response.state == common_fields.ApiHubInstance.State.INACTIVE
-    assert response.state_message == "state_message_value"
-    assert response.description == "description_value"
 
 
 def test_get_api_hub_instance_rest_use_cached_wrapped_rpc():
@@ -1512,89 +1283,6 @@ def test_get_api_hub_instance_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_api_hub_instance_rest_interceptors(null_interceptor):
-    transport = transports.ProvisioningRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ProvisioningRestInterceptor(),
-    )
-    client = ProvisioningClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProvisioningRestInterceptor, "post_get_api_hub_instance"
-    ) as post, mock.patch.object(
-        transports.ProvisioningRestInterceptor, "pre_get_api_hub_instance"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = provisioning_service.GetApiHubInstanceRequest.pb(
-            provisioning_service.GetApiHubInstanceRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.ApiHubInstance.to_json(
-            common_fields.ApiHubInstance()
-        )
-
-        request = provisioning_service.GetApiHubInstanceRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.ApiHubInstance()
-
-        client.get_api_hub_instance(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_api_hub_instance_rest_bad_request(
-    transport: str = "rest", request_type=provisioning_service.GetApiHubInstanceRequest
-):
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apiHubInstances/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_api_hub_instance(request)
-
-
 def test_get_api_hub_instance_rest_flattened():
     client = ProvisioningClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1652,51 +1340,6 @@ def test_get_api_hub_instance_rest_flattened_error(transport: str = "rest"):
             provisioning_service.GetApiHubInstanceRequest(),
             name="name_value",
         )
-
-
-def test_get_api_hub_instance_rest_error():
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        provisioning_service.LookupApiHubInstanceRequest,
-        dict,
-    ],
-)
-def test_lookup_api_hub_instance_rest(request_type):
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = provisioning_service.LookupApiHubInstanceResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = provisioning_service.LookupApiHubInstanceResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.lookup_api_hub_instance(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, provisioning_service.LookupApiHubInstanceResponse)
 
 
 def test_lookup_api_hub_instance_rest_use_cached_wrapped_rpc():
@@ -1825,90 +1468,6 @@ def test_lookup_api_hub_instance_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("parent",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_lookup_api_hub_instance_rest_interceptors(null_interceptor):
-    transport = transports.ProvisioningRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ProvisioningRestInterceptor(),
-    )
-    client = ProvisioningClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProvisioningRestInterceptor, "post_lookup_api_hub_instance"
-    ) as post, mock.patch.object(
-        transports.ProvisioningRestInterceptor, "pre_lookup_api_hub_instance"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = provisioning_service.LookupApiHubInstanceRequest.pb(
-            provisioning_service.LookupApiHubInstanceRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            provisioning_service.LookupApiHubInstanceResponse.to_json(
-                provisioning_service.LookupApiHubInstanceResponse()
-            )
-        )
-
-        request = provisioning_service.LookupApiHubInstanceRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = provisioning_service.LookupApiHubInstanceResponse()
-
-        client.lookup_api_hub_instance(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_lookup_api_hub_instance_rest_bad_request(
-    transport: str = "rest",
-    request_type=provisioning_service.LookupApiHubInstanceRequest,
-):
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.lookup_api_hub_instance(request)
-
-
 def test_lookup_api_hub_instance_rest_flattened():
     client = ProvisioningClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1966,12 +1525,6 @@ def test_lookup_api_hub_instance_rest_flattened_error(transport: str = "rest"):
             provisioning_service.LookupApiHubInstanceRequest(),
             parent="parent_value",
         )
-
-
-def test_lookup_api_hub_instance_rest_error():
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
 
 
 def test_credentials_transport_error():
@@ -2049,17 +1602,902 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_rest():
+    transport = ProvisioningClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_create_api_hub_instance_rest_bad_request(
+    request_type=provisioning_service.CreateApiHubInstanceRequest,
+):
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_api_hub_instance(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "rest",
+        provisioning_service.CreateApiHubInstanceRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = ProvisioningClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_create_api_hub_instance_rest_call_success(request_type):
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["api_hub_instance"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "state": 1,
+        "state_message": "state_message_value",
+        "config": {"cmek_key_name": "cmek_key_name_value"},
+        "labels": {},
+        "description": "description_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = provisioning_service.CreateApiHubInstanceRequest.meta.fields[
+        "api_hub_instance"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["api_hub_instance"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["api_hub_instance"][field])):
+                    del request_init["api_hub_instance"][field][i][subfield]
+            else:
+                del request_init["api_hub_instance"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_api_hub_instance(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_api_hub_instance_rest_interceptors(null_interceptor):
+    transport = transports.ProvisioningRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ProvisioningRestInterceptor(),
+    )
+    client = ProvisioningClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ProvisioningRestInterceptor, "post_create_api_hub_instance"
+    ) as post, mock.patch.object(
+        transports.ProvisioningRestInterceptor, "pre_create_api_hub_instance"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = provisioning_service.CreateApiHubInstanceRequest.pb(
+            provisioning_service.CreateApiHubInstanceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = provisioning_service.CreateApiHubInstanceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_api_hub_instance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_api_hub_instance_rest_bad_request(
+    request_type=provisioning_service.GetApiHubInstanceRequest,
+):
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apiHubInstances/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_api_hub_instance(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        provisioning_service.GetApiHubInstanceRequest,
+        dict,
+    ],
+)
+def test_get_api_hub_instance_rest_call_success(request_type):
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apiHubInstances/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.ApiHubInstance(
+            name="name_value",
+            state=common_fields.ApiHubInstance.State.INACTIVE,
+            state_message="state_message_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.ApiHubInstance.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_api_hub_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.ApiHubInstance)
+    assert response.name == "name_value"
+    assert response.state == common_fields.ApiHubInstance.State.INACTIVE
+    assert response.state_message == "state_message_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_api_hub_instance_rest_interceptors(null_interceptor):
+    transport = transports.ProvisioningRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ProvisioningRestInterceptor(),
+    )
+    client = ProvisioningClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ProvisioningRestInterceptor, "post_get_api_hub_instance"
+    ) as post, mock.patch.object(
+        transports.ProvisioningRestInterceptor, "pre_get_api_hub_instance"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = provisioning_service.GetApiHubInstanceRequest.pb(
+            provisioning_service.GetApiHubInstanceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.ApiHubInstance.to_json(
+            common_fields.ApiHubInstance()
+        )
+        req.return_value.content = return_value
+
+        request = provisioning_service.GetApiHubInstanceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.ApiHubInstance()
+
+        client.get_api_hub_instance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_lookup_api_hub_instance_rest_bad_request(
+    request_type=provisioning_service.LookupApiHubInstanceRequest,
+):
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.lookup_api_hub_instance(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        provisioning_service.LookupApiHubInstanceRequest,
+        dict,
+    ],
+)
+def test_lookup_api_hub_instance_rest_call_success(request_type):
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = provisioning_service.LookupApiHubInstanceResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = provisioning_service.LookupApiHubInstanceResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.lookup_api_hub_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, provisioning_service.LookupApiHubInstanceResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_lookup_api_hub_instance_rest_interceptors(null_interceptor):
+    transport = transports.ProvisioningRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ProvisioningRestInterceptor(),
+    )
+    client = ProvisioningClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ProvisioningRestInterceptor, "post_lookup_api_hub_instance"
+    ) as post, mock.patch.object(
+        transports.ProvisioningRestInterceptor, "pre_lookup_api_hub_instance"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = provisioning_service.LookupApiHubInstanceRequest.pb(
+            provisioning_service.LookupApiHubInstanceRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = provisioning_service.LookupApiHubInstanceResponse.to_json(
+            provisioning_service.LookupApiHubInstanceResponse()
+        )
+        req.return_value.content = return_value
+
+        request = provisioning_service.LookupApiHubInstanceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = provisioning_service.LookupApiHubInstanceResponse()
+
+        client.lookup_api_hub_instance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    request_type=locations_pb2.ListLocationsRequest,
+):
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_rest_bad_request(
+    request_type=operations_pb2.DeleteOperationRequest,
+):
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.DeleteOperationRequest,
+        dict,
+    ],
+)
+def test_delete_operation_rest(request_type):
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    request_type=operations_pb2.ListOperationsRequest,
+):
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_initialize_client_w_rest():
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_api_hub_instance_empty_call_rest():
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_api_hub_instance), "__call__"
+    ) as call:
+        client.create_api_hub_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = provisioning_service.CreateApiHubInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_api_hub_instance_empty_call_rest():
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_api_hub_instance), "__call__"
+    ) as call:
+        client.get_api_hub_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = provisioning_service.GetApiHubInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_lookup_api_hub_instance_empty_call_rest():
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.lookup_api_hub_instance), "__call__"
+    ) as call:
+        client.lookup_api_hub_instance(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = provisioning_service.LookupApiHubInstanceRequest()
+
+        assert args[0] == request_msg
+
+
+def test_provisioning_rest_lro_client():
+    client = ProvisioningClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 def test_provisioning_base_transport_error():
@@ -2168,23 +2606,6 @@ def test_provisioning_http_transport_client_cert_source_for_mtls():
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_provisioning_rest_lro_client():
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -2411,367 +2832,16 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-def test_get_location_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
-):
+def test_transport_close_rest():
     client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_location(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.GetLocationRequest,
-        dict,
-    ],
-)
-def test_get_location_rest(request_type):
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.Location()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_location(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.Location)
-
-
-def test_list_locations_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
-):
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({"name": "projects/sample1"}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_locations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.ListLocationsRequest,
-        dict,
-    ],
-)
-def test_list_locations_rest(request_type):
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.ListLocationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_locations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.ListLocationsResponse)
-
-
-def test_cancel_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
-):
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.cancel_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.CancelOperationRequest,
-        dict,
-    ],
-)
-def test_cancel_operation_rest(request_type):
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.cancel_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
-):
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.DeleteOperationRequest,
-        dict,
-    ],
-)
-def test_delete_operation_rest(request_type):
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.delete_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_get_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
-):
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
-def test_list_operations_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
-):
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_operations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.ListOperationsRequest,
-        dict,
-    ],
-)
-def test_list_operations_rest(request_type):
-    client = ProvisioningClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.ListOperationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.ListOperationsResponse)
-
-
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-    }
-
-    for transport, close_name in transports.items():
-        client = ProvisioningClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

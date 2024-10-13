@@ -22,9 +22,26 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
+
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import (
     future,
@@ -35,7 +52,7 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
@@ -46,15 +63,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.apigateway_v1.services.api_gateway_service import (
     ApiGatewayServiceAsyncClient,
@@ -65,8 +74,22 @@ from google.cloud.apigateway_v1.services.api_gateway_service import (
 from google.cloud.apigateway_v1.types import apigateway
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1206,25 +1229,6 @@ def test_list_gateways(request_type, transport: str = "grpc"):
     assert response.unreachable_locations == ["unreachable_locations_value"]
 
 
-def test_list_gateways_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_gateways), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_gateways()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.ListGatewaysRequest()
-
-
 def test_list_gateways_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1295,30 +1299,6 @@ def test_list_gateways_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_gateways_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_gateways), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            apigateway.ListGatewaysResponse(
-                next_page_token="next_page_token_value",
-                unreachable_locations=["unreachable_locations_value"],
-            )
-        )
-        response = await client.list_gateways()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.ListGatewaysRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_gateways_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1326,7 +1306,7 @@ async def test_list_gateways_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ApiGatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1365,7 +1345,7 @@ async def test_list_gateways_async(
     transport: str = "grpc_asyncio", request_type=apigateway.ListGatewaysRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1433,7 +1413,7 @@ def test_list_gateways_field_headers():
 @pytest.mark.asyncio
 async def test_list_gateways_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1503,7 +1483,7 @@ def test_list_gateways_flattened_error():
 @pytest.mark.asyncio
 async def test_list_gateways_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1532,7 +1512,7 @@ async def test_list_gateways_flattened_async():
 @pytest.mark.asyncio
 async def test_list_gateways_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1642,7 +1622,7 @@ def test_list_gateways_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_gateways_async_pager():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1692,7 +1672,7 @@ async def test_list_gateways_async_pager():
 @pytest.mark.asyncio
 async def test_list_gateways_async_pages():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1782,25 +1762,6 @@ def test_get_gateway(request_type, transport: str = "grpc"):
     assert response.default_hostname == "default_hostname_value"
 
 
-def test_get_gateway_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_gateway), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_gateway()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.GetGatewayRequest()
-
-
 def test_get_gateway_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1865,33 +1826,6 @@ def test_get_gateway_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_gateway_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_gateway), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            apigateway.Gateway(
-                name="name_value",
-                display_name="display_name_value",
-                api_config="api_config_value",
-                state=apigateway.Gateway.State.CREATING,
-                default_hostname="default_hostname_value",
-            )
-        )
-        response = await client.get_gateway()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.GetGatewayRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_gateway_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1899,7 +1833,7 @@ async def test_get_gateway_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ApiGatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1938,7 +1872,7 @@ async def test_get_gateway_async(
     transport: str = "grpc_asyncio", request_type=apigateway.GetGatewayRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2012,7 +1946,7 @@ def test_get_gateway_field_headers():
 @pytest.mark.asyncio
 async def test_get_gateway_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2080,7 +2014,7 @@ def test_get_gateway_flattened_error():
 @pytest.mark.asyncio
 async def test_get_gateway_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2107,7 +2041,7 @@ async def test_get_gateway_flattened_async():
 @pytest.mark.asyncio
 async def test_get_gateway_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2150,25 +2084,6 @@ def test_create_gateway(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_gateway_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_gateway), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_gateway()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.CreateGatewayRequest()
 
 
 def test_create_gateway_non_empty_request_with_auto_populated_field():
@@ -2242,27 +2157,6 @@ def test_create_gateway_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_gateway_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_gateway), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_gateway()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.CreateGatewayRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_gateway_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2270,7 +2164,7 @@ async def test_create_gateway_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ApiGatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2314,7 +2208,7 @@ async def test_create_gateway_async(
     transport: str = "grpc_asyncio", request_type=apigateway.CreateGatewayRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2377,7 +2271,7 @@ def test_create_gateway_field_headers():
 @pytest.mark.asyncio
 async def test_create_gateway_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2457,7 +2351,7 @@ def test_create_gateway_flattened_error():
 @pytest.mark.asyncio
 async def test_create_gateway_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2494,7 +2388,7 @@ async def test_create_gateway_flattened_async():
 @pytest.mark.asyncio
 async def test_create_gateway_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2539,25 +2433,6 @@ def test_update_gateway(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_gateway_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_gateway), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_gateway()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.UpdateGatewayRequest()
 
 
 def test_update_gateway_non_empty_request_with_auto_populated_field():
@@ -2625,27 +2500,6 @@ def test_update_gateway_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_gateway_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_gateway), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_gateway()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.UpdateGatewayRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_gateway_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2653,7 +2507,7 @@ async def test_update_gateway_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ApiGatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2697,7 +2551,7 @@ async def test_update_gateway_async(
     transport: str = "grpc_asyncio", request_type=apigateway.UpdateGatewayRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2760,7 +2614,7 @@ def test_update_gateway_field_headers():
 @pytest.mark.asyncio
 async def test_update_gateway_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2835,7 +2689,7 @@ def test_update_gateway_flattened_error():
 @pytest.mark.asyncio
 async def test_update_gateway_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2868,7 +2722,7 @@ async def test_update_gateway_flattened_async():
 @pytest.mark.asyncio
 async def test_update_gateway_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2912,25 +2766,6 @@ def test_delete_gateway(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_gateway_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_gateway), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_gateway()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.DeleteGatewayRequest()
 
 
 def test_delete_gateway_non_empty_request_with_auto_populated_field():
@@ -3002,27 +2837,6 @@ def test_delete_gateway_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_gateway_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_gateway), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_gateway()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.DeleteGatewayRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_gateway_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3030,7 +2844,7 @@ async def test_delete_gateway_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ApiGatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3074,7 +2888,7 @@ async def test_delete_gateway_async(
     transport: str = "grpc_asyncio", request_type=apigateway.DeleteGatewayRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3137,7 +2951,7 @@ def test_delete_gateway_field_headers():
 @pytest.mark.asyncio
 async def test_delete_gateway_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3207,7 +3021,7 @@ def test_delete_gateway_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_gateway_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3236,7 +3050,7 @@ async def test_delete_gateway_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_gateway_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3284,25 +3098,6 @@ def test_list_apis(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListApisPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-def test_list_apis_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_apis), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_apis()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.ListApisRequest()
 
 
 def test_list_apis_non_empty_request_with_auto_populated_field():
@@ -3375,36 +3170,12 @@ def test_list_apis_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_apis_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_apis), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            apigateway.ListApisResponse(
-                next_page_token="next_page_token_value",
-                unreachable_locations=["unreachable_locations_value"],
-            )
-        )
-        response = await client.list_apis()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.ListApisRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_apis_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ApiGatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3443,7 +3214,7 @@ async def test_list_apis_async(
     transport: str = "grpc_asyncio", request_type=apigateway.ListApisRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3511,7 +3282,7 @@ def test_list_apis_field_headers():
 @pytest.mark.asyncio
 async def test_list_apis_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3581,7 +3352,7 @@ def test_list_apis_flattened_error():
 @pytest.mark.asyncio
 async def test_list_apis_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3610,7 +3381,7 @@ async def test_list_apis_flattened_async():
 @pytest.mark.asyncio
 async def test_list_apis_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3720,7 +3491,7 @@ def test_list_apis_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_apis_async_pager():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3770,7 +3541,7 @@ async def test_list_apis_async_pager():
 @pytest.mark.asyncio
 async def test_list_apis_async_pages():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3858,25 +3629,6 @@ def test_get_api(request_type, transport: str = "grpc"):
     assert response.state == apigateway.Api.State.CREATING
 
 
-def test_get_api_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_api), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_api()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.GetApiRequest()
-
-
 def test_get_api_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -3941,38 +3693,12 @@ def test_get_api_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_api_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_api), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            apigateway.Api(
-                name="name_value",
-                display_name="display_name_value",
-                managed_service="managed_service_value",
-                state=apigateway.Api.State.CREATING,
-            )
-        )
-        response = await client.get_api()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.GetApiRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_api_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ApiGatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4011,7 +3737,7 @@ async def test_get_api_async(
     transport: str = "grpc_asyncio", request_type=apigateway.GetApiRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4083,7 +3809,7 @@ def test_get_api_field_headers():
 @pytest.mark.asyncio
 async def test_get_api_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4151,7 +3877,7 @@ def test_get_api_flattened_error():
 @pytest.mark.asyncio
 async def test_get_api_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4178,7 +3904,7 @@ async def test_get_api_flattened_async():
 @pytest.mark.asyncio
 async def test_get_api_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4221,25 +3947,6 @@ def test_create_api(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_api_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_api), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_api()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.CreateApiRequest()
 
 
 def test_create_api_non_empty_request_with_auto_populated_field():
@@ -4313,33 +4020,12 @@ def test_create_api_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_api_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_api), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_api()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.CreateApiRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_api_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ApiGatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4383,7 +4069,7 @@ async def test_create_api_async(
     transport: str = "grpc_asyncio", request_type=apigateway.CreateApiRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4446,7 +4132,7 @@ def test_create_api_field_headers():
 @pytest.mark.asyncio
 async def test_create_api_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4526,7 +4212,7 @@ def test_create_api_flattened_error():
 @pytest.mark.asyncio
 async def test_create_api_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4563,7 +4249,7 @@ async def test_create_api_flattened_async():
 @pytest.mark.asyncio
 async def test_create_api_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4608,25 +4294,6 @@ def test_update_api(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_api_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_api), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_api()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.UpdateApiRequest()
 
 
 def test_update_api_non_empty_request_with_auto_populated_field():
@@ -4694,33 +4361,12 @@ def test_update_api_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_api_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_api), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_api()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.UpdateApiRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_api_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ApiGatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4764,7 +4410,7 @@ async def test_update_api_async(
     transport: str = "grpc_asyncio", request_type=apigateway.UpdateApiRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4827,7 +4473,7 @@ def test_update_api_field_headers():
 @pytest.mark.asyncio
 async def test_update_api_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4902,7 +4548,7 @@ def test_update_api_flattened_error():
 @pytest.mark.asyncio
 async def test_update_api_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4935,7 +4581,7 @@ async def test_update_api_flattened_async():
 @pytest.mark.asyncio
 async def test_update_api_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4979,25 +4625,6 @@ def test_delete_api(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_api_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_api), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_api()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.DeleteApiRequest()
 
 
 def test_delete_api_non_empty_request_with_auto_populated_field():
@@ -5069,33 +4696,12 @@ def test_delete_api_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_api_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_api), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_api()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.DeleteApiRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_api_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ApiGatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5139,7 +4745,7 @@ async def test_delete_api_async(
     transport: str = "grpc_asyncio", request_type=apigateway.DeleteApiRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5202,7 +4808,7 @@ def test_delete_api_field_headers():
 @pytest.mark.asyncio
 async def test_delete_api_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5272,7 +4878,7 @@ def test_delete_api_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_api_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5301,7 +4907,7 @@ async def test_delete_api_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_api_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5349,25 +4955,6 @@ def test_list_api_configs(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListApiConfigsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-def test_list_api_configs_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_api_configs), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_api_configs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.ListApiConfigsRequest()
 
 
 def test_list_api_configs_non_empty_request_with_auto_populated_field():
@@ -5442,30 +5029,6 @@ def test_list_api_configs_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_api_configs_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_api_configs), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            apigateway.ListApiConfigsResponse(
-                next_page_token="next_page_token_value",
-                unreachable_locations=["unreachable_locations_value"],
-            )
-        )
-        response = await client.list_api_configs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.ListApiConfigsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_api_configs_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5473,7 +5036,7 @@ async def test_list_api_configs_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ApiGatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5512,7 +5075,7 @@ async def test_list_api_configs_async(
     transport: str = "grpc_asyncio", request_type=apigateway.ListApiConfigsRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5580,7 +5143,7 @@ def test_list_api_configs_field_headers():
 @pytest.mark.asyncio
 async def test_list_api_configs_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5650,7 +5213,7 @@ def test_list_api_configs_flattened_error():
 @pytest.mark.asyncio
 async def test_list_api_configs_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5679,7 +5242,7 @@ async def test_list_api_configs_flattened_async():
 @pytest.mark.asyncio
 async def test_list_api_configs_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5789,7 +5352,7 @@ def test_list_api_configs_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_api_configs_async_pager():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5839,7 +5402,7 @@ async def test_list_api_configs_async_pager():
 @pytest.mark.asyncio
 async def test_list_api_configs_async_pages():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5929,25 +5492,6 @@ def test_get_api_config(request_type, transport: str = "grpc"):
     assert response.state == apigateway.ApiConfig.State.CREATING
 
 
-def test_get_api_config_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_api_config), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_api_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.GetApiConfigRequest()
-
-
 def test_get_api_config_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -6012,33 +5556,6 @@ def test_get_api_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_api_config_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_api_config), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            apigateway.ApiConfig(
-                name="name_value",
-                display_name="display_name_value",
-                gateway_service_account="gateway_service_account_value",
-                service_config_id="service_config_id_value",
-                state=apigateway.ApiConfig.State.CREATING,
-            )
-        )
-        response = await client.get_api_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.GetApiConfigRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_api_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6046,7 +5563,7 @@ async def test_get_api_config_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ApiGatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6085,7 +5602,7 @@ async def test_get_api_config_async(
     transport: str = "grpc_asyncio", request_type=apigateway.GetApiConfigRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6159,7 +5676,7 @@ def test_get_api_config_field_headers():
 @pytest.mark.asyncio
 async def test_get_api_config_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6229,7 +5746,7 @@ def test_get_api_config_flattened_error():
 @pytest.mark.asyncio
 async def test_get_api_config_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6258,7 +5775,7 @@ async def test_get_api_config_flattened_async():
 @pytest.mark.asyncio
 async def test_get_api_config_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6303,27 +5820,6 @@ def test_create_api_config(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_api_config_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_api_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_api_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.CreateApiConfigRequest()
 
 
 def test_create_api_config_non_empty_request_with_auto_populated_field():
@@ -6401,29 +5897,6 @@ def test_create_api_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_api_config_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_api_config), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_api_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.CreateApiConfigRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_api_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6431,7 +5904,7 @@ async def test_create_api_config_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ApiGatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6475,7 +5948,7 @@ async def test_create_api_config_async(
     transport: str = "grpc_asyncio", request_type=apigateway.CreateApiConfigRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6542,7 +6015,7 @@ def test_create_api_config_field_headers():
 @pytest.mark.asyncio
 async def test_create_api_config_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6626,7 +6099,7 @@ def test_create_api_config_flattened_error():
 @pytest.mark.asyncio
 async def test_create_api_config_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6665,7 +6138,7 @@ async def test_create_api_config_flattened_async():
 @pytest.mark.asyncio
 async def test_create_api_config_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6712,27 +6185,6 @@ def test_update_api_config(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_api_config_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_api_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_api_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.UpdateApiConfigRequest()
 
 
 def test_update_api_config_non_empty_request_with_auto_populated_field():
@@ -6804,29 +6256,6 @@ def test_update_api_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_api_config_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_api_config), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_api_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.UpdateApiConfigRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_api_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6834,7 +6263,7 @@ async def test_update_api_config_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ApiGatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6878,7 +6307,7 @@ async def test_update_api_config_async(
     transport: str = "grpc_asyncio", request_type=apigateway.UpdateApiConfigRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6945,7 +6374,7 @@ def test_update_api_config_field_headers():
 @pytest.mark.asyncio
 async def test_update_api_config_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7024,7 +6453,7 @@ def test_update_api_config_flattened_error():
 @pytest.mark.asyncio
 async def test_update_api_config_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7059,7 +6488,7 @@ async def test_update_api_config_flattened_async():
 @pytest.mark.asyncio
 async def test_update_api_config_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7105,27 +6534,6 @@ def test_delete_api_config(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_api_config_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_api_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_api_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.DeleteApiConfigRequest()
 
 
 def test_delete_api_config_non_empty_request_with_auto_populated_field():
@@ -7201,29 +6609,6 @@ def test_delete_api_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_api_config_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_api_config), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_api_config()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == apigateway.DeleteApiConfigRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_api_config_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7231,7 +6616,7 @@ async def test_delete_api_config_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ApiGatewayServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7275,7 +6660,7 @@ async def test_delete_api_config_async(
     transport: str = "grpc_asyncio", request_type=apigateway.DeleteApiConfigRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7342,7 +6727,7 @@ def test_delete_api_config_field_headers():
 @pytest.mark.asyncio
 async def test_delete_api_config_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7416,7 +6801,7 @@ def test_delete_api_config_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_api_config_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7447,7 +6832,7 @@ async def test_delete_api_config_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_api_config_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7457,48 +6842,6 @@ async def test_delete_api_config_flattened_error_async():
             apigateway.DeleteApiConfigRequest(),
             name="name_value",
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apigateway.ListGatewaysRequest,
-        dict,
-    ],
-)
-def test_list_gateways_rest(request_type):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = apigateway.ListGatewaysResponse(
-            next_page_token="next_page_token_value",
-            unreachable_locations=["unreachable_locations_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = apigateway.ListGatewaysResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_gateways(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListGatewaysPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable_locations == ["unreachable_locations_value"]
 
 
 def test_list_gateways_rest_use_cached_wrapped_rpc():
@@ -7639,85 +6982,6 @@ def test_list_gateways_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_gateways_rest_interceptors(null_interceptor):
-    transport = transports.ApiGatewayServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ApiGatewayServiceRestInterceptor(),
-    )
-    client = ApiGatewayServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "post_list_gateways"
-    ) as post, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "pre_list_gateways"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apigateway.ListGatewaysRequest.pb(apigateway.ListGatewaysRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = apigateway.ListGatewaysResponse.to_json(
-            apigateway.ListGatewaysResponse()
-        )
-
-        request = apigateway.ListGatewaysRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = apigateway.ListGatewaysResponse()
-
-        client.list_gateways(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_gateways_rest_bad_request(
-    transport: str = "rest", request_type=apigateway.ListGatewaysRequest
-):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_gateways(request)
-
-
 def test_list_gateways_rest_flattened():
     client = ApiGatewayServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7833,54 +7097,6 @@ def test_list_gateways_rest_pager(transport: str = "rest"):
         pages = list(client.list_gateways(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apigateway.GetGatewayRequest,
-        dict,
-    ],
-)
-def test_get_gateway_rest(request_type):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/gateways/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = apigateway.Gateway(
-            name="name_value",
-            display_name="display_name_value",
-            api_config="api_config_value",
-            state=apigateway.Gateway.State.CREATING,
-            default_hostname="default_hostname_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = apigateway.Gateway.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_gateway(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, apigateway.Gateway)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.api_config == "api_config_value"
-    assert response.state == apigateway.Gateway.State.CREATING
-    assert response.default_hostname == "default_hostname_value"
 
 
 def test_get_gateway_rest_use_cached_wrapped_rpc():
@@ -8000,83 +7216,6 @@ def test_get_gateway_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_gateway_rest_interceptors(null_interceptor):
-    transport = transports.ApiGatewayServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ApiGatewayServiceRestInterceptor(),
-    )
-    client = ApiGatewayServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "post_get_gateway"
-    ) as post, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "pre_get_gateway"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apigateway.GetGatewayRequest.pb(apigateway.GetGatewayRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = apigateway.Gateway.to_json(apigateway.Gateway())
-
-        request = apigateway.GetGatewayRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = apigateway.Gateway()
-
-        client.get_gateway(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_gateway_rest_bad_request(
-    transport: str = "rest", request_type=apigateway.GetGatewayRequest
-):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/gateways/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_gateway(request)
-
-
 def test_get_gateway_rest_flattened():
     client = ApiGatewayServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8131,124 +7270,6 @@ def test_get_gateway_rest_flattened_error(transport: str = "rest"):
             apigateway.GetGatewayRequest(),
             name="name_value",
         )
-
-
-def test_get_gateway_rest_error():
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apigateway.CreateGatewayRequest,
-        dict,
-    ],
-)
-def test_create_gateway_rest(request_type):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["gateway"] = {
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "display_name": "display_name_value",
-        "api_config": "api_config_value",
-        "state": 1,
-        "default_hostname": "default_hostname_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = apigateway.CreateGatewayRequest.meta.fields["gateway"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["gateway"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["gateway"][field])):
-                    del request_init["gateway"][field][i][subfield]
-            else:
-                del request_init["gateway"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_gateway(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_gateway_rest_use_cached_wrapped_rpc():
@@ -8396,89 +7417,6 @@ def test_create_gateway_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_gateway_rest_interceptors(null_interceptor):
-    transport = transports.ApiGatewayServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ApiGatewayServiceRestInterceptor(),
-    )
-    client = ApiGatewayServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "post_create_gateway"
-    ) as post, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "pre_create_gateway"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apigateway.CreateGatewayRequest.pb(
-            apigateway.CreateGatewayRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = apigateway.CreateGatewayRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_gateway(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_gateway_rest_bad_request(
-    transport: str = "rest", request_type=apigateway.CreateGatewayRequest
-):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_gateway(request)
-
-
 def test_create_gateway_rest_flattened():
     client = ApiGatewayServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8535,126 +7473,6 @@ def test_create_gateway_rest_flattened_error(transport: str = "rest"):
             gateway=apigateway.Gateway(name="name_value"),
             gateway_id="gateway_id_value",
         )
-
-
-def test_create_gateway_rest_error():
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apigateway.UpdateGatewayRequest,
-        dict,
-    ],
-)
-def test_update_gateway_rest(request_type):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "gateway": {"name": "projects/sample1/locations/sample2/gateways/sample3"}
-    }
-    request_init["gateway"] = {
-        "name": "projects/sample1/locations/sample2/gateways/sample3",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "display_name": "display_name_value",
-        "api_config": "api_config_value",
-        "state": 1,
-        "default_hostname": "default_hostname_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = apigateway.UpdateGatewayRequest.meta.fields["gateway"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["gateway"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["gateway"][field])):
-                    del request_init["gateway"][field][i][subfield]
-            else:
-                del request_init["gateway"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_gateway(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_update_gateway_rest_use_cached_wrapped_rpc():
@@ -8775,91 +7593,6 @@ def test_update_gateway_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask",)) & set(("gateway",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_gateway_rest_interceptors(null_interceptor):
-    transport = transports.ApiGatewayServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ApiGatewayServiceRestInterceptor(),
-    )
-    client = ApiGatewayServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "post_update_gateway"
-    ) as post, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "pre_update_gateway"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apigateway.UpdateGatewayRequest.pb(
-            apigateway.UpdateGatewayRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = apigateway.UpdateGatewayRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.update_gateway(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_gateway_rest_bad_request(
-    transport: str = "rest", request_type=apigateway.UpdateGatewayRequest
-):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "gateway": {"name": "projects/sample1/locations/sample2/gateways/sample3"}
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_gateway(request)
-
-
 def test_update_gateway_rest_flattened():
     client = ApiGatewayServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8917,47 +7650,6 @@ def test_update_gateway_rest_flattened_error(transport: str = "rest"):
             gateway=apigateway.Gateway(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_gateway_rest_error():
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apigateway.DeleteGatewayRequest,
-        dict,
-    ],
-)
-def test_delete_gateway_rest(request_type):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/gateways/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_gateway(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_delete_gateway_rest_use_cached_wrapped_rpc():
@@ -9080,89 +7772,6 @@ def test_delete_gateway_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_gateway_rest_interceptors(null_interceptor):
-    transport = transports.ApiGatewayServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ApiGatewayServiceRestInterceptor(),
-    )
-    client = ApiGatewayServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "post_delete_gateway"
-    ) as post, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "pre_delete_gateway"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apigateway.DeleteGatewayRequest.pb(
-            apigateway.DeleteGatewayRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = apigateway.DeleteGatewayRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_gateway(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_gateway_rest_bad_request(
-    transport: str = "rest", request_type=apigateway.DeleteGatewayRequest
-):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/gateways/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_gateway(request)
-
-
 def test_delete_gateway_rest_flattened():
     client = ApiGatewayServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9215,54 +7824,6 @@ def test_delete_gateway_rest_flattened_error(transport: str = "rest"):
             apigateway.DeleteGatewayRequest(),
             name="name_value",
         )
-
-
-def test_delete_gateway_rest_error():
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apigateway.ListApisRequest,
-        dict,
-    ],
-)
-def test_list_apis_rest(request_type):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = apigateway.ListApisResponse(
-            next_page_token="next_page_token_value",
-            unreachable_locations=["unreachable_locations_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = apigateway.ListApisResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_apis(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListApisPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable_locations == ["unreachable_locations_value"]
 
 
 def test_list_apis_rest_use_cached_wrapped_rpc():
@@ -9401,85 +7962,6 @@ def test_list_apis_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_apis_rest_interceptors(null_interceptor):
-    transport = transports.ApiGatewayServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ApiGatewayServiceRestInterceptor(),
-    )
-    client = ApiGatewayServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "post_list_apis"
-    ) as post, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "pre_list_apis"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apigateway.ListApisRequest.pb(apigateway.ListApisRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = apigateway.ListApisResponse.to_json(
-            apigateway.ListApisResponse()
-        )
-
-        request = apigateway.ListApisRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = apigateway.ListApisResponse()
-
-        client.list_apis(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_apis_rest_bad_request(
-    transport: str = "rest", request_type=apigateway.ListApisRequest
-):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_apis(request)
-
-
 def test_list_apis_rest_flattened():
     client = ApiGatewayServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9595,52 +8077,6 @@ def test_list_apis_rest_pager(transport: str = "rest"):
         pages = list(client.list_apis(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apigateway.GetApiRequest,
-        dict,
-    ],
-)
-def test_get_api_rest(request_type):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = apigateway.Api(
-            name="name_value",
-            display_name="display_name_value",
-            managed_service="managed_service_value",
-            state=apigateway.Api.State.CREATING,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = apigateway.Api.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_api(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, apigateway.Api)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.managed_service == "managed_service_value"
-    assert response.state == apigateway.Api.State.CREATING
 
 
 def test_get_api_rest_use_cached_wrapped_rpc():
@@ -9760,83 +8196,6 @@ def test_get_api_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_api_rest_interceptors(null_interceptor):
-    transport = transports.ApiGatewayServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ApiGatewayServiceRestInterceptor(),
-    )
-    client = ApiGatewayServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "post_get_api"
-    ) as post, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "pre_get_api"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apigateway.GetApiRequest.pb(apigateway.GetApiRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = apigateway.Api.to_json(apigateway.Api())
-
-        request = apigateway.GetApiRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = apigateway.Api()
-
-        client.get_api(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_api_rest_bad_request(
-    transport: str = "rest", request_type=apigateway.GetApiRequest
-):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_api(request)
-
-
 def test_get_api_rest_flattened():
     client = ApiGatewayServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9891,123 +8250,6 @@ def test_get_api_rest_flattened_error(transport: str = "rest"):
             apigateway.GetApiRequest(),
             name="name_value",
         )
-
-
-def test_get_api_rest_error():
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apigateway.CreateApiRequest,
-        dict,
-    ],
-)
-def test_create_api_rest(request_type):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["api"] = {
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "display_name": "display_name_value",
-        "managed_service": "managed_service_value",
-        "state": 1,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = apigateway.CreateApiRequest.meta.fields["api"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["api"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["api"][field])):
-                    del request_init["api"][field][i][subfield]
-            else:
-                del request_init["api"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_api(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_api_rest_use_cached_wrapped_rpc():
@@ -10153,87 +8395,6 @@ def test_create_api_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_api_rest_interceptors(null_interceptor):
-    transport = transports.ApiGatewayServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ApiGatewayServiceRestInterceptor(),
-    )
-    client = ApiGatewayServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "post_create_api"
-    ) as post, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "pre_create_api"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apigateway.CreateApiRequest.pb(apigateway.CreateApiRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = apigateway.CreateApiRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_api(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_api_rest_bad_request(
-    transport: str = "rest", request_type=apigateway.CreateApiRequest
-):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_api(request)
-
-
 def test_create_api_rest_flattened():
     client = ApiGatewayServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10290,123 +8451,6 @@ def test_create_api_rest_flattened_error(transport: str = "rest"):
             api=apigateway.Api(name="name_value"),
             api_id="api_id_value",
         )
-
-
-def test_create_api_rest_error():
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apigateway.UpdateApiRequest,
-        dict,
-    ],
-)
-def test_update_api_rest(request_type):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"api": {"name": "projects/sample1/locations/sample2/apis/sample3"}}
-    request_init["api"] = {
-        "name": "projects/sample1/locations/sample2/apis/sample3",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "display_name": "display_name_value",
-        "managed_service": "managed_service_value",
-        "state": 1,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = apigateway.UpdateApiRequest.meta.fields["api"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["api"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["api"][field])):
-                    del request_init["api"][field][i][subfield]
-            else:
-                del request_init["api"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_api(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_update_api_rest_use_cached_wrapped_rpc():
@@ -10525,87 +8569,6 @@ def test_update_api_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask",)) & set(("api",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_api_rest_interceptors(null_interceptor):
-    transport = transports.ApiGatewayServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ApiGatewayServiceRestInterceptor(),
-    )
-    client = ApiGatewayServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "post_update_api"
-    ) as post, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "pre_update_api"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apigateway.UpdateApiRequest.pb(apigateway.UpdateApiRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = apigateway.UpdateApiRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.update_api(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_api_rest_bad_request(
-    transport: str = "rest", request_type=apigateway.UpdateApiRequest
-):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"api": {"name": "projects/sample1/locations/sample2/apis/sample3"}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_api(request)
-
-
 def test_update_api_rest_flattened():
     client = ApiGatewayServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10662,47 +8625,6 @@ def test_update_api_rest_flattened_error(transport: str = "rest"):
             api=apigateway.Api(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_api_rest_error():
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apigateway.DeleteApiRequest,
-        dict,
-    ],
-)
-def test_delete_api_rest(request_type):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_api(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_delete_api_rest_use_cached_wrapped_rpc():
@@ -10823,87 +8745,6 @@ def test_delete_api_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_api_rest_interceptors(null_interceptor):
-    transport = transports.ApiGatewayServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ApiGatewayServiceRestInterceptor(),
-    )
-    client = ApiGatewayServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "post_delete_api"
-    ) as post, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "pre_delete_api"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apigateway.DeleteApiRequest.pb(apigateway.DeleteApiRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = apigateway.DeleteApiRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_api(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_api_rest_bad_request(
-    transport: str = "rest", request_type=apigateway.DeleteApiRequest
-):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_api(request)
-
-
 def test_delete_api_rest_flattened():
     client = ApiGatewayServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10956,54 +8797,6 @@ def test_delete_api_rest_flattened_error(transport: str = "rest"):
             apigateway.DeleteApiRequest(),
             name="name_value",
         )
-
-
-def test_delete_api_rest_error():
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apigateway.ListApiConfigsRequest,
-        dict,
-    ],
-)
-def test_list_api_configs_rest(request_type):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = apigateway.ListApiConfigsResponse(
-            next_page_token="next_page_token_value",
-            unreachable_locations=["unreachable_locations_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = apigateway.ListApiConfigsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_api_configs(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListApiConfigsPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable_locations == ["unreachable_locations_value"]
 
 
 def test_list_api_configs_rest_use_cached_wrapped_rpc():
@@ -11146,87 +8939,6 @@ def test_list_api_configs_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_api_configs_rest_interceptors(null_interceptor):
-    transport = transports.ApiGatewayServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ApiGatewayServiceRestInterceptor(),
-    )
-    client = ApiGatewayServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "post_list_api_configs"
-    ) as post, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "pre_list_api_configs"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apigateway.ListApiConfigsRequest.pb(
-            apigateway.ListApiConfigsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = apigateway.ListApiConfigsResponse.to_json(
-            apigateway.ListApiConfigsResponse()
-        )
-
-        request = apigateway.ListApiConfigsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = apigateway.ListApiConfigsResponse()
-
-        client.list_api_configs(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_api_configs_rest_bad_request(
-    transport: str = "rest", request_type=apigateway.ListApiConfigsRequest
-):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_api_configs(request)
-
-
 def test_list_api_configs_rest_flattened():
     client = ApiGatewayServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11343,56 +9055,6 @@ def test_list_api_configs_rest_pager(transport: str = "rest"):
         pages = list(client.list_api_configs(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apigateway.GetApiConfigRequest,
-        dict,
-    ],
-)
-def test_get_api_config_rest(request_type):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/configs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = apigateway.ApiConfig(
-            name="name_value",
-            display_name="display_name_value",
-            gateway_service_account="gateway_service_account_value",
-            service_config_id="service_config_id_value",
-            state=apigateway.ApiConfig.State.CREATING,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = apigateway.ApiConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_api_config(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, apigateway.ApiConfig)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.gateway_service_account == "gateway_service_account_value"
-    assert response.service_config_id == "service_config_id_value"
-    assert response.state == apigateway.ApiConfig.State.CREATING
 
 
 def test_get_api_config_rest_use_cached_wrapped_rpc():
@@ -11516,85 +9178,6 @@ def test_get_api_config_rest_unset_required_fields():
     assert set(unset_fields) == (set(("view",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_api_config_rest_interceptors(null_interceptor):
-    transport = transports.ApiGatewayServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ApiGatewayServiceRestInterceptor(),
-    )
-    client = ApiGatewayServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "post_get_api_config"
-    ) as post, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "pre_get_api_config"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apigateway.GetApiConfigRequest.pb(apigateway.GetApiConfigRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = apigateway.ApiConfig.to_json(apigateway.ApiConfig())
-
-        request = apigateway.GetApiConfigRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = apigateway.ApiConfig()
-
-        client.get_api_config(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_api_config_rest_bad_request(
-    transport: str = "rest", request_type=apigateway.GetApiConfigRequest
-):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/configs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_api_config(request)
-
-
 def test_get_api_config_rest_flattened():
     client = ApiGatewayServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11652,129 +9235,6 @@ def test_get_api_config_rest_flattened_error(transport: str = "rest"):
             apigateway.GetApiConfigRequest(),
             name="name_value",
         )
-
-
-def test_get_api_config_rest_error():
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apigateway.CreateApiConfigRequest,
-        dict,
-    ],
-)
-def test_create_api_config_rest(request_type):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
-    request_init["api_config"] = {
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "display_name": "display_name_value",
-        "gateway_service_account": "gateway_service_account_value",
-        "service_config_id": "service_config_id_value",
-        "state": 1,
-        "openapi_documents": [
-            {"document": {"path": "path_value", "contents": b"contents_blob"}}
-        ],
-        "grpc_services": [{"file_descriptor_set": {}, "source": {}}],
-        "managed_service_configs": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = apigateway.CreateApiConfigRequest.meta.fields["api_config"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["api_config"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["api_config"][field])):
-                    del request_init["api_config"][field][i][subfield]
-            else:
-                del request_init["api_config"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_api_config(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_api_config_rest_use_cached_wrapped_rpc():
@@ -11924,89 +9384,6 @@ def test_create_api_config_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_api_config_rest_interceptors(null_interceptor):
-    transport = transports.ApiGatewayServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ApiGatewayServiceRestInterceptor(),
-    )
-    client = ApiGatewayServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "post_create_api_config"
-    ) as post, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "pre_create_api_config"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apigateway.CreateApiConfigRequest.pb(
-            apigateway.CreateApiConfigRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = apigateway.CreateApiConfigRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_api_config(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_api_config_rest_bad_request(
-    transport: str = "rest", request_type=apigateway.CreateApiConfigRequest
-):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_api_config(request)
-
-
 def test_create_api_config_rest_flattened():
     client = ApiGatewayServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12064,133 +9441,6 @@ def test_create_api_config_rest_flattened_error(transport: str = "rest"):
             api_config=apigateway.ApiConfig(name="name_value"),
             api_config_id="api_config_id_value",
         )
-
-
-def test_create_api_config_rest_error():
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apigateway.UpdateApiConfigRequest,
-        dict,
-    ],
-)
-def test_update_api_config_rest(request_type):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "api_config": {
-            "name": "projects/sample1/locations/sample2/apis/sample3/configs/sample4"
-        }
-    }
-    request_init["api_config"] = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/configs/sample4",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "display_name": "display_name_value",
-        "gateway_service_account": "gateway_service_account_value",
-        "service_config_id": "service_config_id_value",
-        "state": 1,
-        "openapi_documents": [
-            {"document": {"path": "path_value", "contents": b"contents_blob"}}
-        ],
-        "grpc_services": [{"file_descriptor_set": {}, "source": {}}],
-        "managed_service_configs": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = apigateway.UpdateApiConfigRequest.meta.fields["api_config"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["api_config"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["api_config"][field])):
-                    del request_init["api_config"][field][i][subfield]
-            else:
-                del request_init["api_config"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_api_config(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_update_api_config_rest_use_cached_wrapped_rpc():
@@ -12313,93 +9563,6 @@ def test_update_api_config_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask",)) & set(("apiConfig",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_api_config_rest_interceptors(null_interceptor):
-    transport = transports.ApiGatewayServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ApiGatewayServiceRestInterceptor(),
-    )
-    client = ApiGatewayServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "post_update_api_config"
-    ) as post, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "pre_update_api_config"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apigateway.UpdateApiConfigRequest.pb(
-            apigateway.UpdateApiConfigRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = apigateway.UpdateApiConfigRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.update_api_config(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_api_config_rest_bad_request(
-    transport: str = "rest", request_type=apigateway.UpdateApiConfigRequest
-):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "api_config": {
-            "name": "projects/sample1/locations/sample2/apis/sample3/configs/sample4"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_api_config(request)
-
-
 def test_update_api_config_rest_flattened():
     client = ApiGatewayServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12459,49 +9622,6 @@ def test_update_api_config_rest_flattened_error(transport: str = "rest"):
             api_config=apigateway.ApiConfig(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_api_config_rest_error():
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apigateway.DeleteApiConfigRequest,
-        dict,
-    ],
-)
-def test_delete_api_config_rest(request_type):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/configs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_api_config(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_delete_api_config_rest_use_cached_wrapped_rpc():
@@ -12626,91 +9746,6 @@ def test_delete_api_config_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_api_config_rest_interceptors(null_interceptor):
-    transport = transports.ApiGatewayServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ApiGatewayServiceRestInterceptor(),
-    )
-    client = ApiGatewayServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "post_delete_api_config"
-    ) as post, mock.patch.object(
-        transports.ApiGatewayServiceRestInterceptor, "pre_delete_api_config"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apigateway.DeleteApiConfigRequest.pb(
-            apigateway.DeleteApiConfigRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = apigateway.DeleteApiConfigRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_api_config(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_api_config_rest_bad_request(
-    transport: str = "rest", request_type=apigateway.DeleteApiConfigRequest
-):
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/configs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_api_config(request)
-
-
 def test_delete_api_config_rest_flattened():
     client = ApiGatewayServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12766,12 +9801,6 @@ def test_delete_api_config_rest_flattened_error(transport: str = "rest"):
             apigateway.DeleteApiConfigRequest(),
             name="name_value",
         )
-
-
-def test_delete_api_config_rest_error():
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
 
 
 def test_credentials_transport_error():
@@ -12866,18 +9895,3332 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = ApiGatewayServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_gateways_empty_call_grpc():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_gateways), "__call__") as call:
+        call.return_value = apigateway.ListGatewaysResponse()
+        client.list_gateways(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.ListGatewaysRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_gateway_empty_call_grpc():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_gateway), "__call__") as call:
+        call.return_value = apigateway.Gateway()
+        client.get_gateway(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.GetGatewayRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_gateway_empty_call_grpc():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_gateway), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_gateway(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.CreateGatewayRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_gateway_empty_call_grpc():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_gateway), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_gateway(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.UpdateGatewayRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_gateway_empty_call_grpc():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_gateway), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_gateway(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.DeleteGatewayRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_apis_empty_call_grpc():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_apis), "__call__") as call:
+        call.return_value = apigateway.ListApisResponse()
+        client.list_apis(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.ListApisRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_api_empty_call_grpc():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_api), "__call__") as call:
+        call.return_value = apigateway.Api()
+        client.get_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.GetApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_api_empty_call_grpc():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_api), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.CreateApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_api_empty_call_grpc():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_api), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.UpdateApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_api_empty_call_grpc():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_api), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.DeleteApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_api_configs_empty_call_grpc():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_api_configs), "__call__") as call:
+        call.return_value = apigateway.ListApiConfigsResponse()
+        client.list_api_configs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.ListApiConfigsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_api_config_empty_call_grpc():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_api_config), "__call__") as call:
+        call.return_value = apigateway.ApiConfig()
+        client.get_api_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.GetApiConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_api_config_empty_call_grpc():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_api_config), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_api_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.CreateApiConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_api_config_empty_call_grpc():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_api_config), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_api_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.UpdateApiConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_api_config_empty_call_grpc():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_api_config), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_api_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.DeleteApiConfigRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = ApiGatewayServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = ApiGatewayServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_gateways_empty_call_grpc_asyncio():
+    client = ApiGatewayServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_gateways), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apigateway.ListGatewaysResponse(
+                next_page_token="next_page_token_value",
+                unreachable_locations=["unreachable_locations_value"],
+            )
+        )
+        await client.list_gateways(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.ListGatewaysRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_gateway_empty_call_grpc_asyncio():
+    client = ApiGatewayServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_gateway), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apigateway.Gateway(
+                name="name_value",
+                display_name="display_name_value",
+                api_config="api_config_value",
+                state=apigateway.Gateway.State.CREATING,
+                default_hostname="default_hostname_value",
+            )
+        )
+        await client.get_gateway(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.GetGatewayRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_gateway_empty_call_grpc_asyncio():
+    client = ApiGatewayServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_gateway), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_gateway(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.CreateGatewayRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_gateway_empty_call_grpc_asyncio():
+    client = ApiGatewayServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_gateway), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_gateway(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.UpdateGatewayRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_gateway_empty_call_grpc_asyncio():
+    client = ApiGatewayServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_gateway), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_gateway(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.DeleteGatewayRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_apis_empty_call_grpc_asyncio():
+    client = ApiGatewayServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_apis), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apigateway.ListApisResponse(
+                next_page_token="next_page_token_value",
+                unreachable_locations=["unreachable_locations_value"],
+            )
+        )
+        await client.list_apis(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.ListApisRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_api_empty_call_grpc_asyncio():
+    client = ApiGatewayServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_api), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apigateway.Api(
+                name="name_value",
+                display_name="display_name_value",
+                managed_service="managed_service_value",
+                state=apigateway.Api.State.CREATING,
+            )
+        )
+        await client.get_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.GetApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_api_empty_call_grpc_asyncio():
+    client = ApiGatewayServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_api), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.CreateApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_api_empty_call_grpc_asyncio():
+    client = ApiGatewayServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_api), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.UpdateApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_api_empty_call_grpc_asyncio():
+    client = ApiGatewayServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_api), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.DeleteApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_api_configs_empty_call_grpc_asyncio():
+    client = ApiGatewayServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_api_configs), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apigateway.ListApiConfigsResponse(
+                next_page_token="next_page_token_value",
+                unreachable_locations=["unreachable_locations_value"],
+            )
+        )
+        await client.list_api_configs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.ListApiConfigsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_api_config_empty_call_grpc_asyncio():
+    client = ApiGatewayServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_api_config), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            apigateway.ApiConfig(
+                name="name_value",
+                display_name="display_name_value",
+                gateway_service_account="gateway_service_account_value",
+                service_config_id="service_config_id_value",
+                state=apigateway.ApiConfig.State.CREATING,
+            )
+        )
+        await client.get_api_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.GetApiConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_api_config_empty_call_grpc_asyncio():
+    client = ApiGatewayServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_api_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_api_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.CreateApiConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_api_config_empty_call_grpc_asyncio():
+    client = ApiGatewayServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_api_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_api_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.UpdateApiConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_api_config_empty_call_grpc_asyncio():
+    client = ApiGatewayServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_api_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_api_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.DeleteApiConfigRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = ApiGatewayServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_list_gateways_rest_bad_request(request_type=apigateway.ListGatewaysRequest):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_gateways(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        apigateway.ListGatewaysRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = ApiGatewayServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_list_gateways_rest_call_success(request_type):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = apigateway.ListGatewaysResponse(
+            next_page_token="next_page_token_value",
+            unreachable_locations=["unreachable_locations_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = apigateway.ListGatewaysResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_gateways(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListGatewaysPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable_locations == ["unreachable_locations_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_gateways_rest_interceptors(null_interceptor):
+    transport = transports.ApiGatewayServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ApiGatewayServiceRestInterceptor(),
+    )
+    client = ApiGatewayServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_list_gateways"
+    ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "pre_list_gateways"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apigateway.ListGatewaysRequest.pb(apigateway.ListGatewaysRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = apigateway.ListGatewaysResponse.to_json(
+            apigateway.ListGatewaysResponse()
+        )
+        req.return_value.content = return_value
+
+        request = apigateway.ListGatewaysRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = apigateway.ListGatewaysResponse()
+
+        client.list_gateways(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_gateway_rest_bad_request(request_type=apigateway.GetGatewayRequest):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/gateways/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_gateway(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.GetGatewayRequest,
+        dict,
+    ],
+)
+def test_get_gateway_rest_call_success(request_type):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/gateways/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = apigateway.Gateway(
+            name="name_value",
+            display_name="display_name_value",
+            api_config="api_config_value",
+            state=apigateway.Gateway.State.CREATING,
+            default_hostname="default_hostname_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = apigateway.Gateway.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_gateway(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, apigateway.Gateway)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.api_config == "api_config_value"
+    assert response.state == apigateway.Gateway.State.CREATING
+    assert response.default_hostname == "default_hostname_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_gateway_rest_interceptors(null_interceptor):
+    transport = transports.ApiGatewayServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ApiGatewayServiceRestInterceptor(),
+    )
+    client = ApiGatewayServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_get_gateway"
+    ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "pre_get_gateway"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apigateway.GetGatewayRequest.pb(apigateway.GetGatewayRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = apigateway.Gateway.to_json(apigateway.Gateway())
+        req.return_value.content = return_value
+
+        request = apigateway.GetGatewayRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = apigateway.Gateway()
+
+        client.get_gateway(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_gateway_rest_bad_request(request_type=apigateway.CreateGatewayRequest):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_gateway(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.CreateGatewayRequest,
+        dict,
+    ],
+)
+def test_create_gateway_rest_call_success(request_type):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["gateway"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "display_name": "display_name_value",
+        "api_config": "api_config_value",
+        "state": 1,
+        "default_hostname": "default_hostname_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apigateway.CreateGatewayRequest.meta.fields["gateway"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["gateway"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["gateway"][field])):
+                    del request_init["gateway"][field][i][subfield]
+            else:
+                del request_init["gateway"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_gateway(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_gateway_rest_interceptors(null_interceptor):
+    transport = transports.ApiGatewayServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ApiGatewayServiceRestInterceptor(),
+    )
+    client = ApiGatewayServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_create_gateway"
+    ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "pre_create_gateway"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apigateway.CreateGatewayRequest.pb(
+            apigateway.CreateGatewayRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = apigateway.CreateGatewayRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_gateway(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_gateway_rest_bad_request(request_type=apigateway.UpdateGatewayRequest):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "gateway": {"name": "projects/sample1/locations/sample2/gateways/sample3"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_gateway(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.UpdateGatewayRequest,
+        dict,
+    ],
+)
+def test_update_gateway_rest_call_success(request_type):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "gateway": {"name": "projects/sample1/locations/sample2/gateways/sample3"}
+    }
+    request_init["gateway"] = {
+        "name": "projects/sample1/locations/sample2/gateways/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "display_name": "display_name_value",
+        "api_config": "api_config_value",
+        "state": 1,
+        "default_hostname": "default_hostname_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apigateway.UpdateGatewayRequest.meta.fields["gateway"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["gateway"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["gateway"][field])):
+                    del request_init["gateway"][field][i][subfield]
+            else:
+                del request_init["gateway"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_gateway(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_gateway_rest_interceptors(null_interceptor):
+    transport = transports.ApiGatewayServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ApiGatewayServiceRestInterceptor(),
+    )
+    client = ApiGatewayServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_update_gateway"
+    ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "pre_update_gateway"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apigateway.UpdateGatewayRequest.pb(
+            apigateway.UpdateGatewayRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = apigateway.UpdateGatewayRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_gateway(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_gateway_rest_bad_request(request_type=apigateway.DeleteGatewayRequest):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/gateways/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_gateway(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.DeleteGatewayRequest,
+        dict,
+    ],
+)
+def test_delete_gateway_rest_call_success(request_type):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/gateways/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_gateway(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_gateway_rest_interceptors(null_interceptor):
+    transport = transports.ApiGatewayServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ApiGatewayServiceRestInterceptor(),
+    )
+    client = ApiGatewayServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_delete_gateway"
+    ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "pre_delete_gateway"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apigateway.DeleteGatewayRequest.pb(
+            apigateway.DeleteGatewayRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = apigateway.DeleteGatewayRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_gateway(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_apis_rest_bad_request(request_type=apigateway.ListApisRequest):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_apis(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.ListApisRequest,
+        dict,
+    ],
+)
+def test_list_apis_rest_call_success(request_type):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = apigateway.ListApisResponse(
+            next_page_token="next_page_token_value",
+            unreachable_locations=["unreachable_locations_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = apigateway.ListApisResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_apis(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListApisPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable_locations == ["unreachable_locations_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_apis_rest_interceptors(null_interceptor):
+    transport = transports.ApiGatewayServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ApiGatewayServiceRestInterceptor(),
+    )
+    client = ApiGatewayServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_list_apis"
+    ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "pre_list_apis"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apigateway.ListApisRequest.pb(apigateway.ListApisRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = apigateway.ListApisResponse.to_json(
+            apigateway.ListApisResponse()
+        )
+        req.return_value.content = return_value
+
+        request = apigateway.ListApisRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = apigateway.ListApisResponse()
+
+        client.list_apis(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_api_rest_bad_request(request_type=apigateway.GetApiRequest):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_api(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.GetApiRequest,
+        dict,
+    ],
+)
+def test_get_api_rest_call_success(request_type):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = apigateway.Api(
+            name="name_value",
+            display_name="display_name_value",
+            managed_service="managed_service_value",
+            state=apigateway.Api.State.CREATING,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = apigateway.Api.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_api(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, apigateway.Api)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.managed_service == "managed_service_value"
+    assert response.state == apigateway.Api.State.CREATING
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_api_rest_interceptors(null_interceptor):
+    transport = transports.ApiGatewayServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ApiGatewayServiceRestInterceptor(),
+    )
+    client = ApiGatewayServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_get_api"
+    ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "pre_get_api"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apigateway.GetApiRequest.pb(apigateway.GetApiRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = apigateway.Api.to_json(apigateway.Api())
+        req.return_value.content = return_value
+
+        request = apigateway.GetApiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = apigateway.Api()
+
+        client.get_api(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_api_rest_bad_request(request_type=apigateway.CreateApiRequest):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_api(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.CreateApiRequest,
+        dict,
+    ],
+)
+def test_create_api_rest_call_success(request_type):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["api"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "display_name": "display_name_value",
+        "managed_service": "managed_service_value",
+        "state": 1,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apigateway.CreateApiRequest.meta.fields["api"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["api"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["api"][field])):
+                    del request_init["api"][field][i][subfield]
+            else:
+                del request_init["api"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_api(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_api_rest_interceptors(null_interceptor):
+    transport = transports.ApiGatewayServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ApiGatewayServiceRestInterceptor(),
+    )
+    client = ApiGatewayServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_create_api"
+    ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "pre_create_api"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apigateway.CreateApiRequest.pb(apigateway.CreateApiRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = apigateway.CreateApiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_api(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_api_rest_bad_request(request_type=apigateway.UpdateApiRequest):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"api": {"name": "projects/sample1/locations/sample2/apis/sample3"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_api(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.UpdateApiRequest,
+        dict,
+    ],
+)
+def test_update_api_rest_call_success(request_type):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"api": {"name": "projects/sample1/locations/sample2/apis/sample3"}}
+    request_init["api"] = {
+        "name": "projects/sample1/locations/sample2/apis/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "display_name": "display_name_value",
+        "managed_service": "managed_service_value",
+        "state": 1,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apigateway.UpdateApiRequest.meta.fields["api"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["api"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["api"][field])):
+                    del request_init["api"][field][i][subfield]
+            else:
+                del request_init["api"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_api(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_api_rest_interceptors(null_interceptor):
+    transport = transports.ApiGatewayServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ApiGatewayServiceRestInterceptor(),
+    )
+    client = ApiGatewayServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_update_api"
+    ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "pre_update_api"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apigateway.UpdateApiRequest.pb(apigateway.UpdateApiRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = apigateway.UpdateApiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_api(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_api_rest_bad_request(request_type=apigateway.DeleteApiRequest):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_api(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.DeleteApiRequest,
+        dict,
+    ],
+)
+def test_delete_api_rest_call_success(request_type):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_api(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_api_rest_interceptors(null_interceptor):
+    transport = transports.ApiGatewayServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ApiGatewayServiceRestInterceptor(),
+    )
+    client = ApiGatewayServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_delete_api"
+    ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "pre_delete_api"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apigateway.DeleteApiRequest.pb(apigateway.DeleteApiRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = apigateway.DeleteApiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_api(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_api_configs_rest_bad_request(
+    request_type=apigateway.ListApiConfigsRequest,
+):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_api_configs(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.ListApiConfigsRequest,
+        dict,
+    ],
+)
+def test_list_api_configs_rest_call_success(request_type):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = apigateway.ListApiConfigsResponse(
+            next_page_token="next_page_token_value",
+            unreachable_locations=["unreachable_locations_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = apigateway.ListApiConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_api_configs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListApiConfigsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable_locations == ["unreachable_locations_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_api_configs_rest_interceptors(null_interceptor):
+    transport = transports.ApiGatewayServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ApiGatewayServiceRestInterceptor(),
+    )
+    client = ApiGatewayServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_list_api_configs"
+    ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "pre_list_api_configs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apigateway.ListApiConfigsRequest.pb(
+            apigateway.ListApiConfigsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = apigateway.ListApiConfigsResponse.to_json(
+            apigateway.ListApiConfigsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = apigateway.ListApiConfigsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = apigateway.ListApiConfigsResponse()
+
+        client.list_api_configs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_api_config_rest_bad_request(request_type=apigateway.GetApiConfigRequest):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/configs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_api_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.GetApiConfigRequest,
+        dict,
+    ],
+)
+def test_get_api_config_rest_call_success(request_type):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/configs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = apigateway.ApiConfig(
+            name="name_value",
+            display_name="display_name_value",
+            gateway_service_account="gateway_service_account_value",
+            service_config_id="service_config_id_value",
+            state=apigateway.ApiConfig.State.CREATING,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = apigateway.ApiConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_api_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, apigateway.ApiConfig)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.gateway_service_account == "gateway_service_account_value"
+    assert response.service_config_id == "service_config_id_value"
+    assert response.state == apigateway.ApiConfig.State.CREATING
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_api_config_rest_interceptors(null_interceptor):
+    transport = transports.ApiGatewayServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ApiGatewayServiceRestInterceptor(),
+    )
+    client = ApiGatewayServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_get_api_config"
+    ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "pre_get_api_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apigateway.GetApiConfigRequest.pb(apigateway.GetApiConfigRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = apigateway.ApiConfig.to_json(apigateway.ApiConfig())
+        req.return_value.content = return_value
+
+        request = apigateway.GetApiConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = apigateway.ApiConfig()
+
+        client.get_api_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_api_config_rest_bad_request(
+    request_type=apigateway.CreateApiConfigRequest,
+):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_api_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.CreateApiConfigRequest,
+        dict,
+    ],
+)
+def test_create_api_config_rest_call_success(request_type):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+    request_init["api_config"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "display_name": "display_name_value",
+        "gateway_service_account": "gateway_service_account_value",
+        "service_config_id": "service_config_id_value",
+        "state": 1,
+        "openapi_documents": [
+            {"document": {"path": "path_value", "contents": b"contents_blob"}}
+        ],
+        "grpc_services": [{"file_descriptor_set": {}, "source": {}}],
+        "managed_service_configs": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apigateway.CreateApiConfigRequest.meta.fields["api_config"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["api_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["api_config"][field])):
+                    del request_init["api_config"][field][i][subfield]
+            else:
+                del request_init["api_config"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_api_config(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_api_config_rest_interceptors(null_interceptor):
+    transport = transports.ApiGatewayServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ApiGatewayServiceRestInterceptor(),
+    )
+    client = ApiGatewayServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_create_api_config"
+    ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "pre_create_api_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apigateway.CreateApiConfigRequest.pb(
+            apigateway.CreateApiConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = apigateway.CreateApiConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_api_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_api_config_rest_bad_request(
+    request_type=apigateway.UpdateApiConfigRequest,
+):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "api_config": {
+            "name": "projects/sample1/locations/sample2/apis/sample3/configs/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_api_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.UpdateApiConfigRequest,
+        dict,
+    ],
+)
+def test_update_api_config_rest_call_success(request_type):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "api_config": {
+            "name": "projects/sample1/locations/sample2/apis/sample3/configs/sample4"
+        }
+    }
+    request_init["api_config"] = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/configs/sample4",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "display_name": "display_name_value",
+        "gateway_service_account": "gateway_service_account_value",
+        "service_config_id": "service_config_id_value",
+        "state": 1,
+        "openapi_documents": [
+            {"document": {"path": "path_value", "contents": b"contents_blob"}}
+        ],
+        "grpc_services": [{"file_descriptor_set": {}, "source": {}}],
+        "managed_service_configs": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apigateway.UpdateApiConfigRequest.meta.fields["api_config"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["api_config"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["api_config"][field])):
+                    del request_init["api_config"][field][i][subfield]
+            else:
+                del request_init["api_config"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_api_config(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_api_config_rest_interceptors(null_interceptor):
+    transport = transports.ApiGatewayServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ApiGatewayServiceRestInterceptor(),
+    )
+    client = ApiGatewayServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_update_api_config"
+    ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "pre_update_api_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apigateway.UpdateApiConfigRequest.pb(
+            apigateway.UpdateApiConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = apigateway.UpdateApiConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_api_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_api_config_rest_bad_request(
+    request_type=apigateway.DeleteApiConfigRequest,
+):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/configs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_api_config(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apigateway.DeleteApiConfigRequest,
+        dict,
+    ],
+)
+def test_delete_api_config_rest_call_success(request_type):
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/configs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_api_config(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_api_config_rest_interceptors(null_interceptor):
+    transport = transports.ApiGatewayServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ApiGatewayServiceRestInterceptor(),
+    )
+    client = ApiGatewayServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "post_delete_api_config"
+    ) as post, mock.patch.object(
+        transports.ApiGatewayServiceRestInterceptor, "pre_delete_api_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apigateway.DeleteApiConfigRequest.pb(
+            apigateway.DeleteApiConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = apigateway.DeleteApiConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_api_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_initialize_client_w_rest():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_gateways_empty_call_rest():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_gateways), "__call__") as call:
+        client.list_gateways(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.ListGatewaysRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_gateway_empty_call_rest():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_gateway), "__call__") as call:
+        client.get_gateway(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.GetGatewayRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_gateway_empty_call_rest():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_gateway), "__call__") as call:
+        client.create_gateway(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.CreateGatewayRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_gateway_empty_call_rest():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_gateway), "__call__") as call:
+        client.update_gateway(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.UpdateGatewayRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_gateway_empty_call_rest():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_gateway), "__call__") as call:
+        client.delete_gateway(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.DeleteGatewayRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_apis_empty_call_rest():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_apis), "__call__") as call:
+        client.list_apis(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.ListApisRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_api_empty_call_rest():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_api), "__call__") as call:
+        client.get_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.GetApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_api_empty_call_rest():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_api), "__call__") as call:
+        client.create_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.CreateApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_api_empty_call_rest():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_api), "__call__") as call:
+        client.update_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.UpdateApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_api_empty_call_rest():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_api), "__call__") as call:
+        client.delete_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.DeleteApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_api_configs_empty_call_rest():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_api_configs), "__call__") as call:
+        client.list_api_configs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.ListApiConfigsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_api_config_empty_call_rest():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_api_config), "__call__") as call:
+        client.get_api_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.GetApiConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_api_config_empty_call_rest():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_api_config), "__call__"
+    ) as call:
+        client.create_api_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.CreateApiConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_api_config_empty_call_rest():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_api_config), "__call__"
+    ) as call:
+        client.update_api_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.UpdateApiConfigRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_api_config_empty_call_rest():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_api_config), "__call__"
+    ) as call:
+        client.delete_api_config(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apigateway.DeleteApiConfigRequest()
+
+        assert args[0] == request_msg
+
+
+def test_api_gateway_service_rest_lro_client():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 def test_transport_grpc_default():
@@ -13128,23 +13471,6 @@ def test_api_gateway_service_http_transport_client_cert_source_for_mtls():
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_api_gateway_service_rest_lro_client():
-    client = ApiGatewayServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -13686,36 +14012,41 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = ApiGatewayServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = ApiGatewayServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = ApiGatewayServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = ApiGatewayServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

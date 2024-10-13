@@ -16,30 +16,27 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.compute_v1.types import compute
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseTargetTcpProxiesRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.cloud.compute_v1.types import compute
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import TargetTcpProxiesTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -290,8 +287,8 @@ class TargetTcpProxiesRestStub:
     _interceptor: TargetTcpProxiesRestInterceptor
 
 
-class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
-    """REST backend transport for TargetTcpProxies.
+class TargetTcpProxiesRestTransport(_BaseTargetTcpProxiesRestTransport):
+    """REST backend synchronous transport for TargetTcpProxies.
 
     The TargetTcpProxies API.
 
@@ -300,10 +297,6 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
-    NOTE: This REST transport functionality is currently in a beta
-    state (preview). We welcome your feedback via an issue in this
-    library's source repository. Thank you!
     """
 
     def __init__(
@@ -361,21 +354,12 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -386,19 +370,33 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
         self._interceptor = interceptor or TargetTcpProxiesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AggregatedList(TargetTcpProxiesRestStub):
+    class _AggregatedList(
+        _BaseTargetTcpProxiesRestTransport._BaseAggregatedList, TargetTcpProxiesRestStub
+    ):
         def __hash__(self):
-            return hash("AggregatedList")
+            return hash("TargetTcpProxiesRestTransport.AggregatedList")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -426,36 +424,27 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/compute/v1/projects/{project}/aggregated/targetTcpProxies",
-                },
-            ]
+            http_options = (
+                _BaseTargetTcpProxiesRestTransport._BaseAggregatedList._get_http_options()
+            )
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            pb_request = compute.AggregatedListTargetTcpProxiesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTargetTcpProxiesRestTransport._BaseAggregatedList._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseTargetTcpProxiesRestTransport._BaseAggregatedList._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = TargetTcpProxiesRestTransport._AggregatedList._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -471,19 +460,33 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
             resp = self._interceptor.post_aggregated_list(resp)
             return resp
 
-    class _Delete(TargetTcpProxiesRestStub):
+    class _Delete(
+        _BaseTargetTcpProxiesRestTransport._BaseDelete, TargetTcpProxiesRestStub
+    ):
         def __hash__(self):
-            return hash("Delete")
+            return hash("TargetTcpProxiesRestTransport.Delete")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -528,36 +531,31 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/compute/v1/projects/{project}/global/targetTcpProxies/{target_tcp_proxy}",
-                },
-            ]
+            http_options = (
+                _BaseTargetTcpProxiesRestTransport._BaseDelete._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            pb_request = compute.DeleteTargetTcpProxyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+            transcoded_request = (
+                _BaseTargetTcpProxiesRestTransport._BaseDelete._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Jsonify the query params
+            query_params = (
+                _BaseTargetTcpProxiesRestTransport._BaseDelete._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = TargetTcpProxiesRestTransport._Delete._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -573,19 +571,31 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
             resp = self._interceptor.post_delete(resp)
             return resp
 
-    class _Get(TargetTcpProxiesRestStub):
+    class _Get(_BaseTargetTcpProxiesRestTransport._BaseGet, TargetTcpProxiesRestStub):
         def __hash__(self):
-            return hash("Get")
+            return hash("TargetTcpProxiesRestTransport.Get")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -621,36 +631,31 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/compute/v1/projects/{project}/global/targetTcpProxies/{target_tcp_proxy}",
-                },
-            ]
+            http_options = (
+                _BaseTargetTcpProxiesRestTransport._BaseGet._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get(request, metadata)
-            pb_request = compute.GetTargetTcpProxyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+            transcoded_request = (
+                _BaseTargetTcpProxiesRestTransport._BaseGet._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Jsonify the query params
+            query_params = (
+                _BaseTargetTcpProxiesRestTransport._BaseGet._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = TargetTcpProxiesRestTransport._Get._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -666,19 +671,34 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
             resp = self._interceptor.post_get(resp)
             return resp
 
-    class _Insert(TargetTcpProxiesRestStub):
+    class _Insert(
+        _BaseTargetTcpProxiesRestTransport._BaseInsert, TargetTcpProxiesRestStub
+    ):
         def __hash__(self):
-            return hash("Insert")
+            return hash("TargetTcpProxiesRestTransport.Insert")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -723,43 +743,38 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/global/targetTcpProxies",
-                    "body": "target_tcp_proxy_resource",
-                },
-            ]
-            request, metadata = self._interceptor.pre_insert(request, metadata)
-            pb_request = compute.InsertTargetTcpProxyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+            http_options = (
+                _BaseTargetTcpProxiesRestTransport._BaseInsert._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+            request, metadata = self._interceptor.pre_insert(request, metadata)
+            transcoded_request = (
+                _BaseTargetTcpProxiesRestTransport._BaseInsert._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
+
+            body = (
+                _BaseTargetTcpProxiesRestTransport._BaseInsert._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseTargetTcpProxiesRestTransport._BaseInsert._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = TargetTcpProxiesRestTransport._Insert._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -775,19 +790,31 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
             resp = self._interceptor.post_insert(resp)
             return resp
 
-    class _List(TargetTcpProxiesRestStub):
+    class _List(_BaseTargetTcpProxiesRestTransport._BaseList, TargetTcpProxiesRestStub):
         def __hash__(self):
-            return hash("List")
+            return hash("TargetTcpProxiesRestTransport.List")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -817,36 +844,31 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/compute/v1/projects/{project}/global/targetTcpProxies",
-                },
-            ]
+            http_options = (
+                _BaseTargetTcpProxiesRestTransport._BaseList._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list(request, metadata)
-            pb_request = compute.ListTargetTcpProxiesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
+            transcoded_request = (
+                _BaseTargetTcpProxiesRestTransport._BaseList._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Jsonify the query params
+            query_params = (
+                _BaseTargetTcpProxiesRestTransport._BaseList._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = TargetTcpProxiesRestTransport._List._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -862,19 +884,35 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
             resp = self._interceptor.post_list(resp)
             return resp
 
-    class _SetBackendService(TargetTcpProxiesRestStub):
+    class _SetBackendService(
+        _BaseTargetTcpProxiesRestTransport._BaseSetBackendService,
+        TargetTcpProxiesRestStub,
+    ):
         def __hash__(self):
-            return hash("SetBackendService")
+            return hash("TargetTcpProxiesRestTransport.SetBackendService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -919,45 +957,34 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/global/targetTcpProxies/{target_tcp_proxy}/setBackendService",
-                    "body": "target_tcp_proxies_set_backend_service_request_resource",
-                },
-            ]
+            http_options = (
+                _BaseTargetTcpProxiesRestTransport._BaseSetBackendService._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_backend_service(
                 request, metadata
             )
-            pb_request = compute.SetBackendServiceTargetTcpProxyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+            transcoded_request = _BaseTargetTcpProxiesRestTransport._BaseSetBackendService._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseTargetTcpProxiesRestTransport._BaseSetBackendService._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseTargetTcpProxiesRestTransport._BaseSetBackendService._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = TargetTcpProxiesRestTransport._SetBackendService._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -973,19 +1000,34 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
             resp = self._interceptor.post_set_backend_service(resp)
             return resp
 
-    class _SetProxyHeader(TargetTcpProxiesRestStub):
+    class _SetProxyHeader(
+        _BaseTargetTcpProxiesRestTransport._BaseSetProxyHeader, TargetTcpProxiesRestStub
+    ):
         def __hash__(self):
-            return hash("SetProxyHeader")
+            return hash("TargetTcpProxiesRestTransport.SetProxyHeader")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1030,45 +1072,34 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/compute/v1/projects/{project}/global/targetTcpProxies/{target_tcp_proxy}/setProxyHeader",
-                    "body": "target_tcp_proxies_set_proxy_header_request_resource",
-                },
-            ]
+            http_options = (
+                _BaseTargetTcpProxiesRestTransport._BaseSetProxyHeader._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_proxy_header(
                 request, metadata
             )
-            pb_request = compute.SetProxyHeaderTargetTcpProxyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=False
+            transcoded_request = _BaseTargetTcpProxiesRestTransport._BaseSetProxyHeader._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseTargetTcpProxiesRestTransport._BaseSetProxyHeader._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=False,
-                )
+            query_params = _BaseTargetTcpProxiesRestTransport._BaseSetProxyHeader._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = TargetTcpProxiesRestTransport._SetProxyHeader._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

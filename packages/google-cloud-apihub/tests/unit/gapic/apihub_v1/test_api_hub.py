@@ -22,12 +22,29 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 import google.auth
@@ -37,22 +54,28 @@ from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.apihub_v1.services.api_hub import ApiHubClient, pagers, transports
 from google.cloud.apihub_v1.types import apihub_service, common_fields
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -909,152 +932,6 @@ def test_api_hub_client_client_options_credentials_file(
         )
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.CreateApiRequest,
-        dict,
-    ],
-)
-def test_create_api_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["api"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "documentation": {"external_uri": "external_uri_value"},
-        "owner": {"display_name": "display_name_value", "email": "email_value"},
-        "versions": ["versions_value1", "versions_value2"],
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "target_user": {
-            "enum_values": {
-                "values": [
-                    {
-                        "id": "id_value",
-                        "display_name": "display_name_value",
-                        "description": "description_value",
-                        "immutable": True,
-                    }
-                ]
-            },
-            "string_values": {"values": ["values_value1", "values_value2"]},
-            "json_values": {},
-            "attribute": "attribute_value",
-        },
-        "team": {},
-        "business_unit": {},
-        "maturity_level": {},
-        "attributes": {},
-        "api_style": {},
-        "selected_version": "selected_version_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = apihub_service.CreateApiRequest.meta.fields["api"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["api"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["api"][field])):
-                    del request_init["api"][field][i][subfield]
-            else:
-                del request_init["api"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.Api(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            versions=["versions_value"],
-            selected_version="selected_version_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.Api.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_api(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.Api)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.versions == ["versions_value"]
-    assert response.selected_version == "selected_version_value"
-
-
 def test_create_api_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -1183,83 +1060,6 @@ def test_create_api_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_api_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_create_api"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_create_api"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.CreateApiRequest.pb(
-            apihub_service.CreateApiRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.Api.to_json(common_fields.Api())
-
-        request = apihub_service.CreateApiRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.Api()
-
-        client.create_api(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_api_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.CreateApiRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_api(request)
-
-
 def test_create_api_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1318,60 +1118,6 @@ def test_create_api_rest_flattened_error(transport: str = "rest"):
             api=common_fields.Api(name="name_value"),
             api_id="api_id_value",
         )
-
-
-def test_create_api_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.GetApiRequest,
-        dict,
-    ],
-)
-def test_get_api_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.Api(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            versions=["versions_value"],
-            selected_version="selected_version_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.Api.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_api(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.Api)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.versions == ["versions_value"]
-    assert response.selected_version == "selected_version_value"
 
 
 def test_get_api_rest_use_cached_wrapped_rpc():
@@ -1491,81 +1237,6 @@ def test_get_api_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_api_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_get_api"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_get_api"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.GetApiRequest.pb(apihub_service.GetApiRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.Api.to_json(common_fields.Api())
-
-        request = apihub_service.GetApiRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.Api()
-
-        client.get_api(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_api_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.GetApiRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_api(request)
-
-
 def test_get_api_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1620,52 +1291,6 @@ def test_get_api_rest_flattened_error(transport: str = "rest"):
             apihub_service.GetApiRequest(),
             name="name_value",
         )
-
-
-def test_get_api_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.ListApisRequest,
-        dict,
-    ],
-)
-def test_list_apis_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = apihub_service.ListApisResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = apihub_service.ListApisResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_apis(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListApisPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_apis_rest_use_cached_wrapped_rpc():
@@ -1802,83 +1427,6 @@ def test_list_apis_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_apis_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_list_apis"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_list_apis"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.ListApisRequest.pb(apihub_service.ListApisRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = apihub_service.ListApisResponse.to_json(
-            apihub_service.ListApisResponse()
-        )
-
-        request = apihub_service.ListApisRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = apihub_service.ListApisResponse()
-
-        client.list_apis(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_apis_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.ListApisRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_apis(request)
-
-
 def test_list_apis_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1994,152 +1542,6 @@ def test_list_apis_rest_pager(transport: str = "rest"):
         pages = list(client.list_apis(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.UpdateApiRequest,
-        dict,
-    ],
-)
-def test_update_api_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"api": {"name": "projects/sample1/locations/sample2/apis/sample3"}}
-    request_init["api"] = {
-        "name": "projects/sample1/locations/sample2/apis/sample3",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "documentation": {"external_uri": "external_uri_value"},
-        "owner": {"display_name": "display_name_value", "email": "email_value"},
-        "versions": ["versions_value1", "versions_value2"],
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "target_user": {
-            "enum_values": {
-                "values": [
-                    {
-                        "id": "id_value",
-                        "display_name": "display_name_value",
-                        "description": "description_value",
-                        "immutable": True,
-                    }
-                ]
-            },
-            "string_values": {"values": ["values_value1", "values_value2"]},
-            "json_values": {},
-            "attribute": "attribute_value",
-        },
-        "team": {},
-        "business_unit": {},
-        "maturity_level": {},
-        "attributes": {},
-        "api_style": {},
-        "selected_version": "selected_version_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = apihub_service.UpdateApiRequest.meta.fields["api"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["api"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["api"][field])):
-                    del request_init["api"][field][i][subfield]
-            else:
-                del request_init["api"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.Api(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            versions=["versions_value"],
-            selected_version="selected_version_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.Api.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_api(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.Api)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.versions == ["versions_value"]
-    assert response.selected_version == "selected_version_value"
 
 
 def test_update_api_rest_use_cached_wrapped_rpc():
@@ -2265,83 +1667,6 @@ def test_update_api_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_api_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_update_api"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_update_api"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.UpdateApiRequest.pb(
-            apihub_service.UpdateApiRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.Api.to_json(common_fields.Api())
-
-        request = apihub_service.UpdateApiRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.Api()
-
-        client.update_api(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_api_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.UpdateApiRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"api": {"name": "projects/sample1/locations/sample2/apis/sample3"}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_api(request)
-
-
 def test_update_api_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2400,47 +1725,6 @@ def test_update_api_rest_flattened_error(transport: str = "rest"):
             api=common_fields.Api(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_api_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.DeleteApiRequest,
-        dict,
-    ],
-)
-def test_delete_api_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_api(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_api_rest_use_cached_wrapped_rpc():
@@ -2559,77 +1843,6 @@ def test_delete_api_rest_unset_required_fields():
     assert set(unset_fields) == (set(("force",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_api_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_delete_api"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = apihub_service.DeleteApiRequest.pb(
-            apihub_service.DeleteApiRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = apihub_service.DeleteApiRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_api(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_api_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.DeleteApiRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_api(request)
-
-
 def test_delete_api_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2682,164 +1895,6 @@ def test_delete_api_rest_flattened_error(transport: str = "rest"):
             apihub_service.DeleteApiRequest(),
             name="name_value",
         )
-
-
-def test_delete_api_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.CreateVersionRequest,
-        dict,
-    ],
-)
-def test_create_version_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
-    request_init["version"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "documentation": {"external_uri": "external_uri_value"},
-        "specs": ["specs_value1", "specs_value2"],
-        "api_operations": ["api_operations_value1", "api_operations_value2"],
-        "definitions": ["definitions_value1", "definitions_value2"],
-        "deployments": ["deployments_value1", "deployments_value2"],
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "lifecycle": {
-            "enum_values": {
-                "values": [
-                    {
-                        "id": "id_value",
-                        "display_name": "display_name_value",
-                        "description": "description_value",
-                        "immutable": True,
-                    }
-                ]
-            },
-            "string_values": {"values": ["values_value1", "values_value2"]},
-            "json_values": {},
-            "attribute": "attribute_value",
-        },
-        "compliance": {},
-        "accreditation": {},
-        "attributes": {},
-        "selected_deployment": "selected_deployment_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = apihub_service.CreateVersionRequest.meta.fields["version"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["version"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["version"][field])):
-                    del request_init["version"][field][i][subfield]
-            else:
-                del request_init["version"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.Version(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            specs=["specs_value"],
-            api_operations=["api_operations_value"],
-            definitions=["definitions_value"],
-            deployments=["deployments_value"],
-            selected_deployment="selected_deployment_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.Version.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_version(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.Version)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.specs == ["specs_value"]
-    assert response.api_operations == ["api_operations_value"]
-    assert response.definitions == ["definitions_value"]
-    assert response.deployments == ["deployments_value"]
-    assert response.selected_deployment == "selected_deployment_value"
 
 
 def test_create_version_rest_use_cached_wrapped_rpc():
@@ -2972,85 +2027,6 @@ def test_create_version_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_version_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_create_version"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_create_version"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.CreateVersionRequest.pb(
-            apihub_service.CreateVersionRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.Version.to_json(
-            common_fields.Version()
-        )
-
-        request = apihub_service.CreateVersionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.Version()
-
-        client.create_version(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_version_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.CreateVersionRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_version(request)
-
-
 def test_create_version_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3110,68 +2086,6 @@ def test_create_version_rest_flattened_error(transport: str = "rest"):
             version=common_fields.Version(name="name_value"),
             version_id="version_id_value",
         )
-
-
-def test_create_version_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.GetVersionRequest,
-        dict,
-    ],
-)
-def test_get_version_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.Version(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            specs=["specs_value"],
-            api_operations=["api_operations_value"],
-            definitions=["definitions_value"],
-            deployments=["deployments_value"],
-            selected_deployment="selected_deployment_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.Version.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_version(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.Version)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.specs == ["specs_value"]
-    assert response.api_operations == ["api_operations_value"]
-    assert response.definitions == ["definitions_value"]
-    assert response.deployments == ["deployments_value"]
-    assert response.selected_deployment == "selected_deployment_value"
 
 
 def test_get_version_rest_use_cached_wrapped_rpc():
@@ -3293,87 +2207,6 @@ def test_get_version_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_version_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_get_version"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_get_version"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.GetVersionRequest.pb(
-            apihub_service.GetVersionRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.Version.to_json(
-            common_fields.Version()
-        )
-
-        request = apihub_service.GetVersionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.Version()
-
-        client.get_version(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_version_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.GetVersionRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_version(request)
-
-
 def test_get_version_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3431,52 +2264,6 @@ def test_get_version_rest_flattened_error(transport: str = "rest"):
             apihub_service.GetVersionRequest(),
             name="name_value",
         )
-
-
-def test_get_version_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.ListVersionsRequest,
-        dict,
-    ],
-)
-def test_list_versions_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = apihub_service.ListVersionsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = apihub_service.ListVersionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_versions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListVersionsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_versions_rest_use_cached_wrapped_rpc():
@@ -3615,85 +2402,6 @@ def test_list_versions_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_versions_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_list_versions"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_list_versions"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.ListVersionsRequest.pb(
-            apihub_service.ListVersionsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = apihub_service.ListVersionsResponse.to_json(
-            apihub_service.ListVersionsResponse()
-        )
-
-        request = apihub_service.ListVersionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = apihub_service.ListVersionsResponse()
-
-        client.list_versions(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_versions_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.ListVersionsRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_versions(request)
-
-
 def test_list_versions_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3812,162 +2520,6 @@ def test_list_versions_rest_pager(transport: str = "rest"):
         pages = list(client.list_versions(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.UpdateVersionRequest,
-        dict,
-    ],
-)
-def test_update_version_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "version": {
-            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
-        }
-    }
-    request_init["version"] = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "documentation": {"external_uri": "external_uri_value"},
-        "specs": ["specs_value1", "specs_value2"],
-        "api_operations": ["api_operations_value1", "api_operations_value2"],
-        "definitions": ["definitions_value1", "definitions_value2"],
-        "deployments": ["deployments_value1", "deployments_value2"],
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "lifecycle": {
-            "enum_values": {
-                "values": [
-                    {
-                        "id": "id_value",
-                        "display_name": "display_name_value",
-                        "description": "description_value",
-                        "immutable": True,
-                    }
-                ]
-            },
-            "string_values": {"values": ["values_value1", "values_value2"]},
-            "json_values": {},
-            "attribute": "attribute_value",
-        },
-        "compliance": {},
-        "accreditation": {},
-        "attributes": {},
-        "selected_deployment": "selected_deployment_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = apihub_service.UpdateVersionRequest.meta.fields["version"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["version"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["version"][field])):
-                    del request_init["version"][field][i][subfield]
-            else:
-                del request_init["version"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.Version(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            specs=["specs_value"],
-            api_operations=["api_operations_value"],
-            definitions=["definitions_value"],
-            deployments=["deployments_value"],
-            selected_deployment="selected_deployment_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.Version.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_version(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.Version)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.specs == ["specs_value"]
-    assert response.api_operations == ["api_operations_value"]
-    assert response.definitions == ["definitions_value"]
-    assert response.deployments == ["deployments_value"]
-    assert response.selected_deployment == "selected_deployment_value"
 
 
 def test_update_version_rest_use_cached_wrapped_rpc():
@@ -4095,89 +2647,6 @@ def test_update_version_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_version_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_update_version"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_update_version"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.UpdateVersionRequest.pb(
-            apihub_service.UpdateVersionRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.Version.to_json(
-            common_fields.Version()
-        )
-
-        request = apihub_service.UpdateVersionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.Version()
-
-        client.update_version(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_version_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.UpdateVersionRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "version": {
-            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_version(request)
-
-
 def test_update_version_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4239,49 +2708,6 @@ def test_update_version_rest_flattened_error(transport: str = "rest"):
             version=common_fields.Version(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_version_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.DeleteVersionRequest,
-        dict,
-    ],
-)
-def test_delete_version_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_version(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_version_rest_use_cached_wrapped_rpc():
@@ -4402,79 +2828,6 @@ def test_delete_version_rest_unset_required_fields():
     assert set(unset_fields) == (set(("force",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_version_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_delete_version"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = apihub_service.DeleteVersionRequest.pb(
-            apihub_service.DeleteVersionRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = apihub_service.DeleteVersionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_version(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_version_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.DeleteVersionRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_version(request)
-
-
 def test_delete_version_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4530,177 +2883,6 @@ def test_delete_version_rest_flattened_error(transport: str = "rest"):
             apihub_service.DeleteVersionRequest(),
             name="name_value",
         )
-
-
-def test_delete_version_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.CreateSpecRequest,
-        dict,
-    ],
-)
-def test_create_spec_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
-    }
-    request_init["spec"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "spec_type": {
-            "enum_values": {
-                "values": [
-                    {
-                        "id": "id_value",
-                        "display_name": "display_name_value",
-                        "description": "description_value",
-                        "immutable": True,
-                    }
-                ]
-            },
-            "string_values": {"values": ["values_value1", "values_value2"]},
-            "json_values": {},
-            "attribute": "attribute_value",
-        },
-        "contents": {"contents": b"contents_blob", "mime_type": "mime_type_value"},
-        "details": {
-            "open_api_spec_details": {
-                "format_": 1,
-                "version": "version_value",
-                "owner": {"display_name": "display_name_value", "email": "email_value"},
-            },
-            "description": "description_value",
-        },
-        "source_uri": "source_uri_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "lint_response": {
-            "issues": [
-                {
-                    "code": "code_value",
-                    "path": ["path_value1", "path_value2"],
-                    "message": "message_value",
-                    "severity": 1,
-                    "range_": {"start": {"line": 424, "character": 941}, "end": {}},
-                }
-            ],
-            "summary": [{"severity": 1, "count": 553}],
-            "state": 1,
-            "source": "source_value",
-            "linter": 1,
-            "create_time": {},
-        },
-        "attributes": {},
-        "documentation": {"external_uri": "external_uri_value"},
-        "parsing_mode": 1,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = apihub_service.CreateSpecRequest.meta.fields["spec"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["spec"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["spec"][field])):
-                    del request_init["spec"][field][i][subfield]
-            else:
-                del request_init["spec"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.Spec(
-            name="name_value",
-            display_name="display_name_value",
-            source_uri="source_uri_value",
-            parsing_mode=common_fields.Spec.ParsingMode.RELAXED,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.Spec.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_spec(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.Spec)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.source_uri == "source_uri_value"
-    assert response.parsing_mode == common_fields.Spec.ParsingMode.RELAXED
 
 
 def test_create_spec_rest_use_cached_wrapped_rpc():
@@ -4833,85 +3015,6 @@ def test_create_spec_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_spec_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_create_spec"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_create_spec"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.CreateSpecRequest.pb(
-            apihub_service.CreateSpecRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.Spec.to_json(common_fields.Spec())
-
-        request = apihub_service.CreateSpecRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.Spec()
-
-        client.create_spec(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_spec_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.CreateSpecRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_spec(request)
-
-
 def test_create_spec_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4973,60 +3076,6 @@ def test_create_spec_rest_flattened_error(transport: str = "rest"):
             spec=common_fields.Spec(name="name_value"),
             spec_id="spec_id_value",
         )
-
-
-def test_create_spec_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.GetSpecRequest,
-        dict,
-    ],
-)
-def test_get_spec_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.Spec(
-            name="name_value",
-            display_name="display_name_value",
-            source_uri="source_uri_value",
-            parsing_mode=common_fields.Spec.ParsingMode.RELAXED,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.Spec.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_spec(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.Spec)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.source_uri == "source_uri_value"
-    assert response.parsing_mode == common_fields.Spec.ParsingMode.RELAXED
 
 
 def test_get_spec_rest_use_cached_wrapped_rpc():
@@ -5146,83 +3195,6 @@ def test_get_spec_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_spec_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_get_spec"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_get_spec"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.GetSpecRequest.pb(apihub_service.GetSpecRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.Spec.to_json(common_fields.Spec())
-
-        request = apihub_service.GetSpecRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.Spec()
-
-        client.get_spec(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_spec_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.GetSpecRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_spec(request)
-
-
 def test_get_spec_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5280,56 +3252,6 @@ def test_get_spec_rest_flattened_error(transport: str = "rest"):
             apihub_service.GetSpecRequest(),
             name="name_value",
         )
-
-
-def test_get_spec_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.GetSpecContentsRequest,
-        dict,
-    ],
-)
-def test_get_spec_contents_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.SpecContents(
-            contents=b"contents_blob",
-            mime_type="mime_type_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.SpecContents.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_spec_contents(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.SpecContents)
-    assert response.contents == b"contents_blob"
-    assert response.mime_type == "mime_type_value"
 
 
 def test_get_spec_contents_rest_use_cached_wrapped_rpc():
@@ -5453,87 +3375,6 @@ def test_get_spec_contents_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_spec_contents_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_get_spec_contents"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_get_spec_contents"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.GetSpecContentsRequest.pb(
-            apihub_service.GetSpecContentsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.SpecContents.to_json(
-            common_fields.SpecContents()
-        )
-
-        request = apihub_service.GetSpecContentsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.SpecContents()
-
-        client.get_spec_contents(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_spec_contents_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.GetSpecContentsRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_spec_contents(request)
-
-
 def test_get_spec_contents_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5591,54 +3432,6 @@ def test_get_spec_contents_rest_flattened_error(transport: str = "rest"):
             apihub_service.GetSpecContentsRequest(),
             name="name_value",
         )
-
-
-def test_get_spec_contents_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.ListSpecsRequest,
-        dict,
-    ],
-)
-def test_list_specs_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = apihub_service.ListSpecsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = apihub_service.ListSpecsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_specs(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListSpecsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_specs_rest_use_cached_wrapped_rpc():
@@ -5775,87 +3568,6 @@ def test_list_specs_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_specs_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_list_specs"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_list_specs"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.ListSpecsRequest.pb(
-            apihub_service.ListSpecsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = apihub_service.ListSpecsResponse.to_json(
-            apihub_service.ListSpecsResponse()
-        )
-
-        request = apihub_service.ListSpecsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = apihub_service.ListSpecsResponse()
-
-        client.list_specs(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_specs_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.ListSpecsRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_specs(request)
-
-
 def test_list_specs_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5976,173 +3688,6 @@ def test_list_specs_rest_pager(transport: str = "rest"):
         pages = list(client.list_specs(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.UpdateSpecRequest,
-        dict,
-    ],
-)
-def test_update_spec_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "spec": {
-            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
-        }
-    }
-    request_init["spec"] = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5",
-        "display_name": "display_name_value",
-        "spec_type": {
-            "enum_values": {
-                "values": [
-                    {
-                        "id": "id_value",
-                        "display_name": "display_name_value",
-                        "description": "description_value",
-                        "immutable": True,
-                    }
-                ]
-            },
-            "string_values": {"values": ["values_value1", "values_value2"]},
-            "json_values": {},
-            "attribute": "attribute_value",
-        },
-        "contents": {"contents": b"contents_blob", "mime_type": "mime_type_value"},
-        "details": {
-            "open_api_spec_details": {
-                "format_": 1,
-                "version": "version_value",
-                "owner": {"display_name": "display_name_value", "email": "email_value"},
-            },
-            "description": "description_value",
-        },
-        "source_uri": "source_uri_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "lint_response": {
-            "issues": [
-                {
-                    "code": "code_value",
-                    "path": ["path_value1", "path_value2"],
-                    "message": "message_value",
-                    "severity": 1,
-                    "range_": {"start": {"line": 424, "character": 941}, "end": {}},
-                }
-            ],
-            "summary": [{"severity": 1, "count": 553}],
-            "state": 1,
-            "source": "source_value",
-            "linter": 1,
-            "create_time": {},
-        },
-        "attributes": {},
-        "documentation": {"external_uri": "external_uri_value"},
-        "parsing_mode": 1,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = apihub_service.UpdateSpecRequest.meta.fields["spec"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["spec"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["spec"][field])):
-                    del request_init["spec"][field][i][subfield]
-            else:
-                del request_init["spec"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.Spec(
-            name="name_value",
-            display_name="display_name_value",
-            source_uri="source_uri_value",
-            parsing_mode=common_fields.Spec.ParsingMode.RELAXED,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.Spec.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_spec(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.Spec)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.source_uri == "source_uri_value"
-    assert response.parsing_mode == common_fields.Spec.ParsingMode.RELAXED
 
 
 def test_update_spec_rest_use_cached_wrapped_rpc():
@@ -6270,87 +3815,6 @@ def test_update_spec_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_spec_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_update_spec"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_update_spec"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.UpdateSpecRequest.pb(
-            apihub_service.UpdateSpecRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.Spec.to_json(common_fields.Spec())
-
-        request = apihub_service.UpdateSpecRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.Spec()
-
-        client.update_spec(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_spec_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.UpdateSpecRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "spec": {
-            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_spec(request)
-
-
 def test_update_spec_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6412,49 +3876,6 @@ def test_update_spec_rest_flattened_error(transport: str = "rest"):
             spec=common_fields.Spec(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_spec_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.DeleteSpecRequest,
-        dict,
-    ],
-)
-def test_delete_spec_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_spec(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_spec_rest_use_cached_wrapped_rpc():
@@ -6573,79 +3994,6 @@ def test_delete_spec_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_spec_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_delete_spec"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = apihub_service.DeleteSpecRequest.pb(
-            apihub_service.DeleteSpecRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = apihub_service.DeleteSpecRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_spec(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_spec_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.DeleteSpecRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_spec(request)
-
-
 def test_delete_spec_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6701,56 +4049,6 @@ def test_delete_spec_rest_flattened_error(transport: str = "rest"):
             apihub_service.DeleteSpecRequest(),
             name="name_value",
         )
-
-
-def test_delete_spec_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.GetApiOperationRequest,
-        dict,
-    ],
-)
-def test_get_api_operation_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/operations/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.ApiOperation(
-            name="name_value",
-            spec="spec_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.ApiOperation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_api_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.ApiOperation)
-    assert response.name == "name_value"
-    assert response.spec == "spec_value"
 
 
 def test_get_api_operation_rest_use_cached_wrapped_rpc():
@@ -6874,87 +4172,6 @@ def test_get_api_operation_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_api_operation_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_get_api_operation"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_get_api_operation"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.GetApiOperationRequest.pb(
-            apihub_service.GetApiOperationRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.ApiOperation.to_json(
-            common_fields.ApiOperation()
-        )
-
-        request = apihub_service.GetApiOperationRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.ApiOperation()
-
-        client.get_api_operation(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_api_operation_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.GetApiOperationRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/operations/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_api_operation(request)
-
-
 def test_get_api_operation_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7012,54 +4229,6 @@ def test_get_api_operation_rest_flattened_error(transport: str = "rest"):
             apihub_service.GetApiOperationRequest(),
             name="name_value",
         )
-
-
-def test_get_api_operation_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.ListApiOperationsRequest,
-        dict,
-    ],
-)
-def test_list_api_operations_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = apihub_service.ListApiOperationsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = apihub_service.ListApiOperationsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_api_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListApiOperationsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_api_operations_rest_use_cached_wrapped_rpc():
@@ -7202,87 +4371,6 @@ def test_list_api_operations_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_api_operations_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_list_api_operations"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_list_api_operations"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.ListApiOperationsRequest.pb(
-            apihub_service.ListApiOperationsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = apihub_service.ListApiOperationsResponse.to_json(
-            apihub_service.ListApiOperationsResponse()
-        )
-
-        request = apihub_service.ListApiOperationsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = apihub_service.ListApiOperationsResponse()
-
-        client.list_api_operations(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_api_operations_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.ListApiOperationsRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_api_operations(request)
-
-
 def test_list_api_operations_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7407,52 +4495,6 @@ def test_list_api_operations_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.GetDefinitionRequest,
-        dict,
-    ],
-)
-def test_get_definition_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/definitions/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.Definition(
-            name="name_value",
-            spec="spec_value",
-            type_=common_fields.Definition.Type.SCHEMA,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.Definition.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_definition(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.Definition)
-    assert response.name == "name_value"
-    assert response.spec == "spec_value"
-    assert response.type_ == common_fields.Definition.Type.SCHEMA
-
-
 def test_get_definition_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -7572,87 +4614,6 @@ def test_get_definition_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_definition_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_get_definition"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_get_definition"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.GetDefinitionRequest.pb(
-            apihub_service.GetDefinitionRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.Definition.to_json(
-            common_fields.Definition()
-        )
-
-        request = apihub_service.GetDefinitionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.Definition()
-
-        client.get_definition(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_definition_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.GetDefinitionRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/definitions/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_definition(request)
-
-
 def test_get_definition_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7710,158 +4671,6 @@ def test_get_definition_rest_flattened_error(transport: str = "rest"):
             apihub_service.GetDefinitionRequest(),
             name="name_value",
         )
-
-
-def test_get_definition_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.CreateDeploymentRequest,
-        dict,
-    ],
-)
-def test_create_deployment_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["deployment"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "documentation": {"external_uri": "external_uri_value"},
-        "deployment_type": {
-            "enum_values": {
-                "values": [
-                    {
-                        "id": "id_value",
-                        "display_name": "display_name_value",
-                        "description": "description_value",
-                        "immutable": True,
-                    }
-                ]
-            },
-            "string_values": {"values": ["values_value1", "values_value2"]},
-            "json_values": {},
-            "attribute": "attribute_value",
-        },
-        "resource_uri": "resource_uri_value",
-        "endpoints": ["endpoints_value1", "endpoints_value2"],
-        "api_versions": ["api_versions_value1", "api_versions_value2"],
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "slo": {},
-        "environment": {},
-        "attributes": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = apihub_service.CreateDeploymentRequest.meta.fields["deployment"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["deployment"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["deployment"][field])):
-                    del request_init["deployment"][field][i][subfield]
-            else:
-                del request_init["deployment"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.Deployment(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            resource_uri="resource_uri_value",
-            endpoints=["endpoints_value"],
-            api_versions=["api_versions_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.Deployment.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_deployment(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.Deployment)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.resource_uri == "resource_uri_value"
-    assert response.endpoints == ["endpoints_value"]
-    assert response.api_versions == ["api_versions_value"]
 
 
 def test_create_deployment_rest_use_cached_wrapped_rpc():
@@ -7996,85 +4805,6 @@ def test_create_deployment_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_deployment_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_create_deployment"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_create_deployment"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.CreateDeploymentRequest.pb(
-            apihub_service.CreateDeploymentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.Deployment.to_json(
-            common_fields.Deployment()
-        )
-
-        request = apihub_service.CreateDeploymentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.Deployment()
-
-        client.create_deployment(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_deployment_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.CreateDeploymentRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_deployment(request)
-
-
 def test_create_deployment_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8134,62 +4864,6 @@ def test_create_deployment_rest_flattened_error(transport: str = "rest"):
             deployment=common_fields.Deployment(name="name_value"),
             deployment_id="deployment_id_value",
         )
-
-
-def test_create_deployment_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.GetDeploymentRequest,
-        dict,
-    ],
-)
-def test_get_deployment_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.Deployment(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            resource_uri="resource_uri_value",
-            endpoints=["endpoints_value"],
-            api_versions=["api_versions_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.Deployment.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_deployment(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.Deployment)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.resource_uri == "resource_uri_value"
-    assert response.endpoints == ["endpoints_value"]
-    assert response.api_versions == ["api_versions_value"]
 
 
 def test_get_deployment_rest_use_cached_wrapped_rpc():
@@ -8311,85 +4985,6 @@ def test_get_deployment_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_deployment_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_get_deployment"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_get_deployment"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.GetDeploymentRequest.pb(
-            apihub_service.GetDeploymentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.Deployment.to_json(
-            common_fields.Deployment()
-        )
-
-        request = apihub_service.GetDeploymentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.Deployment()
-
-        client.get_deployment(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_deployment_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.GetDeploymentRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_deployment(request)
-
-
 def test_get_deployment_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8447,52 +5042,6 @@ def test_get_deployment_rest_flattened_error(transport: str = "rest"):
             apihub_service.GetDeploymentRequest(),
             name="name_value",
         )
-
-
-def test_get_deployment_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.ListDeploymentsRequest,
-        dict,
-    ],
-)
-def test_list_deployments_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = apihub_service.ListDeploymentsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = apihub_service.ListDeploymentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_deployments(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListDeploymentsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_deployments_rest_use_cached_wrapped_rpc():
@@ -8633,85 +5182,6 @@ def test_list_deployments_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_deployments_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_list_deployments"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_list_deployments"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.ListDeploymentsRequest.pb(
-            apihub_service.ListDeploymentsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = apihub_service.ListDeploymentsResponse.to_json(
-            apihub_service.ListDeploymentsResponse()
-        )
-
-        request = apihub_service.ListDeploymentsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = apihub_service.ListDeploymentsResponse()
-
-        client.list_deployments(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_deployments_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.ListDeploymentsRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_deployments(request)
-
-
 def test_list_deployments_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8830,154 +5300,6 @@ def test_list_deployments_rest_pager(transport: str = "rest"):
         pages = list(client.list_deployments(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.UpdateDeploymentRequest,
-        dict,
-    ],
-)
-def test_update_deployment_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "deployment": {"name": "projects/sample1/locations/sample2/deployments/sample3"}
-    }
-    request_init["deployment"] = {
-        "name": "projects/sample1/locations/sample2/deployments/sample3",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "documentation": {"external_uri": "external_uri_value"},
-        "deployment_type": {
-            "enum_values": {
-                "values": [
-                    {
-                        "id": "id_value",
-                        "display_name": "display_name_value",
-                        "description": "description_value",
-                        "immutable": True,
-                    }
-                ]
-            },
-            "string_values": {"values": ["values_value1", "values_value2"]},
-            "json_values": {},
-            "attribute": "attribute_value",
-        },
-        "resource_uri": "resource_uri_value",
-        "endpoints": ["endpoints_value1", "endpoints_value2"],
-        "api_versions": ["api_versions_value1", "api_versions_value2"],
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "slo": {},
-        "environment": {},
-        "attributes": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = apihub_service.UpdateDeploymentRequest.meta.fields["deployment"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["deployment"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["deployment"][field])):
-                    del request_init["deployment"][field][i][subfield]
-            else:
-                del request_init["deployment"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.Deployment(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            resource_uri="resource_uri_value",
-            endpoints=["endpoints_value"],
-            api_versions=["api_versions_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.Deployment.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_deployment(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.Deployment)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.resource_uri == "resource_uri_value"
-    assert response.endpoints == ["endpoints_value"]
-    assert response.api_versions == ["api_versions_value"]
 
 
 def test_update_deployment_rest_use_cached_wrapped_rpc():
@@ -9107,87 +5429,6 @@ def test_update_deployment_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_deployment_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_update_deployment"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_update_deployment"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.UpdateDeploymentRequest.pb(
-            apihub_service.UpdateDeploymentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.Deployment.to_json(
-            common_fields.Deployment()
-        )
-
-        request = apihub_service.UpdateDeploymentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.Deployment()
-
-        client.update_deployment(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_deployment_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.UpdateDeploymentRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "deployment": {"name": "projects/sample1/locations/sample2/deployments/sample3"}
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_deployment(request)
-
-
 def test_update_deployment_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9249,47 +5490,6 @@ def test_update_deployment_rest_flattened_error(transport: str = "rest"):
             deployment=common_fields.Deployment(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_deployment_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.DeleteDeploymentRequest,
-        dict,
-    ],
-)
-def test_delete_deployment_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_deployment(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_deployment_rest_use_cached_wrapped_rpc():
@@ -9410,77 +5610,6 @@ def test_delete_deployment_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_deployment_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_delete_deployment"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = apihub_service.DeleteDeploymentRequest.pb(
-            apihub_service.DeleteDeploymentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = apihub_service.DeleteDeploymentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_deployment(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_deployment_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.DeleteDeploymentRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_deployment(request)
-
-
 def test_delete_deployment_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9536,156 +5665,6 @@ def test_delete_deployment_rest_flattened_error(transport: str = "rest"):
             apihub_service.DeleteDeploymentRequest(),
             name="name_value",
         )
-
-
-def test_delete_deployment_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.CreateAttributeRequest,
-        dict,
-    ],
-)
-def test_create_attribute_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["attribute"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "definition_type": 1,
-        "scope": 1,
-        "data_type": 1,
-        "allowed_values": [
-            {
-                "id": "id_value",
-                "display_name": "display_name_value",
-                "description": "description_value",
-                "immutable": True,
-            }
-        ],
-        "cardinality": 1172,
-        "mandatory": True,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = apihub_service.CreateAttributeRequest.meta.fields["attribute"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["attribute"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["attribute"][field])):
-                    del request_init["attribute"][field][i][subfield]
-            else:
-                del request_init["attribute"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.Attribute(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            definition_type=common_fields.Attribute.DefinitionType.SYSTEM_DEFINED,
-            scope=common_fields.Attribute.Scope.API,
-            data_type=common_fields.Attribute.DataType.ENUM,
-            cardinality=1172,
-            mandatory=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.Attribute.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_attribute(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.Attribute)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert (
-        response.definition_type
-        == common_fields.Attribute.DefinitionType.SYSTEM_DEFINED
-    )
-    assert response.scope == common_fields.Attribute.Scope.API
-    assert response.data_type == common_fields.Attribute.DataType.ENUM
-    assert response.cardinality == 1172
-    assert response.mandatory is True
 
 
 def test_create_attribute_rest_use_cached_wrapped_rpc():
@@ -9820,85 +5799,6 @@ def test_create_attribute_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_attribute_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_create_attribute"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_create_attribute"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.CreateAttributeRequest.pb(
-            apihub_service.CreateAttributeRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.Attribute.to_json(
-            common_fields.Attribute()
-        )
-
-        request = apihub_service.CreateAttributeRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.Attribute()
-
-        client.create_attribute(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_attribute_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.CreateAttributeRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_attribute(request)
-
-
 def test_create_attribute_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9957,69 +5857,6 @@ def test_create_attribute_rest_flattened_error(transport: str = "rest"):
             attribute=common_fields.Attribute(name="name_value"),
             attribute_id="attribute_id_value",
         )
-
-
-def test_create_attribute_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.GetAttributeRequest,
-        dict,
-    ],
-)
-def test_get_attribute_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/attributes/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.Attribute(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            definition_type=common_fields.Attribute.DefinitionType.SYSTEM_DEFINED,
-            scope=common_fields.Attribute.Scope.API,
-            data_type=common_fields.Attribute.DataType.ENUM,
-            cardinality=1172,
-            mandatory=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.Attribute.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_attribute(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.Attribute)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert (
-        response.definition_type
-        == common_fields.Attribute.DefinitionType.SYSTEM_DEFINED
-    )
-    assert response.scope == common_fields.Attribute.Scope.API
-    assert response.data_type == common_fields.Attribute.DataType.ENUM
-    assert response.cardinality == 1172
-    assert response.mandatory is True
 
 
 def test_get_attribute_rest_use_cached_wrapped_rpc():
@@ -10141,85 +5978,6 @@ def test_get_attribute_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_attribute_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_get_attribute"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_get_attribute"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.GetAttributeRequest.pb(
-            apihub_service.GetAttributeRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.Attribute.to_json(
-            common_fields.Attribute()
-        )
-
-        request = apihub_service.GetAttributeRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.Attribute()
-
-        client.get_attribute(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_attribute_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.GetAttributeRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/attributes/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_attribute(request)
-
-
 def test_get_attribute_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10276,158 +6034,6 @@ def test_get_attribute_rest_flattened_error(transport: str = "rest"):
             apihub_service.GetAttributeRequest(),
             name="name_value",
         )
-
-
-def test_get_attribute_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.UpdateAttributeRequest,
-        dict,
-    ],
-)
-def test_update_attribute_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "attribute": {"name": "projects/sample1/locations/sample2/attributes/sample3"}
-    }
-    request_init["attribute"] = {
-        "name": "projects/sample1/locations/sample2/attributes/sample3",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "definition_type": 1,
-        "scope": 1,
-        "data_type": 1,
-        "allowed_values": [
-            {
-                "id": "id_value",
-                "display_name": "display_name_value",
-                "description": "description_value",
-                "immutable": True,
-            }
-        ],
-        "cardinality": 1172,
-        "mandatory": True,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = apihub_service.UpdateAttributeRequest.meta.fields["attribute"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["attribute"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["attribute"][field])):
-                    del request_init["attribute"][field][i][subfield]
-            else:
-                del request_init["attribute"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.Attribute(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            definition_type=common_fields.Attribute.DefinitionType.SYSTEM_DEFINED,
-            scope=common_fields.Attribute.Scope.API,
-            data_type=common_fields.Attribute.DataType.ENUM,
-            cardinality=1172,
-            mandatory=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.Attribute.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_attribute(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.Attribute)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert (
-        response.definition_type
-        == common_fields.Attribute.DefinitionType.SYSTEM_DEFINED
-    )
-    assert response.scope == common_fields.Attribute.Scope.API
-    assert response.data_type == common_fields.Attribute.DataType.ENUM
-    assert response.cardinality == 1172
-    assert response.mandatory is True
 
 
 def test_update_attribute_rest_use_cached_wrapped_rpc():
@@ -10557,87 +6163,6 @@ def test_update_attribute_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_attribute_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_update_attribute"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_update_attribute"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.UpdateAttributeRequest.pb(
-            apihub_service.UpdateAttributeRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.Attribute.to_json(
-            common_fields.Attribute()
-        )
-
-        request = apihub_service.UpdateAttributeRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.Attribute()
-
-        client.update_attribute(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_attribute_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.UpdateAttributeRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "attribute": {"name": "projects/sample1/locations/sample2/attributes/sample3"}
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_attribute(request)
-
-
 def test_update_attribute_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10699,47 +6224,6 @@ def test_update_attribute_rest_flattened_error(transport: str = "rest"):
             attribute=common_fields.Attribute(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_attribute_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.DeleteAttributeRequest,
-        dict,
-    ],
-)
-def test_delete_attribute_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/attributes/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_attribute(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_attribute_rest_use_cached_wrapped_rpc():
@@ -10860,77 +6344,6 @@ def test_delete_attribute_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_attribute_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_delete_attribute"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = apihub_service.DeleteAttributeRequest.pb(
-            apihub_service.DeleteAttributeRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = apihub_service.DeleteAttributeRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_attribute(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_attribute_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.DeleteAttributeRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/attributes/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_attribute(request)
-
-
 def test_delete_attribute_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10985,52 +6398,6 @@ def test_delete_attribute_rest_flattened_error(transport: str = "rest"):
             apihub_service.DeleteAttributeRequest(),
             name="name_value",
         )
-
-
-def test_delete_attribute_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.ListAttributesRequest,
-        dict,
-    ],
-)
-def test_list_attributes_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = apihub_service.ListAttributesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = apihub_service.ListAttributesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_attributes(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAttributesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_attributes_rest_use_cached_wrapped_rpc():
@@ -11169,85 +6536,6 @@ def test_list_attributes_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_attributes_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_list_attributes"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_list_attributes"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.ListAttributesRequest.pb(
-            apihub_service.ListAttributesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = apihub_service.ListAttributesResponse.to_json(
-            apihub_service.ListAttributesResponse()
-        )
-
-        request = apihub_service.ListAttributesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = apihub_service.ListAttributesResponse()
-
-        client.list_attributes(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_attributes_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.ListAttributesRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_attributes(request)
-
-
 def test_list_attributes_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11365,46 +6653,6 @@ def test_list_attributes_rest_pager(transport: str = "rest"):
         pages = list(client.list_attributes(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.SearchResourcesRequest,
-        dict,
-    ],
-)
-def test_search_resources_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"location": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = apihub_service.SearchResourcesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = apihub_service.SearchResourcesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.search_resources(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.SearchResourcesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_search_resources_rest_use_cached_wrapped_rpc():
@@ -11541,85 +6789,6 @@ def test_search_resources_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_search_resources_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_search_resources"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_search_resources"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.SearchResourcesRequest.pb(
-            apihub_service.SearchResourcesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = apihub_service.SearchResourcesResponse.to_json(
-            apihub_service.SearchResourcesResponse()
-        )
-
-        request = apihub_service.SearchResourcesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = apihub_service.SearchResourcesResponse()
-
-        client.search_resources(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_search_resources_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.SearchResourcesRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"location": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.search_resources(request)
-
-
 def test_search_resources_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11740,132 +6909,6 @@ def test_search_resources_rest_pager(transport: str = "rest"):
         pages = list(client.search_resources(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.CreateExternalApiRequest,
-        dict,
-    ],
-)
-def test_create_external_api_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["external_api"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "endpoints": ["endpoints_value1", "endpoints_value2"],
-        "paths": ["paths_value1", "paths_value2"],
-        "documentation": {"external_uri": "external_uri_value"},
-        "attributes": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = apihub_service.CreateExternalApiRequest.meta.fields["external_api"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["external_api"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["external_api"][field])):
-                    del request_init["external_api"][field][i][subfield]
-            else:
-                del request_init["external_api"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.ExternalApi(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            endpoints=["endpoints_value"],
-            paths=["paths_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.ExternalApi.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_external_api(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.ExternalApi)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.endpoints == ["endpoints_value"]
-    assert response.paths == ["paths_value"]
 
 
 def test_create_external_api_rest_use_cached_wrapped_rpc():
@@ -12002,85 +7045,6 @@ def test_create_external_api_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_external_api_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_create_external_api"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_create_external_api"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.CreateExternalApiRequest.pb(
-            apihub_service.CreateExternalApiRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.ExternalApi.to_json(
-            common_fields.ExternalApi()
-        )
-
-        request = apihub_service.CreateExternalApiRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.ExternalApi()
-
-        client.create_external_api(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_external_api_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.CreateExternalApiRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_external_api(request)
-
-
 def test_create_external_api_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12140,60 +7104,6 @@ def test_create_external_api_rest_flattened_error(transport: str = "rest"):
             external_api=common_fields.ExternalApi(name="name_value"),
             external_api_id="external_api_id_value",
         )
-
-
-def test_create_external_api_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.GetExternalApiRequest,
-        dict,
-    ],
-)
-def test_get_external_api_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/externalApis/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.ExternalApi(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            endpoints=["endpoints_value"],
-            paths=["paths_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.ExternalApi.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_external_api(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.ExternalApi)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.endpoints == ["endpoints_value"]
-    assert response.paths == ["paths_value"]
 
 
 def test_get_external_api_rest_use_cached_wrapped_rpc():
@@ -12317,85 +7227,6 @@ def test_get_external_api_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_external_api_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_get_external_api"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_get_external_api"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.GetExternalApiRequest.pb(
-            apihub_service.GetExternalApiRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.ExternalApi.to_json(
-            common_fields.ExternalApi()
-        )
-
-        request = apihub_service.GetExternalApiRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.ExternalApi()
-
-        client.get_external_api(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_external_api_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.GetExternalApiRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/externalApis/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_external_api(request)
-
-
 def test_get_external_api_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12453,142 +7284,6 @@ def test_get_external_api_rest_flattened_error(transport: str = "rest"):
             apihub_service.GetExternalApiRequest(),
             name="name_value",
         )
-
-
-def test_get_external_api_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.UpdateExternalApiRequest,
-        dict,
-    ],
-)
-def test_update_external_api_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "external_api": {
-            "name": "projects/sample1/locations/sample2/externalApis/sample3"
-        }
-    }
-    request_init["external_api"] = {
-        "name": "projects/sample1/locations/sample2/externalApis/sample3",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "endpoints": ["endpoints_value1", "endpoints_value2"],
-        "paths": ["paths_value1", "paths_value2"],
-        "documentation": {"external_uri": "external_uri_value"},
-        "attributes": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = apihub_service.UpdateExternalApiRequest.meta.fields["external_api"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["external_api"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["external_api"][field])):
-                    del request_init["external_api"][field][i][subfield]
-            else:
-                del request_init["external_api"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common_fields.ExternalApi(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            endpoints=["endpoints_value"],
-            paths=["paths_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common_fields.ExternalApi.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_external_api(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common_fields.ExternalApi)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.endpoints == ["endpoints_value"]
-    assert response.paths == ["paths_value"]
 
 
 def test_update_external_api_rest_use_cached_wrapped_rpc():
@@ -12720,89 +7415,6 @@ def test_update_external_api_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_external_api_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_update_external_api"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_update_external_api"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.UpdateExternalApiRequest.pb(
-            apihub_service.UpdateExternalApiRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common_fields.ExternalApi.to_json(
-            common_fields.ExternalApi()
-        )
-
-        request = apihub_service.UpdateExternalApiRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common_fields.ExternalApi()
-
-        client.update_external_api(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_external_api_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.UpdateExternalApiRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "external_api": {
-            "name": "projects/sample1/locations/sample2/externalApis/sample3"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_external_api(request)
-
-
 def test_update_external_api_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12864,47 +7476,6 @@ def test_update_external_api_rest_flattened_error(transport: str = "rest"):
             external_api=common_fields.ExternalApi(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_external_api_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.DeleteExternalApiRequest,
-        dict,
-    ],
-)
-def test_delete_external_api_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/externalApis/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_external_api(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_external_api_rest_use_cached_wrapped_rpc():
@@ -13027,77 +7598,6 @@ def test_delete_external_api_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_external_api_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_delete_external_api"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = apihub_service.DeleteExternalApiRequest.pb(
-            apihub_service.DeleteExternalApiRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = apihub_service.DeleteExternalApiRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_external_api(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_external_api_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.DeleteExternalApiRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/externalApis/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_external_api(request)
-
-
 def test_delete_external_api_rest_flattened():
     client = ApiHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13153,52 +7653,6 @@ def test_delete_external_api_rest_flattened_error(transport: str = "rest"):
             apihub_service.DeleteExternalApiRequest(),
             name="name_value",
         )
-
-
-def test_delete_external_api_rest_error():
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        apihub_service.ListExternalApisRequest,
-        dict,
-    ],
-)
-def test_list_external_apis_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = apihub_service.ListExternalApisResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = apihub_service.ListExternalApisResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_external_apis(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListExternalApisPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_external_apis_rest_use_cached_wrapped_rpc():
@@ -13337,85 +7791,6 @@ def test_list_external_apis_rest_unset_required_fields():
         )
         & set(("parent",))
     )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_external_apis_rest_interceptors(null_interceptor):
-    transport = transports.ApiHubRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
-    )
-    client = ApiHubClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ApiHubRestInterceptor, "post_list_external_apis"
-    ) as post, mock.patch.object(
-        transports.ApiHubRestInterceptor, "pre_list_external_apis"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = apihub_service.ListExternalApisRequest.pb(
-            apihub_service.ListExternalApisRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = apihub_service.ListExternalApisResponse.to_json(
-            apihub_service.ListExternalApisResponse()
-        )
-
-        request = apihub_service.ListExternalApisRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = apihub_service.ListExternalApisResponse()
-
-        client.list_external_apis(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_external_apis_rest_bad_request(
-    transport: str = "rest", request_type=apihub_service.ListExternalApisRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_external_apis(request)
 
 
 def test_list_external_apis_rest_flattened():
@@ -13613,17 +7988,6516 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_rest():
+    transport = ApiHubClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_create_api_rest_bad_request(request_type=apihub_service.CreateApiRequest):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_api(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "rest",
+        apihub_service.CreateApiRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = ApiHubClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_create_api_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["api"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "documentation": {"external_uri": "external_uri_value"},
+        "owner": {"display_name": "display_name_value", "email": "email_value"},
+        "versions": ["versions_value1", "versions_value2"],
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "target_user": {
+            "enum_values": {
+                "values": [
+                    {
+                        "id": "id_value",
+                        "display_name": "display_name_value",
+                        "description": "description_value",
+                        "immutable": True,
+                    }
+                ]
+            },
+            "string_values": {"values": ["values_value1", "values_value2"]},
+            "json_values": {},
+            "attribute": "attribute_value",
+        },
+        "team": {},
+        "business_unit": {},
+        "maturity_level": {},
+        "attributes": {},
+        "api_style": {},
+        "selected_version": "selected_version_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apihub_service.CreateApiRequest.meta.fields["api"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["api"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["api"][field])):
+                    del request_init["api"][field][i][subfield]
+            else:
+                del request_init["api"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.Api(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            versions=["versions_value"],
+            selected_version="selected_version_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.Api.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_api(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.Api)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.versions == ["versions_value"]
+    assert response.selected_version == "selected_version_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_api_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_create_api"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_create_api"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.CreateApiRequest.pb(
+            apihub_service.CreateApiRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.Api.to_json(common_fields.Api())
+        req.return_value.content = return_value
+
+        request = apihub_service.CreateApiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.Api()
+
+        client.create_api(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_api_rest_bad_request(request_type=apihub_service.GetApiRequest):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_api(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.GetApiRequest,
+        dict,
+    ],
+)
+def test_get_api_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.Api(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            versions=["versions_value"],
+            selected_version="selected_version_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.Api.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_api(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.Api)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.versions == ["versions_value"]
+    assert response.selected_version == "selected_version_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_api_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_get_api"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_get_api"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.GetApiRequest.pb(apihub_service.GetApiRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.Api.to_json(common_fields.Api())
+        req.return_value.content = return_value
+
+        request = apihub_service.GetApiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.Api()
+
+        client.get_api(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_apis_rest_bad_request(request_type=apihub_service.ListApisRequest):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_apis(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.ListApisRequest,
+        dict,
+    ],
+)
+def test_list_apis_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = apihub_service.ListApisResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = apihub_service.ListApisResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_apis(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListApisPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_apis_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_list_apis"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_list_apis"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.ListApisRequest.pb(apihub_service.ListApisRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = apihub_service.ListApisResponse.to_json(
+            apihub_service.ListApisResponse()
+        )
+        req.return_value.content = return_value
+
+        request = apihub_service.ListApisRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = apihub_service.ListApisResponse()
+
+        client.list_apis(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_api_rest_bad_request(request_type=apihub_service.UpdateApiRequest):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"api": {"name": "projects/sample1/locations/sample2/apis/sample3"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_api(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.UpdateApiRequest,
+        dict,
+    ],
+)
+def test_update_api_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"api": {"name": "projects/sample1/locations/sample2/apis/sample3"}}
+    request_init["api"] = {
+        "name": "projects/sample1/locations/sample2/apis/sample3",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "documentation": {"external_uri": "external_uri_value"},
+        "owner": {"display_name": "display_name_value", "email": "email_value"},
+        "versions": ["versions_value1", "versions_value2"],
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "target_user": {
+            "enum_values": {
+                "values": [
+                    {
+                        "id": "id_value",
+                        "display_name": "display_name_value",
+                        "description": "description_value",
+                        "immutable": True,
+                    }
+                ]
+            },
+            "string_values": {"values": ["values_value1", "values_value2"]},
+            "json_values": {},
+            "attribute": "attribute_value",
+        },
+        "team": {},
+        "business_unit": {},
+        "maturity_level": {},
+        "attributes": {},
+        "api_style": {},
+        "selected_version": "selected_version_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apihub_service.UpdateApiRequest.meta.fields["api"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["api"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["api"][field])):
+                    del request_init["api"][field][i][subfield]
+            else:
+                del request_init["api"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.Api(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            versions=["versions_value"],
+            selected_version="selected_version_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.Api.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_api(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.Api)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.versions == ["versions_value"]
+    assert response.selected_version == "selected_version_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_api_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_update_api"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_update_api"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.UpdateApiRequest.pb(
+            apihub_service.UpdateApiRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.Api.to_json(common_fields.Api())
+        req.return_value.content = return_value
+
+        request = apihub_service.UpdateApiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.Api()
+
+        client.update_api(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_api_rest_bad_request(request_type=apihub_service.DeleteApiRequest):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_api(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.DeleteApiRequest,
+        dict,
+    ],
+)
+def test_delete_api_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_api(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_api_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_delete_api"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = apihub_service.DeleteApiRequest.pb(
+            apihub_service.DeleteApiRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = apihub_service.DeleteApiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_api(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_create_version_rest_bad_request(
+    request_type=apihub_service.CreateVersionRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_version(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.CreateVersionRequest,
+        dict,
+    ],
+)
+def test_create_version_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+    request_init["version"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "documentation": {"external_uri": "external_uri_value"},
+        "specs": ["specs_value1", "specs_value2"],
+        "api_operations": ["api_operations_value1", "api_operations_value2"],
+        "definitions": ["definitions_value1", "definitions_value2"],
+        "deployments": ["deployments_value1", "deployments_value2"],
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "lifecycle": {
+            "enum_values": {
+                "values": [
+                    {
+                        "id": "id_value",
+                        "display_name": "display_name_value",
+                        "description": "description_value",
+                        "immutable": True,
+                    }
+                ]
+            },
+            "string_values": {"values": ["values_value1", "values_value2"]},
+            "json_values": {},
+            "attribute": "attribute_value",
+        },
+        "compliance": {},
+        "accreditation": {},
+        "attributes": {},
+        "selected_deployment": "selected_deployment_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apihub_service.CreateVersionRequest.meta.fields["version"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["version"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["version"][field])):
+                    del request_init["version"][field][i][subfield]
+            else:
+                del request_init["version"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.Version(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            specs=["specs_value"],
+            api_operations=["api_operations_value"],
+            definitions=["definitions_value"],
+            deployments=["deployments_value"],
+            selected_deployment="selected_deployment_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.Version.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.Version)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.specs == ["specs_value"]
+    assert response.api_operations == ["api_operations_value"]
+    assert response.definitions == ["definitions_value"]
+    assert response.deployments == ["deployments_value"]
+    assert response.selected_deployment == "selected_deployment_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_version_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_create_version"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_create_version"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.CreateVersionRequest.pb(
+            apihub_service.CreateVersionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.Version.to_json(common_fields.Version())
+        req.return_value.content = return_value
+
+        request = apihub_service.CreateVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.Version()
+
+        client.create_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_version_rest_bad_request(request_type=apihub_service.GetVersionRequest):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_version(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.GetVersionRequest,
+        dict,
+    ],
+)
+def test_get_version_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.Version(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            specs=["specs_value"],
+            api_operations=["api_operations_value"],
+            definitions=["definitions_value"],
+            deployments=["deployments_value"],
+            selected_deployment="selected_deployment_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.Version.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.Version)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.specs == ["specs_value"]
+    assert response.api_operations == ["api_operations_value"]
+    assert response.definitions == ["definitions_value"]
+    assert response.deployments == ["deployments_value"]
+    assert response.selected_deployment == "selected_deployment_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_version_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_get_version"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_get_version"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.GetVersionRequest.pb(
+            apihub_service.GetVersionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.Version.to_json(common_fields.Version())
+        req.return_value.content = return_value
+
+        request = apihub_service.GetVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.Version()
+
+        client.get_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_versions_rest_bad_request(
+    request_type=apihub_service.ListVersionsRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_versions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.ListVersionsRequest,
+        dict,
+    ],
+)
+def test_list_versions_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/apis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = apihub_service.ListVersionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = apihub_service.ListVersionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_versions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListVersionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_versions_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_list_versions"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_list_versions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.ListVersionsRequest.pb(
+            apihub_service.ListVersionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = apihub_service.ListVersionsResponse.to_json(
+            apihub_service.ListVersionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = apihub_service.ListVersionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = apihub_service.ListVersionsResponse()
+
+        client.list_versions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_version_rest_bad_request(
+    request_type=apihub_service.UpdateVersionRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "version": {
+            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_version(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.UpdateVersionRequest,
+        dict,
+    ],
+)
+def test_update_version_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "version": {
+            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+        }
+    }
+    request_init["version"] = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "documentation": {"external_uri": "external_uri_value"},
+        "specs": ["specs_value1", "specs_value2"],
+        "api_operations": ["api_operations_value1", "api_operations_value2"],
+        "definitions": ["definitions_value1", "definitions_value2"],
+        "deployments": ["deployments_value1", "deployments_value2"],
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "lifecycle": {
+            "enum_values": {
+                "values": [
+                    {
+                        "id": "id_value",
+                        "display_name": "display_name_value",
+                        "description": "description_value",
+                        "immutable": True,
+                    }
+                ]
+            },
+            "string_values": {"values": ["values_value1", "values_value2"]},
+            "json_values": {},
+            "attribute": "attribute_value",
+        },
+        "compliance": {},
+        "accreditation": {},
+        "attributes": {},
+        "selected_deployment": "selected_deployment_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apihub_service.UpdateVersionRequest.meta.fields["version"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["version"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["version"][field])):
+                    del request_init["version"][field][i][subfield]
+            else:
+                del request_init["version"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.Version(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            specs=["specs_value"],
+            api_operations=["api_operations_value"],
+            definitions=["definitions_value"],
+            deployments=["deployments_value"],
+            selected_deployment="selected_deployment_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.Version.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.Version)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.specs == ["specs_value"]
+    assert response.api_operations == ["api_operations_value"]
+    assert response.definitions == ["definitions_value"]
+    assert response.deployments == ["deployments_value"]
+    assert response.selected_deployment == "selected_deployment_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_version_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_update_version"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_update_version"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.UpdateVersionRequest.pb(
+            apihub_service.UpdateVersionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.Version.to_json(common_fields.Version())
+        req.return_value.content = return_value
+
+        request = apihub_service.UpdateVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.Version()
+
+        client.update_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_version_rest_bad_request(
+    request_type=apihub_service.DeleteVersionRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_version(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.DeleteVersionRequest,
+        dict,
+    ],
+)
+def test_delete_version_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_version_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_delete_version"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = apihub_service.DeleteVersionRequest.pb(
+            apihub_service.DeleteVersionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = apihub_service.DeleteVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_create_spec_rest_bad_request(request_type=apihub_service.CreateSpecRequest):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_spec(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.CreateSpecRequest,
+        dict,
+    ],
+)
+def test_create_spec_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request_init["spec"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "spec_type": {
+            "enum_values": {
+                "values": [
+                    {
+                        "id": "id_value",
+                        "display_name": "display_name_value",
+                        "description": "description_value",
+                        "immutable": True,
+                    }
+                ]
+            },
+            "string_values": {"values": ["values_value1", "values_value2"]},
+            "json_values": {},
+            "attribute": "attribute_value",
+        },
+        "contents": {"contents": b"contents_blob", "mime_type": "mime_type_value"},
+        "details": {
+            "open_api_spec_details": {
+                "format_": 1,
+                "version": "version_value",
+                "owner": {"display_name": "display_name_value", "email": "email_value"},
+            },
+            "description": "description_value",
+        },
+        "source_uri": "source_uri_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "lint_response": {
+            "issues": [
+                {
+                    "code": "code_value",
+                    "path": ["path_value1", "path_value2"],
+                    "message": "message_value",
+                    "severity": 1,
+                    "range_": {"start": {"line": 424, "character": 941}, "end": {}},
+                }
+            ],
+            "summary": [{"severity": 1, "count": 553}],
+            "state": 1,
+            "source": "source_value",
+            "linter": 1,
+            "create_time": {},
+        },
+        "attributes": {},
+        "documentation": {"external_uri": "external_uri_value"},
+        "parsing_mode": 1,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apihub_service.CreateSpecRequest.meta.fields["spec"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["spec"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["spec"][field])):
+                    del request_init["spec"][field][i][subfield]
+            else:
+                del request_init["spec"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.Spec(
+            name="name_value",
+            display_name="display_name_value",
+            source_uri="source_uri_value",
+            parsing_mode=common_fields.Spec.ParsingMode.RELAXED,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.Spec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_spec(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.Spec)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.source_uri == "source_uri_value"
+    assert response.parsing_mode == common_fields.Spec.ParsingMode.RELAXED
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_spec_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_create_spec"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_create_spec"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.CreateSpecRequest.pb(
+            apihub_service.CreateSpecRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.Spec.to_json(common_fields.Spec())
+        req.return_value.content = return_value
+
+        request = apihub_service.CreateSpecRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.Spec()
+
+        client.create_spec(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_spec_rest_bad_request(request_type=apihub_service.GetSpecRequest):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_spec(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.GetSpecRequest,
+        dict,
+    ],
+)
+def test_get_spec_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.Spec(
+            name="name_value",
+            display_name="display_name_value",
+            source_uri="source_uri_value",
+            parsing_mode=common_fields.Spec.ParsingMode.RELAXED,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.Spec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_spec(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.Spec)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.source_uri == "source_uri_value"
+    assert response.parsing_mode == common_fields.Spec.ParsingMode.RELAXED
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_spec_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_get_spec"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_get_spec"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.GetSpecRequest.pb(apihub_service.GetSpecRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.Spec.to_json(common_fields.Spec())
+        req.return_value.content = return_value
+
+        request = apihub_service.GetSpecRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.Spec()
+
+        client.get_spec(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_spec_contents_rest_bad_request(
+    request_type=apihub_service.GetSpecContentsRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_spec_contents(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.GetSpecContentsRequest,
+        dict,
+    ],
+)
+def test_get_spec_contents_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.SpecContents(
+            contents=b"contents_blob",
+            mime_type="mime_type_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.SpecContents.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_spec_contents(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.SpecContents)
+    assert response.contents == b"contents_blob"
+    assert response.mime_type == "mime_type_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_spec_contents_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_get_spec_contents"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_get_spec_contents"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.GetSpecContentsRequest.pb(
+            apihub_service.GetSpecContentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.SpecContents.to_json(common_fields.SpecContents())
+        req.return_value.content = return_value
+
+        request = apihub_service.GetSpecContentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.SpecContents()
+
+        client.get_spec_contents(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_specs_rest_bad_request(request_type=apihub_service.ListSpecsRequest):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_specs(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.ListSpecsRequest,
+        dict,
+    ],
+)
+def test_list_specs_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = apihub_service.ListSpecsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = apihub_service.ListSpecsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_specs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSpecsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_specs_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_list_specs"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_list_specs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.ListSpecsRequest.pb(
+            apihub_service.ListSpecsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = apihub_service.ListSpecsResponse.to_json(
+            apihub_service.ListSpecsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = apihub_service.ListSpecsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = apihub_service.ListSpecsResponse()
+
+        client.list_specs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_spec_rest_bad_request(request_type=apihub_service.UpdateSpecRequest):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "spec": {
+            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_spec(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.UpdateSpecRequest,
+        dict,
+    ],
+)
+def test_update_spec_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "spec": {
+            "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+        }
+    }
+    request_init["spec"] = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5",
+        "display_name": "display_name_value",
+        "spec_type": {
+            "enum_values": {
+                "values": [
+                    {
+                        "id": "id_value",
+                        "display_name": "display_name_value",
+                        "description": "description_value",
+                        "immutable": True,
+                    }
+                ]
+            },
+            "string_values": {"values": ["values_value1", "values_value2"]},
+            "json_values": {},
+            "attribute": "attribute_value",
+        },
+        "contents": {"contents": b"contents_blob", "mime_type": "mime_type_value"},
+        "details": {
+            "open_api_spec_details": {
+                "format_": 1,
+                "version": "version_value",
+                "owner": {"display_name": "display_name_value", "email": "email_value"},
+            },
+            "description": "description_value",
+        },
+        "source_uri": "source_uri_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "lint_response": {
+            "issues": [
+                {
+                    "code": "code_value",
+                    "path": ["path_value1", "path_value2"],
+                    "message": "message_value",
+                    "severity": 1,
+                    "range_": {"start": {"line": 424, "character": 941}, "end": {}},
+                }
+            ],
+            "summary": [{"severity": 1, "count": 553}],
+            "state": 1,
+            "source": "source_value",
+            "linter": 1,
+            "create_time": {},
+        },
+        "attributes": {},
+        "documentation": {"external_uri": "external_uri_value"},
+        "parsing_mode": 1,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apihub_service.UpdateSpecRequest.meta.fields["spec"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["spec"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["spec"][field])):
+                    del request_init["spec"][field][i][subfield]
+            else:
+                del request_init["spec"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.Spec(
+            name="name_value",
+            display_name="display_name_value",
+            source_uri="source_uri_value",
+            parsing_mode=common_fields.Spec.ParsingMode.RELAXED,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.Spec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_spec(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.Spec)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.source_uri == "source_uri_value"
+    assert response.parsing_mode == common_fields.Spec.ParsingMode.RELAXED
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_spec_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_update_spec"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_update_spec"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.UpdateSpecRequest.pb(
+            apihub_service.UpdateSpecRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.Spec.to_json(common_fields.Spec())
+        req.return_value.content = return_value
+
+        request = apihub_service.UpdateSpecRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.Spec()
+
+        client.update_spec(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_spec_rest_bad_request(request_type=apihub_service.DeleteSpecRequest):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_spec(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.DeleteSpecRequest,
+        dict,
+    ],
+)
+def test_delete_spec_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/specs/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_spec(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_spec_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_delete_spec"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = apihub_service.DeleteSpecRequest.pb(
+            apihub_service.DeleteSpecRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = apihub_service.DeleteSpecRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_spec(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_get_api_operation_rest_bad_request(
+    request_type=apihub_service.GetApiOperationRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/operations/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_api_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.GetApiOperationRequest,
+        dict,
+    ],
+)
+def test_get_api_operation_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/operations/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.ApiOperation(
+            name="name_value",
+            spec="spec_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.ApiOperation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_api_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.ApiOperation)
+    assert response.name == "name_value"
+    assert response.spec == "spec_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_api_operation_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_get_api_operation"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_get_api_operation"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.GetApiOperationRequest.pb(
+            apihub_service.GetApiOperationRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.ApiOperation.to_json(common_fields.ApiOperation())
+        req.return_value.content = return_value
+
+        request = apihub_service.GetApiOperationRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.ApiOperation()
+
+        client.get_api_operation(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_api_operations_rest_bad_request(
+    request_type=apihub_service.ListApiOperationsRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_api_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.ListApiOperationsRequest,
+        dict,
+    ],
+)
+def test_list_api_operations_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/apis/sample3/versions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = apihub_service.ListApiOperationsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = apihub_service.ListApiOperationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_api_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListApiOperationsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_api_operations_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_list_api_operations"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_list_api_operations"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.ListApiOperationsRequest.pb(
+            apihub_service.ListApiOperationsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = apihub_service.ListApiOperationsResponse.to_json(
+            apihub_service.ListApiOperationsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = apihub_service.ListApiOperationsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = apihub_service.ListApiOperationsResponse()
+
+        client.list_api_operations(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_definition_rest_bad_request(
+    request_type=apihub_service.GetDefinitionRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/definitions/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_definition(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.GetDefinitionRequest,
+        dict,
+    ],
+)
+def test_get_definition_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/apis/sample3/versions/sample4/definitions/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.Definition(
+            name="name_value",
+            spec="spec_value",
+            type_=common_fields.Definition.Type.SCHEMA,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.Definition.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_definition(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.Definition)
+    assert response.name == "name_value"
+    assert response.spec == "spec_value"
+    assert response.type_ == common_fields.Definition.Type.SCHEMA
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_definition_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_get_definition"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_get_definition"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.GetDefinitionRequest.pb(
+            apihub_service.GetDefinitionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.Definition.to_json(common_fields.Definition())
+        req.return_value.content = return_value
+
+        request = apihub_service.GetDefinitionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.Definition()
+
+        client.get_definition(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_deployment_rest_bad_request(
+    request_type=apihub_service.CreateDeploymentRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_deployment(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.CreateDeploymentRequest,
+        dict,
+    ],
+)
+def test_create_deployment_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["deployment"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "documentation": {"external_uri": "external_uri_value"},
+        "deployment_type": {
+            "enum_values": {
+                "values": [
+                    {
+                        "id": "id_value",
+                        "display_name": "display_name_value",
+                        "description": "description_value",
+                        "immutable": True,
+                    }
+                ]
+            },
+            "string_values": {"values": ["values_value1", "values_value2"]},
+            "json_values": {},
+            "attribute": "attribute_value",
+        },
+        "resource_uri": "resource_uri_value",
+        "endpoints": ["endpoints_value1", "endpoints_value2"],
+        "api_versions": ["api_versions_value1", "api_versions_value2"],
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "slo": {},
+        "environment": {},
+        "attributes": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apihub_service.CreateDeploymentRequest.meta.fields["deployment"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["deployment"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["deployment"][field])):
+                    del request_init["deployment"][field][i][subfield]
+            else:
+                del request_init["deployment"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.Deployment(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            resource_uri="resource_uri_value",
+            endpoints=["endpoints_value"],
+            api_versions=["api_versions_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.Deployment)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.resource_uri == "resource_uri_value"
+    assert response.endpoints == ["endpoints_value"]
+    assert response.api_versions == ["api_versions_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_deployment_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_create_deployment"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_create_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.CreateDeploymentRequest.pb(
+            apihub_service.CreateDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.Deployment.to_json(common_fields.Deployment())
+        req.return_value.content = return_value
+
+        request = apihub_service.CreateDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.Deployment()
+
+        client.create_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_deployment_rest_bad_request(
+    request_type=apihub_service.GetDeploymentRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_deployment(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.GetDeploymentRequest,
+        dict,
+    ],
+)
+def test_get_deployment_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.Deployment(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            resource_uri="resource_uri_value",
+            endpoints=["endpoints_value"],
+            api_versions=["api_versions_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.Deployment)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.resource_uri == "resource_uri_value"
+    assert response.endpoints == ["endpoints_value"]
+    assert response.api_versions == ["api_versions_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_deployment_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_get_deployment"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_get_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.GetDeploymentRequest.pb(
+            apihub_service.GetDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.Deployment.to_json(common_fields.Deployment())
+        req.return_value.content = return_value
+
+        request = apihub_service.GetDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.Deployment()
+
+        client.get_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_deployments_rest_bad_request(
+    request_type=apihub_service.ListDeploymentsRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_deployments(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.ListDeploymentsRequest,
+        dict,
+    ],
+)
+def test_list_deployments_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = apihub_service.ListDeploymentsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = apihub_service.ListDeploymentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_deployments(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDeploymentsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_deployments_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_list_deployments"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_list_deployments"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.ListDeploymentsRequest.pb(
+            apihub_service.ListDeploymentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = apihub_service.ListDeploymentsResponse.to_json(
+            apihub_service.ListDeploymentsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = apihub_service.ListDeploymentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = apihub_service.ListDeploymentsResponse()
+
+        client.list_deployments(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_deployment_rest_bad_request(
+    request_type=apihub_service.UpdateDeploymentRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "deployment": {"name": "projects/sample1/locations/sample2/deployments/sample3"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_deployment(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.UpdateDeploymentRequest,
+        dict,
+    ],
+)
+def test_update_deployment_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "deployment": {"name": "projects/sample1/locations/sample2/deployments/sample3"}
+    }
+    request_init["deployment"] = {
+        "name": "projects/sample1/locations/sample2/deployments/sample3",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "documentation": {"external_uri": "external_uri_value"},
+        "deployment_type": {
+            "enum_values": {
+                "values": [
+                    {
+                        "id": "id_value",
+                        "display_name": "display_name_value",
+                        "description": "description_value",
+                        "immutable": True,
+                    }
+                ]
+            },
+            "string_values": {"values": ["values_value1", "values_value2"]},
+            "json_values": {},
+            "attribute": "attribute_value",
+        },
+        "resource_uri": "resource_uri_value",
+        "endpoints": ["endpoints_value1", "endpoints_value2"],
+        "api_versions": ["api_versions_value1", "api_versions_value2"],
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "slo": {},
+        "environment": {},
+        "attributes": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apihub_service.UpdateDeploymentRequest.meta.fields["deployment"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["deployment"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["deployment"][field])):
+                    del request_init["deployment"][field][i][subfield]
+            else:
+                del request_init["deployment"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.Deployment(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            resource_uri="resource_uri_value",
+            endpoints=["endpoints_value"],
+            api_versions=["api_versions_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.Deployment)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.resource_uri == "resource_uri_value"
+    assert response.endpoints == ["endpoints_value"]
+    assert response.api_versions == ["api_versions_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_deployment_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_update_deployment"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_update_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.UpdateDeploymentRequest.pb(
+            apihub_service.UpdateDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.Deployment.to_json(common_fields.Deployment())
+        req.return_value.content = return_value
+
+        request = apihub_service.UpdateDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.Deployment()
+
+        client.update_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_deployment_rest_bad_request(
+    request_type=apihub_service.DeleteDeploymentRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_deployment(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.DeleteDeploymentRequest,
+        dict,
+    ],
+)
+def test_delete_deployment_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_deployment_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_delete_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = apihub_service.DeleteDeploymentRequest.pb(
+            apihub_service.DeleteDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = apihub_service.DeleteDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_create_attribute_rest_bad_request(
+    request_type=apihub_service.CreateAttributeRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_attribute(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.CreateAttributeRequest,
+        dict,
+    ],
+)
+def test_create_attribute_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["attribute"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "definition_type": 1,
+        "scope": 1,
+        "data_type": 1,
+        "allowed_values": [
+            {
+                "id": "id_value",
+                "display_name": "display_name_value",
+                "description": "description_value",
+                "immutable": True,
+            }
+        ],
+        "cardinality": 1172,
+        "mandatory": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apihub_service.CreateAttributeRequest.meta.fields["attribute"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["attribute"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["attribute"][field])):
+                    del request_init["attribute"][field][i][subfield]
+            else:
+                del request_init["attribute"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.Attribute(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            definition_type=common_fields.Attribute.DefinitionType.SYSTEM_DEFINED,
+            scope=common_fields.Attribute.Scope.API,
+            data_type=common_fields.Attribute.DataType.ENUM,
+            cardinality=1172,
+            mandatory=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.Attribute.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_attribute(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.Attribute)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert (
+        response.definition_type
+        == common_fields.Attribute.DefinitionType.SYSTEM_DEFINED
+    )
+    assert response.scope == common_fields.Attribute.Scope.API
+    assert response.data_type == common_fields.Attribute.DataType.ENUM
+    assert response.cardinality == 1172
+    assert response.mandatory is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_attribute_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_create_attribute"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_create_attribute"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.CreateAttributeRequest.pb(
+            apihub_service.CreateAttributeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.Attribute.to_json(common_fields.Attribute())
+        req.return_value.content = return_value
+
+        request = apihub_service.CreateAttributeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.Attribute()
+
+        client.create_attribute(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_attribute_rest_bad_request(
+    request_type=apihub_service.GetAttributeRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/attributes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_attribute(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.GetAttributeRequest,
+        dict,
+    ],
+)
+def test_get_attribute_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/attributes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.Attribute(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            definition_type=common_fields.Attribute.DefinitionType.SYSTEM_DEFINED,
+            scope=common_fields.Attribute.Scope.API,
+            data_type=common_fields.Attribute.DataType.ENUM,
+            cardinality=1172,
+            mandatory=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.Attribute.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_attribute(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.Attribute)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert (
+        response.definition_type
+        == common_fields.Attribute.DefinitionType.SYSTEM_DEFINED
+    )
+    assert response.scope == common_fields.Attribute.Scope.API
+    assert response.data_type == common_fields.Attribute.DataType.ENUM
+    assert response.cardinality == 1172
+    assert response.mandatory is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_attribute_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_get_attribute"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_get_attribute"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.GetAttributeRequest.pb(
+            apihub_service.GetAttributeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.Attribute.to_json(common_fields.Attribute())
+        req.return_value.content = return_value
+
+        request = apihub_service.GetAttributeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.Attribute()
+
+        client.get_attribute(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_attribute_rest_bad_request(
+    request_type=apihub_service.UpdateAttributeRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "attribute": {"name": "projects/sample1/locations/sample2/attributes/sample3"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_attribute(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.UpdateAttributeRequest,
+        dict,
+    ],
+)
+def test_update_attribute_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "attribute": {"name": "projects/sample1/locations/sample2/attributes/sample3"}
+    }
+    request_init["attribute"] = {
+        "name": "projects/sample1/locations/sample2/attributes/sample3",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "definition_type": 1,
+        "scope": 1,
+        "data_type": 1,
+        "allowed_values": [
+            {
+                "id": "id_value",
+                "display_name": "display_name_value",
+                "description": "description_value",
+                "immutable": True,
+            }
+        ],
+        "cardinality": 1172,
+        "mandatory": True,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apihub_service.UpdateAttributeRequest.meta.fields["attribute"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["attribute"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["attribute"][field])):
+                    del request_init["attribute"][field][i][subfield]
+            else:
+                del request_init["attribute"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.Attribute(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            definition_type=common_fields.Attribute.DefinitionType.SYSTEM_DEFINED,
+            scope=common_fields.Attribute.Scope.API,
+            data_type=common_fields.Attribute.DataType.ENUM,
+            cardinality=1172,
+            mandatory=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.Attribute.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_attribute(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.Attribute)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert (
+        response.definition_type
+        == common_fields.Attribute.DefinitionType.SYSTEM_DEFINED
+    )
+    assert response.scope == common_fields.Attribute.Scope.API
+    assert response.data_type == common_fields.Attribute.DataType.ENUM
+    assert response.cardinality == 1172
+    assert response.mandatory is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_attribute_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_update_attribute"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_update_attribute"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.UpdateAttributeRequest.pb(
+            apihub_service.UpdateAttributeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.Attribute.to_json(common_fields.Attribute())
+        req.return_value.content = return_value
+
+        request = apihub_service.UpdateAttributeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.Attribute()
+
+        client.update_attribute(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_attribute_rest_bad_request(
+    request_type=apihub_service.DeleteAttributeRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/attributes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_attribute(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.DeleteAttributeRequest,
+        dict,
+    ],
+)
+def test_delete_attribute_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/attributes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_attribute(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_attribute_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_delete_attribute"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = apihub_service.DeleteAttributeRequest.pb(
+            apihub_service.DeleteAttributeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = apihub_service.DeleteAttributeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_attribute(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_list_attributes_rest_bad_request(
+    request_type=apihub_service.ListAttributesRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_attributes(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.ListAttributesRequest,
+        dict,
+    ],
+)
+def test_list_attributes_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = apihub_service.ListAttributesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = apihub_service.ListAttributesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_attributes(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAttributesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_attributes_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_list_attributes"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_list_attributes"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.ListAttributesRequest.pb(
+            apihub_service.ListAttributesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = apihub_service.ListAttributesResponse.to_json(
+            apihub_service.ListAttributesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = apihub_service.ListAttributesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = apihub_service.ListAttributesResponse()
+
+        client.list_attributes(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_search_resources_rest_bad_request(
+    request_type=apihub_service.SearchResourcesRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"location": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.search_resources(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.SearchResourcesRequest,
+        dict,
+    ],
+)
+def test_search_resources_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"location": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = apihub_service.SearchResourcesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = apihub_service.SearchResourcesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.search_resources(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.SearchResourcesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_resources_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_search_resources"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_search_resources"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.SearchResourcesRequest.pb(
+            apihub_service.SearchResourcesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = apihub_service.SearchResourcesResponse.to_json(
+            apihub_service.SearchResourcesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = apihub_service.SearchResourcesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = apihub_service.SearchResourcesResponse()
+
+        client.search_resources(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_external_api_rest_bad_request(
+    request_type=apihub_service.CreateExternalApiRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_external_api(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.CreateExternalApiRequest,
+        dict,
+    ],
+)
+def test_create_external_api_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["external_api"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "endpoints": ["endpoints_value1", "endpoints_value2"],
+        "paths": ["paths_value1", "paths_value2"],
+        "documentation": {"external_uri": "external_uri_value"},
+        "attributes": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apihub_service.CreateExternalApiRequest.meta.fields["external_api"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["external_api"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["external_api"][field])):
+                    del request_init["external_api"][field][i][subfield]
+            else:
+                del request_init["external_api"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.ExternalApi(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            endpoints=["endpoints_value"],
+            paths=["paths_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.ExternalApi.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_external_api(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.ExternalApi)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.endpoints == ["endpoints_value"]
+    assert response.paths == ["paths_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_external_api_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_create_external_api"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_create_external_api"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.CreateExternalApiRequest.pb(
+            apihub_service.CreateExternalApiRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.ExternalApi.to_json(common_fields.ExternalApi())
+        req.return_value.content = return_value
+
+        request = apihub_service.CreateExternalApiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.ExternalApi()
+
+        client.create_external_api(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_external_api_rest_bad_request(
+    request_type=apihub_service.GetExternalApiRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/externalApis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_external_api(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.GetExternalApiRequest,
+        dict,
+    ],
+)
+def test_get_external_api_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/externalApis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.ExternalApi(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            endpoints=["endpoints_value"],
+            paths=["paths_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.ExternalApi.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_external_api(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.ExternalApi)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.endpoints == ["endpoints_value"]
+    assert response.paths == ["paths_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_external_api_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_get_external_api"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_get_external_api"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.GetExternalApiRequest.pb(
+            apihub_service.GetExternalApiRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.ExternalApi.to_json(common_fields.ExternalApi())
+        req.return_value.content = return_value
+
+        request = apihub_service.GetExternalApiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.ExternalApi()
+
+        client.get_external_api(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_external_api_rest_bad_request(
+    request_type=apihub_service.UpdateExternalApiRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "external_api": {
+            "name": "projects/sample1/locations/sample2/externalApis/sample3"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_external_api(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.UpdateExternalApiRequest,
+        dict,
+    ],
+)
+def test_update_external_api_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "external_api": {
+            "name": "projects/sample1/locations/sample2/externalApis/sample3"
+        }
+    }
+    request_init["external_api"] = {
+        "name": "projects/sample1/locations/sample2/externalApis/sample3",
+        "display_name": "display_name_value",
+        "description": "description_value",
+        "endpoints": ["endpoints_value1", "endpoints_value2"],
+        "paths": ["paths_value1", "paths_value2"],
+        "documentation": {"external_uri": "external_uri_value"},
+        "attributes": {},
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = apihub_service.UpdateExternalApiRequest.meta.fields["external_api"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["external_api"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["external_api"][field])):
+                    del request_init["external_api"][field][i][subfield]
+            else:
+                del request_init["external_api"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common_fields.ExternalApi(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            endpoints=["endpoints_value"],
+            paths=["paths_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common_fields.ExternalApi.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_external_api(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common_fields.ExternalApi)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.endpoints == ["endpoints_value"]
+    assert response.paths == ["paths_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_external_api_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_update_external_api"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_update_external_api"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.UpdateExternalApiRequest.pb(
+            apihub_service.UpdateExternalApiRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common_fields.ExternalApi.to_json(common_fields.ExternalApi())
+        req.return_value.content = return_value
+
+        request = apihub_service.UpdateExternalApiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common_fields.ExternalApi()
+
+        client.update_external_api(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_external_api_rest_bad_request(
+    request_type=apihub_service.DeleteExternalApiRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/externalApis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_external_api(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.DeleteExternalApiRequest,
+        dict,
+    ],
+)
+def test_delete_external_api_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/externalApis/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_external_api(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_external_api_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_delete_external_api"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = apihub_service.DeleteExternalApiRequest.pb(
+            apihub_service.DeleteExternalApiRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = apihub_service.DeleteExternalApiRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_external_api(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_list_external_apis_rest_bad_request(
+    request_type=apihub_service.ListExternalApisRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_external_apis(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        apihub_service.ListExternalApisRequest,
+        dict,
+    ],
+)
+def test_list_external_apis_rest_call_success(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = apihub_service.ListExternalApisResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = apihub_service.ListExternalApisResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_external_apis(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListExternalApisPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_external_apis_rest_interceptors(null_interceptor):
+    transport = transports.ApiHubRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ApiHubRestInterceptor(),
+    )
+    client = ApiHubClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ApiHubRestInterceptor, "post_list_external_apis"
+    ) as post, mock.patch.object(
+        transports.ApiHubRestInterceptor, "pre_list_external_apis"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = apihub_service.ListExternalApisRequest.pb(
+            apihub_service.ListExternalApisRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = apihub_service.ListExternalApisResponse.to_json(
+            apihub_service.ListExternalApisResponse()
+        )
+        req.return_value.content = return_value
+
+        request = apihub_service.ListExternalApisRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = apihub_service.ListExternalApisResponse()
+
+        client.list_external_apis(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    request_type=locations_pb2.ListLocationsRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_rest_bad_request(
+    request_type=operations_pb2.DeleteOperationRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.DeleteOperationRequest,
+        dict,
+    ],
+)
+def test_delete_operation_rest(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    request_type=operations_pb2.ListOperationsRequest,
+):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_initialize_client_w_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_api_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_api), "__call__") as call:
+        client.create_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.CreateApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_api_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_api), "__call__") as call:
+        client.get_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.GetApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_apis_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_apis), "__call__") as call:
+        client.list_apis(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.ListApisRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_api_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_api), "__call__") as call:
+        client.update_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.UpdateApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_api_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_api), "__call__") as call:
+        client.delete_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.DeleteApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_version_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_version), "__call__") as call:
+        client.create_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.CreateVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_version_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_version), "__call__") as call:
+        client.get_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.GetVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_versions_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_versions), "__call__") as call:
+        client.list_versions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.ListVersionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_version_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_version), "__call__") as call:
+        client.update_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.UpdateVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_version_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_version), "__call__") as call:
+        client.delete_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.DeleteVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_spec_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_spec), "__call__") as call:
+        client.create_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.CreateSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_spec_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_spec), "__call__") as call:
+        client.get_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.GetSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_spec_contents_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_spec_contents), "__call__"
+    ) as call:
+        client.get_spec_contents(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.GetSpecContentsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_specs_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_specs), "__call__") as call:
+        client.list_specs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.ListSpecsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_spec_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_spec), "__call__") as call:
+        client.update_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.UpdateSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_spec_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_spec), "__call__") as call:
+        client.delete_spec(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.DeleteSpecRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_api_operation_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_api_operation), "__call__"
+    ) as call:
+        client.get_api_operation(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.GetApiOperationRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_api_operations_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_api_operations), "__call__"
+    ) as call:
+        client.list_api_operations(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.ListApiOperationsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_definition_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_definition), "__call__") as call:
+        client.get_definition(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.GetDefinitionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_deployment_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_deployment), "__call__"
+    ) as call:
+        client.create_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.CreateDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_deployment_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_deployment), "__call__") as call:
+        client.get_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.GetDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_deployments_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_deployments), "__call__") as call:
+        client.list_deployments(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.ListDeploymentsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_deployment_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_deployment), "__call__"
+    ) as call:
+        client.update_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.UpdateDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_deployment_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_deployment), "__call__"
+    ) as call:
+        client.delete_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.DeleteDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_attribute_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_attribute), "__call__") as call:
+        client.create_attribute(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.CreateAttributeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_attribute_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_attribute), "__call__") as call:
+        client.get_attribute(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.GetAttributeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_attribute_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_attribute), "__call__") as call:
+        client.update_attribute(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.UpdateAttributeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_attribute_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_attribute), "__call__") as call:
+        client.delete_attribute(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.DeleteAttributeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_attributes_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_attributes), "__call__") as call:
+        client.list_attributes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.ListAttributesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_search_resources_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.search_resources), "__call__") as call:
+        client.search_resources(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.SearchResourcesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_external_api_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_api), "__call__"
+    ) as call:
+        client.create_external_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.CreateExternalApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_external_api_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_external_api), "__call__") as call:
+        client.get_external_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.GetExternalApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_external_api_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_api), "__call__"
+    ) as call:
+        client.update_external_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.UpdateExternalApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_external_api_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_api), "__call__"
+    ) as call:
+        client.delete_external_api(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.DeleteExternalApiRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_external_apis_empty_call_rest():
+    client = ApiHubClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_apis), "__call__"
+    ) as call:
+        client.list_external_apis(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = apihub_service.ListExternalApisRequest()
+
+        assert args[0] == request_msg
 
 
 def test_api_hub_base_transport_error():
@@ -14288,367 +15162,16 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-def test_get_location_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
-):
+def test_transport_close_rest():
     client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_location(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.GetLocationRequest,
-        dict,
-    ],
-)
-def test_get_location_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.Location()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_location(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.Location)
-
-
-def test_list_locations_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({"name": "projects/sample1"}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_locations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.ListLocationsRequest,
-        dict,
-    ],
-)
-def test_list_locations_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.ListLocationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_locations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.ListLocationsResponse)
-
-
-def test_cancel_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.cancel_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.CancelOperationRequest,
-        dict,
-    ],
-)
-def test_cancel_operation_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.cancel_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.DeleteOperationRequest,
-        dict,
-    ],
-)
-def test_delete_operation_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.delete_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_get_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
-def test_list_operations_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
-):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_operations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.ListOperationsRequest,
-        dict,
-    ],
-)
-def test_list_operations_rest(request_type):
-    client = ApiHubClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.ListOperationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.ListOperationsResponse)
-
-
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-    }
-
-    for transport, close_name in transports.items():
-        client = ApiHubClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

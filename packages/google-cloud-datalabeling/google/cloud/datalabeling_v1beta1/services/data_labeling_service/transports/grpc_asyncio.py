@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -239,6 +240,9 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1278,12 +1282,12 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_dataset: gapic_v1.method_async.wrap_method(
+            self.create_dataset: self._wrap_method(
                 self.create_dataset,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_dataset: gapic_v1.method_async.wrap_method(
+            self.get_dataset: self._wrap_method(
                 self.get_dataset,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1298,7 +1302,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_datasets: gapic_v1.method_async.wrap_method(
+            self.list_datasets: self._wrap_method(
                 self.list_datasets,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1313,7 +1317,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.delete_dataset: gapic_v1.method_async.wrap_method(
+            self.delete_dataset: self._wrap_method(
                 self.delete_dataset,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1328,12 +1332,12 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.import_data: gapic_v1.method_async.wrap_method(
+            self.import_data: self._wrap_method(
                 self.import_data,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.export_data: gapic_v1.method_async.wrap_method(
+            self.export_data: self._wrap_method(
                 self.export_data,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1348,7 +1352,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_data_item: gapic_v1.method_async.wrap_method(
+            self.get_data_item: self._wrap_method(
                 self.get_data_item,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1363,7 +1367,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_data_items: gapic_v1.method_async.wrap_method(
+            self.list_data_items: self._wrap_method(
                 self.list_data_items,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1378,7 +1382,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_annotated_dataset: gapic_v1.method_async.wrap_method(
+            self.get_annotated_dataset: self._wrap_method(
                 self.get_annotated_dataset,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1393,7 +1397,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_annotated_datasets: gapic_v1.method_async.wrap_method(
+            self.list_annotated_datasets: self._wrap_method(
                 self.list_annotated_datasets,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1408,27 +1412,27 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.delete_annotated_dataset: gapic_v1.method_async.wrap_method(
+            self.delete_annotated_dataset: self._wrap_method(
                 self.delete_annotated_dataset,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.label_image: gapic_v1.method_async.wrap_method(
+            self.label_image: self._wrap_method(
                 self.label_image,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.label_video: gapic_v1.method_async.wrap_method(
+            self.label_video: self._wrap_method(
                 self.label_video,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.label_text: gapic_v1.method_async.wrap_method(
+            self.label_text: self._wrap_method(
                 self.label_text,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_example: gapic_v1.method_async.wrap_method(
+            self.get_example: self._wrap_method(
                 self.get_example,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1443,7 +1447,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_examples: gapic_v1.method_async.wrap_method(
+            self.list_examples: self._wrap_method(
                 self.list_examples,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1458,12 +1462,12 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.create_annotation_spec_set: gapic_v1.method_async.wrap_method(
+            self.create_annotation_spec_set: self._wrap_method(
                 self.create_annotation_spec_set,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_annotation_spec_set: gapic_v1.method_async.wrap_method(
+            self.get_annotation_spec_set: self._wrap_method(
                 self.get_annotation_spec_set,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1478,7 +1482,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_annotation_spec_sets: gapic_v1.method_async.wrap_method(
+            self.list_annotation_spec_sets: self._wrap_method(
                 self.list_annotation_spec_sets,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1493,7 +1497,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.delete_annotation_spec_set: gapic_v1.method_async.wrap_method(
+            self.delete_annotation_spec_set: self._wrap_method(
                 self.delete_annotation_spec_set,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1508,12 +1512,12 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.create_instruction: gapic_v1.method_async.wrap_method(
+            self.create_instruction: self._wrap_method(
                 self.create_instruction,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_instruction: gapic_v1.method_async.wrap_method(
+            self.get_instruction: self._wrap_method(
                 self.get_instruction,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1528,7 +1532,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_instructions: gapic_v1.method_async.wrap_method(
+            self.list_instructions: self._wrap_method(
                 self.list_instructions,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1543,7 +1547,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.delete_instruction: gapic_v1.method_async.wrap_method(
+            self.delete_instruction: self._wrap_method(
                 self.delete_instruction,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1558,7 +1562,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_evaluation: gapic_v1.method_async.wrap_method(
+            self.get_evaluation: self._wrap_method(
                 self.get_evaluation,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1573,7 +1577,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.search_evaluations: gapic_v1.method_async.wrap_method(
+            self.search_evaluations: self._wrap_method(
                 self.search_evaluations,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1588,22 +1592,22 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.search_example_comparisons: gapic_v1.method_async.wrap_method(
+            self.search_example_comparisons: self._wrap_method(
                 self.search_example_comparisons,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.create_evaluation_job: gapic_v1.method_async.wrap_method(
+            self.create_evaluation_job: self._wrap_method(
                 self.create_evaluation_job,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.update_evaluation_job: gapic_v1.method_async.wrap_method(
+            self.update_evaluation_job: self._wrap_method(
                 self.update_evaluation_job,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_evaluation_job: gapic_v1.method_async.wrap_method(
+            self.get_evaluation_job: self._wrap_method(
                 self.get_evaluation_job,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1618,17 +1622,17 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.pause_evaluation_job: gapic_v1.method_async.wrap_method(
+            self.pause_evaluation_job: self._wrap_method(
                 self.pause_evaluation_job,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.resume_evaluation_job: gapic_v1.method_async.wrap_method(
+            self.resume_evaluation_job: self._wrap_method(
                 self.resume_evaluation_job,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.delete_evaluation_job: gapic_v1.method_async.wrap_method(
+            self.delete_evaluation_job: self._wrap_method(
                 self.delete_evaluation_job,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1643,7 +1647,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_evaluation_jobs: gapic_v1.method_async.wrap_method(
+            self.list_evaluation_jobs: self._wrap_method(
                 self.list_evaluation_jobs,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1660,8 +1664,17 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("DataLabelingServiceGrpcAsyncIOTransport",)

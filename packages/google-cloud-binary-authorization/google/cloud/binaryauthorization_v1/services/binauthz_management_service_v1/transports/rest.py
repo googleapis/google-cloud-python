@@ -16,32 +16,28 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.binaryauthorization_v1.types import resources, service
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseBinauthzManagementServiceV1RestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.protobuf import empty_pb2  # type: ignore
-
-from google.cloud.binaryauthorization_v1.types import resources, service
-
-from .base import BinauthzManagementServiceV1Transport
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -263,8 +259,10 @@ class BinauthzManagementServiceV1RestStub:
     _interceptor: BinauthzManagementServiceV1RestInterceptor
 
 
-class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transport):
-    """REST backend transport for BinauthzManagementServiceV1.
+class BinauthzManagementServiceV1RestTransport(
+    _BaseBinauthzManagementServiceV1RestTransport
+):
+    """REST backend synchronous transport for BinauthzManagementServiceV1.
 
     Google Cloud Management Service for Binary Authorization admission
     policies and attestation authorities.
@@ -279,7 +277,6 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -333,21 +330,12 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -358,21 +346,35 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
         self._interceptor = interceptor or BinauthzManagementServiceV1RestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateAttestor(BinauthzManagementServiceV1RestStub):
+    class _CreateAttestor(
+        _BaseBinauthzManagementServiceV1RestTransport._BaseCreateAttestor,
+        BinauthzManagementServiceV1RestStub,
+    ):
         def __hash__(self):
-            return hash("CreateAttestor")
+            return hash("BinauthzManagementServiceV1RestTransport.CreateAttestor")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "attestorId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -403,45 +405,34 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*}/attestors",
-                    "body": "attestor",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_attestor(request, metadata)
-            pb_request = service.CreateAttestorRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBinauthzManagementServiceV1RestTransport._BaseCreateAttestor._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_attestor(request, metadata)
+            transcoded_request = _BaseBinauthzManagementServiceV1RestTransport._BaseCreateAttestor._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBinauthzManagementServiceV1RestTransport._BaseCreateAttestor._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBinauthzManagementServiceV1RestTransport._BaseCreateAttestor._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                BinauthzManagementServiceV1RestTransport._CreateAttestor._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -457,19 +448,34 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
             resp = self._interceptor.post_create_attestor(resp)
             return resp
 
-    class _DeleteAttestor(BinauthzManagementServiceV1RestStub):
+    class _DeleteAttestor(
+        _BaseBinauthzManagementServiceV1RestTransport._BaseDeleteAttestor,
+        BinauthzManagementServiceV1RestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteAttestor")
+            return hash("BinauthzManagementServiceV1RestTransport.DeleteAttestor")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -492,38 +498,29 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/attestors/*}",
-                },
-            ]
+            http_options = (
+                _BaseBinauthzManagementServiceV1RestTransport._BaseDeleteAttestor._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_attestor(request, metadata)
-            pb_request = service.DeleteAttestorRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBinauthzManagementServiceV1RestTransport._BaseDeleteAttestor._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBinauthzManagementServiceV1RestTransport._BaseDeleteAttestor._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                BinauthzManagementServiceV1RestTransport._DeleteAttestor._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -531,19 +528,34 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetAttestor(BinauthzManagementServiceV1RestStub):
+    class _GetAttestor(
+        _BaseBinauthzManagementServiceV1RestTransport._BaseGetAttestor,
+        BinauthzManagementServiceV1RestStub,
+    ):
         def __hash__(self):
-            return hash("GetAttestor")
+            return hash("BinauthzManagementServiceV1RestTransport.GetAttestor")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -574,38 +586,29 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/attestors/*}",
-                },
-            ]
+            http_options = (
+                _BaseBinauthzManagementServiceV1RestTransport._BaseGetAttestor._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_attestor(request, metadata)
-            pb_request = service.GetAttestorRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBinauthzManagementServiceV1RestTransport._BaseGetAttestor._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBinauthzManagementServiceV1RestTransport._BaseGetAttestor._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                BinauthzManagementServiceV1RestTransport._GetAttestor._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -621,19 +624,34 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
             resp = self._interceptor.post_get_attestor(resp)
             return resp
 
-    class _GetPolicy(BinauthzManagementServiceV1RestStub):
+    class _GetPolicy(
+        _BaseBinauthzManagementServiceV1RestTransport._BaseGetPolicy,
+        BinauthzManagementServiceV1RestStub,
+    ):
         def __hash__(self):
-            return hash("GetPolicy")
+            return hash("BinauthzManagementServiceV1RestTransport.GetPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -662,38 +680,29 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/policy}",
-                },
-            ]
+            http_options = (
+                _BaseBinauthzManagementServiceV1RestTransport._BaseGetPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_policy(request, metadata)
-            pb_request = service.GetPolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBinauthzManagementServiceV1RestTransport._BaseGetPolicy._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBinauthzManagementServiceV1RestTransport._BaseGetPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                BinauthzManagementServiceV1RestTransport._GetPolicy._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -709,19 +718,34 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
             resp = self._interceptor.post_get_policy(resp)
             return resp
 
-    class _ListAttestors(BinauthzManagementServiceV1RestStub):
+    class _ListAttestors(
+        _BaseBinauthzManagementServiceV1RestTransport._BaseListAttestors,
+        BinauthzManagementServiceV1RestStub,
+    ):
         def __hash__(self):
-            return hash("ListAttestors")
+            return hash("BinauthzManagementServiceV1RestTransport.ListAttestors")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -750,38 +774,29 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*}/attestors",
-                },
-            ]
+            http_options = (
+                _BaseBinauthzManagementServiceV1RestTransport._BaseListAttestors._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_attestors(request, metadata)
-            pb_request = service.ListAttestorsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBinauthzManagementServiceV1RestTransport._BaseListAttestors._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBinauthzManagementServiceV1RestTransport._BaseListAttestors._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                BinauthzManagementServiceV1RestTransport._ListAttestors._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -797,19 +812,35 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
             resp = self._interceptor.post_list_attestors(resp)
             return resp
 
-    class _UpdateAttestor(BinauthzManagementServiceV1RestStub):
+    class _UpdateAttestor(
+        _BaseBinauthzManagementServiceV1RestTransport._BaseUpdateAttestor,
+        BinauthzManagementServiceV1RestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateAttestor")
+            return hash("BinauthzManagementServiceV1RestTransport.UpdateAttestor")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -840,45 +871,34 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "put",
-                    "uri": "/v1/{attestor.name=projects/*/attestors/*}",
-                    "body": "attestor",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_attestor(request, metadata)
-            pb_request = service.UpdateAttestorRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBinauthzManagementServiceV1RestTransport._BaseUpdateAttestor._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_attestor(request, metadata)
+            transcoded_request = _BaseBinauthzManagementServiceV1RestTransport._BaseUpdateAttestor._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBinauthzManagementServiceV1RestTransport._BaseUpdateAttestor._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBinauthzManagementServiceV1RestTransport._BaseUpdateAttestor._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                BinauthzManagementServiceV1RestTransport._UpdateAttestor._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -894,19 +914,35 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
             resp = self._interceptor.post_update_attestor(resp)
             return resp
 
-    class _UpdatePolicy(BinauthzManagementServiceV1RestStub):
+    class _UpdatePolicy(
+        _BaseBinauthzManagementServiceV1RestTransport._BaseUpdatePolicy,
+        BinauthzManagementServiceV1RestStub,
+    ):
         def __hash__(self):
-            return hash("UpdatePolicy")
+            return hash("BinauthzManagementServiceV1RestTransport.UpdatePolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -935,45 +971,34 @@ class BinauthzManagementServiceV1RestTransport(BinauthzManagementServiceV1Transp
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "put",
-                    "uri": "/v1/{policy.name=projects/*/policy}",
-                    "body": "policy",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_policy(request, metadata)
-            pb_request = service.UpdatePolicyRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBinauthzManagementServiceV1RestTransport._BaseUpdatePolicy._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_policy(request, metadata)
+            transcoded_request = _BaseBinauthzManagementServiceV1RestTransport._BaseUpdatePolicy._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBinauthzManagementServiceV1RestTransport._BaseUpdatePolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBinauthzManagementServiceV1RestTransport._BaseUpdatePolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                BinauthzManagementServiceV1RestTransport._UpdatePolicy._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

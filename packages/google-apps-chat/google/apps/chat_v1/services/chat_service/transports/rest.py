@@ -16,27 +16,17 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.protobuf import json_format
-import grpc  # type: ignore
-from requests import __version__ as requests_version
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import json_format
+from requests import __version__ as requests_version
 
 from google.apps.chat_v1.types import attachment
 from google.apps.chat_v1.types import membership
@@ -52,8 +42,14 @@ from google.apps.chat_v1.types import space_read_state
 from google.apps.chat_v1.types import space_read_state as gc_space_read_state
 from google.apps.chat_v1.types import space_setup, thread_read_state
 
-from .base import ChatServiceTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseChatServiceRestTransport
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -913,8 +909,8 @@ class ChatServiceRestStub:
     _interceptor: ChatServiceRestInterceptor
 
 
-class ChatServiceRestTransport(ChatServiceTransport):
-    """REST backend transport for ChatService.
+class ChatServiceRestTransport(_BaseChatServiceRestTransport):
+    """REST backend synchronous transport for ChatService.
 
     Enables developers to build Chat apps and
     integrations on Google Chat Platform.
@@ -924,7 +920,6 @@ class ChatServiceRestTransport(ChatServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -978,21 +973,12 @@ class ChatServiceRestTransport(ChatServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -1003,19 +989,34 @@ class ChatServiceRestTransport(ChatServiceTransport):
         self._interceptor = interceptor or ChatServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CompleteImportSpace(ChatServiceRestStub):
+    class _CompleteImportSpace(
+        _BaseChatServiceRestTransport._BaseCompleteImportSpace, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("CompleteImportSpace")
+            return hash("ChatServiceRestTransport.CompleteImportSpace")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1044,47 +1045,34 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=spaces/*}:completeImport",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseCompleteImportSpace._get_http_options()
+            )
             request, metadata = self._interceptor.pre_complete_import_space(
                 request, metadata
             )
-            pb_request = space.CompleteImportSpaceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseChatServiceRestTransport._BaseCompleteImportSpace._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseChatServiceRestTransport._BaseCompleteImportSpace._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseChatServiceRestTransport._BaseCompleteImportSpace._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ChatServiceRestTransport._CompleteImportSpace._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1100,19 +1088,34 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_complete_import_space(resp)
             return resp
 
-    class _CreateMembership(ChatServiceRestStub):
+    class _CreateMembership(
+        _BaseChatServiceRestTransport._BaseCreateMembership, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("CreateMembership")
+            return hash("ChatServiceRestTransport.CreateMembership")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1143,47 +1146,34 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=spaces/*}/members",
-                    "body": "membership",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseCreateMembership._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_membership(
                 request, metadata
             )
-            pb_request = gc_membership.CreateMembershipRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseChatServiceRestTransport._BaseCreateMembership._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseChatServiceRestTransport._BaseCreateMembership._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseChatServiceRestTransport._BaseCreateMembership._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ChatServiceRestTransport._CreateMembership._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1199,19 +1189,34 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_create_membership(resp)
             return resp
 
-    class _CreateMessage(ChatServiceRestStub):
+    class _CreateMessage(
+        _BaseChatServiceRestTransport._BaseCreateMessage, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("CreateMessage")
+            return hash("ChatServiceRestTransport.CreateMessage")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1237,45 +1242,36 @@ class ChatServiceRestTransport(ChatServiceTransport):
                     A message in a Google Chat space.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=spaces/*}/messages",
-                    "body": "message",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_message(request, metadata)
-            pb_request = gc_message.CreateMessageRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseChatServiceRestTransport._BaseCreateMessage._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_message(request, metadata)
+            transcoded_request = _BaseChatServiceRestTransport._BaseCreateMessage._get_transcoded_request(
+                http_options, request
+            )
 
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            body = (
+                _BaseChatServiceRestTransport._BaseCreateMessage._get_request_body_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseChatServiceRestTransport._BaseCreateMessage._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ChatServiceRestTransport._CreateMessage._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1291,19 +1287,34 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_create_message(resp)
             return resp
 
-    class _CreateReaction(ChatServiceRestStub):
+    class _CreateReaction(
+        _BaseChatServiceRestTransport._BaseCreateReaction, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("CreateReaction")
+            return hash("ChatServiceRestTransport.CreateReaction")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1329,45 +1340,32 @@ class ChatServiceRestTransport(ChatServiceTransport):
                     A reaction to a message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=spaces/*/messages/*}/reactions",
-                    "body": "reaction",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_reaction(request, metadata)
-            pb_request = gc_reaction.CreateReactionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseChatServiceRestTransport._BaseCreateReaction._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_reaction(request, metadata)
+            transcoded_request = _BaseChatServiceRestTransport._BaseCreateReaction._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseChatServiceRestTransport._BaseCreateReaction._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseChatServiceRestTransport._BaseCreateReaction._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ChatServiceRestTransport._CreateReaction._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1383,19 +1381,34 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_create_reaction(resp)
             return resp
 
-    class _CreateSpace(ChatServiceRestStub):
+    class _CreateSpace(
+        _BaseChatServiceRestTransport._BaseCreateSpace, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("CreateSpace")
+            return hash("ChatServiceRestTransport.CreateSpace")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1426,45 +1439,38 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/spaces",
-                    "body": "space",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_space(request, metadata)
-            pb_request = gc_space.CreateSpaceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseChatServiceRestTransport._BaseCreateSpace._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_create_space(request, metadata)
+            transcoded_request = (
+                _BaseChatServiceRestTransport._BaseCreateSpace._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = (
+                _BaseChatServiceRestTransport._BaseCreateSpace._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseChatServiceRestTransport._BaseCreateSpace._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ChatServiceRestTransport._CreateSpace._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1480,19 +1486,33 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_create_space(resp)
             return resp
 
-    class _DeleteMembership(ChatServiceRestStub):
+    class _DeleteMembership(
+        _BaseChatServiceRestTransport._BaseDeleteMembership, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteMembership")
+            return hash("ChatServiceRestTransport.DeleteMembership")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1523,40 +1543,29 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=spaces/*/members/*}",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseDeleteMembership._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_membership(
                 request, metadata
             )
-            pb_request = membership.DeleteMembershipRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseChatServiceRestTransport._BaseDeleteMembership._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseChatServiceRestTransport._BaseDeleteMembership._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ChatServiceRestTransport._DeleteMembership._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1572,19 +1581,33 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_delete_membership(resp)
             return resp
 
-    class _DeleteMessage(ChatServiceRestStub):
+    class _DeleteMessage(
+        _BaseChatServiceRestTransport._BaseDeleteMessage, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteMessage")
+            return hash("ChatServiceRestTransport.DeleteMessage")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1606,38 +1629,29 @@ class ChatServiceRestTransport(ChatServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=spaces/*/messages/*}",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseDeleteMessage._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_message(request, metadata)
-            pb_request = message.DeleteMessageRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseChatServiceRestTransport._BaseDeleteMessage._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseChatServiceRestTransport._BaseDeleteMessage._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ChatServiceRestTransport._DeleteMessage._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1645,19 +1659,33 @@ class ChatServiceRestTransport(ChatServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteReaction(ChatServiceRestStub):
+    class _DeleteReaction(
+        _BaseChatServiceRestTransport._BaseDeleteReaction, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteReaction")
+            return hash("ChatServiceRestTransport.DeleteReaction")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1679,38 +1707,27 @@ class ChatServiceRestTransport(ChatServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=spaces/*/messages/*/reactions/*}",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseDeleteReaction._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_reaction(request, metadata)
-            pb_request = reaction.DeleteReactionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseChatServiceRestTransport._BaseDeleteReaction._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseChatServiceRestTransport._BaseDeleteReaction._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ChatServiceRestTransport._DeleteReaction._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1718,19 +1735,33 @@ class ChatServiceRestTransport(ChatServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteSpace(ChatServiceRestStub):
+    class _DeleteSpace(
+        _BaseChatServiceRestTransport._BaseDeleteSpace, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteSpace")
+            return hash("ChatServiceRestTransport.DeleteSpace")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1752,38 +1783,31 @@ class ChatServiceRestTransport(ChatServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=spaces/*}",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseDeleteSpace._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_space(request, metadata)
-            pb_request = space.DeleteSpaceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseChatServiceRestTransport._BaseDeleteSpace._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseChatServiceRestTransport._BaseDeleteSpace._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ChatServiceRestTransport._DeleteSpace._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1791,21 +1815,33 @@ class ChatServiceRestTransport(ChatServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _FindDirectMessage(ChatServiceRestStub):
+    class _FindDirectMessage(
+        _BaseChatServiceRestTransport._BaseFindDirectMessage, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("FindDirectMessage")
+            return hash("ChatServiceRestTransport.FindDirectMessage")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "name": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1836,40 +1872,29 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/spaces:findDirectMessage",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseFindDirectMessage._get_http_options()
+            )
             request, metadata = self._interceptor.pre_find_direct_message(
                 request, metadata
             )
-            pb_request = space.FindDirectMessageRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseChatServiceRestTransport._BaseFindDirectMessage._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseChatServiceRestTransport._BaseFindDirectMessage._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ChatServiceRestTransport._FindDirectMessage._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1885,19 +1910,33 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_find_direct_message(resp)
             return resp
 
-    class _GetAttachment(ChatServiceRestStub):
+    class _GetAttachment(
+        _BaseChatServiceRestTransport._BaseGetAttachment, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetAttachment")
+            return hash("ChatServiceRestTransport.GetAttachment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1923,38 +1962,29 @@ class ChatServiceRestTransport(ChatServiceTransport):
                     An attachment in Google Chat.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=spaces/*/messages/*/attachments/*}",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseGetAttachment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_attachment(request, metadata)
-            pb_request = attachment.GetAttachmentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseChatServiceRestTransport._BaseGetAttachment._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseChatServiceRestTransport._BaseGetAttachment._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ChatServiceRestTransport._GetAttachment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1970,19 +2000,33 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_get_attachment(resp)
             return resp
 
-    class _GetMembership(ChatServiceRestStub):
+    class _GetMembership(
+        _BaseChatServiceRestTransport._BaseGetMembership, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetMembership")
+            return hash("ChatServiceRestTransport.GetMembership")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2013,38 +2057,29 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=spaces/*/members/*}",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseGetMembership._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_membership(request, metadata)
-            pb_request = membership.GetMembershipRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseChatServiceRestTransport._BaseGetMembership._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseChatServiceRestTransport._BaseGetMembership._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ChatServiceRestTransport._GetMembership._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2060,19 +2095,33 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_get_membership(resp)
             return resp
 
-    class _GetMessage(ChatServiceRestStub):
+    class _GetMessage(
+        _BaseChatServiceRestTransport._BaseGetMessage, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetMessage")
+            return hash("ChatServiceRestTransport.GetMessage")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2098,38 +2147,31 @@ class ChatServiceRestTransport(ChatServiceTransport):
                     A message in a Google Chat space.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=spaces/*/messages/*}",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseGetMessage._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_message(request, metadata)
-            pb_request = message.GetMessageRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseChatServiceRestTransport._BaseGetMessage._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseChatServiceRestTransport._BaseGetMessage._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ChatServiceRestTransport._GetMessage._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2145,19 +2187,31 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_get_message(resp)
             return resp
 
-    class _GetSpace(ChatServiceRestStub):
+    class _GetSpace(_BaseChatServiceRestTransport._BaseGetSpace, ChatServiceRestStub):
         def __hash__(self):
-            return hash("GetSpace")
+            return hash("ChatServiceRestTransport.GetSpace")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2187,38 +2241,31 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=spaces/*}",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseGetSpace._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_space(request, metadata)
-            pb_request = space.GetSpaceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseChatServiceRestTransport._BaseGetSpace._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseChatServiceRestTransport._BaseGetSpace._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ChatServiceRestTransport._GetSpace._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2234,19 +2281,33 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_get_space(resp)
             return resp
 
-    class _GetSpaceEvent(ChatServiceRestStub):
+    class _GetSpaceEvent(
+        _BaseChatServiceRestTransport._BaseGetSpaceEvent, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetSpaceEvent")
+            return hash("ChatServiceRestTransport.GetSpaceEvent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2277,38 +2338,29 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=spaces/*/spaceEvents/*}",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseGetSpaceEvent._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_space_event(request, metadata)
-            pb_request = space_event.GetSpaceEventRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseChatServiceRestTransport._BaseGetSpaceEvent._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseChatServiceRestTransport._BaseGetSpaceEvent._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ChatServiceRestTransport._GetSpaceEvent._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2324,19 +2376,33 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_get_space_event(resp)
             return resp
 
-    class _GetSpaceReadState(ChatServiceRestStub):
+    class _GetSpaceReadState(
+        _BaseChatServiceRestTransport._BaseGetSpaceReadState, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetSpaceReadState")
+            return hash("ChatServiceRestTransport.GetSpaceReadState")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2366,40 +2432,29 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=users/*/spaces/*/spaceReadState}",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseGetSpaceReadState._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_space_read_state(
                 request, metadata
             )
-            pb_request = space_read_state.GetSpaceReadStateRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseChatServiceRestTransport._BaseGetSpaceReadState._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseChatServiceRestTransport._BaseGetSpaceReadState._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ChatServiceRestTransport._GetSpaceReadState._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2415,19 +2470,33 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_get_space_read_state(resp)
             return resp
 
-    class _GetThreadReadState(ChatServiceRestStub):
+    class _GetThreadReadState(
+        _BaseChatServiceRestTransport._BaseGetThreadReadState, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetThreadReadState")
+            return hash("ChatServiceRestTransport.GetThreadReadState")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2457,40 +2526,29 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=users/*/spaces/*/threads/*/threadReadState}",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseGetThreadReadState._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_thread_read_state(
                 request, metadata
             )
-            pb_request = thread_read_state.GetThreadReadStateRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseChatServiceRestTransport._BaseGetThreadReadState._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseChatServiceRestTransport._BaseGetThreadReadState._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ChatServiceRestTransport._GetThreadReadState._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2506,19 +2564,33 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_get_thread_read_state(resp)
             return resp
 
-    class _ListMemberships(ChatServiceRestStub):
+    class _ListMemberships(
+        _BaseChatServiceRestTransport._BaseListMemberships, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListMemberships")
+            return hash("ChatServiceRestTransport.ListMemberships")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2547,40 +2619,29 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=spaces/*}/members",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseListMemberships._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_memberships(
                 request, metadata
             )
-            pb_request = membership.ListMembershipsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseChatServiceRestTransport._BaseListMemberships._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseChatServiceRestTransport._BaseListMemberships._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ChatServiceRestTransport._ListMemberships._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2596,19 +2657,33 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_list_memberships(resp)
             return resp
 
-    class _ListMessages(ChatServiceRestStub):
+    class _ListMessages(
+        _BaseChatServiceRestTransport._BaseListMessages, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListMessages")
+            return hash("ChatServiceRestTransport.ListMessages")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2637,38 +2712,31 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=spaces/*}/messages",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseListMessages._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_messages(request, metadata)
-            pb_request = message.ListMessagesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseChatServiceRestTransport._BaseListMessages._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseChatServiceRestTransport._BaseListMessages._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ChatServiceRestTransport._ListMessages._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2684,19 +2752,33 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_list_messages(resp)
             return resp
 
-    class _ListReactions(ChatServiceRestStub):
+    class _ListReactions(
+        _BaseChatServiceRestTransport._BaseListReactions, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListReactions")
+            return hash("ChatServiceRestTransport.ListReactions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2722,38 +2804,29 @@ class ChatServiceRestTransport(ChatServiceTransport):
                     Response to a list reactions request.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=spaces/*/messages/*}/reactions",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseListReactions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_reactions(request, metadata)
-            pb_request = reaction.ListReactionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseChatServiceRestTransport._BaseListReactions._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseChatServiceRestTransport._BaseListReactions._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ChatServiceRestTransport._ListReactions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2769,21 +2842,33 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_list_reactions(resp)
             return resp
 
-    class _ListSpaceEvents(ChatServiceRestStub):
+    class _ListSpaceEvents(
+        _BaseChatServiceRestTransport._BaseListSpaceEvents, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListSpaceEvents")
+            return hash("ChatServiceRestTransport.ListSpaceEvents")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "filter": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2812,40 +2897,29 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=spaces/*}/spaceEvents",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseListSpaceEvents._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_space_events(
                 request, metadata
             )
-            pb_request = space_event.ListSpaceEventsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseChatServiceRestTransport._BaseListSpaceEvents._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseChatServiceRestTransport._BaseListSpaceEvents._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ChatServiceRestTransport._ListSpaceEvents._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2861,9 +2935,33 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_list_space_events(resp)
             return resp
 
-    class _ListSpaces(ChatServiceRestStub):
+    class _ListSpaces(
+        _BaseChatServiceRestTransport._BaseListSpaces, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListSpaces")
+            return hash("ChatServiceRestTransport.ListSpaces")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2892,37 +2990,31 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/spaces",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseListSpaces._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_spaces(request, metadata)
-            pb_request = space.ListSpacesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseChatServiceRestTransport._BaseListSpaces._get_transcoded_request(
+                    http_options, request
                 )
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseChatServiceRestTransport._BaseListSpaces._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ChatServiceRestTransport._ListSpaces._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2938,21 +3030,33 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_list_spaces(resp)
             return resp
 
-    class _SearchSpaces(ChatServiceRestStub):
+    class _SearchSpaces(
+        _BaseChatServiceRestTransport._BaseSearchSpaces, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("SearchSpaces")
+            return hash("ChatServiceRestTransport.SearchSpaces")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "query": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2982,38 +3086,31 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/spaces:search",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseSearchSpaces._get_http_options()
+            )
             request, metadata = self._interceptor.pre_search_spaces(request, metadata)
-            pb_request = space.SearchSpacesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseChatServiceRestTransport._BaseSearchSpaces._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseChatServiceRestTransport._BaseSearchSpaces._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ChatServiceRestTransport._SearchSpaces._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3029,19 +3126,34 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_search_spaces(resp)
             return resp
 
-    class _SetUpSpace(ChatServiceRestStub):
+    class _SetUpSpace(
+        _BaseChatServiceRestTransport._BaseSetUpSpace, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("SetUpSpace")
+            return hash("ChatServiceRestTransport.SetUpSpace")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3072,45 +3184,36 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/spaces:setup",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_set_up_space(request, metadata)
-            pb_request = space_setup.SetUpSpaceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseChatServiceRestTransport._BaseSetUpSpace._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_set_up_space(request, metadata)
+            transcoded_request = (
+                _BaseChatServiceRestTransport._BaseSetUpSpace._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseChatServiceRestTransport._BaseSetUpSpace._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseChatServiceRestTransport._BaseSetUpSpace._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ChatServiceRestTransport._SetUpSpace._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3126,21 +3229,34 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_set_up_space(resp)
             return resp
 
-    class _UpdateMembership(ChatServiceRestStub):
+    class _UpdateMembership(
+        _BaseChatServiceRestTransport._BaseUpdateMembership, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateMembership")
+            return hash("ChatServiceRestTransport.UpdateMembership")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3171,47 +3287,34 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{membership.name=spaces/*/members/*}",
-                    "body": "membership",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseUpdateMembership._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_membership(
                 request, metadata
             )
-            pb_request = gc_membership.UpdateMembershipRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseChatServiceRestTransport._BaseUpdateMembership._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseChatServiceRestTransport._BaseUpdateMembership._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseChatServiceRestTransport._BaseUpdateMembership._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ChatServiceRestTransport._UpdateMembership._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3227,19 +3330,34 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_update_membership(resp)
             return resp
 
-    class _UpdateMessage(ChatServiceRestStub):
+    class _UpdateMessage(
+        _BaseChatServiceRestTransport._BaseUpdateMessage, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateMessage")
+            return hash("ChatServiceRestTransport.UpdateMessage")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3265,50 +3383,36 @@ class ChatServiceRestTransport(ChatServiceTransport):
                     A message in a Google Chat space.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "put",
-                    "uri": "/v1/{message.name=spaces/*/messages/*}",
-                    "body": "message",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{message.name=spaces/*/messages/*}",
-                    "body": "message",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_message(request, metadata)
-            pb_request = gc_message.UpdateMessageRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseChatServiceRestTransport._BaseUpdateMessage._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_message(request, metadata)
+            transcoded_request = _BaseChatServiceRestTransport._BaseUpdateMessage._get_transcoded_request(
+                http_options, request
+            )
 
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            body = (
+                _BaseChatServiceRestTransport._BaseUpdateMessage._get_request_body_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseChatServiceRestTransport._BaseUpdateMessage._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ChatServiceRestTransport._UpdateMessage._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3324,19 +3428,34 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_update_message(resp)
             return resp
 
-    class _UpdateSpace(ChatServiceRestStub):
+    class _UpdateSpace(
+        _BaseChatServiceRestTransport._BaseUpdateSpace, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateSpace")
+            return hash("ChatServiceRestTransport.UpdateSpace")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3366,45 +3485,38 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{space.name=spaces/*}",
-                    "body": "space",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_space(request, metadata)
-            pb_request = gc_space.UpdateSpaceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseChatServiceRestTransport._BaseUpdateSpace._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_update_space(request, metadata)
+            transcoded_request = (
+                _BaseChatServiceRestTransport._BaseUpdateSpace._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = (
+                _BaseChatServiceRestTransport._BaseUpdateSpace._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseChatServiceRestTransport._BaseUpdateSpace._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ChatServiceRestTransport._UpdateSpace._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3420,21 +3532,34 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_update_space(resp)
             return resp
 
-    class _UpdateSpaceReadState(ChatServiceRestStub):
+    class _UpdateSpaceReadState(
+        _BaseChatServiceRestTransport._BaseUpdateSpaceReadState, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateSpaceReadState")
+            return hash("ChatServiceRestTransport.UpdateSpaceReadState")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3464,47 +3589,34 @@ class ChatServiceRestTransport(ChatServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{space_read_state.name=users/*/spaces/*/spaceReadState}",
-                    "body": "space_read_state",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseUpdateSpaceReadState._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_space_read_state(
                 request, metadata
             )
-            pb_request = gc_space_read_state.UpdateSpaceReadStateRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseChatServiceRestTransport._BaseUpdateSpaceReadState._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseChatServiceRestTransport._BaseUpdateSpaceReadState._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseChatServiceRestTransport._BaseUpdateSpaceReadState._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ChatServiceRestTransport._UpdateSpaceReadState._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3520,19 +3632,34 @@ class ChatServiceRestTransport(ChatServiceTransport):
             resp = self._interceptor.post_update_space_read_state(resp)
             return resp
 
-    class _UploadAttachment(ChatServiceRestStub):
+    class _UploadAttachment(
+        _BaseChatServiceRestTransport._BaseUploadAttachment, ChatServiceRestStub
+    ):
         def __hash__(self):
-            return hash("UploadAttachment")
+            return hash("ChatServiceRestTransport.UploadAttachment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3558,47 +3685,34 @@ class ChatServiceRestTransport(ChatServiceTransport):
                     Response of uploading an attachment.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=spaces/*}/attachments:upload",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseChatServiceRestTransport._BaseUploadAttachment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_upload_attachment(
                 request, metadata
             )
-            pb_request = attachment.UploadAttachmentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseChatServiceRestTransport._BaseUploadAttachment._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseChatServiceRestTransport._BaseUploadAttachment._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseChatServiceRestTransport._BaseUploadAttachment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ChatServiceRestTransport._UploadAttachment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

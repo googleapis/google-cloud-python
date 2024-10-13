@@ -16,42 +16,32 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.alloydb_v1.types import resources, service
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseAlloyDBAdminRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-
-from google.cloud.alloydb_v1.types import resources, service
-
-from .base import AlloyDBAdminTransport
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -1121,8 +1111,8 @@ class AlloyDBAdminRestStub:
     _interceptor: AlloyDBAdminRestInterceptor
 
 
-class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
-    """REST backend transport for AlloyDBAdmin.
+class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
+    """REST backend synchronous transport for AlloyDBAdmin.
 
     Service describing handlers for resources
 
@@ -1131,7 +1121,6 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -1185,21 +1174,12 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -1264,19 +1244,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _BatchCreateInstances(AlloyDBAdminRestStub):
+    class _BatchCreateInstances(
+        _BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("BatchCreateInstances")
+            return hash("AlloyDBAdminRestTransport.BatchCreateInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1306,47 +1301,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/clusters/*}/instances:batchCreate",
-                    "body": "requests",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances._get_http_options()
+            )
             request, metadata = self._interceptor.pre_batch_create_instances(
                 request, metadata
             )
-            pb_request = service.BatchCreateInstancesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AlloyDBAdminRestTransport._BatchCreateInstances._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1360,21 +1342,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_batch_create_instances(resp)
             return resp
 
-    class _CreateBackup(AlloyDBAdminRestStub):
+    class _CreateBackup(
+        _BaseAlloyDBAdminRestTransport._BaseCreateBackup, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("CreateBackup")
+            return hash("AlloyDBAdminRestTransport.CreateBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "backupId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1403,45 +1398,36 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/backups",
-                    "body": "backup",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_backup(request, metadata)
-            pb_request = service.CreateBackupRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseCreateBackup._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_backup(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateBackup._get_transcoded_request(
+                http_options, request
+            )
 
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            body = (
+                _BaseAlloyDBAdminRestTransport._BaseCreateBackup._get_request_body_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseAlloyDBAdminRestTransport._BaseCreateBackup._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AlloyDBAdminRestTransport._CreateBackup._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1455,21 +1441,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_create_backup(resp)
             return resp
 
-    class _CreateCluster(AlloyDBAdminRestStub):
+    class _CreateCluster(
+        _BaseAlloyDBAdminRestTransport._BaseCreateCluster, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("CreateCluster")
+            return hash("AlloyDBAdminRestTransport.CreateCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "clusterId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1498,45 +1497,32 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/clusters",
-                    "body": "cluster",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_cluster(request, metadata)
-            pb_request = service.CreateClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseCreateCluster._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_cluster(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateCluster._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAlloyDBAdminRestTransport._BaseCreateCluster._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseCreateCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AlloyDBAdminRestTransport._CreateCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1550,21 +1536,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_create_cluster(resp)
             return resp
 
-    class _CreateInstance(AlloyDBAdminRestStub):
+    class _CreateInstance(
+        _BaseAlloyDBAdminRestTransport._BaseCreateInstance, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("CreateInstance")
+            return hash("AlloyDBAdminRestTransport.CreateInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "instanceId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1593,45 +1592,32 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/clusters/*}/instances",
-                    "body": "instance",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_instance(request, metadata)
-            pb_request = service.CreateInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseCreateInstance._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_instance(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateInstance._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAlloyDBAdminRestTransport._BaseCreateInstance._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseCreateInstance._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AlloyDBAdminRestTransport._CreateInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1645,21 +1631,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_create_instance(resp)
             return resp
 
-    class _CreateSecondaryCluster(AlloyDBAdminRestStub):
+    class _CreateSecondaryCluster(
+        _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("CreateSecondaryCluster")
+            return hash("AlloyDBAdminRestTransport.CreateSecondaryCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "clusterId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1688,47 +1687,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/clusters:createsecondary",
-                    "body": "cluster",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_secondary_cluster(
                 request, metadata
             )
-            pb_request = service.CreateSecondaryClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AlloyDBAdminRestTransport._CreateSecondaryCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1742,21 +1728,35 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_create_secondary_cluster(resp)
             return resp
 
-    class _CreateSecondaryInstance(AlloyDBAdminRestStub):
+    class _CreateSecondaryInstance(
+        _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance,
+        AlloyDBAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateSecondaryInstance")
+            return hash("AlloyDBAdminRestTransport.CreateSecondaryInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "instanceId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1786,47 +1786,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/clusters/*}/instances:createsecondary",
-                    "body": "instance",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_secondary_instance(
                 request, metadata
             )
-            pb_request = service.CreateSecondaryInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AlloyDBAdminRestTransport._CreateSecondaryInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1840,21 +1827,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_create_secondary_instance(resp)
             return resp
 
-    class _CreateUser(AlloyDBAdminRestStub):
+    class _CreateUser(
+        _BaseAlloyDBAdminRestTransport._BaseCreateUser, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("CreateUser")
+            return hash("AlloyDBAdminRestTransport.CreateUser")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "userId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1880,45 +1880,38 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                     Message describing User object.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/clusters/*}/users",
-                    "body": "user",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_user(request, metadata)
-            pb_request = service.CreateUserRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseCreateUser._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_create_user(request, metadata)
+            transcoded_request = (
+                _BaseAlloyDBAdminRestTransport._BaseCreateUser._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = (
+                _BaseAlloyDBAdminRestTransport._BaseCreateUser._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseAlloyDBAdminRestTransport._BaseCreateUser._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AlloyDBAdminRestTransport._CreateUser._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1934,19 +1927,33 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_create_user(resp)
             return resp
 
-    class _DeleteBackup(AlloyDBAdminRestStub):
+    class _DeleteBackup(
+        _BaseAlloyDBAdminRestTransport._BaseDeleteBackup, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteBackup")
+            return hash("AlloyDBAdminRestTransport.DeleteBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1975,38 +1982,29 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/backups/*}",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseDeleteBackup._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
-            pb_request = service.DeleteBackupRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseDeleteBackup._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseAlloyDBAdminRestTransport._BaseDeleteBackup._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AlloyDBAdminRestTransport._DeleteBackup._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2020,19 +2018,33 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_delete_backup(resp)
             return resp
 
-    class _DeleteCluster(AlloyDBAdminRestStub):
+    class _DeleteCluster(
+        _BaseAlloyDBAdminRestTransport._BaseDeleteCluster, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteCluster")
+            return hash("AlloyDBAdminRestTransport.DeleteCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2061,38 +2073,27 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseDeleteCluster._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_cluster(request, metadata)
-            pb_request = service.DeleteClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseDeleteCluster._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseDeleteCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AlloyDBAdminRestTransport._DeleteCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2106,19 +2107,33 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_delete_cluster(resp)
             return resp
 
-    class _DeleteInstance(AlloyDBAdminRestStub):
+    class _DeleteInstance(
+        _BaseAlloyDBAdminRestTransport._BaseDeleteInstance, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteInstance")
+            return hash("AlloyDBAdminRestTransport.DeleteInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2147,38 +2162,27 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/instances/*}",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseDeleteInstance._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
-            pb_request = service.DeleteInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseDeleteInstance._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseDeleteInstance._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AlloyDBAdminRestTransport._DeleteInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2192,19 +2196,33 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_delete_instance(resp)
             return resp
 
-    class _DeleteUser(AlloyDBAdminRestStub):
+    class _DeleteUser(
+        _BaseAlloyDBAdminRestTransport._BaseDeleteUser, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteUser")
+            return hash("AlloyDBAdminRestTransport.DeleteUser")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2226,38 +2244,31 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/users/*}",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseDeleteUser._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_user(request, metadata)
-            pb_request = service.DeleteUserRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseAlloyDBAdminRestTransport._BaseDeleteUser._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseAlloyDBAdminRestTransport._BaseDeleteUser._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AlloyDBAdminRestTransport._DeleteUser._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2265,19 +2276,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _FailoverInstance(AlloyDBAdminRestStub):
+    class _FailoverInstance(
+        _BaseAlloyDBAdminRestTransport._BaseFailoverInstance, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("FailoverInstance")
+            return hash("AlloyDBAdminRestTransport.FailoverInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2307,47 +2333,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/instances/*}:failover",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseFailoverInstance._get_http_options()
+            )
             request, metadata = self._interceptor.pre_failover_instance(
                 request, metadata
             )
-            pb_request = service.FailoverInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseFailoverInstance._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAlloyDBAdminRestTransport._BaseFailoverInstance._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseFailoverInstance._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AlloyDBAdminRestTransport._FailoverInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2361,19 +2374,35 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_failover_instance(resp)
             return resp
 
-    class _GenerateClientCertificate(AlloyDBAdminRestStub):
+    class _GenerateClientCertificate(
+        _BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate,
+        AlloyDBAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("GenerateClientCertificate")
+            return hash("AlloyDBAdminRestTransport.GenerateClientCertificate")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2404,47 +2433,36 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/clusters/*}:generateClientCertificate",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate._get_http_options()
+            )
             request, metadata = self._interceptor.pre_generate_client_certificate(
                 request, metadata
             )
-            pb_request = service.GenerateClientCertificateRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AlloyDBAdminRestTransport._GenerateClientCertificate._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2460,19 +2478,33 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_generate_client_certificate(resp)
             return resp
 
-    class _GetBackup(AlloyDBAdminRestStub):
+    class _GetBackup(
+        _BaseAlloyDBAdminRestTransport._BaseGetBackup, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("GetBackup")
+            return hash("AlloyDBAdminRestTransport.GetBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2498,38 +2530,31 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                     Message describing Backup object
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/backups/*}",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseGetBackup._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
-            pb_request = service.GetBackupRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseAlloyDBAdminRestTransport._BaseGetBackup._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseAlloyDBAdminRestTransport._BaseGetBackup._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AlloyDBAdminRestTransport._GetBackup._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2545,19 +2570,33 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_get_backup(resp)
             return resp
 
-    class _GetCluster(AlloyDBAdminRestStub):
+    class _GetCluster(
+        _BaseAlloyDBAdminRestTransport._BaseGetCluster, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("GetCluster")
+            return hash("AlloyDBAdminRestTransport.GetCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2589,38 +2628,31 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseGetCluster._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_cluster(request, metadata)
-            pb_request = service.GetClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseAlloyDBAdminRestTransport._BaseGetCluster._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseAlloyDBAdminRestTransport._BaseGetCluster._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AlloyDBAdminRestTransport._GetCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2636,19 +2668,33 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_get_cluster(resp)
             return resp
 
-    class _GetConnectionInfo(AlloyDBAdminRestStub):
+    class _GetConnectionInfo(
+        _BaseAlloyDBAdminRestTransport._BaseGetConnectionInfo, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("GetConnectionInfo")
+            return hash("AlloyDBAdminRestTransport.GetConnectionInfo")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2677,40 +2723,29 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/clusters/*/instances/*}/connectionInfo",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseGetConnectionInfo._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_connection_info(
                 request, metadata
             )
-            pb_request = service.GetConnectionInfoRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseGetConnectionInfo._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseGetConnectionInfo._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AlloyDBAdminRestTransport._GetConnectionInfo._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2726,19 +2761,33 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_get_connection_info(resp)
             return resp
 
-    class _GetInstance(AlloyDBAdminRestStub):
+    class _GetInstance(
+        _BaseAlloyDBAdminRestTransport._BaseGetInstance, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("GetInstance")
+            return hash("AlloyDBAdminRestTransport.GetInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2768,38 +2817,31 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/instances/*}",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseGetInstance._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            pb_request = service.GetInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseAlloyDBAdminRestTransport._BaseGetInstance._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseAlloyDBAdminRestTransport._BaseGetInstance._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AlloyDBAdminRestTransport._GetInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2815,19 +2857,31 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_get_instance(resp)
             return resp
 
-    class _GetUser(AlloyDBAdminRestStub):
+    class _GetUser(_BaseAlloyDBAdminRestTransport._BaseGetUser, AlloyDBAdminRestStub):
         def __hash__(self):
-            return hash("GetUser")
+            return hash("AlloyDBAdminRestTransport.GetUser")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2853,38 +2907,31 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                     Message describing User object.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/users/*}",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseGetUser._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_user(request, metadata)
-            pb_request = service.GetUserRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseAlloyDBAdminRestTransport._BaseGetUser._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseAlloyDBAdminRestTransport._BaseGetUser._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AlloyDBAdminRestTransport._GetUser._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2900,19 +2947,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_get_user(resp)
             return resp
 
-    class _InjectFault(AlloyDBAdminRestStub):
+    class _InjectFault(
+        _BaseAlloyDBAdminRestTransport._BaseInjectFault, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("InjectFault")
+            return hash("AlloyDBAdminRestTransport.InjectFault")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2942,45 +3004,38 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/instances/*}:injectFault",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_inject_fault(request, metadata)
-            pb_request = service.InjectFaultRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseInjectFault._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_inject_fault(request, metadata)
+            transcoded_request = (
+                _BaseAlloyDBAdminRestTransport._BaseInjectFault._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = (
+                _BaseAlloyDBAdminRestTransport._BaseInjectFault._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseAlloyDBAdminRestTransport._BaseInjectFault._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AlloyDBAdminRestTransport._InjectFault._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2994,19 +3049,33 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_inject_fault(resp)
             return resp
 
-    class _ListBackups(AlloyDBAdminRestStub):
+    class _ListBackups(
+        _BaseAlloyDBAdminRestTransport._BaseListBackups, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("ListBackups")
+            return hash("AlloyDBAdminRestTransport.ListBackups")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3035,38 +3104,31 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/backups",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseListBackups._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
-            pb_request = service.ListBackupsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseAlloyDBAdminRestTransport._BaseListBackups._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseAlloyDBAdminRestTransport._BaseListBackups._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AlloyDBAdminRestTransport._ListBackups._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3082,19 +3144,33 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_list_backups(resp)
             return resp
 
-    class _ListClusters(AlloyDBAdminRestStub):
+    class _ListClusters(
+        _BaseAlloyDBAdminRestTransport._BaseListClusters, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("ListClusters")
+            return hash("AlloyDBAdminRestTransport.ListClusters")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3123,38 +3199,29 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/clusters",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseListClusters._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_clusters(request, metadata)
-            pb_request = service.ListClustersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListClusters._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseAlloyDBAdminRestTransport._BaseListClusters._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AlloyDBAdminRestTransport._ListClusters._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3170,19 +3237,33 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_list_clusters(resp)
             return resp
 
-    class _ListInstances(AlloyDBAdminRestStub):
+    class _ListInstances(
+        _BaseAlloyDBAdminRestTransport._BaseListInstances, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("ListInstances")
+            return hash("AlloyDBAdminRestTransport.ListInstances")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3211,38 +3292,27 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/clusters/*}/instances",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseListInstances._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            pb_request = service.ListInstancesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListInstances._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseListInstances._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AlloyDBAdminRestTransport._ListInstances._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3258,19 +3328,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_list_instances(resp)
             return resp
 
-    class _ListSupportedDatabaseFlags(AlloyDBAdminRestStub):
+    class _ListSupportedDatabaseFlags(
+        _BaseAlloyDBAdminRestTransport._BaseListSupportedDatabaseFlags,
+        AlloyDBAdminRestStub,
+    ):
         def __hash__(self):
-            return hash("ListSupportedDatabaseFlags")
+            return hash("AlloyDBAdminRestTransport.ListSupportedDatabaseFlags")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3300,40 +3385,31 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/supportedDatabaseFlags",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseListSupportedDatabaseFlags._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_supported_database_flags(
                 request, metadata
             )
-            pb_request = service.ListSupportedDatabaseFlagsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListSupportedDatabaseFlags._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseListSupportedDatabaseFlags._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AlloyDBAdminRestTransport._ListSupportedDatabaseFlags._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3349,19 +3425,33 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_list_supported_database_flags(resp)
             return resp
 
-    class _ListUsers(AlloyDBAdminRestStub):
+    class _ListUsers(
+        _BaseAlloyDBAdminRestTransport._BaseListUsers, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("ListUsers")
+            return hash("AlloyDBAdminRestTransport.ListUsers")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3387,38 +3477,31 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                     Message for response to listing Users
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/clusters/*}/users",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseListUsers._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_users(request, metadata)
-            pb_request = service.ListUsersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseAlloyDBAdminRestTransport._BaseListUsers._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseAlloyDBAdminRestTransport._BaseListUsers._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = AlloyDBAdminRestTransport._ListUsers._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3434,19 +3517,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_list_users(resp)
             return resp
 
-    class _PromoteCluster(AlloyDBAdminRestStub):
+    class _PromoteCluster(
+        _BaseAlloyDBAdminRestTransport._BasePromoteCluster, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("PromoteCluster")
+            return hash("AlloyDBAdminRestTransport.PromoteCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3475,45 +3573,32 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*}:promote",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_promote_cluster(request, metadata)
-            pb_request = service.PromoteClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BasePromoteCluster._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_promote_cluster(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BasePromoteCluster._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAlloyDBAdminRestTransport._BasePromoteCluster._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAlloyDBAdminRestTransport._BasePromoteCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AlloyDBAdminRestTransport._PromoteCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3527,19 +3612,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_promote_cluster(resp)
             return resp
 
-    class _RestartInstance(AlloyDBAdminRestStub):
+    class _RestartInstance(
+        _BaseAlloyDBAdminRestTransport._BaseRestartInstance, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("RestartInstance")
+            return hash("AlloyDBAdminRestTransport.RestartInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3568,47 +3668,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/clusters/*/instances/*}:restart",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseRestartInstance._get_http_options()
+            )
             request, metadata = self._interceptor.pre_restart_instance(
                 request, metadata
             )
-            pb_request = service.RestartInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseRestartInstance._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAlloyDBAdminRestTransport._BaseRestartInstance._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseRestartInstance._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AlloyDBAdminRestTransport._RestartInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3622,19 +3709,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_restart_instance(resp)
             return resp
 
-    class _RestoreCluster(AlloyDBAdminRestStub):
+    class _RestoreCluster(
+        _BaseAlloyDBAdminRestTransport._BaseRestoreCluster, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("RestoreCluster")
+            return hash("AlloyDBAdminRestTransport.RestoreCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3665,45 +3767,32 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/clusters:restore",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_restore_cluster(request, metadata)
-            pb_request = service.RestoreClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseRestoreCluster._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_restore_cluster(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseRestoreCluster._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAlloyDBAdminRestTransport._BaseRestoreCluster._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseRestoreCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AlloyDBAdminRestTransport._RestoreCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3717,19 +3806,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_restore_cluster(resp)
             return resp
 
-    class _UpdateBackup(AlloyDBAdminRestStub):
+    class _UpdateBackup(
+        _BaseAlloyDBAdminRestTransport._BaseUpdateBackup, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateBackup")
+            return hash("AlloyDBAdminRestTransport.UpdateBackup")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3758,45 +3862,36 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{backup.name=projects/*/locations/*/backups/*}",
-                    "body": "backup",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_backup(request, metadata)
-            pb_request = service.UpdateBackupRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseUpdateBackup._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_backup(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseUpdateBackup._get_transcoded_request(
+                http_options, request
+            )
 
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            body = (
+                _BaseAlloyDBAdminRestTransport._BaseUpdateBackup._get_request_body_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseAlloyDBAdminRestTransport._BaseUpdateBackup._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AlloyDBAdminRestTransport._UpdateBackup._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3810,19 +3905,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_update_backup(resp)
             return resp
 
-    class _UpdateCluster(AlloyDBAdminRestStub):
+    class _UpdateCluster(
+        _BaseAlloyDBAdminRestTransport._BaseUpdateCluster, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateCluster")
+            return hash("AlloyDBAdminRestTransport.UpdateCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3851,45 +3961,32 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{cluster.name=projects/*/locations/*/clusters/*}",
-                    "body": "cluster",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_cluster(request, metadata)
-            pb_request = service.UpdateClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseUpdateCluster._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_cluster(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseUpdateCluster._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAlloyDBAdminRestTransport._BaseUpdateCluster._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseUpdateCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AlloyDBAdminRestTransport._UpdateCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3903,19 +4000,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_update_cluster(resp)
             return resp
 
-    class _UpdateInstance(AlloyDBAdminRestStub):
+    class _UpdateInstance(
+        _BaseAlloyDBAdminRestTransport._BaseUpdateInstance, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateInstance")
+            return hash("AlloyDBAdminRestTransport.UpdateInstance")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3944,45 +4056,32 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{instance.name=projects/*/locations/*/clusters/*/instances/*}",
-                    "body": "instance",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_instance(request, metadata)
-            pb_request = service.UpdateInstanceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseUpdateInstance._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_instance(request, metadata)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseUpdateInstance._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseAlloyDBAdminRestTransport._BaseUpdateInstance._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAlloyDBAdminRestTransport._BaseUpdateInstance._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AlloyDBAdminRestTransport._UpdateInstance._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3996,19 +4095,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_update_instance(resp)
             return resp
 
-    class _UpdateUser(AlloyDBAdminRestStub):
+    class _UpdateUser(
+        _BaseAlloyDBAdminRestTransport._BaseUpdateUser, AlloyDBAdminRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateUser")
+            return hash("AlloyDBAdminRestTransport.UpdateUser")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4034,45 +4148,38 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                     Message describing User object.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{user.name=projects/*/locations/*/clusters/*/users/*}",
-                    "body": "user",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_user(request, metadata)
-            pb_request = service.UpdateUserRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseUpdateUser._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_update_user(request, metadata)
+            transcoded_request = (
+                _BaseAlloyDBAdminRestTransport._BaseUpdateUser._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = (
+                _BaseAlloyDBAdminRestTransport._BaseUpdateUser._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseAlloyDBAdminRestTransport._BaseUpdateUser._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = AlloyDBAdminRestTransport._UpdateUser._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4334,7 +4441,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(AlloyDBAdminRestStub):
+    class _GetLocation(
+        _BaseAlloyDBAdminRestTransport._BaseGetLocation, AlloyDBAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("AlloyDBAdminRestTransport.GetLocation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -4358,32 +4492,31 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseGetLocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = (
+                _BaseAlloyDBAdminRestTransport._BaseGetLocation._get_transcoded_request(
+                    http_options, request
+                )
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseAlloyDBAdminRestTransport._BaseGetLocation._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = AlloyDBAdminRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4391,8 +4524,9 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -4400,7 +4534,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(AlloyDBAdminRestStub):
+    class _ListLocations(
+        _BaseAlloyDBAdminRestTransport._BaseListLocations, AlloyDBAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("AlloyDBAdminRestTransport.ListLocations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -4424,32 +4585,27 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*}/locations",
-                },
-            ]
-
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseListLocations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListLocations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseAlloyDBAdminRestTransport._BaseListLocations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = AlloyDBAdminRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4457,8 +4613,9 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 
@@ -4466,7 +4623,35 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(AlloyDBAdminRestStub):
+    class _CancelOperation(
+        _BaseAlloyDBAdminRestTransport._BaseCancelOperation, AlloyDBAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("AlloyDBAdminRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -4487,37 +4672,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseCancelOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseAlloyDBAdminRestTransport._BaseCancelOperation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseAlloyDBAdminRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = AlloyDBAdminRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4531,7 +4713,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(AlloyDBAdminRestStub):
+    class _DeleteOperation(
+        _BaseAlloyDBAdminRestTransport._BaseDeleteOperation, AlloyDBAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("AlloyDBAdminRestTransport.DeleteOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.DeleteOperationRequest,
@@ -4552,34 +4761,29 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseDeleteOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseDeleteOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseAlloyDBAdminRestTransport._BaseDeleteOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = AlloyDBAdminRestTransport._DeleteOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4593,7 +4797,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(AlloyDBAdminRestStub):
+    class _GetOperation(
+        _BaseAlloyDBAdminRestTransport._BaseGetOperation, AlloyDBAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("AlloyDBAdminRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -4617,32 +4848,29 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseGetOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseAlloyDBAdminRestTransport._BaseGetOperation._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = AlloyDBAdminRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4650,8 +4878,9 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -4659,7 +4888,34 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(AlloyDBAdminRestStub):
+    class _ListOperations(
+        _BaseAlloyDBAdminRestTransport._BaseListOperations, AlloyDBAdminRestStub
+    ):
+        def __hash__(self):
+            return hash("AlloyDBAdminRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -4683,32 +4939,27 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}/operations",
-                },
-            ]
-
+            http_options = (
+                _BaseAlloyDBAdminRestTransport._BaseListOperations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAlloyDBAdminRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseAlloyDBAdminRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = AlloyDBAdminRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4716,8 +4967,9 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

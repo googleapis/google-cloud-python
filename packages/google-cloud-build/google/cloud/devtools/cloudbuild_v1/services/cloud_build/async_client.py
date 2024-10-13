@@ -414,13 +414,19 @@ class CloudBuildAsyncClient:
             self._client._transport.create_build
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)$"
         )
+        regex_match = routing_param_regex.match(request.parent)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -562,16 +568,19 @@ class CloudBuildAsyncClient:
             self._client._transport.get_build
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    ("project_id", request.project_id),
-                    ("id", request.id),
-                )
-            ),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)/builds/[^/]+$"
         )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -687,13 +696,19 @@ class CloudBuildAsyncClient:
             self._client._transport.list_builds
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)$"
         )
+        regex_match = routing_param_regex.match(request.parent)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -834,16 +849,19 @@ class CloudBuildAsyncClient:
             self._client._transport.cancel_build
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    ("project_id", request.project_id),
-                    ("id", request.id),
-                )
-            ),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)/builds/[^/]+$"
         )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1012,16 +1030,19 @@ class CloudBuildAsyncClient:
             self._client._transport.retry_build
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    ("project_id", request.project_id),
-                    ("id", request.id),
-                )
-            ),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)/builds/[^/]+$"
         )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1174,11 +1195,19 @@ class CloudBuildAsyncClient:
             self._client._transport.approve_build
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)/builds/[^/]+$"
         )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1302,13 +1331,19 @@ class CloudBuildAsyncClient:
             self._client._transport.create_build_trigger
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)$"
         )
+        regex_match = routing_param_regex.match(request.parent)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1423,16 +1458,19 @@ class CloudBuildAsyncClient:
             self._client._transport.get_build_trigger
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    ("project_id", request.project_id),
-                    ("trigger_id", request.trigger_id),
-                )
-            ),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)/triggers/[^/]+$"
         )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1538,13 +1576,19 @@ class CloudBuildAsyncClient:
             self._client._transport.list_build_triggers
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("project_id", request.project_id),)
-            ),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)$"
         )
+        regex_match = routing_param_regex.match(request.parent)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1658,16 +1702,19 @@ class CloudBuildAsyncClient:
             self._client._transport.delete_build_trigger
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    ("project_id", request.project_id),
-                    ("trigger_id", request.trigger_id),
-                )
-            ),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)/triggers/[^/]+$"
         )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1789,16 +1836,19 @@ class CloudBuildAsyncClient:
             self._client._transport.update_build_trigger
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    ("project_id", request.project_id),
-                    ("trigger_id", request.trigger_id),
-                )
-            ),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)/triggers/[^/]+$"
         )
+        regex_match = routing_param_regex.match(request.trigger.resource_name)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1954,16 +2004,19 @@ class CloudBuildAsyncClient:
             self._client._transport.run_build_trigger
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    ("project_id", request.project_id),
-                    ("trigger_id", request.trigger_id),
-                )
-            ),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)/triggers/[^/]+$"
         )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2207,11 +2260,19 @@ class CloudBuildAsyncClient:
             self._client._transport.create_worker_pool
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)$"
         )
+        regex_match = routing_param_regex.match(request.parent)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2334,11 +2395,19 @@ class CloudBuildAsyncClient:
             self._client._transport.get_worker_pool
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)/workerPools/[^/]+$"
         )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2454,11 +2523,19 @@ class CloudBuildAsyncClient:
             self._client._transport.delete_worker_pool
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)/workerPools/[^/]+$"
         )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2600,13 +2677,19 @@ class CloudBuildAsyncClient:
             self._client._transport.update_worker_pool
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("worker_pool.name", request.worker_pool.name),)
-            ),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)/workerPools/[^/]+$"
         )
+        regex_match = routing_param_regex.match(request.worker_pool.name)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2719,11 +2802,19 @@ class CloudBuildAsyncClient:
             self._client._transport.list_worker_pools
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^projects/[^/]+/locations/(?P<location>[^/]+)$"
         )
+        regex_match = routing_param_regex.match(request.parent)
+        if regex_match and regex_match.group("location"):
+            header_params["location"] = regex_match.group("location")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()

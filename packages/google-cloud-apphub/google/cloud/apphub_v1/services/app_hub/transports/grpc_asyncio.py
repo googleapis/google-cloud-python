@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -237,6 +238,9 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1066,7 +1070,7 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.lookup_service_project_attachment: gapic_v1.method_async.wrap_method(
+            self.lookup_service_project_attachment: self._wrap_method(
                 self.lookup_service_project_attachment,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1080,7 +1084,7 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_service_project_attachments: gapic_v1.method_async.wrap_method(
+            self.list_service_project_attachments: self._wrap_method(
                 self.list_service_project_attachments,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1094,12 +1098,12 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_service_project_attachment: gapic_v1.method_async.wrap_method(
+            self.create_service_project_attachment: self._wrap_method(
                 self.create_service_project_attachment,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_service_project_attachment: gapic_v1.method_async.wrap_method(
+            self.get_service_project_attachment: self._wrap_method(
                 self.get_service_project_attachment,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1113,17 +1117,17 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_service_project_attachment: gapic_v1.method_async.wrap_method(
+            self.delete_service_project_attachment: self._wrap_method(
                 self.delete_service_project_attachment,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.detach_service_project_attachment: gapic_v1.method_async.wrap_method(
+            self.detach_service_project_attachment: self._wrap_method(
                 self.detach_service_project_attachment,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_discovered_services: gapic_v1.method_async.wrap_method(
+            self.list_discovered_services: self._wrap_method(
                 self.list_discovered_services,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1137,7 +1141,7 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_discovered_service: gapic_v1.method_async.wrap_method(
+            self.get_discovered_service: self._wrap_method(
                 self.get_discovered_service,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1151,7 +1155,7 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.lookup_discovered_service: gapic_v1.method_async.wrap_method(
+            self.lookup_discovered_service: self._wrap_method(
                 self.lookup_discovered_service,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1165,7 +1169,7 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_services: gapic_v1.method_async.wrap_method(
+            self.list_services: self._wrap_method(
                 self.list_services,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1179,12 +1183,12 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_service: gapic_v1.method_async.wrap_method(
+            self.create_service: self._wrap_method(
                 self.create_service,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_service: gapic_v1.method_async.wrap_method(
+            self.get_service: self._wrap_method(
                 self.get_service,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1198,17 +1202,17 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_service: gapic_v1.method_async.wrap_method(
+            self.update_service: self._wrap_method(
                 self.update_service,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_service: gapic_v1.method_async.wrap_method(
+            self.delete_service: self._wrap_method(
                 self.delete_service,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_discovered_workloads: gapic_v1.method_async.wrap_method(
+            self.list_discovered_workloads: self._wrap_method(
                 self.list_discovered_workloads,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1222,7 +1226,7 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_discovered_workload: gapic_v1.method_async.wrap_method(
+            self.get_discovered_workload: self._wrap_method(
                 self.get_discovered_workload,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1236,7 +1240,7 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.lookup_discovered_workload: gapic_v1.method_async.wrap_method(
+            self.lookup_discovered_workload: self._wrap_method(
                 self.lookup_discovered_workload,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1250,7 +1254,7 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_workloads: gapic_v1.method_async.wrap_method(
+            self.list_workloads: self._wrap_method(
                 self.list_workloads,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1264,12 +1268,12 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_workload: gapic_v1.method_async.wrap_method(
+            self.create_workload: self._wrap_method(
                 self.create_workload,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_workload: gapic_v1.method_async.wrap_method(
+            self.get_workload: self._wrap_method(
                 self.get_workload,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1283,17 +1287,17 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_workload: gapic_v1.method_async.wrap_method(
+            self.update_workload: self._wrap_method(
                 self.update_workload,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_workload: gapic_v1.method_async.wrap_method(
+            self.delete_workload: self._wrap_method(
                 self.delete_workload,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_applications: gapic_v1.method_async.wrap_method(
+            self.list_applications: self._wrap_method(
                 self.list_applications,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1307,12 +1311,12 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_application: gapic_v1.method_async.wrap_method(
+            self.create_application: self._wrap_method(
                 self.create_application,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_application: gapic_v1.method_async.wrap_method(
+            self.get_application: self._wrap_method(
                 self.get_application,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1326,20 +1330,74 @@ class AppHubGrpcAsyncIOTransport(AppHubTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_application: gapic_v1.method_async.wrap_method(
+            self.update_application: self._wrap_method(
                 self.update_application,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_application: gapic_v1.method_async.wrap_method(
+            self.delete_application: self._wrap_method(
                 self.delete_application,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_iam_policy: self._wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: self._wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: self._wrap_method(
+                self.test_iam_permissions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
+
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(

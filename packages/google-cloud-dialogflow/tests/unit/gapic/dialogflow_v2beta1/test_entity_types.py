@@ -22,9 +22,26 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
+
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import (
     future,
@@ -35,7 +52,7 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
@@ -47,15 +64,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import struct_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.dialogflow_v2beta1.services.entity_types import (
     EntityTypesAsyncClient,
@@ -67,8 +76,22 @@ from google.cloud.dialogflow_v2beta1.types import entity_type as gcd_entity_type
 from google.cloud.dialogflow_v2beta1.types import entity_type
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1136,27 +1159,6 @@ def test_list_entity_types(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_entity_types_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entity_types), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_entity_types()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.ListEntityTypesRequest()
-
-
 def test_list_entity_types_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1229,31 +1231,6 @@ def test_list_entity_types_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_entity_types_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_entity_types), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            entity_type.ListEntityTypesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_entity_types()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.ListEntityTypesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_entity_types_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1261,7 +1238,7 @@ async def test_list_entity_types_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EntityTypesAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1300,7 +1277,7 @@ async def test_list_entity_types_async(
     transport: str = "grpc_asyncio", request_type=entity_type.ListEntityTypesRequest
 ):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1370,7 +1347,7 @@ def test_list_entity_types_field_headers():
 @pytest.mark.asyncio
 async def test_list_entity_types_field_headers_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1449,7 +1426,7 @@ def test_list_entity_types_flattened_error():
 @pytest.mark.asyncio
 async def test_list_entity_types_flattened_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1484,7 +1461,7 @@ async def test_list_entity_types_flattened_async():
 @pytest.mark.asyncio
 async def test_list_entity_types_flattened_error_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1599,7 +1576,7 @@ def test_list_entity_types_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_entity_types_async_pager():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1651,7 +1628,7 @@ async def test_list_entity_types_async_pager():
 @pytest.mark.asyncio
 async def test_list_entity_types_async_pages():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1746,25 +1723,6 @@ def test_get_entity_type(request_type, transport: str = "grpc"):
     assert response.enable_fuzzy_extraction is True
 
 
-def test_get_entity_type_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_entity_type), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_entity_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.GetEntityTypeRequest()
-
-
 def test_get_entity_type_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1831,33 +1789,6 @@ def test_get_entity_type_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_entity_type_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_entity_type), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            entity_type.EntityType(
-                name="name_value",
-                display_name="display_name_value",
-                kind=entity_type.EntityType.Kind.KIND_MAP,
-                auto_expansion_mode=entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT,
-                enable_fuzzy_extraction=True,
-            )
-        )
-        response = await client.get_entity_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.GetEntityTypeRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_entity_type_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1865,7 +1796,7 @@ async def test_get_entity_type_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EntityTypesAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1904,7 +1835,7 @@ async def test_get_entity_type_async(
     transport: str = "grpc_asyncio", request_type=entity_type.GetEntityTypeRequest
 ):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1981,7 +1912,7 @@ def test_get_entity_type_field_headers():
 @pytest.mark.asyncio
 async def test_get_entity_type_field_headers_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2056,7 +1987,7 @@ def test_get_entity_type_flattened_error():
 @pytest.mark.asyncio
 async def test_get_entity_type_flattened_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2089,7 +2020,7 @@ async def test_get_entity_type_flattened_async():
 @pytest.mark.asyncio
 async def test_get_entity_type_flattened_error_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2149,27 +2080,6 @@ def test_create_entity_type(request_type, transport: str = "grpc"):
         == gcd_entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT
     )
     assert response.enable_fuzzy_extraction is True
-
-
-def test_create_entity_type_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_entity_type), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_entity_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_entity_type.CreateEntityTypeRequest()
 
 
 def test_create_entity_type_non_empty_request_with_auto_populated_field():
@@ -2244,35 +2154,6 @@ def test_create_entity_type_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_entity_type_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_entity_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcd_entity_type.EntityType(
-                name="name_value",
-                display_name="display_name_value",
-                kind=gcd_entity_type.EntityType.Kind.KIND_MAP,
-                auto_expansion_mode=gcd_entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT,
-                enable_fuzzy_extraction=True,
-            )
-        )
-        response = await client.create_entity_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_entity_type.CreateEntityTypeRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_entity_type_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2280,7 +2161,7 @@ async def test_create_entity_type_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EntityTypesAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2320,7 +2201,7 @@ async def test_create_entity_type_async(
     request_type=gcd_entity_type.CreateEntityTypeRequest,
 ):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2401,7 +2282,7 @@ def test_create_entity_type_field_headers():
 @pytest.mark.asyncio
 async def test_create_entity_type_field_headers_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2485,7 +2366,7 @@ def test_create_entity_type_flattened_error():
 @pytest.mark.asyncio
 async def test_create_entity_type_flattened_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2524,7 +2405,7 @@ async def test_create_entity_type_flattened_async():
 @pytest.mark.asyncio
 async def test_create_entity_type_flattened_error_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2585,27 +2466,6 @@ def test_update_entity_type(request_type, transport: str = "grpc"):
         == gcd_entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT
     )
     assert response.enable_fuzzy_extraction is True
-
-
-def test_update_entity_type_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_entity_type), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_entity_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_entity_type.UpdateEntityTypeRequest()
 
 
 def test_update_entity_type_non_empty_request_with_auto_populated_field():
@@ -2678,35 +2538,6 @@ def test_update_entity_type_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_entity_type_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_entity_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcd_entity_type.EntityType(
-                name="name_value",
-                display_name="display_name_value",
-                kind=gcd_entity_type.EntityType.Kind.KIND_MAP,
-                auto_expansion_mode=gcd_entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT,
-                enable_fuzzy_extraction=True,
-            )
-        )
-        response = await client.update_entity_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gcd_entity_type.UpdateEntityTypeRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_entity_type_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2714,7 +2545,7 @@ async def test_update_entity_type_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EntityTypesAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2754,7 +2585,7 @@ async def test_update_entity_type_async(
     request_type=gcd_entity_type.UpdateEntityTypeRequest,
 ):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2835,7 +2666,7 @@ def test_update_entity_type_field_headers():
 @pytest.mark.asyncio
 async def test_update_entity_type_field_headers_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2919,7 +2750,7 @@ def test_update_entity_type_flattened_error():
 @pytest.mark.asyncio
 async def test_update_entity_type_flattened_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2958,7 +2789,7 @@ async def test_update_entity_type_flattened_async():
 @pytest.mark.asyncio
 async def test_update_entity_type_flattened_error_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3005,27 +2836,6 @@ def test_delete_entity_type(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_entity_type_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_entity_type), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_entity_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.DeleteEntityTypeRequest()
 
 
 def test_delete_entity_type_non_empty_request_with_auto_populated_field():
@@ -3098,27 +2908,6 @@ def test_delete_entity_type_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_entity_type_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_entity_type), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_entity_type()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.DeleteEntityTypeRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_entity_type_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3126,7 +2915,7 @@ async def test_delete_entity_type_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EntityTypesAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3165,7 +2954,7 @@ async def test_delete_entity_type_async(
     transport: str = "grpc_asyncio", request_type=entity_type.DeleteEntityTypeRequest
 ):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3230,7 +3019,7 @@ def test_delete_entity_type_field_headers():
 @pytest.mark.asyncio
 async def test_delete_entity_type_field_headers_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3302,7 +3091,7 @@ def test_delete_entity_type_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_entity_type_flattened_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3331,7 +3120,7 @@ async def test_delete_entity_type_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_entity_type_flattened_error_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3376,27 +3165,6 @@ def test_batch_update_entity_types(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_batch_update_entity_types_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_entity_types), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.batch_update_entity_types()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.BatchUpdateEntityTypesRequest()
 
 
 def test_batch_update_entity_types_non_empty_request_with_auto_populated_field():
@@ -3479,29 +3247,6 @@ def test_batch_update_entity_types_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_batch_update_entity_types_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_entity_types), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.batch_update_entity_types()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.BatchUpdateEntityTypesRequest()
-
-
-@pytest.mark.asyncio
 async def test_batch_update_entity_types_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3509,7 +3254,7 @@ async def test_batch_update_entity_types_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EntityTypesAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3554,7 +3299,7 @@ async def test_batch_update_entity_types_async(
     request_type=entity_type.BatchUpdateEntityTypesRequest,
 ):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3621,7 +3366,7 @@ def test_batch_update_entity_types_field_headers():
 @pytest.mark.asyncio
 async def test_batch_update_entity_types_field_headers_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3685,27 +3430,6 @@ def test_batch_delete_entity_types(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_batch_delete_entity_types_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_entity_types), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.batch_delete_entity_types()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.BatchDeleteEntityTypesRequest()
 
 
 def test_batch_delete_entity_types_non_empty_request_with_auto_populated_field():
@@ -3784,29 +3508,6 @@ def test_batch_delete_entity_types_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_batch_delete_entity_types_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_entity_types), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.batch_delete_entity_types()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.BatchDeleteEntityTypesRequest()
-
-
-@pytest.mark.asyncio
 async def test_batch_delete_entity_types_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3814,7 +3515,7 @@ async def test_batch_delete_entity_types_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EntityTypesAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3859,7 +3560,7 @@ async def test_batch_delete_entity_types_async(
     request_type=entity_type.BatchDeleteEntityTypesRequest,
 ):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3926,7 +3627,7 @@ def test_batch_delete_entity_types_field_headers():
 @pytest.mark.asyncio
 async def test_batch_delete_entity_types_field_headers_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4005,7 +3706,7 @@ def test_batch_delete_entity_types_flattened_error():
 @pytest.mark.asyncio
 async def test_batch_delete_entity_types_flattened_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4040,7 +3741,7 @@ async def test_batch_delete_entity_types_flattened_async():
 @pytest.mark.asyncio
 async def test_batch_delete_entity_types_flattened_error_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4086,27 +3787,6 @@ def test_batch_create_entities(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_batch_create_entities_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_create_entities), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.batch_create_entities()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.BatchCreateEntitiesRequest()
 
 
 def test_batch_create_entities_non_empty_request_with_auto_populated_field():
@@ -4187,29 +3867,6 @@ def test_batch_create_entities_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_batch_create_entities_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_create_entities), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.batch_create_entities()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.BatchCreateEntitiesRequest()
-
-
-@pytest.mark.asyncio
 async def test_batch_create_entities_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4217,7 +3874,7 @@ async def test_batch_create_entities_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EntityTypesAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4261,7 +3918,7 @@ async def test_batch_create_entities_async(
     transport: str = "grpc_asyncio", request_type=entity_type.BatchCreateEntitiesRequest
 ):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4328,7 +3985,7 @@ def test_batch_create_entities_field_headers():
 @pytest.mark.asyncio
 async def test_batch_create_entities_field_headers_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4412,7 +4069,7 @@ def test_batch_create_entities_flattened_error():
 @pytest.mark.asyncio
 async def test_batch_create_entities_flattened_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4451,7 +4108,7 @@ async def test_batch_create_entities_flattened_async():
 @pytest.mark.asyncio
 async def test_batch_create_entities_flattened_error_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4498,27 +4155,6 @@ def test_batch_update_entities(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_batch_update_entities_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_entities), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.batch_update_entities()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.BatchUpdateEntitiesRequest()
 
 
 def test_batch_update_entities_non_empty_request_with_auto_populated_field():
@@ -4599,29 +4235,6 @@ def test_batch_update_entities_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_batch_update_entities_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_update_entities), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.batch_update_entities()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.BatchUpdateEntitiesRequest()
-
-
-@pytest.mark.asyncio
 async def test_batch_update_entities_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4629,7 +4242,7 @@ async def test_batch_update_entities_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EntityTypesAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4673,7 +4286,7 @@ async def test_batch_update_entities_async(
     transport: str = "grpc_asyncio", request_type=entity_type.BatchUpdateEntitiesRequest
 ):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4740,7 +4353,7 @@ def test_batch_update_entities_field_headers():
 @pytest.mark.asyncio
 async def test_batch_update_entities_field_headers_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4824,7 +4437,7 @@ def test_batch_update_entities_flattened_error():
 @pytest.mark.asyncio
 async def test_batch_update_entities_flattened_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4863,7 +4476,7 @@ async def test_batch_update_entities_flattened_async():
 @pytest.mark.asyncio
 async def test_batch_update_entities_flattened_error_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4910,27 +4523,6 @@ def test_batch_delete_entities(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_batch_delete_entities_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_entities), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.batch_delete_entities()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.BatchDeleteEntitiesRequest()
 
 
 def test_batch_delete_entities_non_empty_request_with_auto_populated_field():
@@ -5011,29 +4603,6 @@ def test_batch_delete_entities_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_batch_delete_entities_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_delete_entities), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.batch_delete_entities()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == entity_type.BatchDeleteEntitiesRequest()
-
-
-@pytest.mark.asyncio
 async def test_batch_delete_entities_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5041,7 +4610,7 @@ async def test_batch_delete_entities_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = EntityTypesAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5085,7 +4654,7 @@ async def test_batch_delete_entities_async(
     transport: str = "grpc_asyncio", request_type=entity_type.BatchDeleteEntitiesRequest
 ):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5152,7 +4721,7 @@ def test_batch_delete_entities_field_headers():
 @pytest.mark.asyncio
 async def test_batch_delete_entities_field_headers_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5236,7 +4805,7 @@ def test_batch_delete_entities_flattened_error():
 @pytest.mark.asyncio
 async def test_batch_delete_entities_flattened_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5275,7 +4844,7 @@ async def test_batch_delete_entities_flattened_async():
 @pytest.mark.asyncio
 async def test_batch_delete_entities_flattened_error_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5287,46 +4856,6 @@ async def test_batch_delete_entities_flattened_error_async():
             entity_values=["entity_values_value"],
             language_code="language_code_value",
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        entity_type.ListEntityTypesRequest,
-        dict,
-    ],
-)
-def test_list_entity_types_rest(request_type):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/agent"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = entity_type.ListEntityTypesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = entity_type.ListEntityTypesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_entity_types(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListEntityTypesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_entity_types_rest_use_cached_wrapped_rpc():
@@ -5467,87 +4996,6 @@ def test_list_entity_types_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_entity_types_rest_interceptors(null_interceptor):
-    transport = transports.EntityTypesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EntityTypesRestInterceptor(),
-    )
-    client = EntityTypesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_list_entity_types"
-    ) as post, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_list_entity_types"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = entity_type.ListEntityTypesRequest.pb(
-            entity_type.ListEntityTypesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = entity_type.ListEntityTypesResponse.to_json(
-            entity_type.ListEntityTypesResponse()
-        )
-
-        request = entity_type.ListEntityTypesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = entity_type.ListEntityTypesResponse()
-
-        client.list_entity_types(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_entity_types_rest_bad_request(
-    transport: str = "rest", request_type=entity_type.ListEntityTypesRequest
-):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/agent"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_entity_types(request)
-
-
 def test_list_entity_types_rest_flattened():
     client = EntityTypesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5667,57 +5115,6 @@ def test_list_entity_types_rest_pager(transport: str = "rest"):
         pages = list(client.list_entity_types(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        entity_type.GetEntityTypeRequest,
-        dict,
-    ],
-)
-def test_get_entity_type_rest(request_type):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/agent/entityTypes/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = entity_type.EntityType(
-            name="name_value",
-            display_name="display_name_value",
-            kind=entity_type.EntityType.Kind.KIND_MAP,
-            auto_expansion_mode=entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT,
-            enable_fuzzy_extraction=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = entity_type.EntityType.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_entity_type(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, entity_type.EntityType)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.kind == entity_type.EntityType.Kind.KIND_MAP
-    assert (
-        response.auto_expansion_mode
-        == entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT
-    )
-    assert response.enable_fuzzy_extraction is True
 
 
 def test_get_entity_type_rest_use_cached_wrapped_rpc():
@@ -5841,87 +5238,6 @@ def test_get_entity_type_rest_unset_required_fields():
     assert set(unset_fields) == (set(("languageCode",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_entity_type_rest_interceptors(null_interceptor):
-    transport = transports.EntityTypesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EntityTypesRestInterceptor(),
-    )
-    client = EntityTypesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_get_entity_type"
-    ) as post, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_get_entity_type"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = entity_type.GetEntityTypeRequest.pb(
-            entity_type.GetEntityTypeRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = entity_type.EntityType.to_json(
-            entity_type.EntityType()
-        )
-
-        request = entity_type.GetEntityTypeRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = entity_type.EntityType()
-
-        client.get_entity_type(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_entity_type_rest_bad_request(
-    transport: str = "rest", request_type=entity_type.GetEntityTypeRequest
-):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/agent/entityTypes/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_entity_type(request)
-
-
 def test_get_entity_type_rest_flattened():
     client = EntityTypesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5978,140 +5294,6 @@ def test_get_entity_type_rest_flattened_error(transport: str = "rest"):
             name="name_value",
             language_code="language_code_value",
         )
-
-
-def test_get_entity_type_rest_error():
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        gcd_entity_type.CreateEntityTypeRequest,
-        dict,
-    ],
-)
-def test_create_entity_type_rest(request_type):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/agent"}
-    request_init["entity_type"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "kind": 1,
-        "auto_expansion_mode": 1,
-        "entities": [
-            {"value": "value_value", "synonyms": ["synonyms_value1", "synonyms_value2"]}
-        ],
-        "enable_fuzzy_extraction": True,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = gcd_entity_type.CreateEntityTypeRequest.meta.fields["entity_type"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["entity_type"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["entity_type"][field])):
-                    del request_init["entity_type"][field][i][subfield]
-            else:
-                del request_init["entity_type"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gcd_entity_type.EntityType(
-            name="name_value",
-            display_name="display_name_value",
-            kind=gcd_entity_type.EntityType.Kind.KIND_MAP,
-            auto_expansion_mode=gcd_entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT,
-            enable_fuzzy_extraction=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gcd_entity_type.EntityType.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_entity_type(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gcd_entity_type.EntityType)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.kind == gcd_entity_type.EntityType.Kind.KIND_MAP
-    assert (
-        response.auto_expansion_mode
-        == gcd_entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT
-    )
-    assert response.enable_fuzzy_extraction is True
 
 
 def test_create_entity_type_rest_use_cached_wrapped_rpc():
@@ -6248,87 +5430,6 @@ def test_create_entity_type_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_entity_type_rest_interceptors(null_interceptor):
-    transport = transports.EntityTypesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EntityTypesRestInterceptor(),
-    )
-    client = EntityTypesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_create_entity_type"
-    ) as post, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_create_entity_type"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = gcd_entity_type.CreateEntityTypeRequest.pb(
-            gcd_entity_type.CreateEntityTypeRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gcd_entity_type.EntityType.to_json(
-            gcd_entity_type.EntityType()
-        )
-
-        request = gcd_entity_type.CreateEntityTypeRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gcd_entity_type.EntityType()
-
-        client.create_entity_type(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_entity_type_rest_bad_request(
-    transport: str = "rest", request_type=gcd_entity_type.CreateEntityTypeRequest
-):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/agent"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_entity_type(request)
-
-
 def test_create_entity_type_rest_flattened():
     client = EntityTypesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6387,142 +5488,6 @@ def test_create_entity_type_rest_flattened_error(transport: str = "rest"):
             entity_type=gcd_entity_type.EntityType(name="name_value"),
             language_code="language_code_value",
         )
-
-
-def test_create_entity_type_rest_error():
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        gcd_entity_type.UpdateEntityTypeRequest,
-        dict,
-    ],
-)
-def test_update_entity_type_rest(request_type):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "entity_type": {"name": "projects/sample1/agent/entityTypes/sample2"}
-    }
-    request_init["entity_type"] = {
-        "name": "projects/sample1/agent/entityTypes/sample2",
-        "display_name": "display_name_value",
-        "kind": 1,
-        "auto_expansion_mode": 1,
-        "entities": [
-            {"value": "value_value", "synonyms": ["synonyms_value1", "synonyms_value2"]}
-        ],
-        "enable_fuzzy_extraction": True,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = gcd_entity_type.UpdateEntityTypeRequest.meta.fields["entity_type"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["entity_type"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["entity_type"][field])):
-                    del request_init["entity_type"][field][i][subfield]
-            else:
-                del request_init["entity_type"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gcd_entity_type.EntityType(
-            name="name_value",
-            display_name="display_name_value",
-            kind=gcd_entity_type.EntityType.Kind.KIND_MAP,
-            auto_expansion_mode=gcd_entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT,
-            enable_fuzzy_extraction=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gcd_entity_type.EntityType.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_entity_type(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gcd_entity_type.EntityType)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.kind == gcd_entity_type.EntityType.Kind.KIND_MAP
-    assert (
-        response.auto_expansion_mode
-        == gcd_entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT
-    )
-    assert response.enable_fuzzy_extraction is True
 
 
 def test_update_entity_type_rest_use_cached_wrapped_rpc():
@@ -6659,89 +5624,6 @@ def test_update_entity_type_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_entity_type_rest_interceptors(null_interceptor):
-    transport = transports.EntityTypesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EntityTypesRestInterceptor(),
-    )
-    client = EntityTypesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_update_entity_type"
-    ) as post, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_update_entity_type"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = gcd_entity_type.UpdateEntityTypeRequest.pb(
-            gcd_entity_type.UpdateEntityTypeRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gcd_entity_type.EntityType.to_json(
-            gcd_entity_type.EntityType()
-        )
-
-        request = gcd_entity_type.UpdateEntityTypeRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gcd_entity_type.EntityType()
-
-        client.update_entity_type(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_entity_type_rest_bad_request(
-    transport: str = "rest", request_type=gcd_entity_type.UpdateEntityTypeRequest
-):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "entity_type": {"name": "projects/sample1/agent/entityTypes/sample2"}
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_entity_type(request)
-
-
 def test_update_entity_type_rest_flattened():
     client = EntityTypesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -6803,47 +5685,6 @@ def test_update_entity_type_rest_flattened_error(transport: str = "rest"):
             language_code="language_code_value",
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_entity_type_rest_error():
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        entity_type.DeleteEntityTypeRequest,
-        dict,
-    ],
-)
-def test_delete_entity_type_rest(request_type):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/agent/entityTypes/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_entity_type(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_entity_type_rest_use_cached_wrapped_rpc():
@@ -6966,79 +5807,6 @@ def test_delete_entity_type_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_entity_type_rest_interceptors(null_interceptor):
-    transport = transports.EntityTypesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EntityTypesRestInterceptor(),
-    )
-    client = EntityTypesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_delete_entity_type"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = entity_type.DeleteEntityTypeRequest.pb(
-            entity_type.DeleteEntityTypeRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = entity_type.DeleteEntityTypeRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_entity_type(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_entity_type_rest_bad_request(
-    transport: str = "rest", request_type=entity_type.DeleteEntityTypeRequest
-):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/agent/entityTypes/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_entity_type(request)
-
-
 def test_delete_entity_type_rest_flattened():
     client = EntityTypesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7091,47 +5859,6 @@ def test_delete_entity_type_rest_flattened_error(transport: str = "rest"):
             entity_type.DeleteEntityTypeRequest(),
             name="name_value",
         )
-
-
-def test_delete_entity_type_rest_error():
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        entity_type.BatchUpdateEntityTypesRequest,
-        dict,
-    ],
-)
-def test_batch_update_entity_types_rest(request_type):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/agent"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.batch_update_entity_types(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_batch_update_entity_types_rest_use_cached_wrapped_rpc():
@@ -7258,130 +5985,6 @@ def test_batch_update_entity_types_rest_unset_required_fields():
 
     unset_fields = transport.batch_update_entity_types._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("parent",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_update_entity_types_rest_interceptors(null_interceptor):
-    transport = transports.EntityTypesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EntityTypesRestInterceptor(),
-    )
-    client = EntityTypesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_batch_update_entity_types"
-    ) as post, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_batch_update_entity_types"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = entity_type.BatchUpdateEntityTypesRequest.pb(
-            entity_type.BatchUpdateEntityTypesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = entity_type.BatchUpdateEntityTypesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.batch_update_entity_types(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_update_entity_types_rest_bad_request(
-    transport: str = "rest", request_type=entity_type.BatchUpdateEntityTypesRequest
-):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/agent"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_update_entity_types(request)
-
-
-def test_batch_update_entity_types_rest_error():
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        entity_type.BatchDeleteEntityTypesRequest,
-        dict,
-    ],
-)
-def test_batch_delete_entity_types_rest(request_type):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/agent"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.batch_delete_entity_types(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_batch_delete_entity_types_rest_use_cached_wrapped_rpc():
@@ -7522,89 +6125,6 @@ def test_batch_delete_entity_types_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_delete_entity_types_rest_interceptors(null_interceptor):
-    transport = transports.EntityTypesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EntityTypesRestInterceptor(),
-    )
-    client = EntityTypesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_batch_delete_entity_types"
-    ) as post, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_batch_delete_entity_types"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = entity_type.BatchDeleteEntityTypesRequest.pb(
-            entity_type.BatchDeleteEntityTypesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = entity_type.BatchDeleteEntityTypesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.batch_delete_entity_types(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_delete_entity_types_rest_bad_request(
-    transport: str = "rest", request_type=entity_type.BatchDeleteEntityTypesRequest
-):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/agent"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_delete_entity_types(request)
-
-
 def test_batch_delete_entity_types_rest_flattened():
     client = EntityTypesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7660,47 +6180,6 @@ def test_batch_delete_entity_types_rest_flattened_error(transport: str = "rest")
             parent="parent_value",
             entity_type_names=["entity_type_names_value"],
         )
-
-
-def test_batch_delete_entity_types_rest_error():
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        entity_type.BatchCreateEntitiesRequest,
-        dict,
-    ],
-)
-def test_batch_create_entities_rest(request_type):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/agent/entityTypes/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.batch_create_entities(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_batch_create_entities_rest_use_cached_wrapped_rpc():
@@ -7837,89 +6316,6 @@ def test_batch_create_entities_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_create_entities_rest_interceptors(null_interceptor):
-    transport = transports.EntityTypesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EntityTypesRestInterceptor(),
-    )
-    client = EntityTypesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_batch_create_entities"
-    ) as post, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_batch_create_entities"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = entity_type.BatchCreateEntitiesRequest.pb(
-            entity_type.BatchCreateEntitiesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = entity_type.BatchCreateEntitiesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.batch_create_entities(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_create_entities_rest_bad_request(
-    transport: str = "rest", request_type=entity_type.BatchCreateEntitiesRequest
-):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/agent/entityTypes/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_create_entities(request)
-
-
 def test_batch_create_entities_rest_flattened():
     client = EntityTypesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7977,47 +6373,6 @@ def test_batch_create_entities_rest_flattened_error(transport: str = "rest"):
             entities=[entity_type.EntityType.Entity(value="value_value")],
             language_code="language_code_value",
         )
-
-
-def test_batch_create_entities_rest_error():
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        entity_type.BatchUpdateEntitiesRequest,
-        dict,
-    ],
-)
-def test_batch_update_entities_rest(request_type):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/agent/entityTypes/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.batch_update_entities(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_batch_update_entities_rest_use_cached_wrapped_rpc():
@@ -8154,89 +6509,6 @@ def test_batch_update_entities_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_update_entities_rest_interceptors(null_interceptor):
-    transport = transports.EntityTypesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EntityTypesRestInterceptor(),
-    )
-    client = EntityTypesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_batch_update_entities"
-    ) as post, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_batch_update_entities"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = entity_type.BatchUpdateEntitiesRequest.pb(
-            entity_type.BatchUpdateEntitiesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = entity_type.BatchUpdateEntitiesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.batch_update_entities(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_update_entities_rest_bad_request(
-    transport: str = "rest", request_type=entity_type.BatchUpdateEntitiesRequest
-):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/agent/entityTypes/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_update_entities(request)
-
-
 def test_batch_update_entities_rest_flattened():
     client = EntityTypesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8294,47 +6566,6 @@ def test_batch_update_entities_rest_flattened_error(transport: str = "rest"):
             entities=[entity_type.EntityType.Entity(value="value_value")],
             language_code="language_code_value",
         )
-
-
-def test_batch_update_entities_rest_error():
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        entity_type.BatchDeleteEntitiesRequest,
-        dict,
-    ],
-)
-def test_batch_delete_entities_rest(request_type):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/agent/entityTypes/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.batch_delete_entities(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_batch_delete_entities_rest_use_cached_wrapped_rpc():
@@ -8475,89 +6706,6 @@ def test_batch_delete_entities_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_delete_entities_rest_interceptors(null_interceptor):
-    transport = transports.EntityTypesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EntityTypesRestInterceptor(),
-    )
-    client = EntityTypesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EntityTypesRestInterceptor, "post_batch_delete_entities"
-    ) as post, mock.patch.object(
-        transports.EntityTypesRestInterceptor, "pre_batch_delete_entities"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = entity_type.BatchDeleteEntitiesRequest.pb(
-            entity_type.BatchDeleteEntitiesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = entity_type.BatchDeleteEntitiesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.batch_delete_entities(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_delete_entities_rest_bad_request(
-    transport: str = "rest", request_type=entity_type.BatchDeleteEntitiesRequest
-):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/agent/entityTypes/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_delete_entities(request)
-
-
 def test_batch_delete_entities_rest_flattened():
     client = EntityTypesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8615,12 +6763,6 @@ def test_batch_delete_entities_rest_flattened_error(transport: str = "rest"):
             entity_values=["entity_values_value"],
             language_code="language_code_value",
         )
-
-
-def test_batch_delete_entities_rest_error():
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
 
 
 def test_credentials_transport_error():
@@ -8715,18 +6857,2439 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = EntityTypesClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_entity_types_empty_call_grpc():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entity_types), "__call__"
+    ) as call:
+        call.return_value = entity_type.ListEntityTypesResponse()
+        client.list_entity_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.ListEntityTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_entity_type_empty_call_grpc():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_entity_type), "__call__") as call:
+        call.return_value = entity_type.EntityType()
+        client.get_entity_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.GetEntityTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_entity_type_empty_call_grpc():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entity_type), "__call__"
+    ) as call:
+        call.return_value = gcd_entity_type.EntityType()
+        client.create_entity_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcd_entity_type.CreateEntityTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_entity_type_empty_call_grpc():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_entity_type), "__call__"
+    ) as call:
+        call.return_value = gcd_entity_type.EntityType()
+        client.update_entity_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcd_entity_type.UpdateEntityTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_entity_type_empty_call_grpc():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entity_type), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_entity_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.DeleteEntityTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_update_entity_types_empty_call_grpc():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_entity_types), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.batch_update_entity_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.BatchUpdateEntityTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_delete_entity_types_empty_call_grpc():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_entity_types), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.batch_delete_entity_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.BatchDeleteEntityTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_create_entities_empty_call_grpc():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_entities), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.batch_create_entities(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.BatchCreateEntitiesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_update_entities_empty_call_grpc():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_entities), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.batch_update_entities(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.BatchUpdateEntitiesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_delete_entities_empty_call_grpc():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_entities), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.batch_delete_entities(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.BatchDeleteEntitiesRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = EntityTypesAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = EntityTypesAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_entity_types_empty_call_grpc_asyncio():
+    client = EntityTypesAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entity_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            entity_type.ListEntityTypesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_entity_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.ListEntityTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_entity_type_empty_call_grpc_asyncio():
+    client = EntityTypesAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_entity_type), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            entity_type.EntityType(
+                name="name_value",
+                display_name="display_name_value",
+                kind=entity_type.EntityType.Kind.KIND_MAP,
+                auto_expansion_mode=entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT,
+                enable_fuzzy_extraction=True,
+            )
+        )
+        await client.get_entity_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.GetEntityTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_entity_type_empty_call_grpc_asyncio():
+    client = EntityTypesAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entity_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_entity_type.EntityType(
+                name="name_value",
+                display_name="display_name_value",
+                kind=gcd_entity_type.EntityType.Kind.KIND_MAP,
+                auto_expansion_mode=gcd_entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT,
+                enable_fuzzy_extraction=True,
+            )
+        )
+        await client.create_entity_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcd_entity_type.CreateEntityTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_entity_type_empty_call_grpc_asyncio():
+    client = EntityTypesAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_entity_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_entity_type.EntityType(
+                name="name_value",
+                display_name="display_name_value",
+                kind=gcd_entity_type.EntityType.Kind.KIND_MAP,
+                auto_expansion_mode=gcd_entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT,
+                enable_fuzzy_extraction=True,
+            )
+        )
+        await client.update_entity_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcd_entity_type.UpdateEntityTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_entity_type_empty_call_grpc_asyncio():
+    client = EntityTypesAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entity_type), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_entity_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.DeleteEntityTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_batch_update_entity_types_empty_call_grpc_asyncio():
+    client = EntityTypesAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_entity_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.batch_update_entity_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.BatchUpdateEntityTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_batch_delete_entity_types_empty_call_grpc_asyncio():
+    client = EntityTypesAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_entity_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.batch_delete_entity_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.BatchDeleteEntityTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_batch_create_entities_empty_call_grpc_asyncio():
+    client = EntityTypesAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_entities), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.batch_create_entities(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.BatchCreateEntitiesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_batch_update_entities_empty_call_grpc_asyncio():
+    client = EntityTypesAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_entities), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.batch_update_entities(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.BatchUpdateEntitiesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_batch_delete_entities_empty_call_grpc_asyncio():
+    client = EntityTypesAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_entities), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.batch_delete_entities(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.BatchDeleteEntitiesRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = EntityTypesClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_list_entity_types_rest_bad_request(
+    request_type=entity_type.ListEntityTypesRequest,
+):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_entity_types(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        entity_type.ListEntityTypesRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = EntityTypesClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_list_entity_types_rest_call_success(request_type):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = entity_type.ListEntityTypesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = entity_type.ListEntityTypesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_entity_types(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListEntityTypesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_entity_types_rest_interceptors(null_interceptor):
+    transport = transports.EntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EntityTypesRestInterceptor(),
+    )
+    client = EntityTypesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EntityTypesRestInterceptor, "post_list_entity_types"
+    ) as post, mock.patch.object(
+        transports.EntityTypesRestInterceptor, "pre_list_entity_types"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = entity_type.ListEntityTypesRequest.pb(
+            entity_type.ListEntityTypesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = entity_type.ListEntityTypesResponse.to_json(
+            entity_type.ListEntityTypesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = entity_type.ListEntityTypesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = entity_type.ListEntityTypesResponse()
+
+        client.list_entity_types(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_entity_type_rest_bad_request(
+    request_type=entity_type.GetEntityTypeRequest,
+):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/agent/entityTypes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_entity_type(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_type.GetEntityTypeRequest,
+        dict,
+    ],
+)
+def test_get_entity_type_rest_call_success(request_type):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/agent/entityTypes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = entity_type.EntityType(
+            name="name_value",
+            display_name="display_name_value",
+            kind=entity_type.EntityType.Kind.KIND_MAP,
+            auto_expansion_mode=entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT,
+            enable_fuzzy_extraction=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = entity_type.EntityType.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_entity_type(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, entity_type.EntityType)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.kind == entity_type.EntityType.Kind.KIND_MAP
+    assert (
+        response.auto_expansion_mode
+        == entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT
+    )
+    assert response.enable_fuzzy_extraction is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_entity_type_rest_interceptors(null_interceptor):
+    transport = transports.EntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EntityTypesRestInterceptor(),
+    )
+    client = EntityTypesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EntityTypesRestInterceptor, "post_get_entity_type"
+    ) as post, mock.patch.object(
+        transports.EntityTypesRestInterceptor, "pre_get_entity_type"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = entity_type.GetEntityTypeRequest.pb(
+            entity_type.GetEntityTypeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = entity_type.EntityType.to_json(entity_type.EntityType())
+        req.return_value.content = return_value
+
+        request = entity_type.GetEntityTypeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = entity_type.EntityType()
+
+        client.get_entity_type(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_entity_type_rest_bad_request(
+    request_type=gcd_entity_type.CreateEntityTypeRequest,
+):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_entity_type(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_entity_type.CreateEntityTypeRequest,
+        dict,
+    ],
+)
+def test_create_entity_type_rest_call_success(request_type):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent"}
+    request_init["entity_type"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "kind": 1,
+        "auto_expansion_mode": 1,
+        "entities": [
+            {"value": "value_value", "synonyms": ["synonyms_value1", "synonyms_value2"]}
+        ],
+        "enable_fuzzy_extraction": True,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcd_entity_type.CreateEntityTypeRequest.meta.fields["entity_type"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["entity_type"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["entity_type"][field])):
+                    del request_init["entity_type"][field][i][subfield]
+            else:
+                del request_init["entity_type"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcd_entity_type.EntityType(
+            name="name_value",
+            display_name="display_name_value",
+            kind=gcd_entity_type.EntityType.Kind.KIND_MAP,
+            auto_expansion_mode=gcd_entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT,
+            enable_fuzzy_extraction=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gcd_entity_type.EntityType.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_entity_type(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcd_entity_type.EntityType)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.kind == gcd_entity_type.EntityType.Kind.KIND_MAP
+    assert (
+        response.auto_expansion_mode
+        == gcd_entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT
+    )
+    assert response.enable_fuzzy_extraction is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_entity_type_rest_interceptors(null_interceptor):
+    transport = transports.EntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EntityTypesRestInterceptor(),
+    )
+    client = EntityTypesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EntityTypesRestInterceptor, "post_create_entity_type"
+    ) as post, mock.patch.object(
+        transports.EntityTypesRestInterceptor, "pre_create_entity_type"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcd_entity_type.CreateEntityTypeRequest.pb(
+            gcd_entity_type.CreateEntityTypeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = gcd_entity_type.EntityType.to_json(gcd_entity_type.EntityType())
+        req.return_value.content = return_value
+
+        request = gcd_entity_type.CreateEntityTypeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcd_entity_type.EntityType()
+
+        client.create_entity_type(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_entity_type_rest_bad_request(
+    request_type=gcd_entity_type.UpdateEntityTypeRequest,
+):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "entity_type": {"name": "projects/sample1/agent/entityTypes/sample2"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_entity_type(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_entity_type.UpdateEntityTypeRequest,
+        dict,
+    ],
+)
+def test_update_entity_type_rest_call_success(request_type):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "entity_type": {"name": "projects/sample1/agent/entityTypes/sample2"}
+    }
+    request_init["entity_type"] = {
+        "name": "projects/sample1/agent/entityTypes/sample2",
+        "display_name": "display_name_value",
+        "kind": 1,
+        "auto_expansion_mode": 1,
+        "entities": [
+            {"value": "value_value", "synonyms": ["synonyms_value1", "synonyms_value2"]}
+        ],
+        "enable_fuzzy_extraction": True,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcd_entity_type.UpdateEntityTypeRequest.meta.fields["entity_type"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["entity_type"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["entity_type"][field])):
+                    del request_init["entity_type"][field][i][subfield]
+            else:
+                del request_init["entity_type"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcd_entity_type.EntityType(
+            name="name_value",
+            display_name="display_name_value",
+            kind=gcd_entity_type.EntityType.Kind.KIND_MAP,
+            auto_expansion_mode=gcd_entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT,
+            enable_fuzzy_extraction=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gcd_entity_type.EntityType.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_entity_type(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcd_entity_type.EntityType)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.kind == gcd_entity_type.EntityType.Kind.KIND_MAP
+    assert (
+        response.auto_expansion_mode
+        == gcd_entity_type.EntityType.AutoExpansionMode.AUTO_EXPANSION_MODE_DEFAULT
+    )
+    assert response.enable_fuzzy_extraction is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_entity_type_rest_interceptors(null_interceptor):
+    transport = transports.EntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EntityTypesRestInterceptor(),
+    )
+    client = EntityTypesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EntityTypesRestInterceptor, "post_update_entity_type"
+    ) as post, mock.patch.object(
+        transports.EntityTypesRestInterceptor, "pre_update_entity_type"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcd_entity_type.UpdateEntityTypeRequest.pb(
+            gcd_entity_type.UpdateEntityTypeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = gcd_entity_type.EntityType.to_json(gcd_entity_type.EntityType())
+        req.return_value.content = return_value
+
+        request = gcd_entity_type.UpdateEntityTypeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcd_entity_type.EntityType()
+
+        client.update_entity_type(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_entity_type_rest_bad_request(
+    request_type=entity_type.DeleteEntityTypeRequest,
+):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/agent/entityTypes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_entity_type(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_type.DeleteEntityTypeRequest,
+        dict,
+    ],
+)
+def test_delete_entity_type_rest_call_success(request_type):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/agent/entityTypes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_entity_type(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_entity_type_rest_interceptors(null_interceptor):
+    transport = transports.EntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EntityTypesRestInterceptor(),
+    )
+    client = EntityTypesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EntityTypesRestInterceptor, "pre_delete_entity_type"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = entity_type.DeleteEntityTypeRequest.pb(
+            entity_type.DeleteEntityTypeRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = entity_type.DeleteEntityTypeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_entity_type(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_batch_update_entity_types_rest_bad_request(
+    request_type=entity_type.BatchUpdateEntityTypesRequest,
+):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.batch_update_entity_types(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_type.BatchUpdateEntityTypesRequest,
+        dict,
+    ],
+)
+def test_batch_update_entity_types_rest_call_success(request_type):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_update_entity_types(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_update_entity_types_rest_interceptors(null_interceptor):
+    transport = transports.EntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EntityTypesRestInterceptor(),
+    )
+    client = EntityTypesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.EntityTypesRestInterceptor, "post_batch_update_entity_types"
+    ) as post, mock.patch.object(
+        transports.EntityTypesRestInterceptor, "pre_batch_update_entity_types"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = entity_type.BatchUpdateEntityTypesRequest.pb(
+            entity_type.BatchUpdateEntityTypesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = entity_type.BatchUpdateEntityTypesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.batch_update_entity_types(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_delete_entity_types_rest_bad_request(
+    request_type=entity_type.BatchDeleteEntityTypesRequest,
+):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.batch_delete_entity_types(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_type.BatchDeleteEntityTypesRequest,
+        dict,
+    ],
+)
+def test_batch_delete_entity_types_rest_call_success(request_type):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_delete_entity_types(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_delete_entity_types_rest_interceptors(null_interceptor):
+    transport = transports.EntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EntityTypesRestInterceptor(),
+    )
+    client = EntityTypesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.EntityTypesRestInterceptor, "post_batch_delete_entity_types"
+    ) as post, mock.patch.object(
+        transports.EntityTypesRestInterceptor, "pre_batch_delete_entity_types"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = entity_type.BatchDeleteEntityTypesRequest.pb(
+            entity_type.BatchDeleteEntityTypesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = entity_type.BatchDeleteEntityTypesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.batch_delete_entity_types(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_create_entities_rest_bad_request(
+    request_type=entity_type.BatchCreateEntitiesRequest,
+):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent/entityTypes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.batch_create_entities(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_type.BatchCreateEntitiesRequest,
+        dict,
+    ],
+)
+def test_batch_create_entities_rest_call_success(request_type):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent/entityTypes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_create_entities(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_create_entities_rest_interceptors(null_interceptor):
+    transport = transports.EntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EntityTypesRestInterceptor(),
+    )
+    client = EntityTypesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.EntityTypesRestInterceptor, "post_batch_create_entities"
+    ) as post, mock.patch.object(
+        transports.EntityTypesRestInterceptor, "pre_batch_create_entities"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = entity_type.BatchCreateEntitiesRequest.pb(
+            entity_type.BatchCreateEntitiesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = entity_type.BatchCreateEntitiesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.batch_create_entities(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_update_entities_rest_bad_request(
+    request_type=entity_type.BatchUpdateEntitiesRequest,
+):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent/entityTypes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.batch_update_entities(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_type.BatchUpdateEntitiesRequest,
+        dict,
+    ],
+)
+def test_batch_update_entities_rest_call_success(request_type):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent/entityTypes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_update_entities(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_update_entities_rest_interceptors(null_interceptor):
+    transport = transports.EntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EntityTypesRestInterceptor(),
+    )
+    client = EntityTypesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.EntityTypesRestInterceptor, "post_batch_update_entities"
+    ) as post, mock.patch.object(
+        transports.EntityTypesRestInterceptor, "pre_batch_update_entities"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = entity_type.BatchUpdateEntitiesRequest.pb(
+            entity_type.BatchUpdateEntitiesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = entity_type.BatchUpdateEntitiesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.batch_update_entities(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_delete_entities_rest_bad_request(
+    request_type=entity_type.BatchDeleteEntitiesRequest,
+):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent/entityTypes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.batch_delete_entities(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_type.BatchDeleteEntitiesRequest,
+        dict,
+    ],
+)
+def test_batch_delete_entities_rest_call_success(request_type):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/agent/entityTypes/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_delete_entities(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_delete_entities_rest_interceptors(null_interceptor):
+    transport = transports.EntityTypesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EntityTypesRestInterceptor(),
+    )
+    client = EntityTypesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.EntityTypesRestInterceptor, "post_batch_delete_entities"
+    ) as post, mock.patch.object(
+        transports.EntityTypesRestInterceptor, "pre_batch_delete_entities"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = entity_type.BatchDeleteEntitiesRequest.pb(
+            entity_type.BatchDeleteEntitiesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = entity_type.BatchDeleteEntitiesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.batch_delete_entities(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    request_type=locations_pb2.ListLocationsRequest,
+):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/operations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/operations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    request_type=operations_pb2.ListOperationsRequest,
+):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_initialize_client_w_rest():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_entity_types_empty_call_rest():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entity_types), "__call__"
+    ) as call:
+        client.list_entity_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.ListEntityTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_entity_type_empty_call_rest():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_entity_type), "__call__") as call:
+        client.get_entity_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.GetEntityTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_entity_type_empty_call_rest():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entity_type), "__call__"
+    ) as call:
+        client.create_entity_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcd_entity_type.CreateEntityTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_entity_type_empty_call_rest():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_entity_type), "__call__"
+    ) as call:
+        client.update_entity_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gcd_entity_type.UpdateEntityTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_entity_type_empty_call_rest():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entity_type), "__call__"
+    ) as call:
+        client.delete_entity_type(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.DeleteEntityTypeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_update_entity_types_empty_call_rest():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_entity_types), "__call__"
+    ) as call:
+        client.batch_update_entity_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.BatchUpdateEntityTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_delete_entity_types_empty_call_rest():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_entity_types), "__call__"
+    ) as call:
+        client.batch_delete_entity_types(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.BatchDeleteEntityTypesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_create_entities_empty_call_rest():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_entities), "__call__"
+    ) as call:
+        client.batch_create_entities(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.BatchCreateEntitiesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_update_entities_empty_call_rest():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_entities), "__call__"
+    ) as call:
+        client.batch_update_entities(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.BatchUpdateEntitiesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_delete_entities_empty_call_rest():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_entities), "__call__"
+    ) as call:
+        client.batch_delete_entities(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_type.BatchDeleteEntitiesRequest()
+
+        assert args[0] == request_msg
+
+
+def test_entity_types_rest_lro_client():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 def test_transport_grpc_default():
@@ -8984,23 +9547,6 @@ def test_entity_types_http_transport_client_cert_source_for_mtls():
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_entity_types_rest_lro_client():
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -9399,306 +9945,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
-def test_get_location_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
-):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_location(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.GetLocationRequest,
-        dict,
-    ],
-)
-def test_get_location_rest(request_type):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.Location()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_location(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.Location)
-
-
-def test_list_locations_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
-):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({"name": "projects/sample1"}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_locations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.ListLocationsRequest,
-        dict,
-    ],
-)
-def test_list_locations_rest(request_type):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.ListLocationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_locations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.ListLocationsResponse)
-
-
-def test_cancel_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
-):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/operations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.cancel_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.CancelOperationRequest,
-        dict,
-    ],
-)
-def test_cancel_operation_rest(request_type):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/operations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.cancel_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_get_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
-):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/operations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/operations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
-def test_list_operations_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
-):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({"name": "projects/sample1"}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_operations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.ListOperationsRequest,
-        dict,
-    ],
-)
-def test_list_operations_rest(request_type):
-    client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.ListOperationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.ListOperationsResponse)
-
-
 def test_cancel_operation(transport: str = "grpc"):
     client = EntityTypesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9726,7 +9972,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9779,7 +10025,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9824,7 +10070,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -9865,7 +10111,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9920,7 +10166,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9967,7 +10213,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -10010,7 +10256,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10065,7 +10311,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10112,7 +10358,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -10155,7 +10401,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10210,7 +10456,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10257,7 +10503,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -10300,7 +10546,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10352,7 +10598,7 @@ def test_get_location_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
-    client = EntityTypesAsyncClient(credentials=ga_credentials.AnonymousCredentials())
+    client = EntityTypesAsyncClient(credentials=async_anonymous_credentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -10398,7 +10644,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -10414,22 +10660,41 @@ async def test_get_location_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = EntityTypesClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = EntityTypesAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

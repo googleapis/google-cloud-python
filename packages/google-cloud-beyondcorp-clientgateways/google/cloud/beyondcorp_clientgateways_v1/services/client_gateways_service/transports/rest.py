@@ -16,41 +16,31 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.beyondcorp_clientgateways_v1.types import client_gateways_service
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseClientGatewaysServiceRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.longrunning import operations_pb2  # type: ignore
-
-from google.cloud.beyondcorp_clientgateways_v1.types import client_gateways_service
-
-from .base import ClientGatewaysServiceTransport
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -419,8 +409,8 @@ class ClientGatewaysServiceRestStub:
     _interceptor: ClientGatewaysServiceRestInterceptor
 
 
-class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
-    """REST backend transport for ClientGatewaysService.
+class ClientGatewaysServiceRestTransport(_BaseClientGatewaysServiceRestTransport):
+    """REST backend synchronous transport for ClientGatewaysService.
 
     API Overview:
 
@@ -439,7 +429,6 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -493,21 +482,12 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -572,19 +552,35 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateClientGateway(ClientGatewaysServiceRestStub):
+    class _CreateClientGateway(
+        _BaseClientGatewaysServiceRestTransport._BaseCreateClientGateway,
+        ClientGatewaysServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateClientGateway")
+            return hash("ClientGatewaysServiceRestTransport.CreateClientGateway")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -613,47 +609,36 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/clientGateways",
-                    "body": "client_gateway",
-                },
-            ]
+            http_options = (
+                _BaseClientGatewaysServiceRestTransport._BaseCreateClientGateway._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_client_gateway(
                 request, metadata
             )
-            pb_request = client_gateways_service.CreateClientGatewayRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseCreateClientGateway._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseClientGatewaysServiceRestTransport._BaseCreateClientGateway._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClientGatewaysServiceRestTransport._BaseCreateClientGateway._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                ClientGatewaysServiceRestTransport._CreateClientGateway._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -667,19 +652,34 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
             resp = self._interceptor.post_create_client_gateway(resp)
             return resp
 
-    class _DeleteClientGateway(ClientGatewaysServiceRestStub):
+    class _DeleteClientGateway(
+        _BaseClientGatewaysServiceRestTransport._BaseDeleteClientGateway,
+        ClientGatewaysServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteClientGateway")
+            return hash("ClientGatewaysServiceRestTransport.DeleteClientGateway")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -708,40 +708,31 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/clientGateways/*}",
-                },
-            ]
+            http_options = (
+                _BaseClientGatewaysServiceRestTransport._BaseDeleteClientGateway._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_client_gateway(
                 request, metadata
             )
-            pb_request = client_gateways_service.DeleteClientGatewayRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseDeleteClientGateway._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClientGatewaysServiceRestTransport._BaseDeleteClientGateway._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ClientGatewaysServiceRestTransport._DeleteClientGateway._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -755,19 +746,34 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
             resp = self._interceptor.post_delete_client_gateway(resp)
             return resp
 
-    class _GetClientGateway(ClientGatewaysServiceRestStub):
+    class _GetClientGateway(
+        _BaseClientGatewaysServiceRestTransport._BaseGetClientGateway,
+        ClientGatewaysServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetClientGateway")
+            return hash("ClientGatewaysServiceRestTransport.GetClientGateway")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -795,40 +801,31 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/clientGateways/*}",
-                },
-            ]
+            http_options = (
+                _BaseClientGatewaysServiceRestTransport._BaseGetClientGateway._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_client_gateway(
                 request, metadata
             )
-            pb_request = client_gateways_service.GetClientGatewayRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseGetClientGateway._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClientGatewaysServiceRestTransport._BaseGetClientGateway._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ClientGatewaysServiceRestTransport._GetClientGateway._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -844,19 +841,34 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
             resp = self._interceptor.post_get_client_gateway(resp)
             return resp
 
-    class _ListClientGateways(ClientGatewaysServiceRestStub):
+    class _ListClientGateways(
+        _BaseClientGatewaysServiceRestTransport._BaseListClientGateways,
+        ClientGatewaysServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListClientGateways")
+            return hash("ClientGatewaysServiceRestTransport.ListClientGateways")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -885,40 +897,31 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/clientGateways",
-                },
-            ]
+            http_options = (
+                _BaseClientGatewaysServiceRestTransport._BaseListClientGateways._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_client_gateways(
                 request, metadata
             )
-            pb_request = client_gateways_service.ListClientGatewaysRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseListClientGateways._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseClientGatewaysServiceRestTransport._BaseListClientGateways._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ClientGatewaysServiceRestTransport._ListClientGateways._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -980,7 +983,35 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(ClientGatewaysServiceRestStub):
+    class _GetLocation(
+        _BaseClientGatewaysServiceRestTransport._BaseGetLocation,
+        ClientGatewaysServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ClientGatewaysServiceRestTransport.GetLocation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -1004,32 +1035,27 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseClientGatewaysServiceRestTransport._BaseGetLocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseGetLocation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseClientGatewaysServiceRestTransport._BaseGetLocation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = ClientGatewaysServiceRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1037,8 +1063,9 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -1046,7 +1073,35 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(ClientGatewaysServiceRestStub):
+    class _ListLocations(
+        _BaseClientGatewaysServiceRestTransport._BaseListLocations,
+        ClientGatewaysServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ClientGatewaysServiceRestTransport.ListLocations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -1070,32 +1125,27 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*}/locations",
-                },
-            ]
-
+            http_options = (
+                _BaseClientGatewaysServiceRestTransport._BaseListLocations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseListLocations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseClientGatewaysServiceRestTransport._BaseListLocations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = ClientGatewaysServiceRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1103,8 +1153,9 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 
@@ -1112,7 +1163,35 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(ClientGatewaysServiceRestStub):
+    class _GetIamPolicy(
+        _BaseClientGatewaysServiceRestTransport._BaseGetIamPolicy,
+        ClientGatewaysServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ClientGatewaysServiceRestTransport.GetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: iam_policy_pb2.GetIamPolicyRequest,
@@ -1136,48 +1215,27 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{resource=projects/*/locations/*/appConnections/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{resource=projects/*/locations/*/appConnectors/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{resource=projects/*/locations/*/appGateways/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{resource=projects/*/locations/*/clientConnectorServices/*}:getIamPolicy",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{resource=projects/*/locations/*/clientGateways/*}:getIamPolicy",
-                },
-            ]
-
+            http_options = (
+                _BaseClientGatewaysServiceRestTransport._BaseGetIamPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseClientGatewaysServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = ClientGatewaysServiceRestTransport._GetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1185,8 +1243,9 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = policy_pb2.Policy()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
             return resp
 
@@ -1194,7 +1253,36 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(ClientGatewaysServiceRestStub):
+    class _SetIamPolicy(
+        _BaseClientGatewaysServiceRestTransport._BaseSetIamPolicy,
+        ClientGatewaysServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ClientGatewaysServiceRestTransport.SetIamPolicy")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: iam_policy_pb2.SetIamPolicyRequest,
@@ -1218,55 +1306,32 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/appConnections/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/appConnectors/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/appGateways/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/clientConnectorServices/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/clientGateways/*}:setIamPolicy",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseClientGatewaysServiceRestTransport._BaseSetIamPolicy._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseClientGatewaysServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseClientGatewaysServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = ClientGatewaysServiceRestTransport._SetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1274,8 +1339,9 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = policy_pb2.Policy()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
             return resp
 
@@ -1283,7 +1349,36 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(ClientGatewaysServiceRestStub):
+    class _TestIamPermissions(
+        _BaseClientGatewaysServiceRestTransport._BaseTestIamPermissions,
+        ClientGatewaysServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ClientGatewaysServiceRestTransport.TestIamPermissions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: iam_policy_pb2.TestIamPermissionsRequest,
@@ -1307,57 +1402,36 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/appConnections/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/appConnectors/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/appGateways/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/clientConnectorServices/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=projects/*/locations/*/clientGateways/*}:testIamPermissions",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseClientGatewaysServiceRestTransport._BaseTestIamPermissions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseClientGatewaysServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseClientGatewaysServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = (
+                ClientGatewaysServiceRestTransport._TestIamPermissions._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1365,8 +1439,9 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = iam_policy_pb2.TestIamPermissionsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 
@@ -1374,7 +1449,36 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(ClientGatewaysServiceRestStub):
+    class _CancelOperation(
+        _BaseClientGatewaysServiceRestTransport._BaseCancelOperation,
+        ClientGatewaysServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ClientGatewaysServiceRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -1395,37 +1499,36 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseClientGatewaysServiceRestTransport._BaseCancelOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseClientGatewaysServiceRestTransport._BaseCancelOperation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseClientGatewaysServiceRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = (
+                ClientGatewaysServiceRestTransport._CancelOperation._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1439,7 +1542,35 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(ClientGatewaysServiceRestStub):
+    class _DeleteOperation(
+        _BaseClientGatewaysServiceRestTransport._BaseDeleteOperation,
+        ClientGatewaysServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ClientGatewaysServiceRestTransport.DeleteOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.DeleteOperationRequest,
@@ -1460,34 +1591,31 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseClientGatewaysServiceRestTransport._BaseDeleteOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseClientGatewaysServiceRestTransport._BaseDeleteOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = (
+                ClientGatewaysServiceRestTransport._DeleteOperation._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1501,7 +1629,35 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(ClientGatewaysServiceRestStub):
+    class _GetOperation(
+        _BaseClientGatewaysServiceRestTransport._BaseGetOperation,
+        ClientGatewaysServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ClientGatewaysServiceRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -1525,32 +1681,27 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseClientGatewaysServiceRestTransport._BaseGetOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseClientGatewaysServiceRestTransport._BaseGetOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = ClientGatewaysServiceRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1558,8 +1709,9 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -1567,7 +1719,35 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(ClientGatewaysServiceRestStub):
+    class _ListOperations(
+        _BaseClientGatewaysServiceRestTransport._BaseListOperations,
+        ClientGatewaysServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ClientGatewaysServiceRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -1591,32 +1771,27 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}/operations",
-                },
-            ]
-
+            http_options = (
+                _BaseClientGatewaysServiceRestTransport._BaseListOperations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseClientGatewaysServiceRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseClientGatewaysServiceRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = ClientGatewaysServiceRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1624,8 +1799,9 @@ class ClientGatewaysServiceRestTransport(ClientGatewaysServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

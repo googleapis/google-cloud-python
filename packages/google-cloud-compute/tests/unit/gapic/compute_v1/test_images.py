@@ -22,25 +22,11 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
-from google.api_core import (
-    future,
-    gapic_v1,
-    grpc_helpers,
-    grpc_helpers_async,
-    path_template,
-)
-from google.api_core import api_core_version, client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import extended_operation  # type: ignore
-from google.api_core import retry as retries
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.oauth2 import service_account
+from google.api_core import api_core_version
 from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
@@ -50,12 +36,49 @@ import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
+from google.api_core import (
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
+from google.api_core import client_options
+from google.api_core import exceptions as core_exceptions
+from google.api_core import extended_operation  # type: ignore
+from google.api_core import retry as retries
+import google.auth
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.oauth2 import service_account
+
 from google.cloud.compute_v1.services.images import ImagesClient, pagers, transports
 from google.cloud.compute_v1.types import compute
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -912,88 +935,6 @@ def test_images_client_client_options_credentials_file(
         )
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.DeleteImageRequest,
-        dict,
-    ],
-)
-def test_delete_rest(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "image": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, extended_operation.ExtendedOperation)
-    assert response.client_operation_id == "client_operation_id_value"
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.end_time == "end_time_value"
-    assert response.http_error_message == "http_error_message_value"
-    assert response.http_error_status_code == 2374
-    assert response.id == 205
-    assert response.insert_time == "insert_time_value"
-    assert response.kind == "kind_value"
-    assert response.name == "name_value"
-    assert response.operation_group_id == "operation_group_id_value"
-    assert response.operation_type == "operation_type_value"
-    assert response.progress == 885
-    assert response.region == "region_value"
-    assert response.self_link == "self_link_value"
-    assert response.start_time == "start_time_value"
-    assert response.status == compute.Operation.Status.DONE
-    assert response.status_message == "status_message_value"
-    assert response.target_id == 947
-    assert response.target_link == "target_link_value"
-    assert response.user == "user_value"
-    assert response.zone == "zone_value"
-
-
 def test_delete_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -1129,81 +1070,6 @@ def test_delete_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_rest_interceptors(null_interceptor):
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
-    )
-    client = ImagesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_delete"
-    ) as post, mock.patch.object(
-        transports.ImagesRestInterceptor, "pre_delete"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.DeleteImageRequest.pb(compute.DeleteImageRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.DeleteImageRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.delete(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_rest_bad_request(
-    transport: str = "rest", request_type=compute.DeleteImageRequest
-):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "image": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete(request)
-
-
 def test_delete_rest_flattened():
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1261,72 +1127,6 @@ def test_delete_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             image="image_value",
         )
-
-
-def test_delete_rest_error():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.DeleteImageRequest,
-        dict,
-    ],
-)
-def test_delete_unary_rest(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "image": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_unary(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.Operation)
 
 
 def test_delete_unary_rest_use_cached_wrapped_rpc():
@@ -1464,81 +1264,6 @@ def test_delete_unary_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_unary_rest_interceptors(null_interceptor):
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
-    )
-    client = ImagesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_delete"
-    ) as post, mock.patch.object(
-        transports.ImagesRestInterceptor, "pre_delete"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.DeleteImageRequest.pb(compute.DeleteImageRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.DeleteImageRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.delete_unary(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_unary_rest_bad_request(
-    transport: str = "rest", request_type=compute.DeleteImageRequest
-):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "image": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_unary(request)
-
-
 def test_delete_unary_rest_flattened():
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1596,174 +1321,6 @@ def test_delete_unary_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             image="image_value",
         )
-
-
-def test_delete_unary_rest_error():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.DeprecateImageRequest,
-        dict,
-    ],
-)
-def test_deprecate_rest(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "image": "sample2"}
-    request_init["deprecation_status_resource"] = {
-        "deleted": "deleted_value",
-        "deprecated": "deprecated_value",
-        "obsolete": "obsolete_value",
-        "replacement": "replacement_value",
-        "state": "state_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = compute.DeprecateImageRequest.meta.fields[
-        "deprecation_status_resource"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "deprecation_status_resource"
-    ].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(
-                    0, len(request_init["deprecation_status_resource"][field])
-                ):
-                    del request_init["deprecation_status_resource"][field][i][subfield]
-            else:
-                del request_init["deprecation_status_resource"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.deprecate(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, extended_operation.ExtendedOperation)
-    assert response.client_operation_id == "client_operation_id_value"
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.end_time == "end_time_value"
-    assert response.http_error_message == "http_error_message_value"
-    assert response.http_error_status_code == 2374
-    assert response.id == 205
-    assert response.insert_time == "insert_time_value"
-    assert response.kind == "kind_value"
-    assert response.name == "name_value"
-    assert response.operation_group_id == "operation_group_id_value"
-    assert response.operation_type == "operation_type_value"
-    assert response.progress == 885
-    assert response.region == "region_value"
-    assert response.self_link == "self_link_value"
-    assert response.start_time == "start_time_value"
-    assert response.status == compute.Operation.Status.DONE
-    assert response.status_message == "status_message_value"
-    assert response.target_id == 947
-    assert response.target_link == "target_link_value"
-    assert response.user == "user_value"
-    assert response.zone == "zone_value"
 
 
 def test_deprecate_rest_use_cached_wrapped_rpc():
@@ -1903,81 +1460,6 @@ def test_deprecate_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_deprecate_rest_interceptors(null_interceptor):
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
-    )
-    client = ImagesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_deprecate"
-    ) as post, mock.patch.object(
-        transports.ImagesRestInterceptor, "pre_deprecate"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.DeprecateImageRequest.pb(compute.DeprecateImageRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.DeprecateImageRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.deprecate(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_deprecate_rest_bad_request(
-    transport: str = "rest", request_type=compute.DeprecateImageRequest
-):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "image": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.deprecate(request)
-
-
 def test_deprecate_rest_flattened():
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2041,152 +1523,6 @@ def test_deprecate_rest_flattened_error(transport: str = "rest"):
                 deleted="deleted_value"
             ),
         )
-
-
-def test_deprecate_rest_error():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.DeprecateImageRequest,
-        dict,
-    ],
-)
-def test_deprecate_unary_rest(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "image": "sample2"}
-    request_init["deprecation_status_resource"] = {
-        "deleted": "deleted_value",
-        "deprecated": "deprecated_value",
-        "obsolete": "obsolete_value",
-        "replacement": "replacement_value",
-        "state": "state_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = compute.DeprecateImageRequest.meta.fields[
-        "deprecation_status_resource"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "deprecation_status_resource"
-    ].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(
-                    0, len(request_init["deprecation_status_resource"][field])
-                ):
-                    del request_init["deprecation_status_resource"][field][i][subfield]
-            else:
-                del request_init["deprecation_status_resource"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.deprecate_unary(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.Operation)
 
 
 def test_deprecate_unary_rest_use_cached_wrapped_rpc():
@@ -2328,81 +1664,6 @@ def test_deprecate_unary_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_deprecate_unary_rest_interceptors(null_interceptor):
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
-    )
-    client = ImagesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_deprecate"
-    ) as post, mock.patch.object(
-        transports.ImagesRestInterceptor, "pre_deprecate"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.DeprecateImageRequest.pb(compute.DeprecateImageRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.DeprecateImageRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.deprecate_unary(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_deprecate_unary_rest_bad_request(
-    transport: str = "rest", request_type=compute.DeprecateImageRequest
-):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "image": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.deprecate_unary(request)
-
-
 def test_deprecate_unary_rest_flattened():
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2466,100 +1727,6 @@ def test_deprecate_unary_rest_flattened_error(transport: str = "rest"):
                 deleted="deleted_value"
             ),
         )
-
-
-def test_deprecate_unary_rest_error():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.GetImageRequest,
-        dict,
-    ],
-)
-def test_get_rest(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "image": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Image(
-            architecture="architecture_value",
-            archive_size_bytes=1922,
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            disk_size_gb=1261,
-            enable_confidential_compute=True,
-            family="family_value",
-            id=205,
-            kind="kind_value",
-            label_fingerprint="label_fingerprint_value",
-            license_codes=[1360],
-            licenses=["licenses_value"],
-            name="name_value",
-            satisfies_pzi=True,
-            satisfies_pzs=True,
-            self_link="self_link_value",
-            source_disk="source_disk_value",
-            source_disk_id="source_disk_id_value",
-            source_image="source_image_value",
-            source_image_id="source_image_id_value",
-            source_snapshot="source_snapshot_value",
-            source_snapshot_id="source_snapshot_id_value",
-            source_type="source_type_value",
-            status="status_value",
-            storage_locations=["storage_locations_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Image.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.Image)
-    assert response.architecture == "architecture_value"
-    assert response.archive_size_bytes == 1922
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.disk_size_gb == 1261
-    assert response.enable_confidential_compute is True
-    assert response.family == "family_value"
-    assert response.id == 205
-    assert response.kind == "kind_value"
-    assert response.label_fingerprint == "label_fingerprint_value"
-    assert response.license_codes == [1360]
-    assert response.licenses == ["licenses_value"]
-    assert response.name == "name_value"
-    assert response.satisfies_pzi is True
-    assert response.satisfies_pzs is True
-    assert response.self_link == "self_link_value"
-    assert response.source_disk == "source_disk_value"
-    assert response.source_disk_id == "source_disk_id_value"
-    assert response.source_image == "source_image_value"
-    assert response.source_image_id == "source_image_id_value"
-    assert response.source_snapshot == "source_snapshot_value"
-    assert response.source_snapshot_id == "source_snapshot_id_value"
-    assert response.source_type == "source_type_value"
-    assert response.status == "status_value"
-    assert response.storage_locations == ["storage_locations_value"]
 
 
 def test_get_rest_use_cached_wrapped_rpc():
@@ -2691,81 +1858,6 @@ def test_get_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_rest_interceptors(null_interceptor):
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
-    )
-    client = ImagesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_get"
-    ) as post, mock.patch.object(
-        transports.ImagesRestInterceptor, "pre_get"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.GetImageRequest.pb(compute.GetImageRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Image.to_json(compute.Image())
-
-        request = compute.GetImageRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Image()
-
-        client.get(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_rest_bad_request(
-    transport: str = "rest", request_type=compute.GetImageRequest
-):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "image": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get(request)
-
-
 def test_get_rest_flattened():
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2823,100 +1915,6 @@ def test_get_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             image="image_value",
         )
-
-
-def test_get_rest_error():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.GetFromFamilyImageRequest,
-        dict,
-    ],
-)
-def test_get_from_family_rest(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "family": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Image(
-            architecture="architecture_value",
-            archive_size_bytes=1922,
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            disk_size_gb=1261,
-            enable_confidential_compute=True,
-            family="family_value",
-            id=205,
-            kind="kind_value",
-            label_fingerprint="label_fingerprint_value",
-            license_codes=[1360],
-            licenses=["licenses_value"],
-            name="name_value",
-            satisfies_pzi=True,
-            satisfies_pzs=True,
-            self_link="self_link_value",
-            source_disk="source_disk_value",
-            source_disk_id="source_disk_id_value",
-            source_image="source_image_value",
-            source_image_id="source_image_id_value",
-            source_snapshot="source_snapshot_value",
-            source_snapshot_id="source_snapshot_id_value",
-            source_type="source_type_value",
-            status="status_value",
-            storage_locations=["storage_locations_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Image.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_from_family(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.Image)
-    assert response.architecture == "architecture_value"
-    assert response.archive_size_bytes == 1922
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.disk_size_gb == 1261
-    assert response.enable_confidential_compute is True
-    assert response.family == "family_value"
-    assert response.id == 205
-    assert response.kind == "kind_value"
-    assert response.label_fingerprint == "label_fingerprint_value"
-    assert response.license_codes == [1360]
-    assert response.licenses == ["licenses_value"]
-    assert response.name == "name_value"
-    assert response.satisfies_pzi is True
-    assert response.satisfies_pzs is True
-    assert response.self_link == "self_link_value"
-    assert response.source_disk == "source_disk_value"
-    assert response.source_disk_id == "source_disk_id_value"
-    assert response.source_image == "source_image_value"
-    assert response.source_image_id == "source_image_id_value"
-    assert response.source_snapshot == "source_snapshot_value"
-    assert response.source_snapshot_id == "source_snapshot_id_value"
-    assert response.source_type == "source_type_value"
-    assert response.status == "status_value"
-    assert response.storage_locations == ["storage_locations_value"]
 
 
 def test_get_from_family_rest_use_cached_wrapped_rpc():
@@ -3050,83 +2048,6 @@ def test_get_from_family_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_from_family_rest_interceptors(null_interceptor):
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
-    )
-    client = ImagesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_get_from_family"
-    ) as post, mock.patch.object(
-        transports.ImagesRestInterceptor, "pre_get_from_family"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.GetFromFamilyImageRequest.pb(
-            compute.GetFromFamilyImageRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Image.to_json(compute.Image())
-
-        request = compute.GetFromFamilyImageRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Image()
-
-        client.get_from_family(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_from_family_rest_bad_request(
-    transport: str = "rest", request_type=compute.GetFromFamilyImageRequest
-):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "family": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_from_family(request)
-
-
 def test_get_from_family_rest_flattened():
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3184,56 +2105,6 @@ def test_get_from_family_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             family="family_value",
         )
-
-
-def test_get_from_family_rest_error():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.GetIamPolicyImageRequest,
-        dict,
-    ],
-)
-def test_get_iam_policy_rest(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "resource": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Policy(
-            etag="etag_value",
-            iam_owned=True,
-            version=774,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Policy.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_iam_policy(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.Policy)
-    assert response.etag == "etag_value"
-    assert response.iam_owned is True
-    assert response.version == 774
 
 
 def test_get_iam_policy_rest_use_cached_wrapped_rpc():
@@ -3369,83 +2240,6 @@ def test_get_iam_policy_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_iam_policy_rest_interceptors(null_interceptor):
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
-    )
-    client = ImagesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_get_iam_policy"
-    ) as post, mock.patch.object(
-        transports.ImagesRestInterceptor, "pre_get_iam_policy"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.GetIamPolicyImageRequest.pb(
-            compute.GetIamPolicyImageRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Policy.to_json(compute.Policy())
-
-        request = compute.GetIamPolicyImageRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Policy()
-
-        client.get_iam_policy(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_iam_policy_rest_bad_request(
-    transport: str = "rest", request_type=compute.GetIamPolicyImageRequest
-):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "resource": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_iam_policy(request)
-
-
 def test_get_iam_policy_rest_flattened():
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3503,218 +2297,6 @@ def test_get_iam_policy_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             resource="resource_value",
         )
-
-
-def test_get_iam_policy_rest_error():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.InsertImageRequest,
-        dict,
-    ],
-)
-def test_insert_rest(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1"}
-    request_init["image_resource"] = {
-        "architecture": "architecture_value",
-        "archive_size_bytes": 1922,
-        "creation_timestamp": "creation_timestamp_value",
-        "deprecated": {
-            "deleted": "deleted_value",
-            "deprecated": "deprecated_value",
-            "obsolete": "obsolete_value",
-            "replacement": "replacement_value",
-            "state": "state_value",
-        },
-        "description": "description_value",
-        "disk_size_gb": 1261,
-        "enable_confidential_compute": True,
-        "family": "family_value",
-        "guest_os_features": [{"type_": "type__value"}],
-        "id": 205,
-        "image_encryption_key": {
-            "kms_key_name": "kms_key_name_value",
-            "kms_key_service_account": "kms_key_service_account_value",
-            "raw_key": "raw_key_value",
-            "rsa_encrypted_key": "rsa_encrypted_key_value",
-            "sha256": "sha256_value",
-        },
-        "kind": "kind_value",
-        "label_fingerprint": "label_fingerprint_value",
-        "labels": {},
-        "license_codes": [1361, 1362],
-        "licenses": ["licenses_value1", "licenses_value2"],
-        "name": "name_value",
-        "raw_disk": {
-            "container_type": "container_type_value",
-            "sha1_checksum": "sha1_checksum_value",
-            "source": "source_value",
-        },
-        "satisfies_pzi": True,
-        "satisfies_pzs": True,
-        "self_link": "self_link_value",
-        "shielded_instance_initial_state": {
-            "dbs": [{"content": "content_value", "file_type": "file_type_value"}],
-            "dbxs": {},
-            "keks": {},
-            "pk": {},
-        },
-        "source_disk": "source_disk_value",
-        "source_disk_encryption_key": {},
-        "source_disk_id": "source_disk_id_value",
-        "source_image": "source_image_value",
-        "source_image_encryption_key": {},
-        "source_image_id": "source_image_id_value",
-        "source_snapshot": "source_snapshot_value",
-        "source_snapshot_encryption_key": {},
-        "source_snapshot_id": "source_snapshot_id_value",
-        "source_type": "source_type_value",
-        "status": "status_value",
-        "storage_locations": ["storage_locations_value1", "storage_locations_value2"],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = compute.InsertImageRequest.meta.fields["image_resource"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["image_resource"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["image_resource"][field])):
-                    del request_init["image_resource"][field][i][subfield]
-            else:
-                del request_init["image_resource"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.insert(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, extended_operation.ExtendedOperation)
-    assert response.client_operation_id == "client_operation_id_value"
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.end_time == "end_time_value"
-    assert response.http_error_message == "http_error_message_value"
-    assert response.http_error_status_code == 2374
-    assert response.id == 205
-    assert response.insert_time == "insert_time_value"
-    assert response.kind == "kind_value"
-    assert response.name == "name_value"
-    assert response.operation_group_id == "operation_group_id_value"
-    assert response.operation_type == "operation_type_value"
-    assert response.progress == 885
-    assert response.region == "region_value"
-    assert response.self_link == "self_link_value"
-    assert response.start_time == "start_time_value"
-    assert response.status == compute.Operation.Status.DONE
-    assert response.status_message == "status_message_value"
-    assert response.target_id == 947
-    assert response.target_link == "target_link_value"
-    assert response.user == "user_value"
-    assert response.zone == "zone_value"
 
 
 def test_insert_rest_use_cached_wrapped_rpc():
@@ -3859,81 +2441,6 @@ def test_insert_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_insert_rest_interceptors(null_interceptor):
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
-    )
-    client = ImagesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_insert"
-    ) as post, mock.patch.object(
-        transports.ImagesRestInterceptor, "pre_insert"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.InsertImageRequest.pb(compute.InsertImageRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.InsertImageRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.insert(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_insert_rest_bad_request(
-    transport: str = "rest", request_type=compute.InsertImageRequest
-):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.insert(request)
-
-
 def test_insert_rest_flattened():
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3992,10 +2499,2596 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
         )
 
 
-def test_insert_rest_error():
+def test_insert_unary_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ImagesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.insert in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.insert] = mock_rpc
+
+        request = {}
+        client.insert_unary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.insert_unary(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_insert_unary_rest_required_fields(request_type=compute.InsertImageRequest):
+    transport_class = transports.ImagesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).insert._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).insert._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "force_create",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.insert_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_insert_unary_rest_unset_required_fields():
+    transport = transports.ImagesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.insert._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "forceCreate",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "imageResource",
+                "project",
+            )
+        )
+    )
+
+
+def test_insert_unary_rest_flattened():
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            image_resource=compute.Image(architecture="architecture_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.insert_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/images" % client.transport._host,
+            args[1],
+        )
+
+
+def test_insert_unary_rest_flattened_error(transport: str = "rest"):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.insert_unary(
+            compute.InsertImageRequest(),
+            project="project_value",
+            image_resource=compute.Image(architecture="architecture_value"),
+        )
+
+
+def test_list_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ImagesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.list in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.list] = mock_rpc
+
+        request = {}
+        client.list(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.list(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_list_rest_required_fields(request_type=compute.ListImagesRequest):
+    transport_class = transports.ImagesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.ImageList()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.ImageList.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_rest_unset_required_fields():
+    transport = transports.ImagesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
+        & set(("project",))
+    )
+
+
+def test_list_rest_flattened():
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.ImageList()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.ImageList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/images" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_rest_flattened_error(transport: str = "rest"):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list(
+            compute.ListImagesRequest(),
+            project="project_value",
+        )
+
+
+def test_list_rest_pager(transport: str = "rest"):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            compute.ImageList(
+                items=[
+                    compute.Image(),
+                    compute.Image(),
+                    compute.Image(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.ImageList(
+                items=[],
+                next_page_token="def",
+            ),
+            compute.ImageList(
+                items=[
+                    compute.Image(),
+                ],
+                next_page_token="ghi",
+            ),
+            compute.ImageList(
+                items=[
+                    compute.Image(),
+                    compute.Image(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.ImageList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"project": "sample1"}
+
+        pager = client.list(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, compute.Image) for i in results)
+
+        pages = list(client.list(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_patch_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ImagesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.patch in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.patch] = mock_rpc
+
+        request = {}
+        client.patch(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.patch(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_patch_rest_required_fields(request_type=compute.PatchImageRequest):
+    transport_class = transports.ImagesRestTransport
+
+    request_init = {}
+    request_init["image"] = ""
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["image"] = "image_value"
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "image" in jsonified_request
+    assert jsonified_request["image"] == "image_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.patch(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_patch_rest_unset_required_fields():
+    transport = transports.ImagesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.patch._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "image",
+                "imageResource",
+                "project",
+            )
+        )
+    )
+
+
+def test_patch_rest_flattened():
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "image": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            image="image_value",
+            image_resource=compute.Image(architecture="architecture_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.patch(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/images/{image}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_patch_rest_flattened_error(transport: str = "rest"):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.patch(
+            compute.PatchImageRequest(),
+            project="project_value",
+            image="image_value",
+            image_resource=compute.Image(architecture="architecture_value"),
+        )
+
+
+def test_patch_unary_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ImagesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.patch in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.patch] = mock_rpc
+
+        request = {}
+        client.patch_unary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.patch_unary(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_patch_unary_rest_required_fields(request_type=compute.PatchImageRequest):
+    transport_class = transports.ImagesRestTransport
+
+    request_init = {}
+    request_init["image"] = ""
+    request_init["project"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["image"] = "image_value"
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "image" in jsonified_request
+    assert jsonified_request["image"] == "image_value"
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.patch_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_patch_unary_rest_unset_required_fields():
+    transport = transports.ImagesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.patch._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "image",
+                "imageResource",
+                "project",
+            )
+        )
+    )
+
+
+def test_patch_unary_rest_flattened():
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "image": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            image="image_value",
+            image_resource=compute.Image(architecture="architecture_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.patch_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/images/{image}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_patch_unary_rest_flattened_error(transport: str = "rest"):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.patch_unary(
+            compute.PatchImageRequest(),
+            project="project_value",
+            image="image_value",
+            image_resource=compute.Image(architecture="architecture_value"),
+        )
+
+
+def test_set_iam_policy_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ImagesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.set_iam_policy in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.set_iam_policy] = mock_rpc
+
+        request = {}
+        client.set_iam_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.set_iam_policy(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_set_iam_policy_rest_required_fields(
+    request_type=compute.SetIamPolicyImageRequest,
+):
+    transport_class = transports.ImagesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_iam_policy._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Policy()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Policy.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_iam_policy(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_iam_policy_rest_unset_required_fields():
+    transport = transports.ImagesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_iam_policy._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "globalSetPolicyRequestResource",
+                "project",
+                "resource",
+            )
+        )
+    )
+
+
+def test_set_iam_policy_rest_flattened():
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Policy()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "resource": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            resource="resource_value",
+            global_set_policy_request_resource=compute.GlobalSetPolicyRequest(
+                bindings=[compute.Binding(binding_id="binding_id_value")]
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.set_iam_policy(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/images/{resource}/setIamPolicy"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_set_iam_policy_rest_flattened_error(transport: str = "rest"):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.set_iam_policy(
+            compute.SetIamPolicyImageRequest(),
+            project="project_value",
+            resource="resource_value",
+            global_set_policy_request_resource=compute.GlobalSetPolicyRequest(
+                bindings=[compute.Binding(binding_id="binding_id_value")]
+            ),
+        )
+
+
+def test_set_labels_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ImagesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.set_labels in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.set_labels] = mock_rpc
+
+        request = {}
+        client.set_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.set_labels(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_set_labels_rest_required_fields(request_type=compute.SetLabelsImageRequest):
+    transport_class = transports.ImagesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_labels._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_labels._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_labels(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_labels_rest_unset_required_fields():
+    transport = transports.ImagesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_labels._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "globalSetLabelsRequestResource",
+                "project",
+                "resource",
+            )
+        )
+    )
+
+
+def test_set_labels_rest_flattened():
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "resource": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            resource="resource_value",
+            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(
+                label_fingerprint="label_fingerprint_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.set_labels(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/images/{resource}/setLabels"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_set_labels_rest_flattened_error(transport: str = "rest"):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.set_labels(
+            compute.SetLabelsImageRequest(),
+            project="project_value",
+            resource="resource_value",
+            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(
+                label_fingerprint="label_fingerprint_value"
+            ),
+        )
+
+
+def test_set_labels_unary_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ImagesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.set_labels in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.set_labels] = mock_rpc
+
+        request = {}
+        client.set_labels_unary(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods build a cached wrapper on first rpc call
+        # subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.set_labels_unary(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_set_labels_unary_rest_required_fields(
+    request_type=compute.SetLabelsImageRequest,
+):
+    transport_class = transports.ImagesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_labels._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).set_labels._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.Operation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.set_labels_unary(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_set_labels_unary_rest_unset_required_fields():
+    transport = transports.ImagesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.set_labels._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "globalSetLabelsRequestResource",
+                "project",
+                "resource",
+            )
+        )
+    )
+
+
+def test_set_labels_unary_rest_flattened():
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "resource": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            resource="resource_value",
+            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(
+                label_fingerprint="label_fingerprint_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.set_labels_unary(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/images/{resource}/setLabels"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_set_labels_unary_rest_flattened_error(transport: str = "rest"):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.set_labels_unary(
+            compute.SetLabelsImageRequest(),
+            project="project_value",
+            resource="resource_value",
+            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(
+                label_fingerprint="label_fingerprint_value"
+            ),
+        )
+
+
+def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ImagesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.test_iam_permissions in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.test_iam_permissions
+        ] = mock_rpc
+
+        request = {}
+        client.test_iam_permissions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.test_iam_permissions(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_test_iam_permissions_rest_required_fields(
+    request_type=compute.TestIamPermissionsImageRequest,
+):
+    transport_class = transports.ImagesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["resource"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["resource"] = "resource_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == "resource_value"
+
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.TestPermissionsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = compute.TestPermissionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.test_iam_permissions(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_test_iam_permissions_rest_unset_required_fields():
+    transport = transports.ImagesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.test_iam_permissions._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "project",
+                "resource",
+                "testPermissionsRequestResource",
+            )
+        )
+    )
+
+
+def test_test_iam_permissions_rest_flattened():
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.TestPermissionsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "resource": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            resource="resource_value",
+            test_permissions_request_resource=compute.TestPermissionsRequest(
+                permissions=["permissions_value"]
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = compute.TestPermissionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.test_iam_permissions(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/global/images/{resource}/testIamPermissions"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_test_iam_permissions_rest_flattened_error(transport: str = "rest"):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.test_iam_permissions(
+            compute.TestIamPermissionsImageRequest(),
+            project="project_value",
+            resource="resource_value",
+            test_permissions_request_resource=compute.TestPermissionsRequest(
+                permissions=["permissions_value"]
+            ),
+        )
+
+
+def test_credentials_transport_error():
+    # It is an error to provide credentials and a transport instance.
+    transport = transports.ImagesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = ImagesClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
+        )
+
+    # It is an error to provide a credentials file and a transport instance.
+    transport = transports.ImagesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = ImagesClient(
+            client_options={"credentials_file": "credentials.json"},
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a transport instance.
+    transport = transports.ImagesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = ImagesClient(
+            client_options=options,
+            transport=transport,
+        )
+
+    # It is an error to provide an api_key and a credential.
+    options = client_options.ClientOptions()
+    options.api_key = "api_key"
+    with pytest.raises(ValueError):
+        client = ImagesClient(
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
+        )
+
+    # It is an error to provide scopes and a transport instance.
+    transport = transports.ImagesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = ImagesClient(
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
+        )
+
+
+def test_transport_instance():
+    # A client may be instantiated with a custom transport instance.
+    transport = transports.ImagesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    client = ImagesClient(transport=transport)
+    assert client.transport is transport
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.ImagesRestTransport,
+    ],
+)
+def test_transport_adc(transport_class):
+    # Test default credentials are used if not provided.
+    with mock.patch.object(google.auth, "default") as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class()
+        adc.assert_called_once()
+
+
+def test_transport_kind_rest():
+    transport = ImagesClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_delete_rest_bad_request(request_type=compute.DeleteImageRequest):
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "image": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.DeleteImageRequest,
+        dict,
+    ],
+)
+def test_delete_rest_call_success(request_type):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "image": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_rest_interceptors(null_interceptor):
+    transport = transports.ImagesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
+    )
+    client = ImagesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ImagesRestInterceptor, "post_delete"
+    ) as post, mock.patch.object(
+        transports.ImagesRestInterceptor, "pre_delete"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.DeleteImageRequest.pb(compute.DeleteImageRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = compute.Operation.to_json(compute.Operation())
+        req.return_value.content = return_value
+
+        request = compute.DeleteImageRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.delete(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_deprecate_rest_bad_request(request_type=compute.DeprecateImageRequest):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "image": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.deprecate(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.DeprecateImageRequest,
+        dict,
+    ],
+)
+def test_deprecate_rest_call_success(request_type):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "image": "sample2"}
+    request_init["deprecation_status_resource"] = {
+        "deleted": "deleted_value",
+        "deprecated": "deprecated_value",
+        "obsolete": "obsolete_value",
+        "replacement": "replacement_value",
+        "state": "state_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = compute.DeprecateImageRequest.meta.fields[
+        "deprecation_status_resource"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "deprecation_status_resource"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["deprecation_status_resource"][field])
+                ):
+                    del request_init["deprecation_status_resource"][field][i][subfield]
+            else:
+                del request_init["deprecation_status_resource"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.Operation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.deprecate(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_deprecate_rest_interceptors(null_interceptor):
+    transport = transports.ImagesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
+    )
+    client = ImagesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ImagesRestInterceptor, "post_deprecate"
+    ) as post, mock.patch.object(
+        transports.ImagesRestInterceptor, "pre_deprecate"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.DeprecateImageRequest.pb(compute.DeprecateImageRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = compute.Operation.to_json(compute.Operation())
+        req.return_value.content = return_value
+
+        request = compute.DeprecateImageRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation()
+
+        client.deprecate(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_rest_bad_request(request_type=compute.GetImageRequest):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "image": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetImageRequest,
+        dict,
+    ],
+)
+def test_get_rest_call_success(request_type):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "image": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Image(
+            architecture="architecture_value",
+            archive_size_bytes=1922,
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            disk_size_gb=1261,
+            enable_confidential_compute=True,
+            family="family_value",
+            id=205,
+            kind="kind_value",
+            label_fingerprint="label_fingerprint_value",
+            license_codes=[1360],
+            licenses=["licenses_value"],
+            name="name_value",
+            satisfies_pzi=True,
+            satisfies_pzs=True,
+            self_link="self_link_value",
+            source_disk="source_disk_value",
+            source_disk_id="source_disk_id_value",
+            source_image="source_image_value",
+            source_image_id="source_image_id_value",
+            source_snapshot="source_snapshot_value",
+            source_snapshot_id="source_snapshot_id_value",
+            source_type="source_type_value",
+            status="status_value",
+            storage_locations=["storage_locations_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.Image.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Image)
+    assert response.architecture == "architecture_value"
+    assert response.archive_size_bytes == 1922
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.disk_size_gb == 1261
+    assert response.enable_confidential_compute is True
+    assert response.family == "family_value"
+    assert response.id == 205
+    assert response.kind == "kind_value"
+    assert response.label_fingerprint == "label_fingerprint_value"
+    assert response.license_codes == [1360]
+    assert response.licenses == ["licenses_value"]
+    assert response.name == "name_value"
+    assert response.satisfies_pzi is True
+    assert response.satisfies_pzs is True
+    assert response.self_link == "self_link_value"
+    assert response.source_disk == "source_disk_value"
+    assert response.source_disk_id == "source_disk_id_value"
+    assert response.source_image == "source_image_value"
+    assert response.source_image_id == "source_image_id_value"
+    assert response.source_snapshot == "source_snapshot_value"
+    assert response.source_snapshot_id == "source_snapshot_id_value"
+    assert response.source_type == "source_type_value"
+    assert response.status == "status_value"
+    assert response.storage_locations == ["storage_locations_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_rest_interceptors(null_interceptor):
+    transport = transports.ImagesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
+    )
+    client = ImagesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ImagesRestInterceptor, "post_get"
+    ) as post, mock.patch.object(
+        transports.ImagesRestInterceptor, "pre_get"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.GetImageRequest.pb(compute.GetImageRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = compute.Image.to_json(compute.Image())
+        req.return_value.content = return_value
+
+        request = compute.GetImageRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Image()
+
+        client.get(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_from_family_rest_bad_request(
+    request_type=compute.GetFromFamilyImageRequest,
+):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "family": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_from_family(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetFromFamilyImageRequest,
+        dict,
+    ],
+)
+def test_get_from_family_rest_call_success(request_type):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "family": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Image(
+            architecture="architecture_value",
+            archive_size_bytes=1922,
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            disk_size_gb=1261,
+            enable_confidential_compute=True,
+            family="family_value",
+            id=205,
+            kind="kind_value",
+            label_fingerprint="label_fingerprint_value",
+            license_codes=[1360],
+            licenses=["licenses_value"],
+            name="name_value",
+            satisfies_pzi=True,
+            satisfies_pzs=True,
+            self_link="self_link_value",
+            source_disk="source_disk_value",
+            source_disk_id="source_disk_id_value",
+            source_image="source_image_value",
+            source_image_id="source_image_id_value",
+            source_snapshot="source_snapshot_value",
+            source_snapshot_id="source_snapshot_id_value",
+            source_type="source_type_value",
+            status="status_value",
+            storage_locations=["storage_locations_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.Image.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_from_family(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Image)
+    assert response.architecture == "architecture_value"
+    assert response.archive_size_bytes == 1922
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.disk_size_gb == 1261
+    assert response.enable_confidential_compute is True
+    assert response.family == "family_value"
+    assert response.id == 205
+    assert response.kind == "kind_value"
+    assert response.label_fingerprint == "label_fingerprint_value"
+    assert response.license_codes == [1360]
+    assert response.licenses == ["licenses_value"]
+    assert response.name == "name_value"
+    assert response.satisfies_pzi is True
+    assert response.satisfies_pzs is True
+    assert response.self_link == "self_link_value"
+    assert response.source_disk == "source_disk_value"
+    assert response.source_disk_id == "source_disk_id_value"
+    assert response.source_image == "source_image_value"
+    assert response.source_image_id == "source_image_id_value"
+    assert response.source_snapshot == "source_snapshot_value"
+    assert response.source_snapshot_id == "source_snapshot_id_value"
+    assert response.source_type == "source_type_value"
+    assert response.status == "status_value"
+    assert response.storage_locations == ["storage_locations_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_from_family_rest_interceptors(null_interceptor):
+    transport = transports.ImagesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
+    )
+    client = ImagesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ImagesRestInterceptor, "post_get_from_family"
+    ) as post, mock.patch.object(
+        transports.ImagesRestInterceptor, "pre_get_from_family"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.GetFromFamilyImageRequest.pb(
+            compute.GetFromFamilyImageRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = compute.Image.to_json(compute.Image())
+        req.return_value.content = return_value
+
+        request = compute.GetFromFamilyImageRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Image()
+
+        client.get_from_family(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_iam_policy_rest_bad_request(request_type=compute.GetIamPolicyImageRequest):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "resource": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetIamPolicyImageRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest_call_success(request_type):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "resource": "sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Policy(
+            etag="etag_value",
+            iam_owned=True,
+            version=774,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = compute.Policy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Policy)
+    assert response.etag == "etag_value"
+    assert response.iam_owned is True
+    assert response.version == 774
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.ImagesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
+    )
+    client = ImagesClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ImagesRestInterceptor, "post_get_iam_policy"
+    ) as post, mock.patch.object(
+        transports.ImagesRestInterceptor, "pre_get_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = compute.GetIamPolicyImageRequest.pb(
+            compute.GetIamPolicyImageRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = compute.Policy.to_json(compute.Policy())
+        req.return_value.content = return_value
+
+        request = compute.GetIamPolicyImageRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Policy()
+
+        client.get_iam_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_insert_rest_bad_request(request_type=compute.InsertImageRequest):
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.insert(request)
 
 
 @pytest.mark.parametrize(
@@ -4005,10 +5098,9 @@ def test_insert_rest_error():
         dict,
     ],
 )
-def test_insert_unary_rest(request_type):
+def test_insert_rest_call_success(request_type):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -4168,169 +5260,50 @@ def test_insert_unary_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = compute.Operation.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.insert_unary(request)
+        response = client.insert(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.Operation)
-
-
-def test_insert_unary_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ImagesClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.insert in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.insert] = mock_rpc
-
-        request = {}
-        client.insert_unary(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.insert_unary(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_insert_unary_rest_required_fields(request_type=compute.InsertImageRequest):
-    transport_class = transports.ImagesRestTransport
-
-    request_init = {}
-    request_init["project"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).insert._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["project"] = "project_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).insert._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "force_create",
-            "request_id",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "project" in jsonified_request
-    assert jsonified_request["project"] == "project_value"
-
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = compute.Operation()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.insert_unary(request)
-
-            expected_params = []
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_insert_unary_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.insert._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "forceCreate",
-                "requestId",
-            )
-        )
-        & set(
-            (
-                "imageResource",
-                "project",
-            )
-        )
-    )
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_insert_unary_rest_interceptors(null_interceptor):
+def test_insert_rest_interceptors(null_interceptor):
     transport = transports.ImagesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
     )
     client = ImagesClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -4350,10 +5323,10 @@ def test_insert_unary_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
+        return_value = compute.Operation.to_json(compute.Operation())
+        req.return_value.content = return_value
 
         request = compute.InsertImageRequest()
         metadata = [
@@ -4363,7 +5336,7 @@ def test_insert_unary_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.Operation()
 
-        client.insert_unary(
+        client.insert(
             request,
             metadata=[
                 ("key", "val"),
@@ -4375,14 +5348,10 @@ def test_insert_unary_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_insert_unary_rest_bad_request(
-    transport: str = "rest", request_type=compute.InsertImageRequest
-):
+def test_list_rest_bad_request(request_type=compute.ListImagesRequest):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
     request = request_type(**request_init)
@@ -4392,75 +5361,13 @@ def test_insert_unary_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.insert_unary(request)
-
-
-def test_insert_unary_rest_flattened():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            project="project_value",
-            image_resource=compute.Image(architecture="architecture_value"),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.insert_unary(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images" % client.transport._host,
-            args[1],
-        )
-
-
-def test_insert_unary_rest_flattened_error(transport: str = "rest"):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.insert_unary(
-            compute.InsertImageRequest(),
-            project="project_value",
-            image_resource=compute.Image(architecture="architecture_value"),
-        )
-
-
-def test_insert_unary_rest_error():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.list(request)
 
 
 @pytest.mark.parametrize(
@@ -4470,10 +5377,9 @@ def test_insert_unary_rest_error():
         dict,
     ],
 )
-def test_list_rest(request_type):
+def test_list_rest_call_success(request_type):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -4491,13 +5397,13 @@ def test_list_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = compute.ImageList.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.list(request)
 
@@ -4509,144 +5415,6 @@ def test_list_rest(request_type):
     assert response.self_link == "self_link_value"
 
 
-def test_list_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ImagesClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.list in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.list] = mock_rpc
-
-        request = {}
-        client.list(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.list(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_list_rest_required_fields(request_type=compute.ListImagesRequest):
-    transport_class = transports.ImagesRestTransport
-
-    request_init = {}
-    request_init["project"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["project"] = "project_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "filter",
-            "max_results",
-            "order_by",
-            "page_token",
-            "return_partial_success",
-        )
-    )
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "project" in jsonified_request
-    assert jsonified_request["project"] == "project_value"
-
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = compute.ImageList()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "get",
-                "query_params": pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = compute.ImageList.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.list(request)
-
-            expected_params = []
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_list_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.list._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(
-            (
-                "filter",
-                "maxResults",
-                "orderBy",
-                "pageToken",
-                "returnPartialSuccess",
-            )
-        )
-        & set(("project",))
-    )
-
-
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_rest_interceptors(null_interceptor):
     transport = transports.ImagesRestTransport(
@@ -4654,6 +5422,7 @@ def test_list_rest_interceptors(null_interceptor):
         interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
     )
     client = ImagesClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -4673,10 +5442,10 @@ def test_list_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.ImageList.to_json(compute.ImageList())
+        return_value = compute.ImageList.to_json(compute.ImageList())
+        req.return_value.content = return_value
 
         request = compute.ListImagesRequest()
         metadata = [
@@ -4698,16 +5467,12 @@ def test_list_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_list_rest_bad_request(
-    transport: str = "rest", request_type=compute.ListImagesRequest
-):
+def test_patch_rest_bad_request(request_type=compute.PatchImageRequest):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
-    request_init = {"project": "sample1"}
+    request_init = {"project": "sample1", "image": "sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4715,128 +5480,13 @@ def test_list_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.list(request)
-
-
-def test_list_rest_flattened():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.ImageList()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            project="project_value",
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.ImageList.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.list(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images" % client.transport._host,
-            args[1],
-        )
-
-
-def test_list_rest_flattened_error(transport: str = "rest"):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list(
-            compute.ListImagesRequest(),
-            project="project_value",
-        )
-
-
-def test_list_rest_pager(transport: str = "rest"):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        # with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            compute.ImageList(
-                items=[
-                    compute.Image(),
-                    compute.Image(),
-                    compute.Image(),
-                ],
-                next_page_token="abc",
-            ),
-            compute.ImageList(
-                items=[],
-                next_page_token="def",
-            ),
-            compute.ImageList(
-                items=[
-                    compute.Image(),
-                ],
-                next_page_token="ghi",
-            ),
-            compute.ImageList(
-                items=[
-                    compute.Image(),
-                    compute.Image(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(compute.ImageList.to_json(x) for x in response)
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode("UTF-8")
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {"project": "sample1"}
-
-        pager = client.list(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, compute.Image) for i in results)
-
-        pages = list(client.list(request=sample_request).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
+        client.patch(request)
 
 
 @pytest.mark.parametrize(
@@ -4846,10 +5496,9 @@ def test_list_rest_pager(transport: str = "rest"):
         dict,
     ],
 )
-def test_patch_rest(request_type):
+def test_patch_rest_call_success(request_type):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -5009,13 +5658,13 @@ def test_patch_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = compute.Operation.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.patch(request)
 
@@ -5045,143 +5694,6 @@ def test_patch_rest(request_type):
     assert response.zone == "zone_value"
 
 
-def test_patch_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ImagesClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.patch in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.patch] = mock_rpc
-
-        request = {}
-        client.patch(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.patch(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_patch_rest_required_fields(request_type=compute.PatchImageRequest):
-    transport_class = transports.ImagesRestTransport
-
-    request_init = {}
-    request_init["image"] = ""
-    request_init["project"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["image"] = "image_value"
-    jsonified_request["project"] = "project_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "image" in jsonified_request
-    assert jsonified_request["image"] == "image_value"
-    assert "project" in jsonified_request
-    assert jsonified_request["project"] == "project_value"
-
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = compute.Operation()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "patch",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.patch(request)
-
-            expected_params = []
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_patch_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.patch._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("requestId",))
-        & set(
-            (
-                "image",
-                "imageResource",
-                "project",
-            )
-        )
-    )
-
-
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_patch_rest_interceptors(null_interceptor):
     transport = transports.ImagesRestTransport(
@@ -5189,6 +5701,7 @@ def test_patch_rest_interceptors(null_interceptor):
         interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
     )
     client = ImagesClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -5208,10 +5721,10 @@ def test_patch_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
+        return_value = compute.Operation.to_json(compute.Operation())
+        req.return_value.content = return_value
 
         request = compute.PatchImageRequest()
         metadata = [
@@ -5233,16 +5746,12 @@ def test_patch_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_patch_rest_bad_request(
-    transport: str = "rest", request_type=compute.PatchImageRequest
-):
+def test_set_iam_policy_rest_bad_request(request_type=compute.SetIamPolicyImageRequest):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "image": "sample2"}
+    request_init = {"project": "sample1", "resource": "sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5250,541 +5759,13 @@ def test_patch_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.patch(request)
-
-
-def test_patch_rest_flattened():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1", "image": "sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            project="project_value",
-            image="image_value",
-            image_resource=compute.Image(architecture="architecture_value"),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.patch(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/{image}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_patch_rest_flattened_error(transport: str = "rest"):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.patch(
-            compute.PatchImageRequest(),
-            project="project_value",
-            image="image_value",
-            image_resource=compute.Image(architecture="architecture_value"),
-        )
-
-
-def test_patch_rest_error():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.PatchImageRequest,
-        dict,
-    ],
-)
-def test_patch_unary_rest(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "image": "sample2"}
-    request_init["image_resource"] = {
-        "architecture": "architecture_value",
-        "archive_size_bytes": 1922,
-        "creation_timestamp": "creation_timestamp_value",
-        "deprecated": {
-            "deleted": "deleted_value",
-            "deprecated": "deprecated_value",
-            "obsolete": "obsolete_value",
-            "replacement": "replacement_value",
-            "state": "state_value",
-        },
-        "description": "description_value",
-        "disk_size_gb": 1261,
-        "enable_confidential_compute": True,
-        "family": "family_value",
-        "guest_os_features": [{"type_": "type__value"}],
-        "id": 205,
-        "image_encryption_key": {
-            "kms_key_name": "kms_key_name_value",
-            "kms_key_service_account": "kms_key_service_account_value",
-            "raw_key": "raw_key_value",
-            "rsa_encrypted_key": "rsa_encrypted_key_value",
-            "sha256": "sha256_value",
-        },
-        "kind": "kind_value",
-        "label_fingerprint": "label_fingerprint_value",
-        "labels": {},
-        "license_codes": [1361, 1362],
-        "licenses": ["licenses_value1", "licenses_value2"],
-        "name": "name_value",
-        "raw_disk": {
-            "container_type": "container_type_value",
-            "sha1_checksum": "sha1_checksum_value",
-            "source": "source_value",
-        },
-        "satisfies_pzi": True,
-        "satisfies_pzs": True,
-        "self_link": "self_link_value",
-        "shielded_instance_initial_state": {
-            "dbs": [{"content": "content_value", "file_type": "file_type_value"}],
-            "dbxs": {},
-            "keks": {},
-            "pk": {},
-        },
-        "source_disk": "source_disk_value",
-        "source_disk_encryption_key": {},
-        "source_disk_id": "source_disk_id_value",
-        "source_image": "source_image_value",
-        "source_image_encryption_key": {},
-        "source_image_id": "source_image_id_value",
-        "source_snapshot": "source_snapshot_value",
-        "source_snapshot_encryption_key": {},
-        "source_snapshot_id": "source_snapshot_id_value",
-        "source_type": "source_type_value",
-        "status": "status_value",
-        "storage_locations": ["storage_locations_value1", "storage_locations_value2"],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = compute.PatchImageRequest.meta.fields["image_resource"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["image_resource"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["image_resource"][field])):
-                    del request_init["image_resource"][field][i][subfield]
-            else:
-                del request_init["image_resource"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.patch_unary(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.Operation)
-
-
-def test_patch_unary_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ImagesClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.patch in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.patch] = mock_rpc
-
-        request = {}
-        client.patch_unary(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.patch_unary(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_patch_unary_rest_required_fields(request_type=compute.PatchImageRequest):
-    transport_class = transports.ImagesRestTransport
-
-    request_init = {}
-    request_init["image"] = ""
-    request_init["project"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["image"] = "image_value"
-    jsonified_request["project"] = "project_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id",))
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "image" in jsonified_request
-    assert jsonified_request["image"] == "image_value"
-    assert "project" in jsonified_request
-    assert jsonified_request["project"] == "project_value"
-
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = compute.Operation()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "patch",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.patch_unary(request)
-
-            expected_params = []
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_patch_unary_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.patch._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(("requestId",))
-        & set(
-            (
-                "image",
-                "imageResource",
-                "project",
-            )
-        )
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_patch_unary_rest_interceptors(null_interceptor):
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
-    )
-    client = ImagesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_patch"
-    ) as post, mock.patch.object(
-        transports.ImagesRestInterceptor, "pre_patch"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.PatchImageRequest.pb(compute.PatchImageRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.PatchImageRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.patch_unary(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_patch_unary_rest_bad_request(
-    transport: str = "rest", request_type=compute.PatchImageRequest
-):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "image": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.patch_unary(request)
-
-
-def test_patch_unary_rest_flattened():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1", "image": "sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            project="project_value",
-            image="image_value",
-            image_resource=compute.Image(architecture="architecture_value"),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.patch_unary(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/{image}"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_patch_unary_rest_flattened_error(transport: str = "rest"):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.patch_unary(
-            compute.PatchImageRequest(),
-            project="project_value",
-            image="image_value",
-            image_resource=compute.Image(architecture="architecture_value"),
-        )
-
-
-def test_patch_unary_rest_error():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.set_iam_policy(request)
 
 
 @pytest.mark.parametrize(
@@ -5794,10 +5775,9 @@ def test_patch_unary_rest_error():
         dict,
     ],
 )
-def test_set_iam_policy_rest(request_type):
+def test_set_iam_policy_rest_call_success(request_type):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -5966,13 +5946,13 @@ def test_set_iam_policy_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = compute.Policy.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_iam_policy(request)
 
@@ -5983,139 +5963,6 @@ def test_set_iam_policy_rest(request_type):
     assert response.version == 774
 
 
-def test_set_iam_policy_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ImagesClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.set_iam_policy in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.set_iam_policy] = mock_rpc
-
-        request = {}
-        client.set_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.set_iam_policy(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_set_iam_policy_rest_required_fields(
-    request_type=compute.SetIamPolicyImageRequest,
-):
-    transport_class = transports.ImagesRestTransport
-
-    request_init = {}
-    request_init["project"] = ""
-    request_init["resource"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_iam_policy._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["project"] = "project_value"
-    jsonified_request["resource"] = "resource_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_iam_policy._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "project" in jsonified_request
-    assert jsonified_request["project"] == "project_value"
-    assert "resource" in jsonified_request
-    assert jsonified_request["resource"] == "resource_value"
-
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = compute.Policy()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = compute.Policy.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.set_iam_policy(request)
-
-            expected_params = []
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_set_iam_policy_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.set_iam_policy._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "globalSetPolicyRequestResource",
-                "project",
-                "resource",
-            )
-        )
-    )
-
-
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_set_iam_policy_rest_interceptors(null_interceptor):
     transport = transports.ImagesRestTransport(
@@ -6123,6 +5970,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
     )
     client = ImagesClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -6144,10 +5992,10 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Policy.to_json(compute.Policy())
+        return_value = compute.Policy.to_json(compute.Policy())
+        req.return_value.content = return_value
 
         request = compute.SetIamPolicyImageRequest()
         metadata = [
@@ -6169,14 +6017,10 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_set_iam_policy_rest_bad_request(
-    transport: str = "rest", request_type=compute.SetIamPolicyImageRequest
-):
+def test_set_labels_rest_bad_request(request_type=compute.SetLabelsImageRequest):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "resource": "sample2"}
     request = request_type(**request_init)
@@ -6186,82 +6030,13 @@ def test_set_iam_policy_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.set_iam_policy(request)
-
-
-def test_set_iam_policy_rest_flattened():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Policy()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1", "resource": "sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            project="project_value",
-            resource="resource_value",
-            global_set_policy_request_resource=compute.GlobalSetPolicyRequest(
-                bindings=[compute.Binding(binding_id="binding_id_value")]
-            ),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Policy.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.set_iam_policy(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/{resource}/setIamPolicy"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_set_iam_policy_rest_flattened_error(transport: str = "rest"):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.set_iam_policy(
-            compute.SetIamPolicyImageRequest(),
-            project="project_value",
-            resource="resource_value",
-            global_set_policy_request_resource=compute.GlobalSetPolicyRequest(
-                bindings=[compute.Binding(binding_id="binding_id_value")]
-            ),
-        )
-
-
-def test_set_iam_policy_rest_error():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.set_labels(request)
 
 
 @pytest.mark.parametrize(
@@ -6271,10 +6046,9 @@ def test_set_iam_policy_rest_error():
         dict,
     ],
 )
-def test_set_labels_rest(request_type):
+def test_set_labels_rest_call_success(request_type):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -6389,13 +6163,13 @@ def test_set_labels_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = compute.Operation.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.set_labels(request)
 
@@ -6425,141 +6199,6 @@ def test_set_labels_rest(request_type):
     assert response.zone == "zone_value"
 
 
-def test_set_labels_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ImagesClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.set_labels in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.set_labels] = mock_rpc
-
-        request = {}
-        client.set_labels(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.set_labels(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_set_labels_rest_required_fields(request_type=compute.SetLabelsImageRequest):
-    transport_class = transports.ImagesRestTransport
-
-    request_init = {}
-    request_init["project"] = ""
-    request_init["resource"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_labels._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["project"] = "project_value"
-    jsonified_request["resource"] = "resource_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_labels._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "project" in jsonified_request
-    assert jsonified_request["project"] == "project_value"
-    assert "resource" in jsonified_request
-    assert jsonified_request["resource"] == "resource_value"
-
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = compute.Operation()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.set_labels(request)
-
-            expected_params = []
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_set_labels_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.set_labels._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "globalSetLabelsRequestResource",
-                "project",
-                "resource",
-            )
-        )
-    )
-
-
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_set_labels_rest_interceptors(null_interceptor):
     transport = transports.ImagesRestTransport(
@@ -6567,6 +6206,7 @@ def test_set_labels_rest_interceptors(null_interceptor):
         interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
     )
     client = ImagesClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -6586,10 +6226,10 @@ def test_set_labels_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
+        return_value = compute.Operation.to_json(compute.Operation())
+        req.return_value.content = return_value
 
         request = compute.SetLabelsImageRequest()
         metadata = [
@@ -6611,14 +6251,12 @@ def test_set_labels_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_set_labels_rest_bad_request(
-    transport: str = "rest", request_type=compute.SetLabelsImageRequest
+def test_test_iam_permissions_rest_bad_request(
+    request_type=compute.TestIamPermissionsImageRequest,
 ):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "resource": "sample2"}
     request = request_type(**request_init)
@@ -6628,504 +6266,13 @@ def test_set_labels_rest_bad_request(
         core_exceptions.BadRequest
     ):
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
         response_value.status_code = 400
-        response_value.request = Request()
+        response_value.request = mock.Mock()
         req.return_value = response_value
-        client.set_labels(request)
-
-
-def test_set_labels_rest_flattened():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1", "resource": "sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            project="project_value",
-            resource="resource_value",
-            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(
-                label_fingerprint="label_fingerprint_value"
-            ),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.set_labels(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/{resource}/setLabels"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_set_labels_rest_flattened_error(transport: str = "rest"):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.set_labels(
-            compute.SetLabelsImageRequest(),
-            project="project_value",
-            resource="resource_value",
-            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(
-                label_fingerprint="label_fingerprint_value"
-            ),
-        )
-
-
-def test_set_labels_rest_error():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        compute.SetLabelsImageRequest,
-        dict,
-    ],
-)
-def test_set_labels_unary_rest(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "resource": "sample2"}
-    request_init["global_set_labels_request_resource"] = {
-        "label_fingerprint": "label_fingerprint_value",
-        "labels": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = compute.SetLabelsImageRequest.meta.fields[
-        "global_set_labels_request_resource"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "global_set_labels_request_resource"
-    ].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(
-                    0, len(request_init["global_set_labels_request_resource"][field])
-                ):
-                    del request_init["global_set_labels_request_resource"][field][i][
-                        subfield
-                    ]
-            else:
-                del request_init["global_set_labels_request_resource"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation(
-            client_operation_id="client_operation_id_value",
-            creation_timestamp="creation_timestamp_value",
-            description="description_value",
-            end_time="end_time_value",
-            http_error_message="http_error_message_value",
-            http_error_status_code=2374,
-            id=205,
-            insert_time="insert_time_value",
-            kind="kind_value",
-            name="name_value",
-            operation_group_id="operation_group_id_value",
-            operation_type="operation_type_value",
-            progress=885,
-            region="region_value",
-            self_link="self_link_value",
-            start_time="start_time_value",
-            status=compute.Operation.Status.DONE,
-            status_message="status_message_value",
-            target_id=947,
-            target_link="target_link_value",
-            user="user_value",
-            zone="zone_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.set_labels_unary(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, compute.Operation)
-
-
-def test_set_labels_unary_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ImagesClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert client._transport.set_labels in client._transport._wrapped_methods
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[client._transport.set_labels] = mock_rpc
-
-        request = {}
-        client.set_labels_unary(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        # Operation methods build a cached wrapper on first rpc call
-        # subsequent calls should use the cached wrapper
-        wrapper_fn.reset_mock()
-
-        client.set_labels_unary(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_set_labels_unary_rest_required_fields(
-    request_type=compute.SetLabelsImageRequest,
-):
-    transport_class = transports.ImagesRestTransport
-
-    request_init = {}
-    request_init["project"] = ""
-    request_init["resource"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_labels._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["project"] = "project_value"
-    jsonified_request["resource"] = "resource_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_labels._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "project" in jsonified_request
-    assert jsonified_request["project"] == "project_value"
-    assert "resource" in jsonified_request
-    assert jsonified_request["resource"] == "resource_value"
-
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = compute.Operation()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = compute.Operation.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.set_labels_unary(request)
-
-            expected_params = []
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_set_labels_unary_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.set_labels._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "globalSetLabelsRequestResource",
-                "project",
-                "resource",
-            )
-        )
-    )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_set_labels_unary_rest_interceptors(null_interceptor):
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
-    )
-    client = ImagesClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_set_labels"
-    ) as post, mock.patch.object(
-        transports.ImagesRestInterceptor, "pre_set_labels"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = compute.SetLabelsImageRequest.pb(compute.SetLabelsImageRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.Operation.to_json(compute.Operation())
-
-        request = compute.SetLabelsImageRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = compute.Operation()
-
-        client.set_labels_unary(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_set_labels_unary_rest_bad_request(
-    transport: str = "rest", request_type=compute.SetLabelsImageRequest
-):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "resource": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.set_labels_unary(request)
-
-
-def test_set_labels_unary_rest_flattened():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.Operation()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1", "resource": "sample2"}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            project="project_value",
-            resource="resource_value",
-            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(
-                label_fingerprint="label_fingerprint_value"
-            ),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.Operation.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.set_labels_unary(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/{resource}/setLabels"
-            % client.transport._host,
-            args[1],
-        )
-
-
-def test_set_labels_unary_rest_flattened_error(transport: str = "rest"):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.set_labels_unary(
-            compute.SetLabelsImageRequest(),
-            project="project_value",
-            resource="resource_value",
-            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(
-                label_fingerprint="label_fingerprint_value"
-            ),
-        )
-
-
-def test_set_labels_unary_rest_error():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+        client.test_iam_permissions(request)
 
 
 @pytest.mark.parametrize(
@@ -7135,10 +6282,9 @@ def test_set_labels_unary_rest_error():
         dict,
     ],
 )
-def test_test_iam_permissions_rest(request_type):
+def test_test_iam_permissions_rest_call_success(request_type):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
     # send a request that will satisfy transcoding
@@ -7231,156 +6377,19 @@ def test_test_iam_permissions_rest(request_type):
         )
 
         # Wrap the value into a proper Response obj
-        response_value = Response()
+        response_value = mock.Mock()
         response_value.status_code = 200
+
         # Convert return value to protobuf type
         return_value = compute.TestPermissionsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
+        response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
         response = client.test_iam_permissions(request)
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.TestPermissionsResponse)
     assert response.permissions == ["permissions_value"]
-
-
-def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
-    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
-    # instead of constructing them on each call
-    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
-        client = ImagesClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport="rest",
-        )
-
-        # Should wrap all calls on client creation
-        assert wrapper_fn.call_count > 0
-        wrapper_fn.reset_mock()
-
-        # Ensure method has been cached
-        assert (
-            client._transport.test_iam_permissions in client._transport._wrapped_methods
-        )
-
-        # Replace cached wrapped function with mock
-        mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
-
-        request = {}
-        client.test_iam_permissions(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert mock_rpc.call_count == 1
-
-        client.test_iam_permissions(request)
-
-        # Establish that a new wrapper was not created for this call
-        assert wrapper_fn.call_count == 0
-        assert mock_rpc.call_count == 2
-
-
-def test_test_iam_permissions_rest_required_fields(
-    request_type=compute.TestIamPermissionsImageRequest,
-):
-    transport_class = transports.ImagesRestTransport
-
-    request_init = {}
-    request_init["project"] = ""
-    request_init["resource"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["project"] = "project_value"
-    jsonified_request["resource"] = "resource_value"
-
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "project" in jsonified_request
-    assert jsonified_request["project"] == "project_value"
-    assert "resource" in jsonified_request
-    assert jsonified_request["resource"] == "resource_value"
-
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = compute.TestPermissionsResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, "request") as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, "transcode") as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                "uri": "v1/sample_method",
-                "method": "post",
-                "query_params": pb_request,
-            }
-            transcode_result["body"] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            # Convert return value to protobuf type
-            return_value = compute.TestPermissionsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(return_value)
-
-            response_value._content = json_return_value.encode("UTF-8")
-            req.return_value = response_value
-
-            response = client.test_iam_permissions(request)
-
-            expected_params = []
-            actual_params = req.call_args.kwargs["params"]
-            assert expected_params == actual_params
-
-
-def test_test_iam_permissions_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
-
-    unset_fields = transport.test_iam_permissions._get_unset_required_fields({})
-    assert set(unset_fields) == (
-        set(())
-        & set(
-            (
-                "project",
-                "resource",
-                "testPermissionsRequestResource",
-            )
-        )
-    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -7390,6 +6399,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         interceptor=None if null_interceptor else transports.ImagesRestInterceptor(),
     )
     client = ImagesClient(transport=transport)
+
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -7411,12 +6421,12 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
             "query_params": pb_message,
         }
 
-        req.return_value = Response()
+        req.return_value = mock.Mock()
         req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.TestPermissionsResponse.to_json(
+        return_value = compute.TestPermissionsResponse.to_json(
             compute.TestPermissionsResponse()
         )
+        req.return_value.content = return_value
 
         request = compute.TestIamPermissionsImageRequest()
         metadata = [
@@ -7438,187 +6448,233 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_test_iam_permissions_rest_bad_request(
-    transport: str = "rest", request_type=compute.TestIamPermissionsImageRequest
-):
+def test_initialize_client_w_rest():
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
-    # send a request that will satisfy transcoding
-    request_init = {"project": "sample1", "resource": "sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.test_iam_permissions(request)
+    assert client is not None
 
 
-def test_test_iam_permissions_rest_flattened():
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_unary_empty_call_rest():
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = compute.TestPermissionsResponse()
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete), "__call__") as call:
+        client.delete_unary(request=None)
 
-        # get arguments that satisfy an http rule for this method
-        sample_request = {"project": "sample1", "resource": "sample2"}
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.DeleteImageRequest()
 
-        # get truthy value for each flattened field
-        mock_args = dict(
-            project="project_value",
-            resource="resource_value",
-            test_permissions_request_resource=compute.TestPermissionsRequest(
-                permissions=["permissions_value"]
-            ),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = compute.TestPermissionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        client.test_iam_permissions(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/{resource}/testIamPermissions"
-            % client.transport._host,
-            args[1],
-        )
+        assert args[0] == request_msg
 
 
-def test_test_iam_permissions_rest_flattened_error(transport: str = "rest"):
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_deprecate_unary_empty_call_rest():
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        transport="rest",
     )
 
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.test_iam_permissions(
-            compute.TestIamPermissionsImageRequest(),
-            project="project_value",
-            resource="resource_value",
-            test_permissions_request_resource=compute.TestPermissionsRequest(
-                permissions=["permissions_value"]
-            ),
-        )
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.deprecate), "__call__") as call:
+        client.deprecate_unary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.DeprecateImageRequest()
+
+        assert args[0] == request_msg
 
 
-def test_test_iam_permissions_rest_error():
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_empty_call_rest():
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-def test_credentials_transport_error():
-    # It is an error to provide credentials and a transport instance.
-    transport = transports.ImagesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    with pytest.raises(ValueError):
-        client = ImagesClient(
-            credentials=ga_credentials.AnonymousCredentials(),
-            transport=transport,
-        )
 
-    # It is an error to provide a credentials file and a transport instance.
-    transport = transports.ImagesRestTransport(
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get), "__call__") as call:
+        client.get(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.GetImageRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_from_family_empty_call_rest():
+    client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    with pytest.raises(ValueError):
-        client = ImagesClient(
-            client_options={"credentials_file": "credentials.json"},
-            transport=transport,
-        )
 
-    # It is an error to provide an api_key and a transport instance.
-    transport = transports.ImagesRestTransport(
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_from_family), "__call__") as call:
+        client.get_from_family(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.GetFromFamilyImageRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_iam_policy_empty_call_rest():
+    client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    options = client_options.ClientOptions()
-    options.api_key = "api_key"
-    with pytest.raises(ValueError):
-        client = ImagesClient(
-            client_options=options,
-            transport=transport,
-        )
 
-    # It is an error to provide an api_key and a credential.
-    options = client_options.ClientOptions()
-    options.api_key = "api_key"
-    with pytest.raises(ValueError):
-        client = ImagesClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        client.get_iam_policy(request=None)
 
-    # It is an error to provide scopes and a transport instance.
-    transport = transports.ImagesRestTransport(
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.GetIamPolicyImageRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_insert_unary_empty_call_rest():
+    client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    with pytest.raises(ValueError):
-        client = ImagesClient(
-            client_options={"scopes": ["1", "2"]},
-            transport=transport,
-        )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.insert), "__call__") as call:
+        client.insert_unary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.InsertImageRequest()
+
+        assert args[0] == request_msg
 
 
-def test_transport_instance():
-    # A client may be instantiated with a custom transport instance.
-    transport = transports.ImagesRestTransport(
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_empty_call_rest():
+    client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    client = ImagesClient(transport=transport)
-    assert client.transport is transport
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list), "__call__") as call:
+        client.list(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.ListImagesRequest()
+
+        assert args[0] == request_msg
 
 
-@pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.ImagesRestTransport,
-    ],
-)
-def test_transport_adc(transport_class):
-    # Test default credentials are used if not provided.
-    with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport_class()
-        adc.assert_called_once()
-
-
-@pytest.mark.parametrize(
-    "transport_name",
-    [
-        "rest",
-    ],
-)
-def test_transport_kind(transport_name):
-    transport = ImagesClient.get_transport_class(transport_name)(
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_patch_unary_empty_call_rest():
+    client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
-    assert transport.kind == transport_name
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.patch), "__call__") as call:
+        client.patch_unary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.PatchImageRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_set_iam_policy_empty_call_rest():
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        client.set_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.SetIamPolicyImageRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_set_labels_unary_empty_call_rest():
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.set_labels), "__call__") as call:
+        client.set_labels_unary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.SetLabelsImageRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_test_iam_permissions_empty_call_rest():
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        client.test_iam_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = compute.TestIamPermissionsImageRequest()
+
+        assert args[0] == request_msg
 
 
 def test_images_base_transport_error():
@@ -7952,21 +7008,16 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-    }
-
-    for transport, close_name in transports.items():
-        client = ImagesClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = ImagesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

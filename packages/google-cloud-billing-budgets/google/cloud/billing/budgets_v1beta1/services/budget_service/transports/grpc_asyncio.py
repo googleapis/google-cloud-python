@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -229,6 +230,9 @@ class BudgetServiceGrpcAsyncIOTransport(BudgetServiceTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -398,12 +402,12 @@ class BudgetServiceGrpcAsyncIOTransport(BudgetServiceTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_budget: gapic_v1.method_async.wrap_method(
+            self.create_budget: self._wrap_method(
                 self.create_budget,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_budget: gapic_v1.method_async.wrap_method(
+            self.update_budget: self._wrap_method(
                 self.update_budget,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -418,7 +422,7 @@ class BudgetServiceGrpcAsyncIOTransport(BudgetServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_budget: gapic_v1.method_async.wrap_method(
+            self.get_budget: self._wrap_method(
                 self.get_budget,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -433,7 +437,7 @@ class BudgetServiceGrpcAsyncIOTransport(BudgetServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_budgets: gapic_v1.method_async.wrap_method(
+            self.list_budgets: self._wrap_method(
                 self.list_budgets,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -448,7 +452,7 @@ class BudgetServiceGrpcAsyncIOTransport(BudgetServiceTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_budget: gapic_v1.method_async.wrap_method(
+            self.delete_budget: self._wrap_method(
                 self.delete_budget,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -465,8 +469,17 @@ class BudgetServiceGrpcAsyncIOTransport(BudgetServiceTransport):
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("BudgetServiceGrpcAsyncIOTransport",)
