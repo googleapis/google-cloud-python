@@ -165,10 +165,11 @@ replacements:
     count: 2
   - paths: [
       packages/google-cloud-visionai/google/cloud/visionai_v1/types/platform.py,
+      packages/google-cloud-visionai/google/cloud/visionai_v1alpha1/types/platform.py,
     ]
-    before: "'processor': STRING;\n             }\n        dynamic_config_input_topic "
-    after:  "'processor': STRING;\n\n             }\n\n        dynamic_config_input_topic "
-    count: 1
+    before: "'processor': STRING;\n             }\n"
+    after:  "'processor': STRING;\n\n             }\n\n"
+    count: 2
   - paths: [
       packages/google-cloud-documentai/google/cloud/documentai_v1beta3/types/document_service.py,
     ]
