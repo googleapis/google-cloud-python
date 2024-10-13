@@ -16,32 +16,29 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.support_v2.types import case
+from google.cloud.support_v2.types import case as gcs_case
+from google.cloud.support_v2.types import case_service
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseCaseServiceRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.cloud.support_v2.types import case
-from google.cloud.support_v2.types import case as gcs_case
-from google.cloud.support_v2.types import case_service
-
-from .base import CaseServiceTransport
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -317,8 +314,8 @@ class CaseServiceRestStub:
     _interceptor: CaseServiceRestInterceptor
 
 
-class CaseServiceRestTransport(CaseServiceTransport):
-    """REST backend transport for CaseService.
+class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
+    """REST backend synchronous transport for CaseService.
 
     A service to manage Google Cloud support cases.
 
@@ -327,7 +324,6 @@ class CaseServiceRestTransport(CaseServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -381,21 +377,12 @@ class CaseServiceRestTransport(CaseServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -406,19 +393,32 @@ class CaseServiceRestTransport(CaseServiceTransport):
         self._interceptor = interceptor or CaseServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CloseCase(CaseServiceRestStub):
+    class _CloseCase(_BaseCaseServiceRestTransport._BaseCloseCase, CaseServiceRestStub):
         def __hash__(self):
-            return hash("CloseCase")
+            return hash("CaseServiceRestTransport.CloseCase")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -445,50 +445,36 @@ class CaseServiceRestTransport(CaseServiceTransport):
                     A support case.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/cases/*}:close",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=organizations/*/cases/*}:close",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_close_case(request, metadata)
-            pb_request = case_service.CloseCaseRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseCaseServiceRestTransport._BaseCloseCase._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_close_case(request, metadata)
+            transcoded_request = (
+                _BaseCaseServiceRestTransport._BaseCloseCase._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseCaseServiceRestTransport._BaseCloseCase._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseCaseServiceRestTransport._BaseCloseCase._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = CaseServiceRestTransport._CloseCase._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -504,19 +490,34 @@ class CaseServiceRestTransport(CaseServiceTransport):
             resp = self._interceptor.post_close_case(resp)
             return resp
 
-    class _CreateCase(CaseServiceRestStub):
+    class _CreateCase(
+        _BaseCaseServiceRestTransport._BaseCreateCase, CaseServiceRestStub
+    ):
         def __hash__(self):
-            return hash("CreateCase")
+            return hash("CaseServiceRestTransport.CreateCase")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -543,50 +544,36 @@ class CaseServiceRestTransport(CaseServiceTransport):
                     A support case.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=projects/*}/cases",
-                    "body": "case",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{parent=organizations/*}/cases",
-                    "body": "case",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_case(request, metadata)
-            pb_request = case_service.CreateCaseRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseCaseServiceRestTransport._BaseCreateCase._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_create_case(request, metadata)
+            transcoded_request = (
+                _BaseCaseServiceRestTransport._BaseCreateCase._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseCaseServiceRestTransport._BaseCreateCase._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseCaseServiceRestTransport._BaseCreateCase._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = CaseServiceRestTransport._CreateCase._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -602,19 +589,34 @@ class CaseServiceRestTransport(CaseServiceTransport):
             resp = self._interceptor.post_create_case(resp)
             return resp
 
-    class _EscalateCase(CaseServiceRestStub):
+    class _EscalateCase(
+        _BaseCaseServiceRestTransport._BaseEscalateCase, CaseServiceRestStub
+    ):
         def __hash__(self):
-            return hash("EscalateCase")
+            return hash("CaseServiceRestTransport.EscalateCase")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -641,50 +643,38 @@ class CaseServiceRestTransport(CaseServiceTransport):
                     A support case.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=projects/*/cases/*}:escalate",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2/{name=organizations/*/cases/*}:escalate",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_escalate_case(request, metadata)
-            pb_request = case_service.EscalateCaseRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseCaseServiceRestTransport._BaseEscalateCase._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_escalate_case(request, metadata)
+            transcoded_request = (
+                _BaseCaseServiceRestTransport._BaseEscalateCase._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = (
+                _BaseCaseServiceRestTransport._BaseEscalateCase._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseCaseServiceRestTransport._BaseEscalateCase._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = CaseServiceRestTransport._EscalateCase._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -700,19 +690,31 @@ class CaseServiceRestTransport(CaseServiceTransport):
             resp = self._interceptor.post_escalate_case(resp)
             return resp
 
-    class _GetCase(CaseServiceRestStub):
+    class _GetCase(_BaseCaseServiceRestTransport._BaseGetCase, CaseServiceRestStub):
         def __hash__(self):
-            return hash("GetCase")
+            return hash("CaseServiceRestTransport.GetCase")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -739,42 +741,31 @@ class CaseServiceRestTransport(CaseServiceTransport):
                     A support case.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=projects/*/cases/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{name=organizations/*/cases/*}",
-                },
-            ]
+            http_options = (
+                _BaseCaseServiceRestTransport._BaseGetCase._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_case(request, metadata)
-            pb_request = case_service.GetCaseRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseCaseServiceRestTransport._BaseGetCase._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseCaseServiceRestTransport._BaseGetCase._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = CaseServiceRestTransport._GetCase._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -790,19 +781,31 @@ class CaseServiceRestTransport(CaseServiceTransport):
             resp = self._interceptor.post_get_case(resp)
             return resp
 
-    class _ListCases(CaseServiceRestStub):
+    class _ListCases(_BaseCaseServiceRestTransport._BaseListCases, CaseServiceRestStub):
         def __hash__(self):
-            return hash("ListCases")
+            return hash("CaseServiceRestTransport.ListCases")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -831,42 +834,31 @@ class CaseServiceRestTransport(CaseServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*}/cases",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*}/cases",
-                },
-            ]
+            http_options = (
+                _BaseCaseServiceRestTransport._BaseListCases._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_cases(request, metadata)
-            pb_request = case_service.ListCasesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseCaseServiceRestTransport._BaseListCases._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseCaseServiceRestTransport._BaseListCases._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = CaseServiceRestTransport._ListCases._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -882,9 +874,34 @@ class CaseServiceRestTransport(CaseServiceTransport):
             resp = self._interceptor.post_list_cases(resp)
             return resp
 
-    class _SearchCaseClassifications(CaseServiceRestStub):
+    class _SearchCaseClassifications(
+        _BaseCaseServiceRestTransport._BaseSearchCaseClassifications,
+        CaseServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("SearchCaseClassifications")
+            return hash("CaseServiceRestTransport.SearchCaseClassifications")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -914,39 +931,31 @@ class CaseServiceRestTransport(CaseServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/caseClassifications:search",
-                },
-            ]
+            http_options = (
+                _BaseCaseServiceRestTransport._BaseSearchCaseClassifications._get_http_options()
+            )
             request, metadata = self._interceptor.pre_search_case_classifications(
                 request, metadata
             )
-            pb_request = case_service.SearchCaseClassificationsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseCaseServiceRestTransport._BaseSearchCaseClassifications._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseCaseServiceRestTransport._BaseSearchCaseClassifications._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                CaseServiceRestTransport._SearchCaseClassifications._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -962,9 +971,33 @@ class CaseServiceRestTransport(CaseServiceTransport):
             resp = self._interceptor.post_search_case_classifications(resp)
             return resp
 
-    class _SearchCases(CaseServiceRestStub):
+    class _SearchCases(
+        _BaseCaseServiceRestTransport._BaseSearchCases, CaseServiceRestStub
+    ):
         def __hash__(self):
-            return hash("SearchCases")
+            return hash("CaseServiceRestTransport.SearchCases")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -993,41 +1026,31 @@ class CaseServiceRestTransport(CaseServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=projects/*}/cases:search",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2/{parent=organizations/*}/cases:search",
-                },
-            ]
+            http_options = (
+                _BaseCaseServiceRestTransport._BaseSearchCases._get_http_options()
+            )
             request, metadata = self._interceptor.pre_search_cases(request, metadata)
-            pb_request = case_service.SearchCasesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseCaseServiceRestTransport._BaseSearchCases._get_transcoded_request(
+                    http_options, request
                 )
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseCaseServiceRestTransport._BaseSearchCases._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = CaseServiceRestTransport._SearchCases._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1043,19 +1066,34 @@ class CaseServiceRestTransport(CaseServiceTransport):
             resp = self._interceptor.post_search_cases(resp)
             return resp
 
-    class _UpdateCase(CaseServiceRestStub):
+    class _UpdateCase(
+        _BaseCaseServiceRestTransport._BaseUpdateCase, CaseServiceRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateCase")
+            return hash("CaseServiceRestTransport.UpdateCase")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1082,50 +1120,36 @@ class CaseServiceRestTransport(CaseServiceTransport):
                     A support case.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2/{case.name=projects/*/cases/*}",
-                    "body": "case",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v2/{case.name=organizations/*/cases/*}",
-                    "body": "case",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_case(request, metadata)
-            pb_request = case_service.UpdateCaseRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseCaseServiceRestTransport._BaseUpdateCase._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_update_case(request, metadata)
+            transcoded_request = (
+                _BaseCaseServiceRestTransport._BaseUpdateCase._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseCaseServiceRestTransport._BaseUpdateCase._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseCaseServiceRestTransport._BaseUpdateCase._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = CaseServiceRestTransport._UpdateCase._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

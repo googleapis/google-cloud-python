@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -234,6 +235,9 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1307,12 +1311,12 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_orchestration_clusters: gapic_v1.method_async.wrap_method(
+            self.list_orchestration_clusters: self._wrap_method(
                 self.list_orchestration_clusters,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_orchestration_cluster: gapic_v1.method_async.wrap_method(
+            self.get_orchestration_cluster: self._wrap_method(
                 self.get_orchestration_cluster,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1326,57 +1330,57 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_orchestration_cluster: gapic_v1.method_async.wrap_method(
+            self.create_orchestration_cluster: self._wrap_method(
                 self.create_orchestration_cluster,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_orchestration_cluster: gapic_v1.method_async.wrap_method(
+            self.delete_orchestration_cluster: self._wrap_method(
                 self.delete_orchestration_cluster,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_edge_slms: gapic_v1.method_async.wrap_method(
+            self.list_edge_slms: self._wrap_method(
                 self.list_edge_slms,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_edge_slm: gapic_v1.method_async.wrap_method(
+            self.get_edge_slm: self._wrap_method(
                 self.get_edge_slm,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_edge_slm: gapic_v1.method_async.wrap_method(
+            self.create_edge_slm: self._wrap_method(
                 self.create_edge_slm,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_edge_slm: gapic_v1.method_async.wrap_method(
+            self.delete_edge_slm: self._wrap_method(
                 self.delete_edge_slm,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_blueprint: gapic_v1.method_async.wrap_method(
+            self.create_blueprint: self._wrap_method(
                 self.create_blueprint,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_blueprint: gapic_v1.method_async.wrap_method(
+            self.update_blueprint: self._wrap_method(
                 self.update_blueprint,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_blueprint: gapic_v1.method_async.wrap_method(
+            self.get_blueprint: self._wrap_method(
                 self.get_blueprint,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_blueprint: gapic_v1.method_async.wrap_method(
+            self.delete_blueprint: self._wrap_method(
                 self.delete_blueprint,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_blueprints: gapic_v1.method_async.wrap_method(
+            self.list_blueprints: self._wrap_method(
                 self.list_blueprints,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1390,92 +1394,92 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.approve_blueprint: gapic_v1.method_async.wrap_method(
+            self.approve_blueprint: self._wrap_method(
                 self.approve_blueprint,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.propose_blueprint: gapic_v1.method_async.wrap_method(
+            self.propose_blueprint: self._wrap_method(
                 self.propose_blueprint,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.reject_blueprint: gapic_v1.method_async.wrap_method(
+            self.reject_blueprint: self._wrap_method(
                 self.reject_blueprint,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_blueprint_revisions: gapic_v1.method_async.wrap_method(
+            self.list_blueprint_revisions: self._wrap_method(
                 self.list_blueprint_revisions,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.search_blueprint_revisions: gapic_v1.method_async.wrap_method(
+            self.search_blueprint_revisions: self._wrap_method(
                 self.search_blueprint_revisions,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.search_deployment_revisions: gapic_v1.method_async.wrap_method(
+            self.search_deployment_revisions: self._wrap_method(
                 self.search_deployment_revisions,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.discard_blueprint_changes: gapic_v1.method_async.wrap_method(
+            self.discard_blueprint_changes: self._wrap_method(
                 self.discard_blueprint_changes,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_public_blueprints: gapic_v1.method_async.wrap_method(
+            self.list_public_blueprints: self._wrap_method(
                 self.list_public_blueprints,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_public_blueprint: gapic_v1.method_async.wrap_method(
+            self.get_public_blueprint: self._wrap_method(
                 self.get_public_blueprint,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_deployment: gapic_v1.method_async.wrap_method(
+            self.create_deployment: self._wrap_method(
                 self.create_deployment,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_deployment: gapic_v1.method_async.wrap_method(
+            self.update_deployment: self._wrap_method(
                 self.update_deployment,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_deployment: gapic_v1.method_async.wrap_method(
+            self.get_deployment: self._wrap_method(
                 self.get_deployment,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.remove_deployment: gapic_v1.method_async.wrap_method(
+            self.remove_deployment: self._wrap_method(
                 self.remove_deployment,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_deployments: gapic_v1.method_async.wrap_method(
+            self.list_deployments: self._wrap_method(
                 self.list_deployments,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_deployment_revisions: gapic_v1.method_async.wrap_method(
+            self.list_deployment_revisions: self._wrap_method(
                 self.list_deployment_revisions,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.discard_deployment_changes: gapic_v1.method_async.wrap_method(
+            self.discard_deployment_changes: self._wrap_method(
                 self.discard_deployment_changes,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.apply_deployment: gapic_v1.method_async.wrap_method(
+            self.apply_deployment: self._wrap_method(
                 self.apply_deployment,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.compute_deployment_status: gapic_v1.method_async.wrap_method(
+            self.compute_deployment_status: self._wrap_method(
                 self.compute_deployment_status,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1489,35 +1493,74 @@ class TelcoAutomationGrpcAsyncIOTransport(TelcoAutomationTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.rollback_deployment: gapic_v1.method_async.wrap_method(
+            self.rollback_deployment: self._wrap_method(
                 self.rollback_deployment,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_hydrated_deployment: gapic_v1.method_async.wrap_method(
+            self.get_hydrated_deployment: self._wrap_method(
                 self.get_hydrated_deployment,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_hydrated_deployments: gapic_v1.method_async.wrap_method(
+            self.list_hydrated_deployments: self._wrap_method(
                 self.list_hydrated_deployments,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_hydrated_deployment: gapic_v1.method_async.wrap_method(
+            self.update_hydrated_deployment: self._wrap_method(
                 self.update_hydrated_deployment,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.apply_hydrated_deployment: gapic_v1.method_async.wrap_method(
+            self.apply_hydrated_deployment: self._wrap_method(
                 self.apply_hydrated_deployment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(

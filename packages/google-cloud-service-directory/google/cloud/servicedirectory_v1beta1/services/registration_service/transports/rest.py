@@ -16,30 +16,20 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.protobuf import json_format
-import grpc  # type: ignore
-from requests import __version__ as requests_version
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import json_format
+from requests import __version__ as requests_version
 
 from google.cloud.servicedirectory_v1beta1.types import endpoint as gcs_endpoint
 from google.cloud.servicedirectory_v1beta1.types import namespace as gcs_namespace
@@ -50,7 +40,13 @@ from google.cloud.servicedirectory_v1beta1.types import service
 from google.cloud.servicedirectory_v1beta1.types import service as gcs_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import RegistrationServiceTransport
+from .rest_base import _BaseRegistrationServiceRestTransport
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -633,8 +629,8 @@ class RegistrationServiceRestStub:
     _interceptor: RegistrationServiceRestInterceptor
 
 
-class RegistrationServiceRestTransport(RegistrationServiceTransport):
-    """REST backend transport for RegistrationService.
+class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
+    """REST backend synchronous transport for RegistrationService.
 
     Service Directory API for registering services. It defines the
     following resource model:
@@ -658,7 +654,6 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -712,21 +707,12 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -737,21 +723,35 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
         self._interceptor = interceptor or RegistrationServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateEndpoint(RegistrationServiceRestStub):
+    class _CreateEndpoint(
+        _BaseRegistrationServiceRestTransport._BaseCreateEndpoint,
+        RegistrationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateEndpoint")
+            return hash("RegistrationServiceRestTransport.CreateEndpoint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "endpointId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -781,45 +781,32 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*/namespaces/*/services/*}/endpoints",
-                    "body": "endpoint",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_endpoint(request, metadata)
-            pb_request = registration_service.CreateEndpointRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseCreateEndpoint._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_endpoint(request, metadata)
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseCreateEndpoint._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseRegistrationServiceRestTransport._BaseCreateEndpoint._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegistrationServiceRestTransport._BaseCreateEndpoint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = RegistrationServiceRestTransport._CreateEndpoint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -835,21 +822,35 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             resp = self._interceptor.post_create_endpoint(resp)
             return resp
 
-    class _CreateNamespace(RegistrationServiceRestStub):
+    class _CreateNamespace(
+        _BaseRegistrationServiceRestTransport._BaseCreateNamespace,
+        RegistrationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateNamespace")
+            return hash("RegistrationServiceRestTransport.CreateNamespace")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "namespaceId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -881,47 +882,34 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*}/namespaces",
-                    "body": "namespace",
-                },
-            ]
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseCreateNamespace._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_namespace(
                 request, metadata
             )
-            pb_request = registration_service.CreateNamespaceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseCreateNamespace._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseRegistrationServiceRestTransport._BaseCreateNamespace._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegistrationServiceRestTransport._BaseCreateNamespace._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = RegistrationServiceRestTransport._CreateNamespace._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -937,21 +925,35 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             resp = self._interceptor.post_create_namespace(resp)
             return resp
 
-    class _CreateService(RegistrationServiceRestStub):
+    class _CreateService(
+        _BaseRegistrationServiceRestTransport._BaseCreateService,
+        RegistrationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateService")
+            return hash("RegistrationServiceRestTransport.CreateService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "serviceId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -982,45 +984,32 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*/namespaces/*}/services",
-                    "body": "service",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_service(request, metadata)
-            pb_request = registration_service.CreateServiceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseCreateService._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_service(request, metadata)
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseCreateService._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseRegistrationServiceRestTransport._BaseCreateService._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegistrationServiceRestTransport._BaseCreateService._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = RegistrationServiceRestTransport._CreateService._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1036,19 +1025,34 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             resp = self._interceptor.post_create_service(resp)
             return resp
 
-    class _DeleteEndpoint(RegistrationServiceRestStub):
+    class _DeleteEndpoint(
+        _BaseRegistrationServiceRestTransport._BaseDeleteEndpoint,
+        RegistrationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteEndpoint")
+            return hash("RegistrationServiceRestTransport.DeleteEndpoint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1071,38 +1075,27 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/namespaces/*/services/*/endpoints/*}",
-                },
-            ]
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseDeleteEndpoint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_endpoint(request, metadata)
-            pb_request = registration_service.DeleteEndpointRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseDeleteEndpoint._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegistrationServiceRestTransport._BaseDeleteEndpoint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = RegistrationServiceRestTransport._DeleteEndpoint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1110,19 +1103,34 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteNamespace(RegistrationServiceRestStub):
+    class _DeleteNamespace(
+        _BaseRegistrationServiceRestTransport._BaseDeleteNamespace,
+        RegistrationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteNamespace")
+            return hash("RegistrationServiceRestTransport.DeleteNamespace")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1145,40 +1153,29 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/namespaces/*}",
-                },
-            ]
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseDeleteNamespace._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_namespace(
                 request, metadata
             )
-            pb_request = registration_service.DeleteNamespaceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseDeleteNamespace._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegistrationServiceRestTransport._BaseDeleteNamespace._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = RegistrationServiceRestTransport._DeleteNamespace._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1186,19 +1183,34 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteService(RegistrationServiceRestStub):
+    class _DeleteService(
+        _BaseRegistrationServiceRestTransport._BaseDeleteService,
+        RegistrationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteService")
+            return hash("RegistrationServiceRestTransport.DeleteService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1221,38 +1233,27 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/namespaces/*/services/*}",
-                },
-            ]
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseDeleteService._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_service(request, metadata)
-            pb_request = registration_service.DeleteServiceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseDeleteService._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegistrationServiceRestTransport._BaseDeleteService._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = RegistrationServiceRestTransport._DeleteService._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1260,19 +1261,34 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetEndpoint(RegistrationServiceRestStub):
+    class _GetEndpoint(
+        _BaseRegistrationServiceRestTransport._BaseGetEndpoint,
+        RegistrationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetEndpoint")
+            return hash("RegistrationServiceRestTransport.GetEndpoint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1304,38 +1320,27 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/namespaces/*/services/*/endpoints/*}",
-                },
-            ]
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseGetEndpoint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_endpoint(request, metadata)
-            pb_request = registration_service.GetEndpointRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetEndpoint._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegistrationServiceRestTransport._BaseGetEndpoint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = RegistrationServiceRestTransport._GetEndpoint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1351,19 +1356,35 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             resp = self._interceptor.post_get_endpoint(resp)
             return resp
 
-    class _GetIamPolicy(RegistrationServiceRestStub):
+    class _GetIamPolicy(
+        _BaseRegistrationServiceRestTransport._BaseGetIamPolicy,
+        RegistrationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetIamPolicy")
+            return hash("RegistrationServiceRestTransport.GetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1464,55 +1485,32 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/namespaces/*}:getIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/namespaces/*/services/*}:getIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/namespaces/*/workloads/*}:getIamPolicy",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            pb_request = request
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseGetIamPolicy._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseRegistrationServiceRestTransport._BaseGetIamPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegistrationServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = RegistrationServiceRestTransport._GetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1528,19 +1526,34 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             resp = self._interceptor.post_get_iam_policy(resp)
             return resp
 
-    class _GetNamespace(RegistrationServiceRestStub):
+    class _GetNamespace(
+        _BaseRegistrationServiceRestTransport._BaseGetNamespace,
+        RegistrationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetNamespace")
+            return hash("RegistrationServiceRestTransport.GetNamespace")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1572,38 +1585,27 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/namespaces/*}",
-                },
-            ]
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseGetNamespace._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_namespace(request, metadata)
-            pb_request = registration_service.GetNamespaceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetNamespace._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegistrationServiceRestTransport._BaseGetNamespace._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = RegistrationServiceRestTransport._GetNamespace._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1619,19 +1621,34 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             resp = self._interceptor.post_get_namespace(resp)
             return resp
 
-    class _GetService(RegistrationServiceRestStub):
+    class _GetService(
+        _BaseRegistrationServiceRestTransport._BaseGetService,
+        RegistrationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetService")
+            return hash("RegistrationServiceRestTransport.GetService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1665,38 +1682,27 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*/namespaces/*/services/*}",
-                },
-            ]
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseGetService._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_service(request, metadata)
-            pb_request = registration_service.GetServiceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetService._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegistrationServiceRestTransport._BaseGetService._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = RegistrationServiceRestTransport._GetService._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1712,19 +1718,34 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             resp = self._interceptor.post_get_service(resp)
             return resp
 
-    class _ListEndpoints(RegistrationServiceRestStub):
+    class _ListEndpoints(
+        _BaseRegistrationServiceRestTransport._BaseListEndpoints,
+        RegistrationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListEndpoints")
+            return hash("RegistrationServiceRestTransport.ListEndpoints")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1753,38 +1774,27 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*/namespaces/*/services/*}/endpoints",
-                },
-            ]
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseListEndpoints._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_endpoints(request, metadata)
-            pb_request = registration_service.ListEndpointsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseListEndpoints._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegistrationServiceRestTransport._BaseListEndpoints._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = RegistrationServiceRestTransport._ListEndpoints._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1800,19 +1810,34 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             resp = self._interceptor.post_list_endpoints(resp)
             return resp
 
-    class _ListNamespaces(RegistrationServiceRestStub):
+    class _ListNamespaces(
+        _BaseRegistrationServiceRestTransport._BaseListNamespaces,
+        RegistrationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListNamespaces")
+            return hash("RegistrationServiceRestTransport.ListNamespaces")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1841,38 +1866,27 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*}/namespaces",
-                },
-            ]
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseListNamespaces._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_namespaces(request, metadata)
-            pb_request = registration_service.ListNamespacesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseListNamespaces._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegistrationServiceRestTransport._BaseListNamespaces._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = RegistrationServiceRestTransport._ListNamespaces._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1888,19 +1902,34 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             resp = self._interceptor.post_list_namespaces(resp)
             return resp
 
-    class _ListServices(RegistrationServiceRestStub):
+    class _ListServices(
+        _BaseRegistrationServiceRestTransport._BaseListServices,
+        RegistrationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListServices")
+            return hash("RegistrationServiceRestTransport.ListServices")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1929,38 +1958,27 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{parent=projects/*/locations/*/namespaces/*}/services",
-                },
-            ]
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseListServices._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_services(request, metadata)
-            pb_request = registration_service.ListServicesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseListServices._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegistrationServiceRestTransport._BaseListServices._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = RegistrationServiceRestTransport._ListServices._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1976,19 +1994,35 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             resp = self._interceptor.post_list_services(resp)
             return resp
 
-    class _SetIamPolicy(RegistrationServiceRestStub):
+    class _SetIamPolicy(
+        _BaseRegistrationServiceRestTransport._BaseSetIamPolicy,
+        RegistrationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("SetIamPolicy")
+            return hash("RegistrationServiceRestTransport.SetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2089,55 +2123,32 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/namespaces/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/namespaces/*/services/*}:setIamPolicy",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/namespaces/*/workloads/*}:setIamPolicy",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            pb_request = request
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseSetIamPolicy._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseRegistrationServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegistrationServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = RegistrationServiceRestTransport._SetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2153,19 +2164,35 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             resp = self._interceptor.post_set_iam_policy(resp)
             return resp
 
-    class _TestIamPermissions(RegistrationServiceRestStub):
+    class _TestIamPermissions(
+        _BaseRegistrationServiceRestTransport._BaseTestIamPermissions,
+        RegistrationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("TestIamPermissions")
+            return hash("RegistrationServiceRestTransport.TestIamPermissions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2191,57 +2218,36 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/namespaces/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/namespaces/*/services/*}:testIamPermissions",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta1/{resource=projects/*/locations/*/namespaces/*/workloads/*}:testIamPermissions",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseTestIamPermissions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            pb_request = request
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseRegistrationServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegistrationServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                RegistrationServiceRestTransport._TestIamPermissions._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2257,21 +2263,35 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 
-    class _UpdateEndpoint(RegistrationServiceRestStub):
+    class _UpdateEndpoint(
+        _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint,
+        RegistrationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateEndpoint")
+            return hash("RegistrationServiceRestTransport.UpdateEndpoint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2301,45 +2321,32 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1beta1/{endpoint.name=projects/*/locations/*/namespaces/*/services/*/endpoints/*}",
-                    "body": "endpoint",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_endpoint(request, metadata)
-            pb_request = registration_service.UpdateEndpointRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_endpoint(request, metadata)
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = RegistrationServiceRestTransport._UpdateEndpoint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2355,21 +2362,35 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             resp = self._interceptor.post_update_endpoint(resp)
             return resp
 
-    class _UpdateNamespace(RegistrationServiceRestStub):
+    class _UpdateNamespace(
+        _BaseRegistrationServiceRestTransport._BaseUpdateNamespace,
+        RegistrationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateNamespace")
+            return hash("RegistrationServiceRestTransport.UpdateNamespace")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2401,47 +2422,34 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1beta1/{namespace.name=projects/*/locations/*/namespaces/*}",
-                    "body": "namespace",
-                },
-            ]
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseUpdateNamespace._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_namespace(
                 request, metadata
             )
-            pb_request = registration_service.UpdateNamespaceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseUpdateNamespace._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseRegistrationServiceRestTransport._BaseUpdateNamespace._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegistrationServiceRestTransport._BaseUpdateNamespace._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = RegistrationServiceRestTransport._UpdateNamespace._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2457,21 +2465,35 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             resp = self._interceptor.post_update_namespace(resp)
             return resp
 
-    class _UpdateService(RegistrationServiceRestStub):
+    class _UpdateService(
+        _BaseRegistrationServiceRestTransport._BaseUpdateService,
+        RegistrationServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateService")
+            return hash("RegistrationServiceRestTransport.UpdateService")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2502,45 +2524,32 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1beta1/{service.name=projects/*/locations/*/namespaces/*/services/*}",
-                    "body": "service",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_service(request, metadata)
-            pb_request = registration_service.UpdateServiceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseUpdateService._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_service(request, metadata)
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseUpdateService._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseRegistrationServiceRestTransport._BaseUpdateService._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegistrationServiceRestTransport._BaseUpdateService._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = RegistrationServiceRestTransport._UpdateService._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2720,7 +2729,35 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(RegistrationServiceRestStub):
+    class _GetLocation(
+        _BaseRegistrationServiceRestTransport._BaseGetLocation,
+        RegistrationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("RegistrationServiceRestTransport.GetLocation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -2744,32 +2781,27 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*/locations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseGetLocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetLocation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseRegistrationServiceRestTransport._BaseGetLocation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = RegistrationServiceRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2777,8 +2809,9 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -2786,7 +2819,35 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(RegistrationServiceRestStub):
+    class _ListLocations(
+        _BaseRegistrationServiceRestTransport._BaseListLocations,
+        RegistrationServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("RegistrationServiceRestTransport.ListLocations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -2810,32 +2871,27 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta1/{name=projects/*}/locations",
-                },
-            ]
-
+            http_options = (
+                _BaseRegistrationServiceRestTransport._BaseListLocations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseRegistrationServiceRestTransport._BaseListLocations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseRegistrationServiceRestTransport._BaseListLocations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = RegistrationServiceRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2843,8 +2899,9 @@ class RegistrationServiceRestTransport(RegistrationServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 

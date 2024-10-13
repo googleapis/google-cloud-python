@@ -16,40 +16,30 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.telcoautomation_v1alpha1.types import telcoautomation
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseTelcoAutomationRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-
-from google.cloud.telcoautomation_v1alpha1.types import telcoautomation
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import TelcoAutomationTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -1335,8 +1325,8 @@ class TelcoAutomationRestStub:
     _interceptor: TelcoAutomationRestInterceptor
 
 
-class TelcoAutomationRestTransport(TelcoAutomationTransport):
-    """REST backend transport for TelcoAutomation.
+class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
+    """REST backend synchronous transport for TelcoAutomation.
 
     TelcoAutomation Service manages the control plane cluster
     a.k.a. Orchestration Cluster (GKE cluster with config
@@ -1349,7 +1339,6 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -1403,21 +1392,12 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -1482,19 +1462,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _ApplyDeployment(TelcoAutomationRestStub):
+    class _ApplyDeployment(
+        _BaseTelcoAutomationRestTransport._BaseApplyDeployment, TelcoAutomationRestStub
+    ):
         def __hash__(self):
-            return hash("ApplyDeployment")
+            return hash("TelcoAutomationRestTransport.ApplyDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1527,47 +1522,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/orchestrationClusters/*/deployments/*}:apply",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseApplyDeployment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_apply_deployment(
                 request, metadata
             )
-            pb_request = telcoautomation.ApplyDeploymentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseApplyDeployment._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseTelcoAutomationRestTransport._BaseApplyDeployment._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseApplyDeployment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = TelcoAutomationRestTransport._ApplyDeployment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1583,19 +1565,35 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_apply_deployment(resp)
             return resp
 
-    class _ApplyHydratedDeployment(TelcoAutomationRestStub):
+    class _ApplyHydratedDeployment(
+        _BaseTelcoAutomationRestTransport._BaseApplyHydratedDeployment,
+        TelcoAutomationRestStub,
+    ):
         def __hash__(self):
-            return hash("ApplyHydratedDeployment")
+            return hash("TelcoAutomationRestTransport.ApplyHydratedDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1626,47 +1624,36 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/orchestrationClusters/*/deployments/*/hydratedDeployments/*}:apply",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseApplyHydratedDeployment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_apply_hydrated_deployment(
                 request, metadata
             )
-            pb_request = telcoautomation.ApplyHydratedDeploymentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseApplyHydratedDeployment._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseTelcoAutomationRestTransport._BaseApplyHydratedDeployment._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseApplyHydratedDeployment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                TelcoAutomationRestTransport._ApplyHydratedDeployment._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1682,19 +1669,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_apply_hydrated_deployment(resp)
             return resp
 
-    class _ApproveBlueprint(TelcoAutomationRestStub):
+    class _ApproveBlueprint(
+        _BaseTelcoAutomationRestTransport._BaseApproveBlueprint, TelcoAutomationRestStub
+    ):
         def __hash__(self):
-            return hash("ApproveBlueprint")
+            return hash("TelcoAutomationRestTransport.ApproveBlueprint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1732,47 +1734,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/orchestrationClusters/*/blueprints/*}:approve",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseApproveBlueprint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_approve_blueprint(
                 request, metadata
             )
-            pb_request = telcoautomation.ApproveBlueprintRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseApproveBlueprint._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseTelcoAutomationRestTransport._BaseApproveBlueprint._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseApproveBlueprint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = TelcoAutomationRestTransport._ApproveBlueprint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1788,19 +1777,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_approve_blueprint(resp)
             return resp
 
-    class _ComputeDeploymentStatus(TelcoAutomationRestStub):
+    class _ComputeDeploymentStatus(
+        _BaseTelcoAutomationRestTransport._BaseComputeDeploymentStatus,
+        TelcoAutomationRestStub,
+    ):
         def __hash__(self):
-            return hash("ComputeDeploymentStatus")
+            return hash("TelcoAutomationRestTransport.ComputeDeploymentStatus")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1826,40 +1830,31 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
                     Response object for ``ComputeDeploymentStatus``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/orchestrationClusters/*/deployments/*}:computeDeploymentStatus",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseComputeDeploymentStatus._get_http_options()
+            )
             request, metadata = self._interceptor.pre_compute_deployment_status(
                 request, metadata
             )
-            pb_request = telcoautomation.ComputeDeploymentStatusRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseComputeDeploymentStatus._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseComputeDeploymentStatus._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                TelcoAutomationRestTransport._ComputeDeploymentStatus._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1875,19 +1870,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_compute_deployment_status(resp)
             return resp
 
-    class _CreateBlueprint(TelcoAutomationRestStub):
+    class _CreateBlueprint(
+        _BaseTelcoAutomationRestTransport._BaseCreateBlueprint, TelcoAutomationRestStub
+    ):
         def __hash__(self):
-            return hash("CreateBlueprint")
+            return hash("TelcoAutomationRestTransport.CreateBlueprint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1925,47 +1935,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha1/{parent=projects/*/locations/*/orchestrationClusters/*}/blueprints",
-                    "body": "blueprint",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseCreateBlueprint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_blueprint(
                 request, metadata
             )
-            pb_request = telcoautomation.CreateBlueprintRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseCreateBlueprint._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseTelcoAutomationRestTransport._BaseCreateBlueprint._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseCreateBlueprint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = TelcoAutomationRestTransport._CreateBlueprint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1981,19 +1978,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_create_blueprint(resp)
             return resp
 
-    class _CreateDeployment(TelcoAutomationRestStub):
+    class _CreateDeployment(
+        _BaseTelcoAutomationRestTransport._BaseCreateDeployment, TelcoAutomationRestStub
+    ):
         def __hash__(self):
-            return hash("CreateDeployment")
+            return hash("TelcoAutomationRestTransport.CreateDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2024,47 +2036,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha1/{parent=projects/*/locations/*/orchestrationClusters/*}/deployments",
-                    "body": "deployment",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseCreateDeployment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_deployment(
                 request, metadata
             )
-            pb_request = telcoautomation.CreateDeploymentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseCreateDeployment._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseTelcoAutomationRestTransport._BaseCreateDeployment._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseCreateDeployment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = TelcoAutomationRestTransport._CreateDeployment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2080,21 +2079,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_create_deployment(resp)
             return resp
 
-    class _CreateEdgeSlm(TelcoAutomationRestStub):
+    class _CreateEdgeSlm(
+        _BaseTelcoAutomationRestTransport._BaseCreateEdgeSlm, TelcoAutomationRestStub
+    ):
         def __hash__(self):
-            return hash("CreateEdgeSlm")
+            return hash("TelcoAutomationRestTransport.CreateEdgeSlm")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "edgeSlmId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2123,45 +2135,32 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha1/{parent=projects/*/locations/*}/edgeSlms",
-                    "body": "edge_slm",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_edge_slm(request, metadata)
-            pb_request = telcoautomation.CreateEdgeSlmRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseCreateEdgeSlm._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_edge_slm(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseCreateEdgeSlm._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseTelcoAutomationRestTransport._BaseCreateEdgeSlm._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseCreateEdgeSlm._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = TelcoAutomationRestTransport._CreateEdgeSlm._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2175,21 +2174,35 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_create_edge_slm(resp)
             return resp
 
-    class _CreateOrchestrationCluster(TelcoAutomationRestStub):
+    class _CreateOrchestrationCluster(
+        _BaseTelcoAutomationRestTransport._BaseCreateOrchestrationCluster,
+        TelcoAutomationRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateOrchestrationCluster")
+            return hash("TelcoAutomationRestTransport.CreateOrchestrationCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "orchestrationClusterId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2220,47 +2233,36 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha1/{parent=projects/*/locations/*}/orchestrationClusters",
-                    "body": "orchestration_cluster",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseCreateOrchestrationCluster._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_orchestration_cluster(
                 request, metadata
             )
-            pb_request = telcoautomation.CreateOrchestrationClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseCreateOrchestrationCluster._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseTelcoAutomationRestTransport._BaseCreateOrchestrationCluster._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseCreateOrchestrationCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                TelcoAutomationRestTransport._CreateOrchestrationCluster._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2274,19 +2276,33 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_create_orchestration_cluster(resp)
             return resp
 
-    class _DeleteBlueprint(TelcoAutomationRestStub):
+    class _DeleteBlueprint(
+        _BaseTelcoAutomationRestTransport._BaseDeleteBlueprint, TelcoAutomationRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteBlueprint")
+            return hash("TelcoAutomationRestTransport.DeleteBlueprint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2308,40 +2324,29 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/orchestrationClusters/*/blueprints/*}",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseDeleteBlueprint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_blueprint(
                 request, metadata
             )
-            pb_request = telcoautomation.DeleteBlueprintRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseDeleteBlueprint._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseDeleteBlueprint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = TelcoAutomationRestTransport._DeleteBlueprint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2349,19 +2354,33 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteEdgeSlm(TelcoAutomationRestStub):
+    class _DeleteEdgeSlm(
+        _BaseTelcoAutomationRestTransport._BaseDeleteEdgeSlm, TelcoAutomationRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteEdgeSlm")
+            return hash("TelcoAutomationRestTransport.DeleteEdgeSlm")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2390,38 +2409,27 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/edgeSlms/*}",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseDeleteEdgeSlm._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_edge_slm(request, metadata)
-            pb_request = telcoautomation.DeleteEdgeSlmRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseDeleteEdgeSlm._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseDeleteEdgeSlm._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = TelcoAutomationRestTransport._DeleteEdgeSlm._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2435,19 +2443,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_delete_edge_slm(resp)
             return resp
 
-    class _DeleteOrchestrationCluster(TelcoAutomationRestStub):
+    class _DeleteOrchestrationCluster(
+        _BaseTelcoAutomationRestTransport._BaseDeleteOrchestrationCluster,
+        TelcoAutomationRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteOrchestrationCluster")
+            return hash("TelcoAutomationRestTransport.DeleteOrchestrationCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2478,40 +2501,31 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/orchestrationClusters/*}",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseDeleteOrchestrationCluster._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_orchestration_cluster(
                 request, metadata
             )
-            pb_request = telcoautomation.DeleteOrchestrationClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseDeleteOrchestrationCluster._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseDeleteOrchestrationCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                TelcoAutomationRestTransport._DeleteOrchestrationCluster._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2525,19 +2539,35 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_delete_orchestration_cluster(resp)
             return resp
 
-    class _DiscardBlueprintChanges(TelcoAutomationRestStub):
+    class _DiscardBlueprintChanges(
+        _BaseTelcoAutomationRestTransport._BaseDiscardBlueprintChanges,
+        TelcoAutomationRestStub,
+    ):
         def __hash__(self):
-            return hash("DiscardBlueprintChanges")
+            return hash("TelcoAutomationRestTransport.DiscardBlueprintChanges")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2563,47 +2593,36 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
                     Response object for ``DiscardBlueprintChanges``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/orchestrationClusters/*/blueprints/*}:discard",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseDiscardBlueprintChanges._get_http_options()
+            )
             request, metadata = self._interceptor.pre_discard_blueprint_changes(
                 request, metadata
             )
-            pb_request = telcoautomation.DiscardBlueprintChangesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseDiscardBlueprintChanges._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseTelcoAutomationRestTransport._BaseDiscardBlueprintChanges._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseDiscardBlueprintChanges._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                TelcoAutomationRestTransport._DiscardBlueprintChanges._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2619,19 +2638,35 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_discard_blueprint_changes(resp)
             return resp
 
-    class _DiscardDeploymentChanges(TelcoAutomationRestStub):
+    class _DiscardDeploymentChanges(
+        _BaseTelcoAutomationRestTransport._BaseDiscardDeploymentChanges,
+        TelcoAutomationRestStub,
+    ):
         def __hash__(self):
-            return hash("DiscardDeploymentChanges")
+            return hash("TelcoAutomationRestTransport.DiscardDeploymentChanges")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2658,47 +2693,36 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
                         Response object for ``DiscardDeploymentChanges``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/orchestrationClusters/*/deployments/*}:discard",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseDiscardDeploymentChanges._get_http_options()
+            )
             request, metadata = self._interceptor.pre_discard_deployment_changes(
                 request, metadata
             )
-            pb_request = telcoautomation.DiscardDeploymentChangesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseDiscardDeploymentChanges._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseTelcoAutomationRestTransport._BaseDiscardDeploymentChanges._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseDiscardDeploymentChanges._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                TelcoAutomationRestTransport._DiscardDeploymentChanges._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2714,19 +2738,33 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_discard_deployment_changes(resp)
             return resp
 
-    class _GetBlueprint(TelcoAutomationRestStub):
+    class _GetBlueprint(
+        _BaseTelcoAutomationRestTransport._BaseGetBlueprint, TelcoAutomationRestStub
+    ):
         def __hash__(self):
-            return hash("GetBlueprint")
+            return hash("TelcoAutomationRestTransport.GetBlueprint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2764,38 +2802,27 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/orchestrationClusters/*/blueprints/*}",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseGetBlueprint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_blueprint(request, metadata)
-            pb_request = telcoautomation.GetBlueprintRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetBlueprint._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseGetBlueprint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = TelcoAutomationRestTransport._GetBlueprint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2811,19 +2838,33 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_get_blueprint(resp)
             return resp
 
-    class _GetDeployment(TelcoAutomationRestStub):
+    class _GetDeployment(
+        _BaseTelcoAutomationRestTransport._BaseGetDeployment, TelcoAutomationRestStub
+    ):
         def __hash__(self):
-            return hash("GetDeployment")
+            return hash("TelcoAutomationRestTransport.GetDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2854,38 +2895,27 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/orchestrationClusters/*/deployments/*}",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseGetDeployment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_deployment(request, metadata)
-            pb_request = telcoautomation.GetDeploymentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetDeployment._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseGetDeployment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = TelcoAutomationRestTransport._GetDeployment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2901,19 +2931,33 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_get_deployment(resp)
             return resp
 
-    class _GetEdgeSlm(TelcoAutomationRestStub):
+    class _GetEdgeSlm(
+        _BaseTelcoAutomationRestTransport._BaseGetEdgeSlm, TelcoAutomationRestStub
+    ):
         def __hash__(self):
-            return hash("GetEdgeSlm")
+            return hash("TelcoAutomationRestTransport.GetEdgeSlm")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2944,38 +2988,27 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/edgeSlms/*}",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseGetEdgeSlm._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_edge_slm(request, metadata)
-            pb_request = telcoautomation.GetEdgeSlmRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetEdgeSlm._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseGetEdgeSlm._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = TelcoAutomationRestTransport._GetEdgeSlm._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2991,19 +3024,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_get_edge_slm(resp)
             return resp
 
-    class _GetHydratedDeployment(TelcoAutomationRestStub):
+    class _GetHydratedDeployment(
+        _BaseTelcoAutomationRestTransport._BaseGetHydratedDeployment,
+        TelcoAutomationRestStub,
+    ):
         def __hash__(self):
-            return hash("GetHydratedDeployment")
+            return hash("TelcoAutomationRestTransport.GetHydratedDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3033,40 +3081,31 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/orchestrationClusters/*/deployments/*/hydratedDeployments/*}",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseGetHydratedDeployment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_hydrated_deployment(
                 request, metadata
             )
-            pb_request = telcoautomation.GetHydratedDeploymentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetHydratedDeployment._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseGetHydratedDeployment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                TelcoAutomationRestTransport._GetHydratedDeployment._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3082,19 +3121,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_get_hydrated_deployment(resp)
             return resp
 
-    class _GetOrchestrationCluster(TelcoAutomationRestStub):
+    class _GetOrchestrationCluster(
+        _BaseTelcoAutomationRestTransport._BaseGetOrchestrationCluster,
+        TelcoAutomationRestStub,
+    ):
         def __hash__(self):
-            return hash("GetOrchestrationCluster")
+            return hash("TelcoAutomationRestTransport.GetOrchestrationCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3124,40 +3178,31 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/orchestrationClusters/*}",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseGetOrchestrationCluster._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_orchestration_cluster(
                 request, metadata
             )
-            pb_request = telcoautomation.GetOrchestrationClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetOrchestrationCluster._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseGetOrchestrationCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                TelcoAutomationRestTransport._GetOrchestrationCluster._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3173,19 +3218,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_get_orchestration_cluster(resp)
             return resp
 
-    class _GetPublicBlueprint(TelcoAutomationRestStub):
+    class _GetPublicBlueprint(
+        _BaseTelcoAutomationRestTransport._BaseGetPublicBlueprint,
+        TelcoAutomationRestStub,
+    ):
         def __hash__(self):
-            return hash("GetPublicBlueprint")
+            return hash("TelcoAutomationRestTransport.GetPublicBlueprint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3220,40 +3280,29 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/publicBlueprints/*}",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseGetPublicBlueprint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_public_blueprint(
                 request, metadata
             )
-            pb_request = telcoautomation.GetPublicBlueprintRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetPublicBlueprint._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseGetPublicBlueprint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = TelcoAutomationRestTransport._GetPublicBlueprint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3269,19 +3318,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_get_public_blueprint(resp)
             return resp
 
-    class _ListBlueprintRevisions(TelcoAutomationRestStub):
+    class _ListBlueprintRevisions(
+        _BaseTelcoAutomationRestTransport._BaseListBlueprintRevisions,
+        TelcoAutomationRestStub,
+    ):
         def __hash__(self):
-            return hash("ListBlueprintRevisions")
+            return hash("TelcoAutomationRestTransport.ListBlueprintRevisions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3307,40 +3371,31 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
                     Response object for ``ListBlueprintRevisions``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/orchestrationClusters/*/blueprints/*}:listRevisions",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseListBlueprintRevisions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_blueprint_revisions(
                 request, metadata
             )
-            pb_request = telcoautomation.ListBlueprintRevisionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListBlueprintRevisions._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseListBlueprintRevisions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                TelcoAutomationRestTransport._ListBlueprintRevisions._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3356,19 +3411,33 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_list_blueprint_revisions(resp)
             return resp
 
-    class _ListBlueprints(TelcoAutomationRestStub):
+    class _ListBlueprints(
+        _BaseTelcoAutomationRestTransport._BaseListBlueprints, TelcoAutomationRestStub
+    ):
         def __hash__(self):
-            return hash("ListBlueprints")
+            return hash("TelcoAutomationRestTransport.ListBlueprints")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3394,38 +3463,27 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
                     Response object for ``ListBlueprints``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{parent=projects/*/locations/*/orchestrationClusters/*}/blueprints",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseListBlueprints._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_blueprints(request, metadata)
-            pb_request = telcoautomation.ListBlueprintsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListBlueprints._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseListBlueprints._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = TelcoAutomationRestTransport._ListBlueprints._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3441,19 +3499,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_list_blueprints(resp)
             return resp
 
-    class _ListDeploymentRevisions(TelcoAutomationRestStub):
+    class _ListDeploymentRevisions(
+        _BaseTelcoAutomationRestTransport._BaseListDeploymentRevisions,
+        TelcoAutomationRestStub,
+    ):
         def __hash__(self):
-            return hash("ListDeploymentRevisions")
+            return hash("TelcoAutomationRestTransport.ListDeploymentRevisions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3482,40 +3555,31 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/orchestrationClusters/*/deployments/*}:listRevisions",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseListDeploymentRevisions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_deployment_revisions(
                 request, metadata
             )
-            pb_request = telcoautomation.ListDeploymentRevisionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListDeploymentRevisions._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseListDeploymentRevisions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                TelcoAutomationRestTransport._ListDeploymentRevisions._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3531,19 +3595,33 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_list_deployment_revisions(resp)
             return resp
 
-    class _ListDeployments(TelcoAutomationRestStub):
+    class _ListDeployments(
+        _BaseTelcoAutomationRestTransport._BaseListDeployments, TelcoAutomationRestStub
+    ):
         def __hash__(self):
-            return hash("ListDeployments")
+            return hash("TelcoAutomationRestTransport.ListDeployments")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3569,40 +3647,29 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
                     Response object for ``ListDeployments``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{parent=projects/*/locations/*/orchestrationClusters/*}/deployments",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseListDeployments._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_deployments(
                 request, metadata
             )
-            pb_request = telcoautomation.ListDeploymentsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListDeployments._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseListDeployments._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = TelcoAutomationRestTransport._ListDeployments._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3618,19 +3685,33 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_list_deployments(resp)
             return resp
 
-    class _ListEdgeSlms(TelcoAutomationRestStub):
+    class _ListEdgeSlms(
+        _BaseTelcoAutomationRestTransport._BaseListEdgeSlms, TelcoAutomationRestStub
+    ):
         def __hash__(self):
-            return hash("ListEdgeSlms")
+            return hash("TelcoAutomationRestTransport.ListEdgeSlms")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3659,38 +3740,27 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{parent=projects/*/locations/*}/edgeSlms",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseListEdgeSlms._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_edge_slms(request, metadata)
-            pb_request = telcoautomation.ListEdgeSlmsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListEdgeSlms._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseListEdgeSlms._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = TelcoAutomationRestTransport._ListEdgeSlms._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3706,19 +3776,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_list_edge_slms(resp)
             return resp
 
-    class _ListHydratedDeployments(TelcoAutomationRestStub):
+    class _ListHydratedDeployments(
+        _BaseTelcoAutomationRestTransport._BaseListHydratedDeployments,
+        TelcoAutomationRestStub,
+    ):
         def __hash__(self):
-            return hash("ListHydratedDeployments")
+            return hash("TelcoAutomationRestTransport.ListHydratedDeployments")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3744,40 +3829,31 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
                     Response object for ``ListHydratedDeployments``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{parent=projects/*/locations/*/orchestrationClusters/*/deployments/*}/hydratedDeployments",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseListHydratedDeployments._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_hydrated_deployments(
                 request, metadata
             )
-            pb_request = telcoautomation.ListHydratedDeploymentsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListHydratedDeployments._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseListHydratedDeployments._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                TelcoAutomationRestTransport._ListHydratedDeployments._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3793,19 +3869,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_list_hydrated_deployments(resp)
             return resp
 
-    class _ListOrchestrationClusters(TelcoAutomationRestStub):
+    class _ListOrchestrationClusters(
+        _BaseTelcoAutomationRestTransport._BaseListOrchestrationClusters,
+        TelcoAutomationRestStub,
+    ):
         def __hash__(self):
-            return hash("ListOrchestrationClusters")
+            return hash("TelcoAutomationRestTransport.ListOrchestrationClusters")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3835,40 +3926,31 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{parent=projects/*/locations/*}/orchestrationClusters",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseListOrchestrationClusters._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_orchestration_clusters(
                 request, metadata
             )
-            pb_request = telcoautomation.ListOrchestrationClustersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListOrchestrationClusters._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseListOrchestrationClusters._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                TelcoAutomationRestTransport._ListOrchestrationClusters._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3884,19 +3966,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_list_orchestration_clusters(resp)
             return resp
 
-    class _ListPublicBlueprints(TelcoAutomationRestStub):
+    class _ListPublicBlueprints(
+        _BaseTelcoAutomationRestTransport._BaseListPublicBlueprints,
+        TelcoAutomationRestStub,
+    ):
         def __hash__(self):
-            return hash("ListPublicBlueprints")
+            return hash("TelcoAutomationRestTransport.ListPublicBlueprints")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3922,40 +4019,29 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
                     Response object for ``ListPublicBlueprints``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{parent=projects/*/locations/*}/publicBlueprints",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseListPublicBlueprints._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_public_blueprints(
                 request, metadata
             )
-            pb_request = telcoautomation.ListPublicBlueprintsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListPublicBlueprints._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseListPublicBlueprints._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = TelcoAutomationRestTransport._ListPublicBlueprints._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3971,19 +4057,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_list_public_blueprints(resp)
             return resp
 
-    class _ProposeBlueprint(TelcoAutomationRestStub):
+    class _ProposeBlueprint(
+        _BaseTelcoAutomationRestTransport._BaseProposeBlueprint, TelcoAutomationRestStub
+    ):
         def __hash__(self):
-            return hash("ProposeBlueprint")
+            return hash("TelcoAutomationRestTransport.ProposeBlueprint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4021,47 +4122,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/orchestrationClusters/*/blueprints/*}:propose",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseProposeBlueprint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_propose_blueprint(
                 request, metadata
             )
-            pb_request = telcoautomation.ProposeBlueprintRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseProposeBlueprint._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseTelcoAutomationRestTransport._BaseProposeBlueprint._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseProposeBlueprint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = TelcoAutomationRestTransport._ProposeBlueprint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4077,19 +4165,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_propose_blueprint(resp)
             return resp
 
-    class _RejectBlueprint(TelcoAutomationRestStub):
+    class _RejectBlueprint(
+        _BaseTelcoAutomationRestTransport._BaseRejectBlueprint, TelcoAutomationRestStub
+    ):
         def __hash__(self):
-            return hash("RejectBlueprint")
+            return hash("TelcoAutomationRestTransport.RejectBlueprint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4127,47 +4230,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/orchestrationClusters/*/blueprints/*}:reject",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseRejectBlueprint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_reject_blueprint(
                 request, metadata
             )
-            pb_request = telcoautomation.RejectBlueprintRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseRejectBlueprint._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseTelcoAutomationRestTransport._BaseRejectBlueprint._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseRejectBlueprint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = TelcoAutomationRestTransport._RejectBlueprint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4183,19 +4273,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_reject_blueprint(resp)
             return resp
 
-    class _RemoveDeployment(TelcoAutomationRestStub):
+    class _RemoveDeployment(
+        _BaseTelcoAutomationRestTransport._BaseRemoveDeployment, TelcoAutomationRestStub
+    ):
         def __hash__(self):
-            return hash("RemoveDeployment")
+            return hash("TelcoAutomationRestTransport.RemoveDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4217,47 +4322,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/orchestrationClusters/*/deployments/*}:remove",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseRemoveDeployment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_remove_deployment(
                 request, metadata
             )
-            pb_request = telcoautomation.RemoveDeploymentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseRemoveDeployment._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseTelcoAutomationRestTransport._BaseRemoveDeployment._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseRemoveDeployment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = TelcoAutomationRestTransport._RemoveDeployment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4265,19 +4357,35 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _RollbackDeployment(TelcoAutomationRestStub):
+    class _RollbackDeployment(
+        _BaseTelcoAutomationRestTransport._BaseRollbackDeployment,
+        TelcoAutomationRestStub,
+    ):
         def __hash__(self):
-            return hash("RollbackDeployment")
+            return hash("TelcoAutomationRestTransport.RollbackDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4308,47 +4416,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/orchestrationClusters/*/deployments/*}:rollback",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseRollbackDeployment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_rollback_deployment(
                 request, metadata
             )
-            pb_request = telcoautomation.RollbackDeploymentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseRollbackDeployment._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseTelcoAutomationRestTransport._BaseRollbackDeployment._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseRollbackDeployment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = TelcoAutomationRestTransport._RollbackDeployment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4364,21 +4459,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_rollback_deployment(resp)
             return resp
 
-    class _SearchBlueprintRevisions(TelcoAutomationRestStub):
+    class _SearchBlueprintRevisions(
+        _BaseTelcoAutomationRestTransport._BaseSearchBlueprintRevisions,
+        TelcoAutomationRestStub,
+    ):
         def __hash__(self):
-            return hash("SearchBlueprintRevisions")
+            return hash("TelcoAutomationRestTransport.SearchBlueprintRevisions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "query": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4405,40 +4513,31 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
                         Response object for ``SearchBlueprintRevisions``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{parent=projects/*/locations/*/orchestrationClusters/*}/blueprints:searchRevisions",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseSearchBlueprintRevisions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_search_blueprint_revisions(
                 request, metadata
             )
-            pb_request = telcoautomation.SearchBlueprintRevisionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseSearchBlueprintRevisions._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseSearchBlueprintRevisions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                TelcoAutomationRestTransport._SearchBlueprintRevisions._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4454,21 +4553,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_search_blueprint_revisions(resp)
             return resp
 
-    class _SearchDeploymentRevisions(TelcoAutomationRestStub):
+    class _SearchDeploymentRevisions(
+        _BaseTelcoAutomationRestTransport._BaseSearchDeploymentRevisions,
+        TelcoAutomationRestStub,
+    ):
         def __hash__(self):
-            return hash("SearchDeploymentRevisions")
+            return hash("TelcoAutomationRestTransport.SearchDeploymentRevisions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "query": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4495,40 +4607,31 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
                         Response object for ``SearchDeploymentRevisions``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{parent=projects/*/locations/*/orchestrationClusters/*}/deployments:searchRevisions",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseSearchDeploymentRevisions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_search_deployment_revisions(
                 request, metadata
             )
-            pb_request = telcoautomation.SearchDeploymentRevisionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseSearchDeploymentRevisions._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseSearchDeploymentRevisions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                TelcoAutomationRestTransport._SearchDeploymentRevisions._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4544,21 +4647,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_search_deployment_revisions(resp)
             return resp
 
-    class _UpdateBlueprint(TelcoAutomationRestStub):
+    class _UpdateBlueprint(
+        _BaseTelcoAutomationRestTransport._BaseUpdateBlueprint, TelcoAutomationRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateBlueprint")
+            return hash("TelcoAutomationRestTransport.UpdateBlueprint")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4596,47 +4712,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha1/{blueprint.name=projects/*/locations/*/orchestrationClusters/*/blueprints/*}",
-                    "body": "blueprint",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseUpdateBlueprint._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_blueprint(
                 request, metadata
             )
-            pb_request = telcoautomation.UpdateBlueprintRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseUpdateBlueprint._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseTelcoAutomationRestTransport._BaseUpdateBlueprint._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseUpdateBlueprint._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = TelcoAutomationRestTransport._UpdateBlueprint._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4652,21 +4755,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_update_blueprint(resp)
             return resp
 
-    class _UpdateDeployment(TelcoAutomationRestStub):
+    class _UpdateDeployment(
+        _BaseTelcoAutomationRestTransport._BaseUpdateDeployment, TelcoAutomationRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateDeployment")
+            return hash("TelcoAutomationRestTransport.UpdateDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4697,47 +4813,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha1/{deployment.name=projects/*/locations/*/orchestrationClusters/*/deployments/*}",
-                    "body": "deployment",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseUpdateDeployment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_deployment(
                 request, metadata
             )
-            pb_request = telcoautomation.UpdateDeploymentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseUpdateDeployment._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseTelcoAutomationRestTransport._BaseUpdateDeployment._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseUpdateDeployment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = TelcoAutomationRestTransport._UpdateDeployment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4753,21 +4856,35 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             resp = self._interceptor.post_update_deployment(resp)
             return resp
 
-    class _UpdateHydratedDeployment(TelcoAutomationRestStub):
+    class _UpdateHydratedDeployment(
+        _BaseTelcoAutomationRestTransport._BaseUpdateHydratedDeployment,
+        TelcoAutomationRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateHydratedDeployment")
+            return hash("TelcoAutomationRestTransport.UpdateHydratedDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4798,47 +4915,36 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1alpha1/{hydrated_deployment.name=projects/*/locations/*/orchestrationClusters/*/deployments/*/hydratedDeployments/*}",
-                    "body": "hydrated_deployment",
-                },
-            ]
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseUpdateHydratedDeployment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_hydrated_deployment(
                 request, metadata
             )
-            pb_request = telcoautomation.UpdateHydratedDeploymentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseUpdateHydratedDeployment._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseTelcoAutomationRestTransport._BaseUpdateHydratedDeployment._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseTelcoAutomationRestTransport._BaseUpdateHydratedDeployment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                TelcoAutomationRestTransport._UpdateHydratedDeployment._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5207,7 +5313,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(TelcoAutomationRestStub):
+    class _GetLocation(
+        _BaseTelcoAutomationRestTransport._BaseGetLocation, TelcoAutomationRestStub
+    ):
+        def __hash__(self):
+            return hash("TelcoAutomationRestTransport.GetLocation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -5231,32 +5364,27 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseGetLocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetLocation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseTelcoAutomationRestTransport._BaseGetLocation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = TelcoAutomationRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5264,8 +5392,9 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -5273,7 +5402,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(TelcoAutomationRestStub):
+    class _ListLocations(
+        _BaseTelcoAutomationRestTransport._BaseListLocations, TelcoAutomationRestStub
+    ):
+        def __hash__(self):
+            return hash("TelcoAutomationRestTransport.ListLocations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -5297,32 +5453,27 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{name=projects/*}/locations",
-                },
-            ]
-
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseListLocations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListLocations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseTelcoAutomationRestTransport._BaseListLocations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = TelcoAutomationRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5330,8 +5481,9 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 
@@ -5339,7 +5491,35 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(TelcoAutomationRestStub):
+    class _CancelOperation(
+        _BaseTelcoAutomationRestTransport._BaseCancelOperation, TelcoAutomationRestStub
+    ):
+        def __hash__(self):
+            return hash("TelcoAutomationRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -5360,37 +5540,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/operations/*}:cancel",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseCancelOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseTelcoAutomationRestTransport._BaseCancelOperation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseTelcoAutomationRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = TelcoAutomationRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5404,7 +5581,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(TelcoAutomationRestStub):
+    class _DeleteOperation(
+        _BaseTelcoAutomationRestTransport._BaseDeleteOperation, TelcoAutomationRestStub
+    ):
+        def __hash__(self):
+            return hash("TelcoAutomationRestTransport.DeleteOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.DeleteOperationRequest,
@@ -5425,34 +5629,29 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseDeleteOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseDeleteOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseTelcoAutomationRestTransport._BaseDeleteOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = TelcoAutomationRestTransport._DeleteOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5466,7 +5665,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(TelcoAutomationRestStub):
+    class _GetOperation(
+        _BaseTelcoAutomationRestTransport._BaseGetOperation, TelcoAutomationRestStub
+    ):
+        def __hash__(self):
+            return hash("TelcoAutomationRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -5490,32 +5716,27 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseGetOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseTelcoAutomationRestTransport._BaseGetOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = TelcoAutomationRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5523,8 +5744,9 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -5532,7 +5754,34 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(TelcoAutomationRestStub):
+    class _ListOperations(
+        _BaseTelcoAutomationRestTransport._BaseListOperations, TelcoAutomationRestStub
+    ):
+        def __hash__(self):
+            return hash("TelcoAutomationRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -5556,32 +5805,27 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1alpha1/{name=projects/*/locations/*}/operations",
-                },
-            ]
-
+            http_options = (
+                _BaseTelcoAutomationRestTransport._BaseListOperations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseTelcoAutomationRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = TelcoAutomationRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5589,8 +5833,9 @@ class TelcoAutomationRestTransport(TelcoAutomationTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 
