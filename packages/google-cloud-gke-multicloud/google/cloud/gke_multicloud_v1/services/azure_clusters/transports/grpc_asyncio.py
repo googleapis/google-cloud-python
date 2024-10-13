@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -230,6 +231,9 @@ class AzureClustersGrpcAsyncIOTransport(AzureClustersTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -876,12 +880,12 @@ class AzureClustersGrpcAsyncIOTransport(AzureClustersTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_azure_client: gapic_v1.method_async.wrap_method(
+            self.create_azure_client: self._wrap_method(
                 self.create_azure_client,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_azure_client: gapic_v1.method_async.wrap_method(
+            self.get_azure_client: self._wrap_method(
                 self.get_azure_client,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -895,7 +899,7 @@ class AzureClustersGrpcAsyncIOTransport(AzureClustersTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_azure_clients: gapic_v1.method_async.wrap_method(
+            self.list_azure_clients: self._wrap_method(
                 self.list_azure_clients,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -909,22 +913,22 @@ class AzureClustersGrpcAsyncIOTransport(AzureClustersTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_azure_client: gapic_v1.method_async.wrap_method(
+            self.delete_azure_client: self._wrap_method(
                 self.delete_azure_client,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_azure_cluster: gapic_v1.method_async.wrap_method(
+            self.create_azure_cluster: self._wrap_method(
                 self.create_azure_cluster,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_azure_cluster: gapic_v1.method_async.wrap_method(
+            self.update_azure_cluster: self._wrap_method(
                 self.update_azure_cluster,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_azure_cluster: gapic_v1.method_async.wrap_method(
+            self.get_azure_cluster: self._wrap_method(
                 self.get_azure_cluster,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -938,7 +942,7 @@ class AzureClustersGrpcAsyncIOTransport(AzureClustersTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_azure_clusters: gapic_v1.method_async.wrap_method(
+            self.list_azure_clusters: self._wrap_method(
                 self.list_azure_clusters,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -952,12 +956,12 @@ class AzureClustersGrpcAsyncIOTransport(AzureClustersTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_azure_cluster: gapic_v1.method_async.wrap_method(
+            self.delete_azure_cluster: self._wrap_method(
                 self.delete_azure_cluster,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.generate_azure_cluster_agent_token: gapic_v1.method_async.wrap_method(
+            self.generate_azure_cluster_agent_token: self._wrap_method(
                 self.generate_azure_cluster_agent_token,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -971,7 +975,7 @@ class AzureClustersGrpcAsyncIOTransport(AzureClustersTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.generate_azure_access_token: gapic_v1.method_async.wrap_method(
+            self.generate_azure_access_token: self._wrap_method(
                 self.generate_azure_access_token,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -985,17 +989,17 @@ class AzureClustersGrpcAsyncIOTransport(AzureClustersTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_azure_node_pool: gapic_v1.method_async.wrap_method(
+            self.create_azure_node_pool: self._wrap_method(
                 self.create_azure_node_pool,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_azure_node_pool: gapic_v1.method_async.wrap_method(
+            self.update_azure_node_pool: self._wrap_method(
                 self.update_azure_node_pool,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_azure_node_pool: gapic_v1.method_async.wrap_method(
+            self.get_azure_node_pool: self._wrap_method(
                 self.get_azure_node_pool,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1009,7 +1013,7 @@ class AzureClustersGrpcAsyncIOTransport(AzureClustersTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_azure_node_pools: gapic_v1.method_async.wrap_method(
+            self.list_azure_node_pools: self._wrap_method(
                 self.list_azure_node_pools,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1023,12 +1027,12 @@ class AzureClustersGrpcAsyncIOTransport(AzureClustersTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_azure_node_pool: gapic_v1.method_async.wrap_method(
+            self.delete_azure_node_pool: self._wrap_method(
                 self.delete_azure_node_pool,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_azure_open_id_config: gapic_v1.method_async.wrap_method(
+            self.get_azure_open_id_config: self._wrap_method(
                 self.get_azure_open_id_config,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1042,7 +1046,7 @@ class AzureClustersGrpcAsyncIOTransport(AzureClustersTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_azure_json_web_keys: gapic_v1.method_async.wrap_method(
+            self.get_azure_json_web_keys: self._wrap_method(
                 self.get_azure_json_web_keys,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1056,7 +1060,7 @@ class AzureClustersGrpcAsyncIOTransport(AzureClustersTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_azure_server_config: gapic_v1.method_async.wrap_method(
+            self.get_azure_server_config: self._wrap_method(
                 self.get_azure_server_config,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1070,10 +1074,39 @@ class AzureClustersGrpcAsyncIOTransport(AzureClustersTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
+
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(
