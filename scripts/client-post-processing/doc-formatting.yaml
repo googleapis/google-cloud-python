@@ -438,3 +438,38 @@ replacements:
                   same so only one enum value is needed. E.g.\n
                   - Bank Mandiri
     count: 1
+  - paths: [
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/email_preferences_service/async_client.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/email_preferences_service/client.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/email_preferences_service/transports/grpc.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/email_preferences_service/transports/grpc_asyncio.py,
+    ]
+    before: name=accounts\/\*\/users\/me\/emailPreferences alias
+    after: "`name=accounts/*/users/me/emailPreferences` alias"
+    count: 8
+  - paths: [
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/async_client.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/client.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/transports/grpc.py,
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/services/online_return_policy_service/transports/grpc_asyncio.py,
+    ]
+    before: |
+      This API defines the following resource model:
+      \    --------------------------------------------------------\n
+      \    \[OnlineReturnPolicy\]\[google.shopping.merchant.accounts.v1.OnlineReturnPolicy\]
+    after: |
+      This API defines the following resource model:
+          - [OnlineReturnPolicy][google.shopping.merchant.accounts.v1.OnlineReturnPolicy]
+    count: 4
+  - paths: [
+      packages/google-shopping-merchant-accounts/google/shopping/merchant_accounts_v1beta/types/shippingsettings.py
+    ]
+    before: |
+      Required. This field is used for avoid async
+      \            issue. Make sure shipping setting data
+      \             didn't change between get call and insert call.
+    after: |
+      Required. This field is used for avoid async
+                  issue. Make sure shipping setting data
+                  didn't change between get call and insert call.
+    count: 1
