@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -230,6 +231,9 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -556,17 +560,17 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_folder: gapic_v1.method_async.wrap_method(
+            self.create_folder: self._wrap_method(
                 self.create_folder,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_folder: gapic_v1.method_async.wrap_method(
+            self.delete_folder: self._wrap_method(
                 self.delete_folder,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_folder: gapic_v1.method_async.wrap_method(
+            self.get_folder: self._wrap_method(
                 self.get_folder,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -584,7 +588,7 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_folders: gapic_v1.method_async.wrap_method(
+            self.list_folders: self._wrap_method(
                 self.list_folders,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -602,7 +606,7 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.rename_folder: gapic_v1.method_async.wrap_method(
+            self.rename_folder: self._wrap_method(
                 self.rename_folder,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -620,7 +624,7 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_storage_layout: gapic_v1.method_async.wrap_method(
+            self.get_storage_layout: self._wrap_method(
                 self.get_storage_layout,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -638,17 +642,17 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_managed_folder: gapic_v1.method_async.wrap_method(
+            self.create_managed_folder: self._wrap_method(
                 self.create_managed_folder,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_managed_folder: gapic_v1.method_async.wrap_method(
+            self.delete_managed_folder: self._wrap_method(
                 self.delete_managed_folder,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_managed_folder: gapic_v1.method_async.wrap_method(
+            self.get_managed_folder: self._wrap_method(
                 self.get_managed_folder,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -666,7 +670,7 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_managed_folders: gapic_v1.method_async.wrap_method(
+            self.list_managed_folders: self._wrap_method(
                 self.list_managed_folders,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -686,8 +690,17 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("StorageControlGrpcAsyncIOTransport",)

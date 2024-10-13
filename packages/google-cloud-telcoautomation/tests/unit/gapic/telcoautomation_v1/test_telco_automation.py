@@ -22,9 +22,26 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
+
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import (
     future,
@@ -35,7 +52,7 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
@@ -47,15 +64,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.telcoautomation_v1.services.telco_automation import (
     TelcoAutomationAsyncClient,
@@ -66,8 +75,22 @@ from google.cloud.telcoautomation_v1.services.telco_automation import (
 from google.cloud.telcoautomation_v1.types import telcoautomation
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1195,27 +1218,6 @@ def test_list_orchestration_clusters(request_type, transport: str = "grpc"):
     assert response.unreachable == ["unreachable_value"]
 
 
-def test_list_orchestration_clusters_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_orchestration_clusters), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_orchestration_clusters()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListOrchestrationClustersRequest()
-
-
 def test_list_orchestration_clusters_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1293,32 +1295,6 @@ def test_list_orchestration_clusters_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_orchestration_clusters_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_orchestration_clusters), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.ListOrchestrationClustersResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_orchestration_clusters()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListOrchestrationClustersRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_orchestration_clusters_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1326,7 +1302,7 @@ async def test_list_orchestration_clusters_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1366,7 +1342,7 @@ async def test_list_orchestration_clusters_async(
     request_type=telcoautomation.ListOrchestrationClustersRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1438,7 +1414,7 @@ def test_list_orchestration_clusters_field_headers():
 @pytest.mark.asyncio
 async def test_list_orchestration_clusters_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1512,7 +1488,7 @@ def test_list_orchestration_clusters_flattened_error():
 @pytest.mark.asyncio
 async def test_list_orchestration_clusters_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1543,7 +1519,7 @@ async def test_list_orchestration_clusters_flattened_async():
 @pytest.mark.asyncio
 async def test_list_orchestration_clusters_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1659,7 +1635,7 @@ def test_list_orchestration_clusters_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_orchestration_clusters_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1713,7 +1689,7 @@ async def test_list_orchestration_clusters_async_pager():
 @pytest.mark.asyncio
 async def test_list_orchestration_clusters_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1803,27 +1779,6 @@ def test_get_orchestration_cluster(request_type, transport: str = "grpc"):
     assert response.state == telcoautomation.OrchestrationCluster.State.CREATING
 
 
-def test_get_orchestration_cluster_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_orchestration_cluster), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_orchestration_cluster()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.GetOrchestrationClusterRequest()
-
-
 def test_get_orchestration_cluster_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1895,33 +1850,6 @@ def test_get_orchestration_cluster_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_orchestration_cluster_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_orchestration_cluster), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.OrchestrationCluster(
-                name="name_value",
-                tna_version="tna_version_value",
-                state=telcoautomation.OrchestrationCluster.State.CREATING,
-            )
-        )
-        response = await client.get_orchestration_cluster()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.GetOrchestrationClusterRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_orchestration_cluster_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1929,7 +1857,7 @@ async def test_get_orchestration_cluster_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1969,7 +1897,7 @@ async def test_get_orchestration_cluster_async(
     request_type=telcoautomation.GetOrchestrationClusterRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2043,7 +1971,7 @@ def test_get_orchestration_cluster_field_headers():
 @pytest.mark.asyncio
 async def test_get_orchestration_cluster_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2117,7 +2045,7 @@ def test_get_orchestration_cluster_flattened_error():
 @pytest.mark.asyncio
 async def test_get_orchestration_cluster_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2148,7 +2076,7 @@ async def test_get_orchestration_cluster_flattened_async():
 @pytest.mark.asyncio
 async def test_get_orchestration_cluster_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2193,27 +2121,6 @@ def test_create_orchestration_cluster(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_orchestration_cluster_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_orchestration_cluster), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_orchestration_cluster()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.CreateOrchestrationClusterRequest()
 
 
 def test_create_orchestration_cluster_non_empty_request_with_auto_populated_field():
@@ -2296,29 +2203,6 @@ def test_create_orchestration_cluster_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_orchestration_cluster_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_orchestration_cluster), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_orchestration_cluster()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.CreateOrchestrationClusterRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_orchestration_cluster_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2326,7 +2210,7 @@ async def test_create_orchestration_cluster_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2371,7 +2255,7 @@ async def test_create_orchestration_cluster_async(
     request_type=telcoautomation.CreateOrchestrationClusterRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2438,7 +2322,7 @@ def test_create_orchestration_cluster_field_headers():
 @pytest.mark.asyncio
 async def test_create_orchestration_cluster_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2526,7 +2410,7 @@ def test_create_orchestration_cluster_flattened_error():
 @pytest.mark.asyncio
 async def test_create_orchestration_cluster_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2567,7 +2451,7 @@ async def test_create_orchestration_cluster_flattened_async():
 @pytest.mark.asyncio
 async def test_create_orchestration_cluster_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2616,27 +2500,6 @@ def test_delete_orchestration_cluster(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_orchestration_cluster_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_orchestration_cluster), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_orchestration_cluster()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.DeleteOrchestrationClusterRequest()
 
 
 def test_delete_orchestration_cluster_non_empty_request_with_auto_populated_field():
@@ -2717,29 +2580,6 @@ def test_delete_orchestration_cluster_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_orchestration_cluster_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_orchestration_cluster), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_orchestration_cluster()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.DeleteOrchestrationClusterRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_orchestration_cluster_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2747,7 +2587,7 @@ async def test_delete_orchestration_cluster_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2792,7 +2632,7 @@ async def test_delete_orchestration_cluster_async(
     request_type=telcoautomation.DeleteOrchestrationClusterRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2859,7 +2699,7 @@ def test_delete_orchestration_cluster_field_headers():
 @pytest.mark.asyncio
 async def test_delete_orchestration_cluster_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2933,7 +2773,7 @@ def test_delete_orchestration_cluster_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_orchestration_cluster_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2964,7 +2804,7 @@ async def test_delete_orchestration_cluster_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_orchestration_cluster_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3012,25 +2852,6 @@ def test_list_edge_slms(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListEdgeSlmsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable == ["unreachable_value"]
-
-
-def test_list_edge_slms_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_edge_slms), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_edge_slms()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListEdgeSlmsRequest()
 
 
 def test_list_edge_slms_non_empty_request_with_auto_populated_field():
@@ -3103,30 +2924,6 @@ def test_list_edge_slms_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_edge_slms_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_edge_slms), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.ListEdgeSlmsResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_edge_slms()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListEdgeSlmsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_edge_slms_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3134,7 +2931,7 @@ async def test_list_edge_slms_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3173,7 +2970,7 @@ async def test_list_edge_slms_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.ListEdgeSlmsRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3241,7 +3038,7 @@ def test_list_edge_slms_field_headers():
 @pytest.mark.asyncio
 async def test_list_edge_slms_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3311,7 +3108,7 @@ def test_list_edge_slms_flattened_error():
 @pytest.mark.asyncio
 async def test_list_edge_slms_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3340,7 +3137,7 @@ async def test_list_edge_slms_flattened_async():
 @pytest.mark.asyncio
 async def test_list_edge_slms_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3450,7 +3247,7 @@ def test_list_edge_slms_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_edge_slms_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3500,7 +3297,7 @@ async def test_list_edge_slms_async_pager():
 @pytest.mark.asyncio
 async def test_list_edge_slms_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3593,25 +3390,6 @@ def test_get_edge_slm(request_type, transport: str = "grpc"):
     )
 
 
-def test_get_edge_slm_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_edge_slm), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_edge_slm()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.GetEdgeSlmRequest()
-
-
 def test_get_edge_slm_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -3676,33 +3454,6 @@ def test_get_edge_slm_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_edge_slm_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_edge_slm), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.EdgeSlm(
-                name="name_value",
-                orchestration_cluster="orchestration_cluster_value",
-                tna_version="tna_version_value",
-                state=telcoautomation.EdgeSlm.State.CREATING,
-                workload_cluster_type=telcoautomation.EdgeSlm.WorkloadClusterType.GDCE,
-            )
-        )
-        response = await client.get_edge_slm()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.GetEdgeSlmRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_edge_slm_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3710,7 +3461,7 @@ async def test_get_edge_slm_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3749,7 +3500,7 @@ async def test_get_edge_slm_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.GetEdgeSlmRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3826,7 +3577,7 @@ def test_get_edge_slm_field_headers():
 @pytest.mark.asyncio
 async def test_get_edge_slm_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3896,7 +3647,7 @@ def test_get_edge_slm_flattened_error():
 @pytest.mark.asyncio
 async def test_get_edge_slm_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3925,7 +3676,7 @@ async def test_get_edge_slm_flattened_async():
 @pytest.mark.asyncio
 async def test_get_edge_slm_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3968,25 +3719,6 @@ def test_create_edge_slm(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_edge_slm_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_edge_slm), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_edge_slm()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.CreateEdgeSlmRequest()
 
 
 def test_create_edge_slm_non_empty_request_with_auto_populated_field():
@@ -4062,27 +3794,6 @@ def test_create_edge_slm_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_edge_slm_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_edge_slm), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_edge_slm()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.CreateEdgeSlmRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_edge_slm_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4090,7 +3801,7 @@ async def test_create_edge_slm_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4134,7 +3845,7 @@ async def test_create_edge_slm_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.CreateEdgeSlmRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4197,7 +3908,7 @@ def test_create_edge_slm_field_headers():
 @pytest.mark.asyncio
 async def test_create_edge_slm_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4277,7 +3988,7 @@ def test_create_edge_slm_flattened_error():
 @pytest.mark.asyncio
 async def test_create_edge_slm_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4314,7 +4025,7 @@ async def test_create_edge_slm_flattened_async():
 @pytest.mark.asyncio
 async def test_create_edge_slm_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4359,25 +4070,6 @@ def test_delete_edge_slm(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_edge_slm_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_edge_slm), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_edge_slm()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.DeleteEdgeSlmRequest()
 
 
 def test_delete_edge_slm_non_empty_request_with_auto_populated_field():
@@ -4451,27 +4143,6 @@ def test_delete_edge_slm_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_edge_slm_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_edge_slm), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_edge_slm()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.DeleteEdgeSlmRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_edge_slm_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4479,7 +4150,7 @@ async def test_delete_edge_slm_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4523,7 +4194,7 @@ async def test_delete_edge_slm_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.DeleteEdgeSlmRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4586,7 +4257,7 @@ def test_delete_edge_slm_field_headers():
 @pytest.mark.asyncio
 async def test_delete_edge_slm_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4656,7 +4327,7 @@ def test_delete_edge_slm_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_edge_slm_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4685,7 +4356,7 @@ async def test_delete_edge_slm_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_edge_slm_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4747,25 +4418,6 @@ def test_create_blueprint(request_type, transport: str = "grpc"):
     assert response.source_provider == "source_provider_value"
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.rollback_support is True
-
-
-def test_create_blueprint_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_blueprint), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_blueprint()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.CreateBlueprintRequest()
 
 
 def test_create_blueprint_non_empty_request_with_auto_populated_field():
@@ -4836,37 +4488,6 @@ def test_create_blueprint_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_blueprint_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_blueprint), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.Blueprint(
-                name="name_value",
-                revision_id="revision_id_value",
-                source_blueprint="source_blueprint_value",
-                approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
-                display_name="display_name_value",
-                repository="repository_value",
-                source_provider="source_provider_value",
-                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-                rollback_support=True,
-            )
-        )
-        response = await client.create_blueprint()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.CreateBlueprintRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_blueprint_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4874,7 +4495,7 @@ async def test_create_blueprint_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4913,7 +4534,7 @@ async def test_create_blueprint_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.CreateBlueprintRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4995,7 +4616,7 @@ def test_create_blueprint_field_headers():
 @pytest.mark.asyncio
 async def test_create_blueprint_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5075,7 +4696,7 @@ def test_create_blueprint_flattened_error():
 @pytest.mark.asyncio
 async def test_create_blueprint_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5112,7 +4733,7 @@ async def test_create_blueprint_flattened_async():
 @pytest.mark.asyncio
 async def test_create_blueprint_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5178,25 +4799,6 @@ def test_update_blueprint(request_type, transport: str = "grpc"):
     assert response.rollback_support is True
 
 
-def test_update_blueprint_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_blueprint), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_blueprint()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.UpdateBlueprintRequest()
-
-
 def test_update_blueprint_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -5259,37 +4861,6 @@ def test_update_blueprint_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_blueprint_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_blueprint), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.Blueprint(
-                name="name_value",
-                revision_id="revision_id_value",
-                source_blueprint="source_blueprint_value",
-                approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
-                display_name="display_name_value",
-                repository="repository_value",
-                source_provider="source_provider_value",
-                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-                rollback_support=True,
-            )
-        )
-        response = await client.update_blueprint()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.UpdateBlueprintRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_blueprint_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5297,7 +4868,7 @@ async def test_update_blueprint_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5336,7 +4907,7 @@ async def test_update_blueprint_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.UpdateBlueprintRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5418,7 +4989,7 @@ def test_update_blueprint_field_headers():
 @pytest.mark.asyncio
 async def test_update_blueprint_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5493,7 +5064,7 @@ def test_update_blueprint_flattened_error():
 @pytest.mark.asyncio
 async def test_update_blueprint_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5526,7 +5097,7 @@ async def test_update_blueprint_flattened_async():
 @pytest.mark.asyncio
 async def test_update_blueprint_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5589,25 +5160,6 @@ def test_get_blueprint(request_type, transport: str = "grpc"):
     assert response.source_provider == "source_provider_value"
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.rollback_support is True
-
-
-def test_get_blueprint_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_blueprint), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_blueprint()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.GetBlueprintRequest()
 
 
 def test_get_blueprint_non_empty_request_with_auto_populated_field():
@@ -5674,37 +5226,6 @@ def test_get_blueprint_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_blueprint_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_blueprint), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.Blueprint(
-                name="name_value",
-                revision_id="revision_id_value",
-                source_blueprint="source_blueprint_value",
-                approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
-                display_name="display_name_value",
-                repository="repository_value",
-                source_provider="source_provider_value",
-                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-                rollback_support=True,
-            )
-        )
-        response = await client.get_blueprint()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.GetBlueprintRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_blueprint_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5712,7 +5233,7 @@ async def test_get_blueprint_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5751,7 +5272,7 @@ async def test_get_blueprint_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.GetBlueprintRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5833,7 +5354,7 @@ def test_get_blueprint_field_headers():
 @pytest.mark.asyncio
 async def test_get_blueprint_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5903,7 +5424,7 @@ def test_get_blueprint_flattened_error():
 @pytest.mark.asyncio
 async def test_get_blueprint_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5932,7 +5453,7 @@ async def test_get_blueprint_flattened_async():
 @pytest.mark.asyncio
 async def test_get_blueprint_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5975,25 +5496,6 @@ def test_delete_blueprint(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_blueprint_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_blueprint), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_blueprint()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.DeleteBlueprintRequest()
 
 
 def test_delete_blueprint_non_empty_request_with_auto_populated_field():
@@ -6062,25 +5564,6 @@ def test_delete_blueprint_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_blueprint_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_blueprint), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_blueprint()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.DeleteBlueprintRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_blueprint_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6088,7 +5571,7 @@ async def test_delete_blueprint_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6127,7 +5610,7 @@ async def test_delete_blueprint_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.DeleteBlueprintRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6188,7 +5671,7 @@ def test_delete_blueprint_field_headers():
 @pytest.mark.asyncio
 async def test_delete_blueprint_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6256,7 +5739,7 @@ def test_delete_blueprint_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_blueprint_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6283,7 +5766,7 @@ async def test_delete_blueprint_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_blueprint_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6329,25 +5812,6 @@ def test_list_blueprints(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBlueprintsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_blueprints_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_blueprints), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_blueprints()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListBlueprintsRequest()
 
 
 def test_list_blueprints_non_empty_request_with_auto_populated_field():
@@ -6418,29 +5882,6 @@ def test_list_blueprints_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_blueprints_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_blueprints), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.ListBlueprintsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_blueprints()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListBlueprintsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_blueprints_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6448,7 +5889,7 @@ async def test_list_blueprints_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6487,7 +5928,7 @@ async def test_list_blueprints_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.ListBlueprintsRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6553,7 +5994,7 @@ def test_list_blueprints_field_headers():
 @pytest.mark.asyncio
 async def test_list_blueprints_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6623,7 +6064,7 @@ def test_list_blueprints_flattened_error():
 @pytest.mark.asyncio
 async def test_list_blueprints_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6652,7 +6093,7 @@ async def test_list_blueprints_flattened_async():
 @pytest.mark.asyncio
 async def test_list_blueprints_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6762,7 +6203,7 @@ def test_list_blueprints_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_blueprints_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6812,7 +6253,7 @@ async def test_list_blueprints_async_pager():
 @pytest.mark.asyncio
 async def test_list_blueprints_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6912,27 +6353,6 @@ def test_approve_blueprint(request_type, transport: str = "grpc"):
     assert response.rollback_support is True
 
 
-def test_approve_blueprint_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.approve_blueprint), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.approve_blueprint()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ApproveBlueprintRequest()
-
-
 def test_approve_blueprint_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -7001,39 +6421,6 @@ def test_approve_blueprint_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_approve_blueprint_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.approve_blueprint), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.Blueprint(
-                name="name_value",
-                revision_id="revision_id_value",
-                source_blueprint="source_blueprint_value",
-                approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
-                display_name="display_name_value",
-                repository="repository_value",
-                source_provider="source_provider_value",
-                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-                rollback_support=True,
-            )
-        )
-        response = await client.approve_blueprint()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ApproveBlueprintRequest()
-
-
-@pytest.mark.asyncio
 async def test_approve_blueprint_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7041,7 +6428,7 @@ async def test_approve_blueprint_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7081,7 +6468,7 @@ async def test_approve_blueprint_async(
     request_type=telcoautomation.ApproveBlueprintRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7167,7 +6554,7 @@ def test_approve_blueprint_field_headers():
 @pytest.mark.asyncio
 async def test_approve_blueprint_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7241,7 +6628,7 @@ def test_approve_blueprint_flattened_error():
 @pytest.mark.asyncio
 async def test_approve_blueprint_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7272,7 +6659,7 @@ async def test_approve_blueprint_flattened_async():
 @pytest.mark.asyncio
 async def test_approve_blueprint_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7336,27 +6723,6 @@ def test_propose_blueprint(request_type, transport: str = "grpc"):
     assert response.source_provider == "source_provider_value"
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.rollback_support is True
-
-
-def test_propose_blueprint_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.propose_blueprint), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.propose_blueprint()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ProposeBlueprintRequest()
 
 
 def test_propose_blueprint_non_empty_request_with_auto_populated_field():
@@ -7427,39 +6793,6 @@ def test_propose_blueprint_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_propose_blueprint_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.propose_blueprint), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.Blueprint(
-                name="name_value",
-                revision_id="revision_id_value",
-                source_blueprint="source_blueprint_value",
-                approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
-                display_name="display_name_value",
-                repository="repository_value",
-                source_provider="source_provider_value",
-                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-                rollback_support=True,
-            )
-        )
-        response = await client.propose_blueprint()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ProposeBlueprintRequest()
-
-
-@pytest.mark.asyncio
 async def test_propose_blueprint_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7467,7 +6800,7 @@ async def test_propose_blueprint_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7507,7 +6840,7 @@ async def test_propose_blueprint_async(
     request_type=telcoautomation.ProposeBlueprintRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7593,7 +6926,7 @@ def test_propose_blueprint_field_headers():
 @pytest.mark.asyncio
 async def test_propose_blueprint_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7667,7 +7000,7 @@ def test_propose_blueprint_flattened_error():
 @pytest.mark.asyncio
 async def test_propose_blueprint_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7698,7 +7031,7 @@ async def test_propose_blueprint_flattened_async():
 @pytest.mark.asyncio
 async def test_propose_blueprint_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7760,25 +7093,6 @@ def test_reject_blueprint(request_type, transport: str = "grpc"):
     assert response.source_provider == "source_provider_value"
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.rollback_support is True
-
-
-def test_reject_blueprint_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.reject_blueprint), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.reject_blueprint()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.RejectBlueprintRequest()
 
 
 def test_reject_blueprint_non_empty_request_with_auto_populated_field():
@@ -7847,37 +7161,6 @@ def test_reject_blueprint_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_reject_blueprint_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.reject_blueprint), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.Blueprint(
-                name="name_value",
-                revision_id="revision_id_value",
-                source_blueprint="source_blueprint_value",
-                approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
-                display_name="display_name_value",
-                repository="repository_value",
-                source_provider="source_provider_value",
-                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-                rollback_support=True,
-            )
-        )
-        response = await client.reject_blueprint()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.RejectBlueprintRequest()
-
-
-@pytest.mark.asyncio
 async def test_reject_blueprint_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7885,7 +7168,7 @@ async def test_reject_blueprint_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7924,7 +7207,7 @@ async def test_reject_blueprint_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.RejectBlueprintRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8006,7 +7289,7 @@ def test_reject_blueprint_field_headers():
 @pytest.mark.asyncio
 async def test_reject_blueprint_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8076,7 +7359,7 @@ def test_reject_blueprint_flattened_error():
 @pytest.mark.asyncio
 async def test_reject_blueprint_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8105,7 +7388,7 @@ async def test_reject_blueprint_flattened_async():
 @pytest.mark.asyncio
 async def test_reject_blueprint_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8153,27 +7436,6 @@ def test_list_blueprint_revisions(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListBlueprintRevisionsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_blueprint_revisions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_blueprint_revisions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_blueprint_revisions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListBlueprintRevisionsRequest()
 
 
 def test_list_blueprint_revisions_non_empty_request_with_auto_populated_field():
@@ -8249,31 +7511,6 @@ def test_list_blueprint_revisions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_blueprint_revisions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_blueprint_revisions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.ListBlueprintRevisionsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_blueprint_revisions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListBlueprintRevisionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_blueprint_revisions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8281,7 +7518,7 @@ async def test_list_blueprint_revisions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8321,7 +7558,7 @@ async def test_list_blueprint_revisions_async(
     request_type=telcoautomation.ListBlueprintRevisionsRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8391,7 +7628,7 @@ def test_list_blueprint_revisions_field_headers():
 @pytest.mark.asyncio
 async def test_list_blueprint_revisions_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8465,7 +7702,7 @@ def test_list_blueprint_revisions_flattened_error():
 @pytest.mark.asyncio
 async def test_list_blueprint_revisions_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8496,7 +7733,7 @@ async def test_list_blueprint_revisions_flattened_async():
 @pytest.mark.asyncio
 async def test_list_blueprint_revisions_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8612,7 +7849,7 @@ def test_list_blueprint_revisions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_blueprint_revisions_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8664,7 +7901,7 @@ async def test_list_blueprint_revisions_async_pager():
 @pytest.mark.asyncio
 async def test_list_blueprint_revisions_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8750,27 +7987,6 @@ def test_search_blueprint_revisions(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_search_blueprint_revisions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.search_blueprint_revisions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.search_blueprint_revisions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.SearchBlueprintRevisionsRequest()
-
-
 def test_search_blueprint_revisions_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -8846,31 +8062,6 @@ def test_search_blueprint_revisions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_search_blueprint_revisions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.search_blueprint_revisions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.SearchBlueprintRevisionsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.search_blueprint_revisions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.SearchBlueprintRevisionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_search_blueprint_revisions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8878,7 +8069,7 @@ async def test_search_blueprint_revisions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8918,7 +8109,7 @@ async def test_search_blueprint_revisions_async(
     request_type=telcoautomation.SearchBlueprintRevisionsRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8988,7 +8179,7 @@ def test_search_blueprint_revisions_field_headers():
 @pytest.mark.asyncio
 async def test_search_blueprint_revisions_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9067,7 +8258,7 @@ def test_search_blueprint_revisions_flattened_error():
 @pytest.mark.asyncio
 async def test_search_blueprint_revisions_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9102,7 +8293,7 @@ async def test_search_blueprint_revisions_flattened_async():
 @pytest.mark.asyncio
 async def test_search_blueprint_revisions_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9219,7 +8410,7 @@ def test_search_blueprint_revisions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_search_blueprint_revisions_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9271,7 +8462,7 @@ async def test_search_blueprint_revisions_async_pager():
 @pytest.mark.asyncio
 async def test_search_blueprint_revisions_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9357,27 +8548,6 @@ def test_search_deployment_revisions(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_search_deployment_revisions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.search_deployment_revisions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.search_deployment_revisions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.SearchDeploymentRevisionsRequest()
-
-
 def test_search_deployment_revisions_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -9453,31 +8623,6 @@ def test_search_deployment_revisions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_search_deployment_revisions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.search_deployment_revisions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.SearchDeploymentRevisionsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.search_deployment_revisions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.SearchDeploymentRevisionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_search_deployment_revisions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9485,7 +8630,7 @@ async def test_search_deployment_revisions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9525,7 +8670,7 @@ async def test_search_deployment_revisions_async(
     request_type=telcoautomation.SearchDeploymentRevisionsRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9595,7 +8740,7 @@ def test_search_deployment_revisions_field_headers():
 @pytest.mark.asyncio
 async def test_search_deployment_revisions_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9674,7 +8819,7 @@ def test_search_deployment_revisions_flattened_error():
 @pytest.mark.asyncio
 async def test_search_deployment_revisions_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9709,7 +8854,7 @@ async def test_search_deployment_revisions_flattened_async():
 @pytest.mark.asyncio
 async def test_search_deployment_revisions_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9826,7 +8971,7 @@ def test_search_deployment_revisions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_search_deployment_revisions_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9878,7 +9023,7 @@ async def test_search_deployment_revisions_async_pager():
 @pytest.mark.asyncio
 async def test_search_deployment_revisions_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9961,27 +9106,6 @@ def test_discard_blueprint_changes(request_type, transport: str = "grpc"):
     assert isinstance(response, telcoautomation.DiscardBlueprintChangesResponse)
 
 
-def test_discard_blueprint_changes_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.discard_blueprint_changes), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.discard_blueprint_changes()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.DiscardBlueprintChangesRequest()
-
-
 def test_discard_blueprint_changes_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -10053,29 +9177,6 @@ def test_discard_blueprint_changes_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_discard_blueprint_changes_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.discard_blueprint_changes), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.DiscardBlueprintChangesResponse()
-        )
-        response = await client.discard_blueprint_changes()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.DiscardBlueprintChangesRequest()
-
-
-@pytest.mark.asyncio
 async def test_discard_blueprint_changes_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -10083,7 +9184,7 @@ async def test_discard_blueprint_changes_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10123,7 +9224,7 @@ async def test_discard_blueprint_changes_async(
     request_type=telcoautomation.DiscardBlueprintChangesRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10190,7 +9291,7 @@ def test_discard_blueprint_changes_field_headers():
 @pytest.mark.asyncio
 async def test_discard_blueprint_changes_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10264,7 +9365,7 @@ def test_discard_blueprint_changes_flattened_error():
 @pytest.mark.asyncio
 async def test_discard_blueprint_changes_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10295,7 +9396,7 @@ async def test_discard_blueprint_changes_flattened_async():
 @pytest.mark.asyncio
 async def test_discard_blueprint_changes_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10343,27 +9444,6 @@ def test_list_public_blueprints(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPublicBlueprintsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_public_blueprints_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_public_blueprints), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_public_blueprints()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListPublicBlueprintsRequest()
 
 
 def test_list_public_blueprints_non_empty_request_with_auto_populated_field():
@@ -10439,31 +9519,6 @@ def test_list_public_blueprints_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_public_blueprints_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_public_blueprints), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.ListPublicBlueprintsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_public_blueprints()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListPublicBlueprintsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_public_blueprints_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -10471,7 +9526,7 @@ async def test_list_public_blueprints_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10511,7 +9566,7 @@ async def test_list_public_blueprints_async(
     request_type=telcoautomation.ListPublicBlueprintsRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10581,7 +9636,7 @@ def test_list_public_blueprints_field_headers():
 @pytest.mark.asyncio
 async def test_list_public_blueprints_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10655,7 +9710,7 @@ def test_list_public_blueprints_flattened_error():
 @pytest.mark.asyncio
 async def test_list_public_blueprints_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10686,7 +9741,7 @@ async def test_list_public_blueprints_flattened_async():
 @pytest.mark.asyncio
 async def test_list_public_blueprints_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10800,7 +9855,7 @@ def test_list_public_blueprints_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_public_blueprints_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10852,7 +9907,7 @@ async def test_list_public_blueprints_async_pager():
 @pytest.mark.asyncio
 async def test_list_public_blueprints_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10948,27 +10003,6 @@ def test_get_public_blueprint(request_type, transport: str = "grpc"):
     assert response.rollback_support is True
 
 
-def test_get_public_blueprint_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_public_blueprint), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_public_blueprint()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.GetPublicBlueprintRequest()
-
-
 def test_get_public_blueprint_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -11039,36 +10073,6 @@ def test_get_public_blueprint_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_public_blueprint_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_public_blueprint), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.PublicBlueprint(
-                name="name_value",
-                display_name="display_name_value",
-                description="description_value",
-                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-                source_provider="source_provider_value",
-                rollback_support=True,
-            )
-        )
-        response = await client.get_public_blueprint()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.GetPublicBlueprintRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_public_blueprint_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -11076,7 +10080,7 @@ async def test_get_public_blueprint_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11116,7 +10120,7 @@ async def test_get_public_blueprint_async(
     request_type=telcoautomation.GetPublicBlueprintRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11196,7 +10200,7 @@ def test_get_public_blueprint_field_headers():
 @pytest.mark.asyncio
 async def test_get_public_blueprint_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11270,7 +10274,7 @@ def test_get_public_blueprint_flattened_error():
 @pytest.mark.asyncio
 async def test_get_public_blueprint_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11301,7 +10305,7 @@ async def test_get_public_blueprint_flattened_async():
 @pytest.mark.asyncio
 async def test_get_public_blueprint_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11367,27 +10371,6 @@ def test_create_deployment(request_type, transport: str = "grpc"):
     assert response.workload_cluster == "workload_cluster_value"
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.rollback_support is True
-
-
-def test_create_deployment_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_deployment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_deployment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.CreateDeploymentRequest()
 
 
 def test_create_deployment_non_empty_request_with_auto_populated_field():
@@ -11460,40 +10443,6 @@ def test_create_deployment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_deployment_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_deployment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.Deployment(
-                name="name_value",
-                revision_id="revision_id_value",
-                source_blueprint_revision="source_blueprint_revision_value",
-                state=telcoautomation.Deployment.State.DRAFT,
-                display_name="display_name_value",
-                repository="repository_value",
-                source_provider="source_provider_value",
-                workload_cluster="workload_cluster_value",
-                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-                rollback_support=True,
-            )
-        )
-        response = await client.create_deployment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.CreateDeploymentRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_deployment_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -11501,7 +10450,7 @@ async def test_create_deployment_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11541,7 +10490,7 @@ async def test_create_deployment_async(
     request_type=telcoautomation.CreateDeploymentRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11629,7 +10578,7 @@ def test_create_deployment_field_headers():
 @pytest.mark.asyncio
 async def test_create_deployment_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11713,7 +10662,7 @@ def test_create_deployment_flattened_error():
 @pytest.mark.asyncio
 async def test_create_deployment_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11752,7 +10701,7 @@ async def test_create_deployment_flattened_async():
 @pytest.mark.asyncio
 async def test_create_deployment_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11822,27 +10771,6 @@ def test_update_deployment(request_type, transport: str = "grpc"):
     assert response.rollback_support is True
 
 
-def test_update_deployment_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_deployment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_deployment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.UpdateDeploymentRequest()
-
-
 def test_update_deployment_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -11907,40 +10835,6 @@ def test_update_deployment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_deployment_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_deployment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.Deployment(
-                name="name_value",
-                revision_id="revision_id_value",
-                source_blueprint_revision="source_blueprint_revision_value",
-                state=telcoautomation.Deployment.State.DRAFT,
-                display_name="display_name_value",
-                repository="repository_value",
-                source_provider="source_provider_value",
-                workload_cluster="workload_cluster_value",
-                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-                rollback_support=True,
-            )
-        )
-        response = await client.update_deployment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.UpdateDeploymentRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_deployment_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -11948,7 +10842,7 @@ async def test_update_deployment_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11988,7 +10882,7 @@ async def test_update_deployment_async(
     request_type=telcoautomation.UpdateDeploymentRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -12076,7 +10970,7 @@ def test_update_deployment_field_headers():
 @pytest.mark.asyncio
 async def test_update_deployment_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12155,7 +11049,7 @@ def test_update_deployment_flattened_error():
 @pytest.mark.asyncio
 async def test_update_deployment_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12190,7 +11084,7 @@ async def test_update_deployment_flattened_async():
 @pytest.mark.asyncio
 async def test_update_deployment_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12257,25 +11151,6 @@ def test_get_deployment(request_type, transport: str = "grpc"):
     assert response.rollback_support is True
 
 
-def test_get_deployment_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_deployment), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_deployment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.GetDeploymentRequest()
-
-
 def test_get_deployment_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -12340,38 +11215,6 @@ def test_get_deployment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_deployment_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_deployment), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.Deployment(
-                name="name_value",
-                revision_id="revision_id_value",
-                source_blueprint_revision="source_blueprint_revision_value",
-                state=telcoautomation.Deployment.State.DRAFT,
-                display_name="display_name_value",
-                repository="repository_value",
-                source_provider="source_provider_value",
-                workload_cluster="workload_cluster_value",
-                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-                rollback_support=True,
-            )
-        )
-        response = await client.get_deployment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.GetDeploymentRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_deployment_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -12379,7 +11222,7 @@ async def test_get_deployment_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -12418,7 +11261,7 @@ async def test_get_deployment_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.GetDeploymentRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -12502,7 +11345,7 @@ def test_get_deployment_field_headers():
 @pytest.mark.asyncio
 async def test_get_deployment_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12572,7 +11415,7 @@ def test_get_deployment_flattened_error():
 @pytest.mark.asyncio
 async def test_get_deployment_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12601,7 +11444,7 @@ async def test_get_deployment_flattened_async():
 @pytest.mark.asyncio
 async def test_get_deployment_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12646,27 +11489,6 @@ def test_remove_deployment(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_remove_deployment_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.remove_deployment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.remove_deployment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.RemoveDeploymentRequest()
 
 
 def test_remove_deployment_non_empty_request_with_auto_populated_field():
@@ -12737,27 +11559,6 @@ def test_remove_deployment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_remove_deployment_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.remove_deployment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.remove_deployment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.RemoveDeploymentRequest()
-
-
-@pytest.mark.asyncio
 async def test_remove_deployment_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -12765,7 +11566,7 @@ async def test_remove_deployment_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -12805,7 +11606,7 @@ async def test_remove_deployment_async(
     request_type=telcoautomation.RemoveDeploymentRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -12870,7 +11671,7 @@ def test_remove_deployment_field_headers():
 @pytest.mark.asyncio
 async def test_remove_deployment_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12942,7 +11743,7 @@ def test_remove_deployment_flattened_error():
 @pytest.mark.asyncio
 async def test_remove_deployment_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12971,7 +11772,7 @@ async def test_remove_deployment_flattened_async():
 @pytest.mark.asyncio
 async def test_remove_deployment_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -13017,25 +11818,6 @@ def test_list_deployments(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDeploymentsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_deployments_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_deployments), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_deployments()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListDeploymentsRequest()
 
 
 def test_list_deployments_non_empty_request_with_auto_populated_field():
@@ -13108,29 +11890,6 @@ def test_list_deployments_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_deployments_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_deployments), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.ListDeploymentsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_deployments()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListDeploymentsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_deployments_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -13138,7 +11897,7 @@ async def test_list_deployments_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -13177,7 +11936,7 @@ async def test_list_deployments_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.ListDeploymentsRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -13243,7 +12002,7 @@ def test_list_deployments_field_headers():
 @pytest.mark.asyncio
 async def test_list_deployments_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13313,7 +12072,7 @@ def test_list_deployments_flattened_error():
 @pytest.mark.asyncio
 async def test_list_deployments_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13342,7 +12101,7 @@ async def test_list_deployments_flattened_async():
 @pytest.mark.asyncio
 async def test_list_deployments_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -13452,7 +12211,7 @@ def test_list_deployments_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_deployments_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13502,7 +12261,7 @@ async def test_list_deployments_async_pager():
 @pytest.mark.asyncio
 async def test_list_deployments_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13586,27 +12345,6 @@ def test_list_deployment_revisions(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_deployment_revisions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_deployment_revisions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_deployment_revisions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListDeploymentRevisionsRequest()
-
-
 def test_list_deployment_revisions_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -13680,31 +12418,6 @@ def test_list_deployment_revisions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_deployment_revisions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_deployment_revisions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.ListDeploymentRevisionsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_deployment_revisions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListDeploymentRevisionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_deployment_revisions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -13712,7 +12425,7 @@ async def test_list_deployment_revisions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -13752,7 +12465,7 @@ async def test_list_deployment_revisions_async(
     request_type=telcoautomation.ListDeploymentRevisionsRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -13822,7 +12535,7 @@ def test_list_deployment_revisions_field_headers():
 @pytest.mark.asyncio
 async def test_list_deployment_revisions_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13896,7 +12609,7 @@ def test_list_deployment_revisions_flattened_error():
 @pytest.mark.asyncio
 async def test_list_deployment_revisions_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13927,7 +12640,7 @@ async def test_list_deployment_revisions_flattened_async():
 @pytest.mark.asyncio
 async def test_list_deployment_revisions_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -14043,7 +12756,7 @@ def test_list_deployment_revisions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_deployment_revisions_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14095,7 +12808,7 @@ async def test_list_deployment_revisions_async_pager():
 @pytest.mark.asyncio
 async def test_list_deployment_revisions_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14178,27 +12891,6 @@ def test_discard_deployment_changes(request_type, transport: str = "grpc"):
     assert isinstance(response, telcoautomation.DiscardDeploymentChangesResponse)
 
 
-def test_discard_deployment_changes_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.discard_deployment_changes), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.discard_deployment_changes()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.DiscardDeploymentChangesRequest()
-
-
 def test_discard_deployment_changes_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -14270,29 +12962,6 @@ def test_discard_deployment_changes_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_discard_deployment_changes_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.discard_deployment_changes), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.DiscardDeploymentChangesResponse()
-        )
-        response = await client.discard_deployment_changes()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.DiscardDeploymentChangesRequest()
-
-
-@pytest.mark.asyncio
 async def test_discard_deployment_changes_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -14300,7 +12969,7 @@ async def test_discard_deployment_changes_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -14340,7 +13009,7 @@ async def test_discard_deployment_changes_async(
     request_type=telcoautomation.DiscardDeploymentChangesRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -14407,7 +13076,7 @@ def test_discard_deployment_changes_field_headers():
 @pytest.mark.asyncio
 async def test_discard_deployment_changes_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -14481,7 +13150,7 @@ def test_discard_deployment_changes_flattened_error():
 @pytest.mark.asyncio
 async def test_discard_deployment_changes_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14512,7 +13181,7 @@ async def test_discard_deployment_changes_flattened_async():
 @pytest.mark.asyncio
 async def test_discard_deployment_changes_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -14576,25 +13245,6 @@ def test_apply_deployment(request_type, transport: str = "grpc"):
     assert response.workload_cluster == "workload_cluster_value"
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.rollback_support is True
-
-
-def test_apply_deployment_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.apply_deployment), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.apply_deployment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ApplyDeploymentRequest()
 
 
 def test_apply_deployment_non_empty_request_with_auto_populated_field():
@@ -14663,38 +13313,6 @@ def test_apply_deployment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_apply_deployment_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.apply_deployment), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.Deployment(
-                name="name_value",
-                revision_id="revision_id_value",
-                source_blueprint_revision="source_blueprint_revision_value",
-                state=telcoautomation.Deployment.State.DRAFT,
-                display_name="display_name_value",
-                repository="repository_value",
-                source_provider="source_provider_value",
-                workload_cluster="workload_cluster_value",
-                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-                rollback_support=True,
-            )
-        )
-        response = await client.apply_deployment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ApplyDeploymentRequest()
-
-
-@pytest.mark.asyncio
 async def test_apply_deployment_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -14702,7 +13320,7 @@ async def test_apply_deployment_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -14741,7 +13359,7 @@ async def test_apply_deployment_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.ApplyDeploymentRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -14825,7 +13443,7 @@ def test_apply_deployment_field_headers():
 @pytest.mark.asyncio
 async def test_apply_deployment_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -14895,7 +13513,7 @@ def test_apply_deployment_flattened_error():
 @pytest.mark.asyncio
 async def test_apply_deployment_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14924,7 +13542,7 @@ async def test_apply_deployment_flattened_async():
 @pytest.mark.asyncio
 async def test_apply_deployment_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -14974,27 +13592,6 @@ def test_compute_deployment_status(request_type, transport: str = "grpc"):
     assert isinstance(response, telcoautomation.ComputeDeploymentStatusResponse)
     assert response.name == "name_value"
     assert response.aggregated_status == telcoautomation.Status.STATUS_IN_PROGRESS
-
-
-def test_compute_deployment_status_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.compute_deployment_status), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.compute_deployment_status()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ComputeDeploymentStatusRequest()
 
 
 def test_compute_deployment_status_non_empty_request_with_auto_populated_field():
@@ -15068,32 +13665,6 @@ def test_compute_deployment_status_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_compute_deployment_status_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.compute_deployment_status), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.ComputeDeploymentStatusResponse(
-                name="name_value",
-                aggregated_status=telcoautomation.Status.STATUS_IN_PROGRESS,
-            )
-        )
-        response = await client.compute_deployment_status()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ComputeDeploymentStatusRequest()
-
-
-@pytest.mark.asyncio
 async def test_compute_deployment_status_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -15101,7 +13672,7 @@ async def test_compute_deployment_status_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -15141,7 +13712,7 @@ async def test_compute_deployment_status_async(
     request_type=telcoautomation.ComputeDeploymentStatusRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -15213,7 +13784,7 @@ def test_compute_deployment_status_field_headers():
 @pytest.mark.asyncio
 async def test_compute_deployment_status_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15287,7 +13858,7 @@ def test_compute_deployment_status_flattened_error():
 @pytest.mark.asyncio
 async def test_compute_deployment_status_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -15318,7 +13889,7 @@ async def test_compute_deployment_status_flattened_async():
 @pytest.mark.asyncio
 async def test_compute_deployment_status_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -15384,27 +13955,6 @@ def test_rollback_deployment(request_type, transport: str = "grpc"):
     assert response.workload_cluster == "workload_cluster_value"
     assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
     assert response.rollback_support is True
-
-
-def test_rollback_deployment_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.rollback_deployment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.rollback_deployment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.RollbackDeploymentRequest()
 
 
 def test_rollback_deployment_non_empty_request_with_auto_populated_field():
@@ -15479,40 +14029,6 @@ def test_rollback_deployment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_rollback_deployment_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.rollback_deployment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.Deployment(
-                name="name_value",
-                revision_id="revision_id_value",
-                source_blueprint_revision="source_blueprint_revision_value",
-                state=telcoautomation.Deployment.State.DRAFT,
-                display_name="display_name_value",
-                repository="repository_value",
-                source_provider="source_provider_value",
-                workload_cluster="workload_cluster_value",
-                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-                rollback_support=True,
-            )
-        )
-        response = await client.rollback_deployment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.RollbackDeploymentRequest()
-
-
-@pytest.mark.asyncio
 async def test_rollback_deployment_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -15520,7 +14036,7 @@ async def test_rollback_deployment_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -15560,7 +14076,7 @@ async def test_rollback_deployment_async(
     request_type=telcoautomation.RollbackDeploymentRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -15648,7 +14164,7 @@ def test_rollback_deployment_field_headers():
 @pytest.mark.asyncio
 async def test_rollback_deployment_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15727,7 +14243,7 @@ def test_rollback_deployment_flattened_error():
 @pytest.mark.asyncio
 async def test_rollback_deployment_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -15762,7 +14278,7 @@ async def test_rollback_deployment_flattened_async():
 @pytest.mark.asyncio
 async def test_rollback_deployment_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -15815,27 +14331,6 @@ def test_get_hydrated_deployment(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.state == telcoautomation.HydratedDeployment.State.DRAFT
     assert response.workload_cluster == "workload_cluster_value"
-
-
-def test_get_hydrated_deployment_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_hydrated_deployment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_hydrated_deployment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.GetHydratedDeploymentRequest()
 
 
 def test_get_hydrated_deployment_non_empty_request_with_auto_populated_field():
@@ -15909,33 +14404,6 @@ def test_get_hydrated_deployment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_hydrated_deployment_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_hydrated_deployment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.HydratedDeployment(
-                name="name_value",
-                state=telcoautomation.HydratedDeployment.State.DRAFT,
-                workload_cluster="workload_cluster_value",
-            )
-        )
-        response = await client.get_hydrated_deployment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.GetHydratedDeploymentRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_hydrated_deployment_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -15943,7 +14411,7 @@ async def test_get_hydrated_deployment_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -15983,7 +14451,7 @@ async def test_get_hydrated_deployment_async(
     request_type=telcoautomation.GetHydratedDeploymentRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -16057,7 +14525,7 @@ def test_get_hydrated_deployment_field_headers():
 @pytest.mark.asyncio
 async def test_get_hydrated_deployment_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -16131,7 +14599,7 @@ def test_get_hydrated_deployment_flattened_error():
 @pytest.mark.asyncio
 async def test_get_hydrated_deployment_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16162,7 +14630,7 @@ async def test_get_hydrated_deployment_flattened_async():
 @pytest.mark.asyncio
 async def test_get_hydrated_deployment_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -16210,27 +14678,6 @@ def test_list_hydrated_deployments(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListHydratedDeploymentsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_hydrated_deployments_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_hydrated_deployments), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_hydrated_deployments()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListHydratedDeploymentsRequest()
 
 
 def test_list_hydrated_deployments_non_empty_request_with_auto_populated_field():
@@ -16306,31 +14753,6 @@ def test_list_hydrated_deployments_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_hydrated_deployments_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_hydrated_deployments), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.ListHydratedDeploymentsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_hydrated_deployments()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ListHydratedDeploymentsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_hydrated_deployments_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -16338,7 +14760,7 @@ async def test_list_hydrated_deployments_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -16378,7 +14800,7 @@ async def test_list_hydrated_deployments_async(
     request_type=telcoautomation.ListHydratedDeploymentsRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -16448,7 +14870,7 @@ def test_list_hydrated_deployments_field_headers():
 @pytest.mark.asyncio
 async def test_list_hydrated_deployments_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -16522,7 +14944,7 @@ def test_list_hydrated_deployments_flattened_error():
 @pytest.mark.asyncio
 async def test_list_hydrated_deployments_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16553,7 +14975,7 @@ async def test_list_hydrated_deployments_flattened_async():
 @pytest.mark.asyncio
 async def test_list_hydrated_deployments_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -16669,7 +15091,7 @@ def test_list_hydrated_deployments_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_hydrated_deployments_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16721,7 +15143,7 @@ async def test_list_hydrated_deployments_async_pager():
 @pytest.mark.asyncio
 async def test_list_hydrated_deployments_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16811,27 +15233,6 @@ def test_update_hydrated_deployment(request_type, transport: str = "grpc"):
     assert response.workload_cluster == "workload_cluster_value"
 
 
-def test_update_hydrated_deployment_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_hydrated_deployment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_hydrated_deployment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.UpdateHydratedDeploymentRequest()
-
-
 def test_update_hydrated_deployment_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -16899,33 +15300,6 @@ def test_update_hydrated_deployment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_hydrated_deployment_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_hydrated_deployment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.HydratedDeployment(
-                name="name_value",
-                state=telcoautomation.HydratedDeployment.State.DRAFT,
-                workload_cluster="workload_cluster_value",
-            )
-        )
-        response = await client.update_hydrated_deployment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.UpdateHydratedDeploymentRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_hydrated_deployment_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -16933,7 +15307,7 @@ async def test_update_hydrated_deployment_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -16973,7 +15347,7 @@ async def test_update_hydrated_deployment_async(
     request_type=telcoautomation.UpdateHydratedDeploymentRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -17047,7 +15421,7 @@ def test_update_hydrated_deployment_field_headers():
 @pytest.mark.asyncio
 async def test_update_hydrated_deployment_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -17126,7 +15500,7 @@ def test_update_hydrated_deployment_flattened_error():
 @pytest.mark.asyncio
 async def test_update_hydrated_deployment_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -17161,7 +15535,7 @@ async def test_update_hydrated_deployment_flattened_async():
 @pytest.mark.asyncio
 async def test_update_hydrated_deployment_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -17214,27 +15588,6 @@ def test_apply_hydrated_deployment(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.state == telcoautomation.HydratedDeployment.State.DRAFT
     assert response.workload_cluster == "workload_cluster_value"
-
-
-def test_apply_hydrated_deployment_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.apply_hydrated_deployment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.apply_hydrated_deployment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ApplyHydratedDeploymentRequest()
 
 
 def test_apply_hydrated_deployment_non_empty_request_with_auto_populated_field():
@@ -17308,33 +15661,6 @@ def test_apply_hydrated_deployment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_apply_hydrated_deployment_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.apply_hydrated_deployment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            telcoautomation.HydratedDeployment(
-                name="name_value",
-                state=telcoautomation.HydratedDeployment.State.DRAFT,
-                workload_cluster="workload_cluster_value",
-            )
-        )
-        response = await client.apply_hydrated_deployment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == telcoautomation.ApplyHydratedDeploymentRequest()
-
-
-@pytest.mark.asyncio
 async def test_apply_hydrated_deployment_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -17342,7 +15668,7 @@ async def test_apply_hydrated_deployment_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TelcoAutomationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -17382,7 +15708,7 @@ async def test_apply_hydrated_deployment_async(
     request_type=telcoautomation.ApplyHydratedDeploymentRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -17456,7 +15782,7 @@ def test_apply_hydrated_deployment_field_headers():
 @pytest.mark.asyncio
 async def test_apply_hydrated_deployment_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -17530,7 +15856,7 @@ def test_apply_hydrated_deployment_flattened_error():
 @pytest.mark.asyncio
 async def test_apply_hydrated_deployment_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -17561,7 +15887,7 @@ async def test_apply_hydrated_deployment_flattened_async():
 @pytest.mark.asyncio
 async def test_apply_hydrated_deployment_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -17571,50 +15897,6 @@ async def test_apply_hydrated_deployment_flattened_error_async():
             telcoautomation.ApplyHydratedDeploymentRequest(),
             name="name_value",
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.ListOrchestrationClustersRequest,
-        dict,
-    ],
-)
-def test_list_orchestration_clusters_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.ListOrchestrationClustersResponse(
-            next_page_token="next_page_token_value",
-            unreachable=["unreachable_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.ListOrchestrationClustersResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_orchestration_clusters(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListOrchestrationClustersPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_orchestration_clusters_rest_use_cached_wrapped_rpc():
@@ -17762,90 +16044,6 @@ def test_list_orchestration_clusters_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_orchestration_clusters_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_orchestration_clusters"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_list_orchestration_clusters"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.ListOrchestrationClustersRequest.pb(
-            telcoautomation.ListOrchestrationClustersRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            telcoautomation.ListOrchestrationClustersResponse.to_json(
-                telcoautomation.ListOrchestrationClustersResponse()
-            )
-        )
-
-        request = telcoautomation.ListOrchestrationClustersRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.ListOrchestrationClustersResponse()
-
-        client.list_orchestration_clusters(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_orchestration_clusters_rest_bad_request(
-    transport: str = "rest",
-    request_type=telcoautomation.ListOrchestrationClustersRequest,
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_orchestration_clusters(request)
-
-
 def test_list_orchestration_clusters_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17967,52 +16165,6 @@ def test_list_orchestration_clusters_rest_pager(transport: str = "rest"):
         pages = list(client.list_orchestration_clusters(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.GetOrchestrationClusterRequest,
-        dict,
-    ],
-)
-def test_get_orchestration_cluster_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.OrchestrationCluster(
-            name="name_value",
-            tna_version="tna_version_value",
-            state=telcoautomation.OrchestrationCluster.State.CREATING,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.OrchestrationCluster.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_orchestration_cluster(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.OrchestrationCluster)
-    assert response.name == "name_value"
-    assert response.tna_version == "tna_version_value"
-    assert response.state == telcoautomation.OrchestrationCluster.State.CREATING
 
 
 def test_get_orchestration_cluster_rest_use_cached_wrapped_rpc():
@@ -18139,89 +16291,6 @@ def test_get_orchestration_cluster_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_orchestration_cluster_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_get_orchestration_cluster"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_get_orchestration_cluster"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.GetOrchestrationClusterRequest.pb(
-            telcoautomation.GetOrchestrationClusterRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.OrchestrationCluster.to_json(
-            telcoautomation.OrchestrationCluster()
-        )
-
-        request = telcoautomation.GetOrchestrationClusterRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.OrchestrationCluster()
-
-        client.get_orchestration_cluster(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_orchestration_cluster_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.GetOrchestrationClusterRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_orchestration_cluster(request)
-
-
 def test_get_orchestration_cluster_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18279,155 +16348,6 @@ def test_get_orchestration_cluster_rest_flattened_error(transport: str = "rest")
             telcoautomation.GetOrchestrationClusterRequest(),
             name="name_value",
         )
-
-
-def test_get_orchestration_cluster_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.CreateOrchestrationClusterRequest,
-        dict,
-    ],
-)
-def test_create_orchestration_cluster_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["orchestration_cluster"] = {
-        "name": "name_value",
-        "management_config": {
-            "standard_management_config": {
-                "network": "network_value",
-                "subnet": "subnet_value",
-                "master_ipv4_cidr_block": "master_ipv4_cidr_block_value",
-                "cluster_cidr_block": "cluster_cidr_block_value",
-                "services_cidr_block": "services_cidr_block_value",
-                "cluster_named_range": "cluster_named_range_value",
-                "services_named_range": "services_named_range_value",
-                "master_authorized_networks_config": {
-                    "cidr_blocks": [
-                        {
-                            "display_name": "display_name_value",
-                            "cidr_block": "cidr_block_value",
-                        }
-                    ]
-                },
-            },
-            "full_management_config": {
-                "network": "network_value",
-                "subnet": "subnet_value",
-                "master_ipv4_cidr_block": "master_ipv4_cidr_block_value",
-                "cluster_cidr_block": "cluster_cidr_block_value",
-                "services_cidr_block": "services_cidr_block_value",
-                "cluster_named_range": "cluster_named_range_value",
-                "services_named_range": "services_named_range_value",
-                "master_authorized_networks_config": {},
-            },
-        },
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "tna_version": "tna_version_value",
-        "state": 1,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = telcoautomation.CreateOrchestrationClusterRequest.meta.fields[
-        "orchestration_cluster"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "orchestration_cluster"
-    ].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["orchestration_cluster"][field])):
-                    del request_init["orchestration_cluster"][field][i][subfield]
-            else:
-                del request_init["orchestration_cluster"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_orchestration_cluster(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_orchestration_cluster_rest_use_cached_wrapped_rpc():
@@ -18595,90 +16515,6 @@ def test_create_orchestration_cluster_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_orchestration_cluster_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_create_orchestration_cluster"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_create_orchestration_cluster"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.CreateOrchestrationClusterRequest.pb(
-            telcoautomation.CreateOrchestrationClusterRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = telcoautomation.CreateOrchestrationClusterRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_orchestration_cluster(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_orchestration_cluster_rest_bad_request(
-    transport: str = "rest",
-    request_type=telcoautomation.CreateOrchestrationClusterRequest,
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_orchestration_cluster(request)
-
-
 def test_create_orchestration_cluster_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18740,49 +16576,6 @@ def test_create_orchestration_cluster_rest_flattened_error(transport: str = "res
             ),
             orchestration_cluster_id="orchestration_cluster_id_value",
         )
-
-
-def test_create_orchestration_cluster_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.DeleteOrchestrationClusterRequest,
-        dict,
-    ],
-)
-def test_delete_orchestration_cluster_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_orchestration_cluster(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_delete_orchestration_cluster_rest_use_cached_wrapped_rpc():
@@ -18912,92 +16705,6 @@ def test_delete_orchestration_cluster_rest_unset_required_fields():
     assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_orchestration_cluster_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_delete_orchestration_cluster"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_delete_orchestration_cluster"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.DeleteOrchestrationClusterRequest.pb(
-            telcoautomation.DeleteOrchestrationClusterRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = telcoautomation.DeleteOrchestrationClusterRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_orchestration_cluster(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_orchestration_cluster_rest_bad_request(
-    transport: str = "rest",
-    request_type=telcoautomation.DeleteOrchestrationClusterRequest,
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_orchestration_cluster(request)
-
-
 def test_delete_orchestration_cluster_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -19053,54 +16760,6 @@ def test_delete_orchestration_cluster_rest_flattened_error(transport: str = "res
             telcoautomation.DeleteOrchestrationClusterRequest(),
             name="name_value",
         )
-
-
-def test_delete_orchestration_cluster_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.ListEdgeSlmsRequest,
-        dict,
-    ],
-)
-def test_list_edge_slms_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.ListEdgeSlmsResponse(
-            next_page_token="next_page_token_value",
-            unreachable=["unreachable_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.ListEdgeSlmsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_edge_slms(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListEdgeSlmsPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_edge_slms_rest_use_cached_wrapped_rpc():
@@ -19241,87 +16900,6 @@ def test_list_edge_slms_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_edge_slms_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_edge_slms"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_list_edge_slms"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.ListEdgeSlmsRequest.pb(
-            telcoautomation.ListEdgeSlmsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.ListEdgeSlmsResponse.to_json(
-            telcoautomation.ListEdgeSlmsResponse()
-        )
-
-        request = telcoautomation.ListEdgeSlmsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.ListEdgeSlmsResponse()
-
-        client.list_edge_slms(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_edge_slms_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.ListEdgeSlmsRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_edge_slms(request)
-
-
 def test_list_edge_slms_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -19439,57 +17017,6 @@ def test_list_edge_slms_rest_pager(transport: str = "rest"):
         pages = list(client.list_edge_slms(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.GetEdgeSlmRequest,
-        dict,
-    ],
-)
-def test_get_edge_slm_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/edgeSlms/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.EdgeSlm(
-            name="name_value",
-            orchestration_cluster="orchestration_cluster_value",
-            tna_version="tna_version_value",
-            state=telcoautomation.EdgeSlm.State.CREATING,
-            workload_cluster_type=telcoautomation.EdgeSlm.WorkloadClusterType.GDCE,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.EdgeSlm.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_edge_slm(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.EdgeSlm)
-    assert response.name == "name_value"
-    assert response.orchestration_cluster == "orchestration_cluster_value"
-    assert response.tna_version == "tna_version_value"
-    assert response.state == telcoautomation.EdgeSlm.State.CREATING
-    assert (
-        response.workload_cluster_type
-        == telcoautomation.EdgeSlm.WorkloadClusterType.GDCE
-    )
 
 
 def test_get_edge_slm_rest_use_cached_wrapped_rpc():
@@ -19611,87 +17138,6 @@ def test_get_edge_slm_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_edge_slm_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_get_edge_slm"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_get_edge_slm"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.GetEdgeSlmRequest.pb(
-            telcoautomation.GetEdgeSlmRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.EdgeSlm.to_json(
-            telcoautomation.EdgeSlm()
-        )
-
-        request = telcoautomation.GetEdgeSlmRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.EdgeSlm()
-
-        client.get_edge_slm(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_edge_slm_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.GetEdgeSlmRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/edgeSlms/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_edge_slm(request)
-
-
 def test_get_edge_slm_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -19746,124 +17192,6 @@ def test_get_edge_slm_rest_flattened_error(transport: str = "rest"):
             telcoautomation.GetEdgeSlmRequest(),
             name="name_value",
         )
-
-
-def test_get_edge_slm_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.CreateEdgeSlmRequest,
-        dict,
-    ],
-)
-def test_create_edge_slm_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["edge_slm"] = {
-        "name": "name_value",
-        "orchestration_cluster": "orchestration_cluster_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "tna_version": "tna_version_value",
-        "state": 1,
-        "workload_cluster_type": 1,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = telcoautomation.CreateEdgeSlmRequest.meta.fields["edge_slm"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["edge_slm"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["edge_slm"][field])):
-                    del request_init["edge_slm"][field][i][subfield]
-            else:
-                del request_init["edge_slm"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_edge_slm(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_edge_slm_rest_use_cached_wrapped_rpc():
@@ -20021,89 +17349,6 @@ def test_create_edge_slm_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_edge_slm_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_create_edge_slm"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_create_edge_slm"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.CreateEdgeSlmRequest.pb(
-            telcoautomation.CreateEdgeSlmRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = telcoautomation.CreateEdgeSlmRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_edge_slm(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_edge_slm_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.CreateEdgeSlmRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_edge_slm(request)
-
-
 def test_create_edge_slm_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -20160,47 +17405,6 @@ def test_create_edge_slm_rest_flattened_error(transport: str = "rest"):
             edge_slm=telcoautomation.EdgeSlm(name="name_value"),
             edge_slm_id="edge_slm_id_value",
         )
-
-
-def test_create_edge_slm_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.DeleteEdgeSlmRequest,
-        dict,
-    ],
-)
-def test_delete_edge_slm_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/edgeSlms/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_edge_slm(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_delete_edge_slm_rest_use_cached_wrapped_rpc():
@@ -20325,89 +17529,6 @@ def test_delete_edge_slm_rest_unset_required_fields():
     assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_edge_slm_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_delete_edge_slm"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_delete_edge_slm"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.DeleteEdgeSlmRequest.pb(
-            telcoautomation.DeleteEdgeSlmRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = telcoautomation.DeleteEdgeSlmRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_edge_slm(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_edge_slm_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.DeleteEdgeSlmRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/edgeSlms/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_edge_slm(request)
-
-
 def test_delete_edge_slm_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -20460,160 +17581,6 @@ def test_delete_edge_slm_rest_flattened_error(transport: str = "rest"):
             telcoautomation.DeleteEdgeSlmRequest(),
             name="name_value",
         )
-
-
-def test_delete_edge_slm_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.CreateBlueprintRequest,
-        dict,
-    ],
-)
-def test_create_blueprint_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
-    }
-    request_init["blueprint"] = {
-        "name": "name_value",
-        "revision_id": "revision_id_value",
-        "source_blueprint": "source_blueprint_value",
-        "revision_create_time": {"seconds": 751, "nanos": 543},
-        "approval_state": 1,
-        "display_name": "display_name_value",
-        "repository": "repository_value",
-        "files": [
-            {
-                "path": "path_value",
-                "content": "content_value",
-                "deleted": True,
-                "editable": True,
-            }
-        ],
-        "labels": {},
-        "create_time": {},
-        "update_time": {},
-        "source_provider": "source_provider_value",
-        "deployment_level": 1,
-        "rollback_support": True,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = telcoautomation.CreateBlueprintRequest.meta.fields["blueprint"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["blueprint"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["blueprint"][field])):
-                    del request_init["blueprint"][field][i][subfield]
-            else:
-                del request_init["blueprint"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.Blueprint(
-            name="name_value",
-            revision_id="revision_id_value",
-            source_blueprint="source_blueprint_value",
-            approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
-            display_name="display_name_value",
-            repository="repository_value",
-            source_provider="source_provider_value",
-            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-            rollback_support=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.Blueprint.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_blueprint(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.Blueprint)
-    assert response.name == "name_value"
-    assert response.revision_id == "revision_id_value"
-    assert response.source_blueprint == "source_blueprint_value"
-    assert response.approval_state == telcoautomation.Blueprint.ApprovalState.DRAFT
-    assert response.display_name == "display_name_value"
-    assert response.repository == "repository_value"
-    assert response.source_provider == "source_provider_value"
-    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
-    assert response.rollback_support is True
 
 
 def test_create_blueprint_rest_use_cached_wrapped_rpc():
@@ -20748,89 +17715,6 @@ def test_create_blueprint_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_blueprint_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_create_blueprint"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_create_blueprint"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.CreateBlueprintRequest.pb(
-            telcoautomation.CreateBlueprintRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.Blueprint.to_json(
-            telcoautomation.Blueprint()
-        )
-
-        request = telcoautomation.CreateBlueprintRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.Blueprint()
-
-        client.create_blueprint(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_blueprint_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.CreateBlueprintRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_blueprint(request)
-
-
 def test_create_blueprint_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -20892,162 +17776,6 @@ def test_create_blueprint_rest_flattened_error(transport: str = "rest"):
             blueprint=telcoautomation.Blueprint(name="name_value"),
             blueprint_id="blueprint_id_value",
         )
-
-
-def test_create_blueprint_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.UpdateBlueprintRequest,
-        dict,
-    ],
-)
-def test_update_blueprint_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "blueprint": {
-            "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
-        }
-    }
-    request_init["blueprint"] = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4",
-        "revision_id": "revision_id_value",
-        "source_blueprint": "source_blueprint_value",
-        "revision_create_time": {"seconds": 751, "nanos": 543},
-        "approval_state": 1,
-        "display_name": "display_name_value",
-        "repository": "repository_value",
-        "files": [
-            {
-                "path": "path_value",
-                "content": "content_value",
-                "deleted": True,
-                "editable": True,
-            }
-        ],
-        "labels": {},
-        "create_time": {},
-        "update_time": {},
-        "source_provider": "source_provider_value",
-        "deployment_level": 1,
-        "rollback_support": True,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = telcoautomation.UpdateBlueprintRequest.meta.fields["blueprint"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["blueprint"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["blueprint"][field])):
-                    del request_init["blueprint"][field][i][subfield]
-            else:
-                del request_init["blueprint"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.Blueprint(
-            name="name_value",
-            revision_id="revision_id_value",
-            source_blueprint="source_blueprint_value",
-            approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
-            display_name="display_name_value",
-            repository="repository_value",
-            source_provider="source_provider_value",
-            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-            rollback_support=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.Blueprint.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_blueprint(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.Blueprint)
-    assert response.name == "name_value"
-    assert response.revision_id == "revision_id_value"
-    assert response.source_blueprint == "source_blueprint_value"
-    assert response.approval_state == telcoautomation.Blueprint.ApprovalState.DRAFT
-    assert response.display_name == "display_name_value"
-    assert response.repository == "repository_value"
-    assert response.source_provider == "source_provider_value"
-    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
-    assert response.rollback_support is True
 
 
 def test_update_blueprint_rest_use_cached_wrapped_rpc():
@@ -21177,91 +17905,6 @@ def test_update_blueprint_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_blueprint_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_update_blueprint"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_update_blueprint"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.UpdateBlueprintRequest.pb(
-            telcoautomation.UpdateBlueprintRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.Blueprint.to_json(
-            telcoautomation.Blueprint()
-        )
-
-        request = telcoautomation.UpdateBlueprintRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.Blueprint()
-
-        client.update_blueprint(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_blueprint_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.UpdateBlueprintRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "blueprint": {
-            "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_blueprint(request)
-
-
 def test_update_blueprint_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -21323,70 +17966,6 @@ def test_update_blueprint_rest_flattened_error(transport: str = "rest"):
             blueprint=telcoautomation.Blueprint(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_blueprint_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.GetBlueprintRequest,
-        dict,
-    ],
-)
-def test_get_blueprint_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.Blueprint(
-            name="name_value",
-            revision_id="revision_id_value",
-            source_blueprint="source_blueprint_value",
-            approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
-            display_name="display_name_value",
-            repository="repository_value",
-            source_provider="source_provider_value",
-            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-            rollback_support=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.Blueprint.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_blueprint(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.Blueprint)
-    assert response.name == "name_value"
-    assert response.revision_id == "revision_id_value"
-    assert response.source_blueprint == "source_blueprint_value"
-    assert response.approval_state == telcoautomation.Blueprint.ApprovalState.DRAFT
-    assert response.display_name == "display_name_value"
-    assert response.repository == "repository_value"
-    assert response.source_provider == "source_provider_value"
-    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
-    assert response.rollback_support is True
 
 
 def test_get_blueprint_rest_use_cached_wrapped_rpc():
@@ -21510,89 +18089,6 @@ def test_get_blueprint_rest_unset_required_fields():
     assert set(unset_fields) == (set(("view",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_blueprint_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_get_blueprint"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_get_blueprint"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.GetBlueprintRequest.pb(
-            telcoautomation.GetBlueprintRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.Blueprint.to_json(
-            telcoautomation.Blueprint()
-        )
-
-        request = telcoautomation.GetBlueprintRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.Blueprint()
-
-        client.get_blueprint(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_blueprint_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.GetBlueprintRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_blueprint(request)
-
-
 def test_get_blueprint_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -21650,49 +18146,6 @@ def test_get_blueprint_rest_flattened_error(transport: str = "rest"):
             telcoautomation.GetBlueprintRequest(),
             name="name_value",
         )
-
-
-def test_get_blueprint_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.DeleteBlueprintRequest,
-        dict,
-    ],
-)
-def test_delete_blueprint_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_blueprint(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_blueprint_rest_use_cached_wrapped_rpc():
@@ -21813,81 +18266,6 @@ def test_delete_blueprint_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_blueprint_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_delete_blueprint"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = telcoautomation.DeleteBlueprintRequest.pb(
-            telcoautomation.DeleteBlueprintRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = telcoautomation.DeleteBlueprintRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_blueprint(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_blueprint_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.DeleteBlueprintRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_blueprint(request)
-
-
 def test_delete_blueprint_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -21943,54 +18321,6 @@ def test_delete_blueprint_rest_flattened_error(transport: str = "rest"):
             telcoautomation.DeleteBlueprintRequest(),
             name="name_value",
         )
-
-
-def test_delete_blueprint_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.ListBlueprintsRequest,
-        dict,
-    ],
-)
-def test_list_blueprints_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.ListBlueprintsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.ListBlueprintsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_blueprints(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListBlueprintsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_blueprints_rest_use_cached_wrapped_rpc():
@@ -22129,89 +18459,6 @@ def test_list_blueprints_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_blueprints_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_blueprints"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_list_blueprints"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.ListBlueprintsRequest.pb(
-            telcoautomation.ListBlueprintsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.ListBlueprintsResponse.to_json(
-            telcoautomation.ListBlueprintsResponse()
-        )
-
-        request = telcoautomation.ListBlueprintsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.ListBlueprintsResponse()
-
-        client.list_blueprints(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_blueprints_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.ListBlueprintsRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_blueprints(request)
-
-
 def test_list_blueprints_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -22336,64 +18583,6 @@ def test_list_blueprints_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.ApproveBlueprintRequest,
-        dict,
-    ],
-)
-def test_approve_blueprint_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.Blueprint(
-            name="name_value",
-            revision_id="revision_id_value",
-            source_blueprint="source_blueprint_value",
-            approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
-            display_name="display_name_value",
-            repository="repository_value",
-            source_provider="source_provider_value",
-            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-            rollback_support=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.Blueprint.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.approve_blueprint(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.Blueprint)
-    assert response.name == "name_value"
-    assert response.revision_id == "revision_id_value"
-    assert response.source_blueprint == "source_blueprint_value"
-    assert response.approval_state == telcoautomation.Blueprint.ApprovalState.DRAFT
-    assert response.display_name == "display_name_value"
-    assert response.repository == "repository_value"
-    assert response.source_provider == "source_provider_value"
-    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
-    assert response.rollback_support is True
-
-
 def test_approve_blueprint_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -22516,89 +18705,6 @@ def test_approve_blueprint_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_approve_blueprint_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_approve_blueprint"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_approve_blueprint"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.ApproveBlueprintRequest.pb(
-            telcoautomation.ApproveBlueprintRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.Blueprint.to_json(
-            telcoautomation.Blueprint()
-        )
-
-        request = telcoautomation.ApproveBlueprintRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.Blueprint()
-
-        client.approve_blueprint(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_approve_blueprint_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.ApproveBlueprintRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.approve_blueprint(request)
-
-
 def test_approve_blueprint_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -22656,70 +18762,6 @@ def test_approve_blueprint_rest_flattened_error(transport: str = "rest"):
             telcoautomation.ApproveBlueprintRequest(),
             name="name_value",
         )
-
-
-def test_approve_blueprint_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.ProposeBlueprintRequest,
-        dict,
-    ],
-)
-def test_propose_blueprint_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.Blueprint(
-            name="name_value",
-            revision_id="revision_id_value",
-            source_blueprint="source_blueprint_value",
-            approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
-            display_name="display_name_value",
-            repository="repository_value",
-            source_provider="source_provider_value",
-            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-            rollback_support=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.Blueprint.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.propose_blueprint(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.Blueprint)
-    assert response.name == "name_value"
-    assert response.revision_id == "revision_id_value"
-    assert response.source_blueprint == "source_blueprint_value"
-    assert response.approval_state == telcoautomation.Blueprint.ApprovalState.DRAFT
-    assert response.display_name == "display_name_value"
-    assert response.repository == "repository_value"
-    assert response.source_provider == "source_provider_value"
-    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
-    assert response.rollback_support is True
 
 
 def test_propose_blueprint_rest_use_cached_wrapped_rpc():
@@ -22844,89 +18886,6 @@ def test_propose_blueprint_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_propose_blueprint_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_propose_blueprint"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_propose_blueprint"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.ProposeBlueprintRequest.pb(
-            telcoautomation.ProposeBlueprintRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.Blueprint.to_json(
-            telcoautomation.Blueprint()
-        )
-
-        request = telcoautomation.ProposeBlueprintRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.Blueprint()
-
-        client.propose_blueprint(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_propose_blueprint_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.ProposeBlueprintRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.propose_blueprint(request)
-
-
 def test_propose_blueprint_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -22984,70 +18943,6 @@ def test_propose_blueprint_rest_flattened_error(transport: str = "rest"):
             telcoautomation.ProposeBlueprintRequest(),
             name="name_value",
         )
-
-
-def test_propose_blueprint_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.RejectBlueprintRequest,
-        dict,
-    ],
-)
-def test_reject_blueprint_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.Blueprint(
-            name="name_value",
-            revision_id="revision_id_value",
-            source_blueprint="source_blueprint_value",
-            approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
-            display_name="display_name_value",
-            repository="repository_value",
-            source_provider="source_provider_value",
-            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-            rollback_support=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.Blueprint.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.reject_blueprint(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.Blueprint)
-    assert response.name == "name_value"
-    assert response.revision_id == "revision_id_value"
-    assert response.source_blueprint == "source_blueprint_value"
-    assert response.approval_state == telcoautomation.Blueprint.ApprovalState.DRAFT
-    assert response.display_name == "display_name_value"
-    assert response.repository == "repository_value"
-    assert response.source_provider == "source_provider_value"
-    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
-    assert response.rollback_support is True
 
 
 def test_reject_blueprint_rest_use_cached_wrapped_rpc():
@@ -23172,89 +19067,6 @@ def test_reject_blueprint_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_reject_blueprint_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_reject_blueprint"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_reject_blueprint"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.RejectBlueprintRequest.pb(
-            telcoautomation.RejectBlueprintRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.Blueprint.to_json(
-            telcoautomation.Blueprint()
-        )
-
-        request = telcoautomation.RejectBlueprintRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.Blueprint()
-
-        client.reject_blueprint(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_reject_blueprint_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.RejectBlueprintRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.reject_blueprint(request)
-
-
 def test_reject_blueprint_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -23312,54 +19124,6 @@ def test_reject_blueprint_rest_flattened_error(transport: str = "rest"):
             telcoautomation.RejectBlueprintRequest(),
             name="name_value",
         )
-
-
-def test_reject_blueprint_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.ListBlueprintRevisionsRequest,
-        dict,
-    ],
-)
-def test_list_blueprint_revisions_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.ListBlueprintRevisionsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.ListBlueprintRevisionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_blueprint_revisions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListBlueprintRevisionsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_blueprint_revisions_rest_use_cached_wrapped_rpc():
@@ -23503,91 +19267,6 @@ def test_list_blueprint_revisions_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_blueprint_revisions_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_blueprint_revisions"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_list_blueprint_revisions"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.ListBlueprintRevisionsRequest.pb(
-            telcoautomation.ListBlueprintRevisionsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            telcoautomation.ListBlueprintRevisionsResponse.to_json(
-                telcoautomation.ListBlueprintRevisionsResponse()
-            )
-        )
-
-        request = telcoautomation.ListBlueprintRevisionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.ListBlueprintRevisionsResponse()
-
-        client.list_blueprint_revisions(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_blueprint_revisions_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.ListBlueprintRevisionsRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_blueprint_revisions(request)
-
-
 def test_list_blueprint_revisions_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -23710,48 +19389,6 @@ def test_list_blueprint_revisions_rest_pager(transport: str = "rest"):
         pages = list(client.list_blueprint_revisions(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.SearchBlueprintRevisionsRequest,
-        dict,
-    ],
-)
-def test_search_blueprint_revisions_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.SearchBlueprintRevisionsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.SearchBlueprintRevisionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.search_blueprint_revisions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.SearchBlueprintRevisionsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_search_blueprint_revisions_rest_use_cached_wrapped_rpc():
@@ -23915,92 +19552,6 @@ def test_search_blueprint_revisions_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_search_blueprint_revisions_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_search_blueprint_revisions"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_search_blueprint_revisions"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.SearchBlueprintRevisionsRequest.pb(
-            telcoautomation.SearchBlueprintRevisionsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            telcoautomation.SearchBlueprintRevisionsResponse.to_json(
-                telcoautomation.SearchBlueprintRevisionsResponse()
-            )
-        )
-
-        request = telcoautomation.SearchBlueprintRevisionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.SearchBlueprintRevisionsResponse()
-
-        client.search_blueprint_revisions(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_search_blueprint_revisions_rest_bad_request(
-    transport: str = "rest",
-    request_type=telcoautomation.SearchBlueprintRevisionsRequest,
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.search_blueprint_revisions(request)
-
-
 def test_search_blueprint_revisions_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -24126,50 +19677,6 @@ def test_search_blueprint_revisions_rest_pager(transport: str = "rest"):
         pages = list(client.search_blueprint_revisions(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.SearchDeploymentRevisionsRequest,
-        dict,
-    ],
-)
-def test_search_deployment_revisions_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.SearchDeploymentRevisionsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.SearchDeploymentRevisionsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.search_deployment_revisions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.SearchDeploymentRevisionsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_search_deployment_revisions_rest_use_cached_wrapped_rpc():
@@ -24333,92 +19840,6 @@ def test_search_deployment_revisions_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_search_deployment_revisions_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_search_deployment_revisions"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_search_deployment_revisions"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.SearchDeploymentRevisionsRequest.pb(
-            telcoautomation.SearchDeploymentRevisionsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            telcoautomation.SearchDeploymentRevisionsResponse.to_json(
-                telcoautomation.SearchDeploymentRevisionsResponse()
-            )
-        )
-
-        request = telcoautomation.SearchDeploymentRevisionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.SearchDeploymentRevisionsResponse()
-
-        client.search_deployment_revisions(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_search_deployment_revisions_rest_bad_request(
-    transport: str = "rest",
-    request_type=telcoautomation.SearchDeploymentRevisionsRequest,
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.search_deployment_revisions(request)
-
-
 def test_search_deployment_revisions_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -24548,45 +19969,6 @@ def test_search_deployment_revisions_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.DiscardBlueprintChangesRequest,
-        dict,
-    ],
-)
-def test_discard_blueprint_changes_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.DiscardBlueprintChangesResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.DiscardBlueprintChangesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.discard_blueprint_changes(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.DiscardBlueprintChangesResponse)
-
-
 def test_discard_blueprint_changes_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -24714,91 +20096,6 @@ def test_discard_blueprint_changes_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_discard_blueprint_changes_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_discard_blueprint_changes"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_discard_blueprint_changes"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.DiscardBlueprintChangesRequest.pb(
-            telcoautomation.DiscardBlueprintChangesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            telcoautomation.DiscardBlueprintChangesResponse.to_json(
-                telcoautomation.DiscardBlueprintChangesResponse()
-            )
-        )
-
-        request = telcoautomation.DiscardBlueprintChangesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.DiscardBlueprintChangesResponse()
-
-        client.discard_blueprint_changes(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_discard_blueprint_changes_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.DiscardBlueprintChangesRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.discard_blueprint_changes(request)
-
-
 def test_discard_blueprint_changes_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -24856,52 +20153,6 @@ def test_discard_blueprint_changes_rest_flattened_error(transport: str = "rest")
             telcoautomation.DiscardBlueprintChangesRequest(),
             name="name_value",
         )
-
-
-def test_discard_blueprint_changes_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.ListPublicBlueprintsRequest,
-        dict,
-    ],
-)
-def test_list_public_blueprints_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.ListPublicBlueprintsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.ListPublicBlueprintsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_public_blueprints(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListPublicBlueprintsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_public_blueprints_rest_use_cached_wrapped_rpc():
@@ -25043,89 +20294,6 @@ def test_list_public_blueprints_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_public_blueprints_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_public_blueprints"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_list_public_blueprints"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.ListPublicBlueprintsRequest.pb(
-            telcoautomation.ListPublicBlueprintsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            telcoautomation.ListPublicBlueprintsResponse.to_json(
-                telcoautomation.ListPublicBlueprintsResponse()
-            )
-        )
-
-        request = telcoautomation.ListPublicBlueprintsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.ListPublicBlueprintsResponse()
-
-        client.list_public_blueprints(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_public_blueprints_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.ListPublicBlueprintsRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_public_blueprints(request)
-
-
 def test_list_public_blueprints_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -25244,58 +20412,6 @@ def test_list_public_blueprints_rest_pager(transport: str = "rest"):
         pages = list(client.list_public_blueprints(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.GetPublicBlueprintRequest,
-        dict,
-    ],
-)
-def test_get_public_blueprint_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/publicBlueprints/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.PublicBlueprint(
-            name="name_value",
-            display_name="display_name_value",
-            description="description_value",
-            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-            source_provider="source_provider_value",
-            rollback_support=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.PublicBlueprint.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_public_blueprint(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.PublicBlueprint)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.description == "description_value"
-    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
-    assert response.source_provider == "source_provider_value"
-    assert response.rollback_support is True
 
 
 def test_get_public_blueprint_rest_use_cached_wrapped_rpc():
@@ -25421,89 +20537,6 @@ def test_get_public_blueprint_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_public_blueprint_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_get_public_blueprint"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_get_public_blueprint"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.GetPublicBlueprintRequest.pb(
-            telcoautomation.GetPublicBlueprintRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.PublicBlueprint.to_json(
-            telcoautomation.PublicBlueprint()
-        )
-
-        request = telcoautomation.GetPublicBlueprintRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.PublicBlueprint()
-
-        client.get_public_blueprint(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_public_blueprint_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.GetPublicBlueprintRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/publicBlueprints/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_public_blueprint(request)
-
-
 def test_get_public_blueprint_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -25561,163 +20594,6 @@ def test_get_public_blueprint_rest_flattened_error(transport: str = "rest"):
             telcoautomation.GetPublicBlueprintRequest(),
             name="name_value",
         )
-
-
-def test_get_public_blueprint_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.CreateDeploymentRequest,
-        dict,
-    ],
-)
-def test_create_deployment_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
-    }
-    request_init["deployment"] = {
-        "name": "name_value",
-        "revision_id": "revision_id_value",
-        "source_blueprint_revision": "source_blueprint_revision_value",
-        "revision_create_time": {"seconds": 751, "nanos": 543},
-        "state": 1,
-        "display_name": "display_name_value",
-        "repository": "repository_value",
-        "files": [
-            {
-                "path": "path_value",
-                "content": "content_value",
-                "deleted": True,
-                "editable": True,
-            }
-        ],
-        "labels": {},
-        "create_time": {},
-        "update_time": {},
-        "source_provider": "source_provider_value",
-        "workload_cluster": "workload_cluster_value",
-        "deployment_level": 1,
-        "rollback_support": True,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = telcoautomation.CreateDeploymentRequest.meta.fields["deployment"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["deployment"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["deployment"][field])):
-                    del request_init["deployment"][field][i][subfield]
-            else:
-                del request_init["deployment"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.Deployment(
-            name="name_value",
-            revision_id="revision_id_value",
-            source_blueprint_revision="source_blueprint_revision_value",
-            state=telcoautomation.Deployment.State.DRAFT,
-            display_name="display_name_value",
-            repository="repository_value",
-            source_provider="source_provider_value",
-            workload_cluster="workload_cluster_value",
-            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-            rollback_support=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.Deployment.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_deployment(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.Deployment)
-    assert response.name == "name_value"
-    assert response.revision_id == "revision_id_value"
-    assert response.source_blueprint_revision == "source_blueprint_revision_value"
-    assert response.state == telcoautomation.Deployment.State.DRAFT
-    assert response.display_name == "display_name_value"
-    assert response.repository == "repository_value"
-    assert response.source_provider == "source_provider_value"
-    assert response.workload_cluster == "workload_cluster_value"
-    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
-    assert response.rollback_support is True
 
 
 def test_create_deployment_rest_use_cached_wrapped_rpc():
@@ -25852,89 +20728,6 @@ def test_create_deployment_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_deployment_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_create_deployment"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_create_deployment"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.CreateDeploymentRequest.pb(
-            telcoautomation.CreateDeploymentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.Deployment.to_json(
-            telcoautomation.Deployment()
-        )
-
-        request = telcoautomation.CreateDeploymentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.Deployment()
-
-        client.create_deployment(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_deployment_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.CreateDeploymentRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_deployment(request)
-
-
 def test_create_deployment_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -25996,165 +20789,6 @@ def test_create_deployment_rest_flattened_error(transport: str = "rest"):
             deployment=telcoautomation.Deployment(name="name_value"),
             deployment_id="deployment_id_value",
         )
-
-
-def test_create_deployment_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.UpdateDeploymentRequest,
-        dict,
-    ],
-)
-def test_update_deployment_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "deployment": {
-            "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
-        }
-    }
-    request_init["deployment"] = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4",
-        "revision_id": "revision_id_value",
-        "source_blueprint_revision": "source_blueprint_revision_value",
-        "revision_create_time": {"seconds": 751, "nanos": 543},
-        "state": 1,
-        "display_name": "display_name_value",
-        "repository": "repository_value",
-        "files": [
-            {
-                "path": "path_value",
-                "content": "content_value",
-                "deleted": True,
-                "editable": True,
-            }
-        ],
-        "labels": {},
-        "create_time": {},
-        "update_time": {},
-        "source_provider": "source_provider_value",
-        "workload_cluster": "workload_cluster_value",
-        "deployment_level": 1,
-        "rollback_support": True,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = telcoautomation.UpdateDeploymentRequest.meta.fields["deployment"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["deployment"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["deployment"][field])):
-                    del request_init["deployment"][field][i][subfield]
-            else:
-                del request_init["deployment"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.Deployment(
-            name="name_value",
-            revision_id="revision_id_value",
-            source_blueprint_revision="source_blueprint_revision_value",
-            state=telcoautomation.Deployment.State.DRAFT,
-            display_name="display_name_value",
-            repository="repository_value",
-            source_provider="source_provider_value",
-            workload_cluster="workload_cluster_value",
-            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-            rollback_support=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.Deployment.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_deployment(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.Deployment)
-    assert response.name == "name_value"
-    assert response.revision_id == "revision_id_value"
-    assert response.source_blueprint_revision == "source_blueprint_revision_value"
-    assert response.state == telcoautomation.Deployment.State.DRAFT
-    assert response.display_name == "display_name_value"
-    assert response.repository == "repository_value"
-    assert response.source_provider == "source_provider_value"
-    assert response.workload_cluster == "workload_cluster_value"
-    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
-    assert response.rollback_support is True
 
 
 def test_update_deployment_rest_use_cached_wrapped_rpc():
@@ -26284,91 +20918,6 @@ def test_update_deployment_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_deployment_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_update_deployment"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_update_deployment"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.UpdateDeploymentRequest.pb(
-            telcoautomation.UpdateDeploymentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.Deployment.to_json(
-            telcoautomation.Deployment()
-        )
-
-        request = telcoautomation.UpdateDeploymentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.Deployment()
-
-        client.update_deployment(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_deployment_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.UpdateDeploymentRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "deployment": {
-            "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_deployment(request)
-
-
 def test_update_deployment_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -26430,72 +20979,6 @@ def test_update_deployment_rest_flattened_error(transport: str = "rest"):
             deployment=telcoautomation.Deployment(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_deployment_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.GetDeploymentRequest,
-        dict,
-    ],
-)
-def test_get_deployment_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.Deployment(
-            name="name_value",
-            revision_id="revision_id_value",
-            source_blueprint_revision="source_blueprint_revision_value",
-            state=telcoautomation.Deployment.State.DRAFT,
-            display_name="display_name_value",
-            repository="repository_value",
-            source_provider="source_provider_value",
-            workload_cluster="workload_cluster_value",
-            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-            rollback_support=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.Deployment.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_deployment(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.Deployment)
-    assert response.name == "name_value"
-    assert response.revision_id == "revision_id_value"
-    assert response.source_blueprint_revision == "source_blueprint_revision_value"
-    assert response.state == telcoautomation.Deployment.State.DRAFT
-    assert response.display_name == "display_name_value"
-    assert response.repository == "repository_value"
-    assert response.source_provider == "source_provider_value"
-    assert response.workload_cluster == "workload_cluster_value"
-    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
-    assert response.rollback_support is True
 
 
 def test_get_deployment_rest_use_cached_wrapped_rpc():
@@ -26619,89 +21102,6 @@ def test_get_deployment_rest_unset_required_fields():
     assert set(unset_fields) == (set(("view",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_deployment_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_get_deployment"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_get_deployment"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.GetDeploymentRequest.pb(
-            telcoautomation.GetDeploymentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.Deployment.to_json(
-            telcoautomation.Deployment()
-        )
-
-        request = telcoautomation.GetDeploymentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.Deployment()
-
-        client.get_deployment(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_deployment_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.GetDeploymentRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_deployment(request)
-
-
 def test_get_deployment_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -26759,49 +21159,6 @@ def test_get_deployment_rest_flattened_error(transport: str = "rest"):
             telcoautomation.GetDeploymentRequest(),
             name="name_value",
         )
-
-
-def test_get_deployment_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.RemoveDeploymentRequest,
-        dict,
-    ],
-)
-def test_remove_deployment_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.remove_deployment(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_remove_deployment_rest_use_cached_wrapped_rpc():
@@ -26923,81 +21280,6 @@ def test_remove_deployment_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_remove_deployment_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_remove_deployment"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = telcoautomation.RemoveDeploymentRequest.pb(
-            telcoautomation.RemoveDeploymentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = telcoautomation.RemoveDeploymentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.remove_deployment(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_remove_deployment_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.RemoveDeploymentRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.remove_deployment(request)
-
-
 def test_remove_deployment_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -27053,54 +21335,6 @@ def test_remove_deployment_rest_flattened_error(transport: str = "rest"):
             telcoautomation.RemoveDeploymentRequest(),
             name="name_value",
         )
-
-
-def test_remove_deployment_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.ListDeploymentsRequest,
-        dict,
-    ],
-)
-def test_list_deployments_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.ListDeploymentsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.ListDeploymentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_deployments(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListDeploymentsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_deployments_rest_use_cached_wrapped_rpc():
@@ -27241,89 +21475,6 @@ def test_list_deployments_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_deployments_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_deployments"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_list_deployments"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.ListDeploymentsRequest.pb(
-            telcoautomation.ListDeploymentsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.ListDeploymentsResponse.to_json(
-            telcoautomation.ListDeploymentsResponse()
-        )
-
-        request = telcoautomation.ListDeploymentsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.ListDeploymentsResponse()
-
-        client.list_deployments(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_deployments_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.ListDeploymentsRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_deployments(request)
-
-
 def test_list_deployments_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -27446,48 +21597,6 @@ def test_list_deployments_rest_pager(transport: str = "rest"):
         pages = list(client.list_deployments(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.ListDeploymentRevisionsRequest,
-        dict,
-    ],
-)
-def test_list_deployment_revisions_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.ListDeploymentRevisionsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.ListDeploymentRevisionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_deployment_revisions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListDeploymentRevisionsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_deployment_revisions_rest_use_cached_wrapped_rpc():
@@ -27631,91 +21740,6 @@ def test_list_deployment_revisions_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_deployment_revisions_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_deployment_revisions"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_list_deployment_revisions"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.ListDeploymentRevisionsRequest.pb(
-            telcoautomation.ListDeploymentRevisionsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            telcoautomation.ListDeploymentRevisionsResponse.to_json(
-                telcoautomation.ListDeploymentRevisionsResponse()
-            )
-        )
-
-        request = telcoautomation.ListDeploymentRevisionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.ListDeploymentRevisionsResponse()
-
-        client.list_deployment_revisions(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_deployment_revisions_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.ListDeploymentRevisionsRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_deployment_revisions(request)
-
-
 def test_list_deployment_revisions_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -27838,45 +21862,6 @@ def test_list_deployment_revisions_rest_pager(transport: str = "rest"):
         pages = list(client.list_deployment_revisions(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.DiscardDeploymentChangesRequest,
-        dict,
-    ],
-)
-def test_discard_deployment_changes_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.DiscardDeploymentChangesResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.DiscardDeploymentChangesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.discard_deployment_changes(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.DiscardDeploymentChangesResponse)
 
 
 def test_discard_deployment_changes_rest_use_cached_wrapped_rpc():
@@ -28006,92 +21991,6 @@ def test_discard_deployment_changes_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_discard_deployment_changes_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_discard_deployment_changes"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_discard_deployment_changes"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.DiscardDeploymentChangesRequest.pb(
-            telcoautomation.DiscardDeploymentChangesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            telcoautomation.DiscardDeploymentChangesResponse.to_json(
-                telcoautomation.DiscardDeploymentChangesResponse()
-            )
-        )
-
-        request = telcoautomation.DiscardDeploymentChangesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.DiscardDeploymentChangesResponse()
-
-        client.discard_deployment_changes(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_discard_deployment_changes_rest_bad_request(
-    transport: str = "rest",
-    request_type=telcoautomation.DiscardDeploymentChangesRequest,
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.discard_deployment_changes(request)
-
-
 def test_discard_deployment_changes_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -28149,72 +22048,6 @@ def test_discard_deployment_changes_rest_flattened_error(transport: str = "rest"
             telcoautomation.DiscardDeploymentChangesRequest(),
             name="name_value",
         )
-
-
-def test_discard_deployment_changes_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.ApplyDeploymentRequest,
-        dict,
-    ],
-)
-def test_apply_deployment_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.Deployment(
-            name="name_value",
-            revision_id="revision_id_value",
-            source_blueprint_revision="source_blueprint_revision_value",
-            state=telcoautomation.Deployment.State.DRAFT,
-            display_name="display_name_value",
-            repository="repository_value",
-            source_provider="source_provider_value",
-            workload_cluster="workload_cluster_value",
-            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-            rollback_support=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.Deployment.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.apply_deployment(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.Deployment)
-    assert response.name == "name_value"
-    assert response.revision_id == "revision_id_value"
-    assert response.source_blueprint_revision == "source_blueprint_revision_value"
-    assert response.state == telcoautomation.Deployment.State.DRAFT
-    assert response.display_name == "display_name_value"
-    assert response.repository == "repository_value"
-    assert response.source_provider == "source_provider_value"
-    assert response.workload_cluster == "workload_cluster_value"
-    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
-    assert response.rollback_support is True
 
 
 def test_apply_deployment_rest_use_cached_wrapped_rpc():
@@ -28339,89 +22172,6 @@ def test_apply_deployment_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_apply_deployment_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_apply_deployment"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_apply_deployment"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.ApplyDeploymentRequest.pb(
-            telcoautomation.ApplyDeploymentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.Deployment.to_json(
-            telcoautomation.Deployment()
-        )
-
-        request = telcoautomation.ApplyDeploymentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.Deployment()
-
-        client.apply_deployment(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_apply_deployment_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.ApplyDeploymentRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.apply_deployment(request)
-
-
 def test_apply_deployment_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -28479,56 +22229,6 @@ def test_apply_deployment_rest_flattened_error(transport: str = "rest"):
             telcoautomation.ApplyDeploymentRequest(),
             name="name_value",
         )
-
-
-def test_apply_deployment_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.ComputeDeploymentStatusRequest,
-        dict,
-    ],
-)
-def test_compute_deployment_status_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.ComputeDeploymentStatusResponse(
-            name="name_value",
-            aggregated_status=telcoautomation.Status.STATUS_IN_PROGRESS,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.ComputeDeploymentStatusResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.compute_deployment_status(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.ComputeDeploymentStatusResponse)
-    assert response.name == "name_value"
-    assert response.aggregated_status == telcoautomation.Status.STATUS_IN_PROGRESS
 
 
 def test_compute_deployment_status_rest_use_cached_wrapped_rpc():
@@ -28657,91 +22357,6 @@ def test_compute_deployment_status_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_compute_deployment_status_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_compute_deployment_status"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_compute_deployment_status"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.ComputeDeploymentStatusRequest.pb(
-            telcoautomation.ComputeDeploymentStatusRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            telcoautomation.ComputeDeploymentStatusResponse.to_json(
-                telcoautomation.ComputeDeploymentStatusResponse()
-            )
-        )
-
-        request = telcoautomation.ComputeDeploymentStatusRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.ComputeDeploymentStatusResponse()
-
-        client.compute_deployment_status(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_compute_deployment_status_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.ComputeDeploymentStatusRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.compute_deployment_status(request)
-
-
 def test_compute_deployment_status_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -28799,72 +22414,6 @@ def test_compute_deployment_status_rest_flattened_error(transport: str = "rest")
             telcoautomation.ComputeDeploymentStatusRequest(),
             name="name_value",
         )
-
-
-def test_compute_deployment_status_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.RollbackDeploymentRequest,
-        dict,
-    ],
-)
-def test_rollback_deployment_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.Deployment(
-            name="name_value",
-            revision_id="revision_id_value",
-            source_blueprint_revision="source_blueprint_revision_value",
-            state=telcoautomation.Deployment.State.DRAFT,
-            display_name="display_name_value",
-            repository="repository_value",
-            source_provider="source_provider_value",
-            workload_cluster="workload_cluster_value",
-            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
-            rollback_support=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.Deployment.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.rollback_deployment(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.Deployment)
-    assert response.name == "name_value"
-    assert response.revision_id == "revision_id_value"
-    assert response.source_blueprint_revision == "source_blueprint_revision_value"
-    assert response.state == telcoautomation.Deployment.State.DRAFT
-    assert response.display_name == "display_name_value"
-    assert response.repository == "repository_value"
-    assert response.source_provider == "source_provider_value"
-    assert response.workload_cluster == "workload_cluster_value"
-    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
-    assert response.rollback_support is True
 
 
 def test_rollback_deployment_rest_use_cached_wrapped_rpc():
@@ -29003,89 +22552,6 @@ def test_rollback_deployment_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_rollback_deployment_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_rollback_deployment"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_rollback_deployment"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.RollbackDeploymentRequest.pb(
-            telcoautomation.RollbackDeploymentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.Deployment.to_json(
-            telcoautomation.Deployment()
-        )
-
-        request = telcoautomation.RollbackDeploymentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.Deployment()
-
-        client.rollback_deployment(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_rollback_deployment_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.RollbackDeploymentRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.rollback_deployment(request)
-
-
 def test_rollback_deployment_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -29145,58 +22611,6 @@ def test_rollback_deployment_rest_flattened_error(transport: str = "rest"):
             name="name_value",
             revision_id="revision_id_value",
         )
-
-
-def test_rollback_deployment_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.GetHydratedDeploymentRequest,
-        dict,
-    ],
-)
-def test_get_hydrated_deployment_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4/hydratedDeployments/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.HydratedDeployment(
-            name="name_value",
-            state=telcoautomation.HydratedDeployment.State.DRAFT,
-            workload_cluster="workload_cluster_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.HydratedDeployment.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_hydrated_deployment(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.HydratedDeployment)
-    assert response.name == "name_value"
-    assert response.state == telcoautomation.HydratedDeployment.State.DRAFT
-    assert response.workload_cluster == "workload_cluster_value"
 
 
 def test_get_hydrated_deployment_rest_use_cached_wrapped_rpc():
@@ -29323,89 +22737,6 @@ def test_get_hydrated_deployment_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_hydrated_deployment_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_get_hydrated_deployment"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_get_hydrated_deployment"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.GetHydratedDeploymentRequest.pb(
-            telcoautomation.GetHydratedDeploymentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.HydratedDeployment.to_json(
-            telcoautomation.HydratedDeployment()
-        )
-
-        request = telcoautomation.GetHydratedDeploymentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.HydratedDeployment()
-
-        client.get_hydrated_deployment(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_hydrated_deployment_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.GetHydratedDeploymentRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4/hydratedDeployments/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_hydrated_deployment(request)
-
-
 def test_get_hydrated_deployment_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -29463,54 +22794,6 @@ def test_get_hydrated_deployment_rest_flattened_error(transport: str = "rest"):
             telcoautomation.GetHydratedDeploymentRequest(),
             name="name_value",
         )
-
-
-def test_get_hydrated_deployment_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.ListHydratedDeploymentsRequest,
-        dict,
-    ],
-)
-def test_list_hydrated_deployments_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.ListHydratedDeploymentsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.ListHydratedDeploymentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_hydrated_deployments(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListHydratedDeploymentsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_hydrated_deployments_rest_use_cached_wrapped_rpc():
@@ -29654,91 +22937,6 @@ def test_list_hydrated_deployments_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_hydrated_deployments_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_list_hydrated_deployments"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_list_hydrated_deployments"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.ListHydratedDeploymentsRequest.pb(
-            telcoautomation.ListHydratedDeploymentsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            telcoautomation.ListHydratedDeploymentsResponse.to_json(
-                telcoautomation.ListHydratedDeploymentsResponse()
-            )
-        )
-
-        request = telcoautomation.ListHydratedDeploymentsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.ListHydratedDeploymentsResponse()
-
-        client.list_hydrated_deployments(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_hydrated_deployments_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.ListHydratedDeploymentsRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_hydrated_deployments(request)
-
-
 def test_list_hydrated_deployments_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -29861,136 +23059,6 @@ def test_list_hydrated_deployments_rest_pager(transport: str = "rest"):
         pages = list(client.list_hydrated_deployments(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.UpdateHydratedDeploymentRequest,
-        dict,
-    ],
-)
-def test_update_hydrated_deployment_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "hydrated_deployment": {
-            "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4/hydratedDeployments/sample5"
-        }
-    }
-    request_init["hydrated_deployment"] = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4/hydratedDeployments/sample5",
-        "state": 1,
-        "files": [
-            {
-                "path": "path_value",
-                "content": "content_value",
-                "deleted": True,
-                "editable": True,
-            }
-        ],
-        "workload_cluster": "workload_cluster_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = telcoautomation.UpdateHydratedDeploymentRequest.meta.fields[
-        "hydrated_deployment"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["hydrated_deployment"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["hydrated_deployment"][field])):
-                    del request_init["hydrated_deployment"][field][i][subfield]
-            else:
-                del request_init["hydrated_deployment"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.HydratedDeployment(
-            name="name_value",
-            state=telcoautomation.HydratedDeployment.State.DRAFT,
-            workload_cluster="workload_cluster_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.HydratedDeployment.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_hydrated_deployment(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.HydratedDeployment)
-    assert response.name == "name_value"
-    assert response.state == telcoautomation.HydratedDeployment.State.DRAFT
-    assert response.workload_cluster == "workload_cluster_value"
 
 
 def test_update_hydrated_deployment_rest_use_cached_wrapped_rpc():
@@ -30123,92 +23191,6 @@ def test_update_hydrated_deployment_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_hydrated_deployment_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_update_hydrated_deployment"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_update_hydrated_deployment"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.UpdateHydratedDeploymentRequest.pb(
-            telcoautomation.UpdateHydratedDeploymentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.HydratedDeployment.to_json(
-            telcoautomation.HydratedDeployment()
-        )
-
-        request = telcoautomation.UpdateHydratedDeploymentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.HydratedDeployment()
-
-        client.update_hydrated_deployment(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_hydrated_deployment_rest_bad_request(
-    transport: str = "rest",
-    request_type=telcoautomation.UpdateHydratedDeploymentRequest,
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "hydrated_deployment": {
-            "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4/hydratedDeployments/sample5"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_hydrated_deployment(request)
-
-
 def test_update_hydrated_deployment_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -30270,58 +23252,6 @@ def test_update_hydrated_deployment_rest_flattened_error(transport: str = "rest"
             hydrated_deployment=telcoautomation.HydratedDeployment(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_hydrated_deployment_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        telcoautomation.ApplyHydratedDeploymentRequest,
-        dict,
-    ],
-)
-def test_apply_hydrated_deployment_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4/hydratedDeployments/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = telcoautomation.HydratedDeployment(
-            name="name_value",
-            state=telcoautomation.HydratedDeployment.State.DRAFT,
-            workload_cluster="workload_cluster_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = telcoautomation.HydratedDeployment.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.apply_hydrated_deployment(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, telcoautomation.HydratedDeployment)
-    assert response.name == "name_value"
-    assert response.state == telcoautomation.HydratedDeployment.State.DRAFT
-    assert response.workload_cluster == "workload_cluster_value"
 
 
 def test_apply_hydrated_deployment_rest_use_cached_wrapped_rpc():
@@ -30449,89 +23379,6 @@ def test_apply_hydrated_deployment_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_apply_hydrated_deployment_rest_interceptors(null_interceptor):
-    transport = transports.TelcoAutomationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TelcoAutomationRestInterceptor(),
-    )
-    client = TelcoAutomationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "post_apply_hydrated_deployment"
-    ) as post, mock.patch.object(
-        transports.TelcoAutomationRestInterceptor, "pre_apply_hydrated_deployment"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = telcoautomation.ApplyHydratedDeploymentRequest.pb(
-            telcoautomation.ApplyHydratedDeploymentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = telcoautomation.HydratedDeployment.to_json(
-            telcoautomation.HydratedDeployment()
-        )
-
-        request = telcoautomation.ApplyHydratedDeploymentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = telcoautomation.HydratedDeployment()
-
-        client.apply_hydrated_deployment(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_apply_hydrated_deployment_rest_bad_request(
-    transport: str = "rest", request_type=telcoautomation.ApplyHydratedDeploymentRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4/hydratedDeployments/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.apply_hydrated_deployment(request)
-
-
 def test_apply_hydrated_deployment_rest_flattened():
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -30589,12 +23436,6 @@ def test_apply_hydrated_deployment_rest_flattened_error(transport: str = "rest")
             telcoautomation.ApplyHydratedDeploymentRequest(),
             name="name_value",
         )
-
-
-def test_apply_hydrated_deployment_rest_error():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
 
 
 def test_credentials_transport_error():
@@ -30689,18 +23530,8358 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = TelcoAutomationClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_orchestration_clusters_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_orchestration_clusters), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.ListOrchestrationClustersResponse()
+        client.list_orchestration_clusters(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListOrchestrationClustersRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_orchestration_cluster_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_orchestration_cluster), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.OrchestrationCluster()
+        client.get_orchestration_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.GetOrchestrationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_orchestration_cluster_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_orchestration_cluster), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_orchestration_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.CreateOrchestrationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_orchestration_cluster_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_orchestration_cluster), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_orchestration_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.DeleteOrchestrationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_edge_slms_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_edge_slms), "__call__") as call:
+        call.return_value = telcoautomation.ListEdgeSlmsResponse()
+        client.list_edge_slms(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListEdgeSlmsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_edge_slm_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_edge_slm), "__call__") as call:
+        call.return_value = telcoautomation.EdgeSlm()
+        client.get_edge_slm(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.GetEdgeSlmRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_edge_slm_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_edge_slm), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_edge_slm(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.CreateEdgeSlmRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_edge_slm_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_edge_slm), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_edge_slm(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.DeleteEdgeSlmRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_blueprint_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_blueprint), "__call__") as call:
+        call.return_value = telcoautomation.Blueprint()
+        client.create_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.CreateBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_blueprint_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_blueprint), "__call__") as call:
+        call.return_value = telcoautomation.Blueprint()
+        client.update_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.UpdateBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_blueprint_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_blueprint), "__call__") as call:
+        call.return_value = telcoautomation.Blueprint()
+        client.get_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.GetBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_blueprint_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_blueprint), "__call__") as call:
+        call.return_value = None
+        client.delete_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.DeleteBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_blueprints_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_blueprints), "__call__") as call:
+        call.return_value = telcoautomation.ListBlueprintsResponse()
+        client.list_blueprints(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListBlueprintsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_approve_blueprint_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.approve_blueprint), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.Blueprint()
+        client.approve_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ApproveBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_propose_blueprint_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.propose_blueprint), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.Blueprint()
+        client.propose_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ProposeBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_reject_blueprint_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.reject_blueprint), "__call__") as call:
+        call.return_value = telcoautomation.Blueprint()
+        client.reject_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.RejectBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_blueprint_revisions_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_blueprint_revisions), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.ListBlueprintRevisionsResponse()
+        client.list_blueprint_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListBlueprintRevisionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_search_blueprint_revisions_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_blueprint_revisions), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.SearchBlueprintRevisionsResponse()
+        client.search_blueprint_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.SearchBlueprintRevisionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_search_deployment_revisions_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_deployment_revisions), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.SearchDeploymentRevisionsResponse()
+        client.search_deployment_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.SearchDeploymentRevisionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_discard_blueprint_changes_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.discard_blueprint_changes), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.DiscardBlueprintChangesResponse()
+        client.discard_blueprint_changes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.DiscardBlueprintChangesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_public_blueprints_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_public_blueprints), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.ListPublicBlueprintsResponse()
+        client.list_public_blueprints(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListPublicBlueprintsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_public_blueprint_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_public_blueprint), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.PublicBlueprint()
+        client.get_public_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.GetPublicBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_deployment_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_deployment), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.Deployment()
+        client.create_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.CreateDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_deployment_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_deployment), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.Deployment()
+        client.update_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.UpdateDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_deployment_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_deployment), "__call__") as call:
+        call.return_value = telcoautomation.Deployment()
+        client.get_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.GetDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_remove_deployment_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_deployment), "__call__"
+    ) as call:
+        call.return_value = None
+        client.remove_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.RemoveDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_deployments_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_deployments), "__call__") as call:
+        call.return_value = telcoautomation.ListDeploymentsResponse()
+        client.list_deployments(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListDeploymentsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_deployment_revisions_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_deployment_revisions), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.ListDeploymentRevisionsResponse()
+        client.list_deployment_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListDeploymentRevisionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_discard_deployment_changes_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.discard_deployment_changes), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.DiscardDeploymentChangesResponse()
+        client.discard_deployment_changes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.DiscardDeploymentChangesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_apply_deployment_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.apply_deployment), "__call__") as call:
+        call.return_value = telcoautomation.Deployment()
+        client.apply_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ApplyDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_compute_deployment_status_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_deployment_status), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.ComputeDeploymentStatusResponse()
+        client.compute_deployment_status(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ComputeDeploymentStatusRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_rollback_deployment_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_deployment), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.Deployment()
+        client.rollback_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.RollbackDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_hydrated_deployment_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_hydrated_deployment), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.HydratedDeployment()
+        client.get_hydrated_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.GetHydratedDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_hydrated_deployments_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_hydrated_deployments), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.ListHydratedDeploymentsResponse()
+        client.list_hydrated_deployments(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListHydratedDeploymentsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_hydrated_deployment_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_hydrated_deployment), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.HydratedDeployment()
+        client.update_hydrated_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.UpdateHydratedDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_apply_hydrated_deployment_empty_call_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.apply_hydrated_deployment), "__call__"
+    ) as call:
+        call.return_value = telcoautomation.HydratedDeployment()
+        client.apply_hydrated_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ApplyHydratedDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = TelcoAutomationAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_orchestration_clusters_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_orchestration_clusters), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.ListOrchestrationClustersResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_orchestration_clusters(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListOrchestrationClustersRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_orchestration_cluster_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_orchestration_cluster), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.OrchestrationCluster(
+                name="name_value",
+                tna_version="tna_version_value",
+                state=telcoautomation.OrchestrationCluster.State.CREATING,
+            )
+        )
+        await client.get_orchestration_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.GetOrchestrationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_orchestration_cluster_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_orchestration_cluster), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_orchestration_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.CreateOrchestrationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_orchestration_cluster_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_orchestration_cluster), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_orchestration_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.DeleteOrchestrationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_edge_slms_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_edge_slms), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.ListEdgeSlmsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_edge_slms(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListEdgeSlmsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_edge_slm_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_edge_slm), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.EdgeSlm(
+                name="name_value",
+                orchestration_cluster="orchestration_cluster_value",
+                tna_version="tna_version_value",
+                state=telcoautomation.EdgeSlm.State.CREATING,
+                workload_cluster_type=telcoautomation.EdgeSlm.WorkloadClusterType.GDCE,
+            )
+        )
+        await client.get_edge_slm(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.GetEdgeSlmRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_edge_slm_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_edge_slm), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_edge_slm(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.CreateEdgeSlmRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_edge_slm_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_edge_slm), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_edge_slm(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.DeleteEdgeSlmRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_blueprint_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_blueprint), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.Blueprint(
+                name="name_value",
+                revision_id="revision_id_value",
+                source_blueprint="source_blueprint_value",
+                approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
+                display_name="display_name_value",
+                repository="repository_value",
+                source_provider="source_provider_value",
+                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+                rollback_support=True,
+            )
+        )
+        await client.create_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.CreateBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_blueprint_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_blueprint), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.Blueprint(
+                name="name_value",
+                revision_id="revision_id_value",
+                source_blueprint="source_blueprint_value",
+                approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
+                display_name="display_name_value",
+                repository="repository_value",
+                source_provider="source_provider_value",
+                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+                rollback_support=True,
+            )
+        )
+        await client.update_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.UpdateBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_blueprint_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_blueprint), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.Blueprint(
+                name="name_value",
+                revision_id="revision_id_value",
+                source_blueprint="source_blueprint_value",
+                approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
+                display_name="display_name_value",
+                repository="repository_value",
+                source_provider="source_provider_value",
+                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+                rollback_support=True,
+            )
+        )
+        await client.get_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.GetBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_blueprint_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_blueprint), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.DeleteBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_blueprints_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_blueprints), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.ListBlueprintsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_blueprints(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListBlueprintsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_approve_blueprint_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.approve_blueprint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.Blueprint(
+                name="name_value",
+                revision_id="revision_id_value",
+                source_blueprint="source_blueprint_value",
+                approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
+                display_name="display_name_value",
+                repository="repository_value",
+                source_provider="source_provider_value",
+                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+                rollback_support=True,
+            )
+        )
+        await client.approve_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ApproveBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_propose_blueprint_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.propose_blueprint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.Blueprint(
+                name="name_value",
+                revision_id="revision_id_value",
+                source_blueprint="source_blueprint_value",
+                approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
+                display_name="display_name_value",
+                repository="repository_value",
+                source_provider="source_provider_value",
+                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+                rollback_support=True,
+            )
+        )
+        await client.propose_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ProposeBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_reject_blueprint_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.reject_blueprint), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.Blueprint(
+                name="name_value",
+                revision_id="revision_id_value",
+                source_blueprint="source_blueprint_value",
+                approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
+                display_name="display_name_value",
+                repository="repository_value",
+                source_provider="source_provider_value",
+                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+                rollback_support=True,
+            )
+        )
+        await client.reject_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.RejectBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_blueprint_revisions_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_blueprint_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.ListBlueprintRevisionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_blueprint_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListBlueprintRevisionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_search_blueprint_revisions_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_blueprint_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.SearchBlueprintRevisionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.search_blueprint_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.SearchBlueprintRevisionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_search_deployment_revisions_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_deployment_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.SearchDeploymentRevisionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.search_deployment_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.SearchDeploymentRevisionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_discard_blueprint_changes_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.discard_blueprint_changes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.DiscardBlueprintChangesResponse()
+        )
+        await client.discard_blueprint_changes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.DiscardBlueprintChangesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_public_blueprints_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_public_blueprints), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.ListPublicBlueprintsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_public_blueprints(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListPublicBlueprintsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_public_blueprint_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_public_blueprint), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.PublicBlueprint(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+                source_provider="source_provider_value",
+                rollback_support=True,
+            )
+        )
+        await client.get_public_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.GetPublicBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_deployment_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.Deployment(
+                name="name_value",
+                revision_id="revision_id_value",
+                source_blueprint_revision="source_blueprint_revision_value",
+                state=telcoautomation.Deployment.State.DRAFT,
+                display_name="display_name_value",
+                repository="repository_value",
+                source_provider="source_provider_value",
+                workload_cluster="workload_cluster_value",
+                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+                rollback_support=True,
+            )
+        )
+        await client.create_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.CreateDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_deployment_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.Deployment(
+                name="name_value",
+                revision_id="revision_id_value",
+                source_blueprint_revision="source_blueprint_revision_value",
+                state=telcoautomation.Deployment.State.DRAFT,
+                display_name="display_name_value",
+                repository="repository_value",
+                source_provider="source_provider_value",
+                workload_cluster="workload_cluster_value",
+                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+                rollback_support=True,
+            )
+        )
+        await client.update_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.UpdateDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_deployment_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_deployment), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.Deployment(
+                name="name_value",
+                revision_id="revision_id_value",
+                source_blueprint_revision="source_blueprint_revision_value",
+                state=telcoautomation.Deployment.State.DRAFT,
+                display_name="display_name_value",
+                repository="repository_value",
+                source_provider="source_provider_value",
+                workload_cluster="workload_cluster_value",
+                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+                rollback_support=True,
+            )
+        )
+        await client.get_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.GetDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_remove_deployment_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.remove_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.RemoveDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_deployments_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_deployments), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.ListDeploymentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_deployments(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListDeploymentsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_deployment_revisions_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_deployment_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.ListDeploymentRevisionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_deployment_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListDeploymentRevisionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_discard_deployment_changes_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.discard_deployment_changes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.DiscardDeploymentChangesResponse()
+        )
+        await client.discard_deployment_changes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.DiscardDeploymentChangesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_apply_deployment_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.apply_deployment), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.Deployment(
+                name="name_value",
+                revision_id="revision_id_value",
+                source_blueprint_revision="source_blueprint_revision_value",
+                state=telcoautomation.Deployment.State.DRAFT,
+                display_name="display_name_value",
+                repository="repository_value",
+                source_provider="source_provider_value",
+                workload_cluster="workload_cluster_value",
+                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+                rollback_support=True,
+            )
+        )
+        await client.apply_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ApplyDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_compute_deployment_status_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_deployment_status), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.ComputeDeploymentStatusResponse(
+                name="name_value",
+                aggregated_status=telcoautomation.Status.STATUS_IN_PROGRESS,
+            )
+        )
+        await client.compute_deployment_status(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ComputeDeploymentStatusRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_rollback_deployment_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.Deployment(
+                name="name_value",
+                revision_id="revision_id_value",
+                source_blueprint_revision="source_blueprint_revision_value",
+                state=telcoautomation.Deployment.State.DRAFT,
+                display_name="display_name_value",
+                repository="repository_value",
+                source_provider="source_provider_value",
+                workload_cluster="workload_cluster_value",
+                deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+                rollback_support=True,
+            )
+        )
+        await client.rollback_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.RollbackDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_hydrated_deployment_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_hydrated_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.HydratedDeployment(
+                name="name_value",
+                state=telcoautomation.HydratedDeployment.State.DRAFT,
+                workload_cluster="workload_cluster_value",
+            )
+        )
+        await client.get_hydrated_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.GetHydratedDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_hydrated_deployments_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_hydrated_deployments), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.ListHydratedDeploymentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_hydrated_deployments(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListHydratedDeploymentsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_hydrated_deployment_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_hydrated_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.HydratedDeployment(
+                name="name_value",
+                state=telcoautomation.HydratedDeployment.State.DRAFT,
+                workload_cluster="workload_cluster_value",
+            )
+        )
+        await client.update_hydrated_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.UpdateHydratedDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_apply_hydrated_deployment_empty_call_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.apply_hydrated_deployment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            telcoautomation.HydratedDeployment(
+                name="name_value",
+                state=telcoautomation.HydratedDeployment.State.DRAFT,
+                workload_cluster="workload_cluster_value",
+            )
+        )
+        await client.apply_hydrated_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ApplyHydratedDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = TelcoAutomationClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_list_orchestration_clusters_rest_bad_request(
+    request_type=telcoautomation.ListOrchestrationClustersRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_orchestration_clusters(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        telcoautomation.ListOrchestrationClustersRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = TelcoAutomationClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_list_orchestration_clusters_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.ListOrchestrationClustersResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.ListOrchestrationClustersResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_orchestration_clusters(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListOrchestrationClustersPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_orchestration_clusters_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_list_orchestration_clusters"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_list_orchestration_clusters"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.ListOrchestrationClustersRequest.pb(
+            telcoautomation.ListOrchestrationClustersRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.ListOrchestrationClustersResponse.to_json(
+            telcoautomation.ListOrchestrationClustersResponse()
+        )
+        req.return_value.content = return_value
+
+        request = telcoautomation.ListOrchestrationClustersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.ListOrchestrationClustersResponse()
+
+        client.list_orchestration_clusters(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_orchestration_cluster_rest_bad_request(
+    request_type=telcoautomation.GetOrchestrationClusterRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_orchestration_cluster(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.GetOrchestrationClusterRequest,
+        dict,
+    ],
+)
+def test_get_orchestration_cluster_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.OrchestrationCluster(
+            name="name_value",
+            tna_version="tna_version_value",
+            state=telcoautomation.OrchestrationCluster.State.CREATING,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.OrchestrationCluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_orchestration_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.OrchestrationCluster)
+    assert response.name == "name_value"
+    assert response.tna_version == "tna_version_value"
+    assert response.state == telcoautomation.OrchestrationCluster.State.CREATING
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_orchestration_cluster_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_get_orchestration_cluster"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_get_orchestration_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.GetOrchestrationClusterRequest.pb(
+            telcoautomation.GetOrchestrationClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.OrchestrationCluster.to_json(
+            telcoautomation.OrchestrationCluster()
+        )
+        req.return_value.content = return_value
+
+        request = telcoautomation.GetOrchestrationClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.OrchestrationCluster()
+
+        client.get_orchestration_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_orchestration_cluster_rest_bad_request(
+    request_type=telcoautomation.CreateOrchestrationClusterRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_orchestration_cluster(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.CreateOrchestrationClusterRequest,
+        dict,
+    ],
+)
+def test_create_orchestration_cluster_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["orchestration_cluster"] = {
+        "name": "name_value",
+        "management_config": {
+            "standard_management_config": {
+                "network": "network_value",
+                "subnet": "subnet_value",
+                "master_ipv4_cidr_block": "master_ipv4_cidr_block_value",
+                "cluster_cidr_block": "cluster_cidr_block_value",
+                "services_cidr_block": "services_cidr_block_value",
+                "cluster_named_range": "cluster_named_range_value",
+                "services_named_range": "services_named_range_value",
+                "master_authorized_networks_config": {
+                    "cidr_blocks": [
+                        {
+                            "display_name": "display_name_value",
+                            "cidr_block": "cidr_block_value",
+                        }
+                    ]
+                },
+            },
+            "full_management_config": {
+                "network": "network_value",
+                "subnet": "subnet_value",
+                "master_ipv4_cidr_block": "master_ipv4_cidr_block_value",
+                "cluster_cidr_block": "cluster_cidr_block_value",
+                "services_cidr_block": "services_cidr_block_value",
+                "cluster_named_range": "cluster_named_range_value",
+                "services_named_range": "services_named_range_value",
+                "master_authorized_networks_config": {},
+            },
+        },
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "tna_version": "tna_version_value",
+        "state": 1,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = telcoautomation.CreateOrchestrationClusterRequest.meta.fields[
+        "orchestration_cluster"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "orchestration_cluster"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["orchestration_cluster"][field])):
+                    del request_init["orchestration_cluster"][field][i][subfield]
+            else:
+                del request_init["orchestration_cluster"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_orchestration_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_orchestration_cluster_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_create_orchestration_cluster"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_create_orchestration_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.CreateOrchestrationClusterRequest.pb(
+            telcoautomation.CreateOrchestrationClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = telcoautomation.CreateOrchestrationClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_orchestration_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_orchestration_cluster_rest_bad_request(
+    request_type=telcoautomation.DeleteOrchestrationClusterRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_orchestration_cluster(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.DeleteOrchestrationClusterRequest,
+        dict,
+    ],
+)
+def test_delete_orchestration_cluster_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_orchestration_cluster(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_orchestration_cluster_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_delete_orchestration_cluster"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_delete_orchestration_cluster"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.DeleteOrchestrationClusterRequest.pb(
+            telcoautomation.DeleteOrchestrationClusterRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = telcoautomation.DeleteOrchestrationClusterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_orchestration_cluster(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_edge_slms_rest_bad_request(
+    request_type=telcoautomation.ListEdgeSlmsRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_edge_slms(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ListEdgeSlmsRequest,
+        dict,
+    ],
+)
+def test_list_edge_slms_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.ListEdgeSlmsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.ListEdgeSlmsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_edge_slms(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListEdgeSlmsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_edge_slms_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_list_edge_slms"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_list_edge_slms"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.ListEdgeSlmsRequest.pb(
+            telcoautomation.ListEdgeSlmsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.ListEdgeSlmsResponse.to_json(
+            telcoautomation.ListEdgeSlmsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = telcoautomation.ListEdgeSlmsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.ListEdgeSlmsResponse()
+
+        client.list_edge_slms(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_edge_slm_rest_bad_request(request_type=telcoautomation.GetEdgeSlmRequest):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/edgeSlms/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_edge_slm(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.GetEdgeSlmRequest,
+        dict,
+    ],
+)
+def test_get_edge_slm_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/edgeSlms/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.EdgeSlm(
+            name="name_value",
+            orchestration_cluster="orchestration_cluster_value",
+            tna_version="tna_version_value",
+            state=telcoautomation.EdgeSlm.State.CREATING,
+            workload_cluster_type=telcoautomation.EdgeSlm.WorkloadClusterType.GDCE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.EdgeSlm.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_edge_slm(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.EdgeSlm)
+    assert response.name == "name_value"
+    assert response.orchestration_cluster == "orchestration_cluster_value"
+    assert response.tna_version == "tna_version_value"
+    assert response.state == telcoautomation.EdgeSlm.State.CREATING
+    assert (
+        response.workload_cluster_type
+        == telcoautomation.EdgeSlm.WorkloadClusterType.GDCE
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_edge_slm_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_get_edge_slm"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_get_edge_slm"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.GetEdgeSlmRequest.pb(
+            telcoautomation.GetEdgeSlmRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.EdgeSlm.to_json(telcoautomation.EdgeSlm())
+        req.return_value.content = return_value
+
+        request = telcoautomation.GetEdgeSlmRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.EdgeSlm()
+
+        client.get_edge_slm(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_edge_slm_rest_bad_request(
+    request_type=telcoautomation.CreateEdgeSlmRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_edge_slm(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.CreateEdgeSlmRequest,
+        dict,
+    ],
+)
+def test_create_edge_slm_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["edge_slm"] = {
+        "name": "name_value",
+        "orchestration_cluster": "orchestration_cluster_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "labels": {},
+        "tna_version": "tna_version_value",
+        "state": 1,
+        "workload_cluster_type": 1,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = telcoautomation.CreateEdgeSlmRequest.meta.fields["edge_slm"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["edge_slm"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["edge_slm"][field])):
+                    del request_init["edge_slm"][field][i][subfield]
+            else:
+                del request_init["edge_slm"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_edge_slm(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_edge_slm_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_create_edge_slm"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_create_edge_slm"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.CreateEdgeSlmRequest.pb(
+            telcoautomation.CreateEdgeSlmRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = telcoautomation.CreateEdgeSlmRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_edge_slm(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_edge_slm_rest_bad_request(
+    request_type=telcoautomation.DeleteEdgeSlmRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/edgeSlms/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_edge_slm(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.DeleteEdgeSlmRequest,
+        dict,
+    ],
+)
+def test_delete_edge_slm_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/edgeSlms/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_edge_slm(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_edge_slm_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_delete_edge_slm"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_delete_edge_slm"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.DeleteEdgeSlmRequest.pb(
+            telcoautomation.DeleteEdgeSlmRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = telcoautomation.DeleteEdgeSlmRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_edge_slm(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_blueprint_rest_bad_request(
+    request_type=telcoautomation.CreateBlueprintRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_blueprint(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.CreateBlueprintRequest,
+        dict,
+    ],
+)
+def test_create_blueprint_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
+    }
+    request_init["blueprint"] = {
+        "name": "name_value",
+        "revision_id": "revision_id_value",
+        "source_blueprint": "source_blueprint_value",
+        "revision_create_time": {"seconds": 751, "nanos": 543},
+        "approval_state": 1,
+        "display_name": "display_name_value",
+        "repository": "repository_value",
+        "files": [
+            {
+                "path": "path_value",
+                "content": "content_value",
+                "deleted": True,
+                "editable": True,
+            }
+        ],
+        "labels": {},
+        "create_time": {},
+        "update_time": {},
+        "source_provider": "source_provider_value",
+        "deployment_level": 1,
+        "rollback_support": True,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = telcoautomation.CreateBlueprintRequest.meta.fields["blueprint"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["blueprint"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["blueprint"][field])):
+                    del request_init["blueprint"][field][i][subfield]
+            else:
+                del request_init["blueprint"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.Blueprint(
+            name="name_value",
+            revision_id="revision_id_value",
+            source_blueprint="source_blueprint_value",
+            approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
+            display_name="display_name_value",
+            repository="repository_value",
+            source_provider="source_provider_value",
+            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+            rollback_support=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.Blueprint.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_blueprint(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.Blueprint)
+    assert response.name == "name_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.source_blueprint == "source_blueprint_value"
+    assert response.approval_state == telcoautomation.Blueprint.ApprovalState.DRAFT
+    assert response.display_name == "display_name_value"
+    assert response.repository == "repository_value"
+    assert response.source_provider == "source_provider_value"
+    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
+    assert response.rollback_support is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_blueprint_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_create_blueprint"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_create_blueprint"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.CreateBlueprintRequest.pb(
+            telcoautomation.CreateBlueprintRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.Blueprint.to_json(telcoautomation.Blueprint())
+        req.return_value.content = return_value
+
+        request = telcoautomation.CreateBlueprintRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.Blueprint()
+
+        client.create_blueprint(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_blueprint_rest_bad_request(
+    request_type=telcoautomation.UpdateBlueprintRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "blueprint": {
+            "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_blueprint(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.UpdateBlueprintRequest,
+        dict,
+    ],
+)
+def test_update_blueprint_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "blueprint": {
+            "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
+        }
+    }
+    request_init["blueprint"] = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4",
+        "revision_id": "revision_id_value",
+        "source_blueprint": "source_blueprint_value",
+        "revision_create_time": {"seconds": 751, "nanos": 543},
+        "approval_state": 1,
+        "display_name": "display_name_value",
+        "repository": "repository_value",
+        "files": [
+            {
+                "path": "path_value",
+                "content": "content_value",
+                "deleted": True,
+                "editable": True,
+            }
+        ],
+        "labels": {},
+        "create_time": {},
+        "update_time": {},
+        "source_provider": "source_provider_value",
+        "deployment_level": 1,
+        "rollback_support": True,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = telcoautomation.UpdateBlueprintRequest.meta.fields["blueprint"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["blueprint"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["blueprint"][field])):
+                    del request_init["blueprint"][field][i][subfield]
+            else:
+                del request_init["blueprint"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.Blueprint(
+            name="name_value",
+            revision_id="revision_id_value",
+            source_blueprint="source_blueprint_value",
+            approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
+            display_name="display_name_value",
+            repository="repository_value",
+            source_provider="source_provider_value",
+            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+            rollback_support=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.Blueprint.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_blueprint(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.Blueprint)
+    assert response.name == "name_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.source_blueprint == "source_blueprint_value"
+    assert response.approval_state == telcoautomation.Blueprint.ApprovalState.DRAFT
+    assert response.display_name == "display_name_value"
+    assert response.repository == "repository_value"
+    assert response.source_provider == "source_provider_value"
+    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
+    assert response.rollback_support is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_blueprint_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_update_blueprint"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_update_blueprint"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.UpdateBlueprintRequest.pb(
+            telcoautomation.UpdateBlueprintRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.Blueprint.to_json(telcoautomation.Blueprint())
+        req.return_value.content = return_value
+
+        request = telcoautomation.UpdateBlueprintRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.Blueprint()
+
+        client.update_blueprint(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_blueprint_rest_bad_request(
+    request_type=telcoautomation.GetBlueprintRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_blueprint(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.GetBlueprintRequest,
+        dict,
+    ],
+)
+def test_get_blueprint_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.Blueprint(
+            name="name_value",
+            revision_id="revision_id_value",
+            source_blueprint="source_blueprint_value",
+            approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
+            display_name="display_name_value",
+            repository="repository_value",
+            source_provider="source_provider_value",
+            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+            rollback_support=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.Blueprint.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_blueprint(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.Blueprint)
+    assert response.name == "name_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.source_blueprint == "source_blueprint_value"
+    assert response.approval_state == telcoautomation.Blueprint.ApprovalState.DRAFT
+    assert response.display_name == "display_name_value"
+    assert response.repository == "repository_value"
+    assert response.source_provider == "source_provider_value"
+    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
+    assert response.rollback_support is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_blueprint_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_get_blueprint"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_get_blueprint"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.GetBlueprintRequest.pb(
+            telcoautomation.GetBlueprintRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.Blueprint.to_json(telcoautomation.Blueprint())
+        req.return_value.content = return_value
+
+        request = telcoautomation.GetBlueprintRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.Blueprint()
+
+        client.get_blueprint(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_blueprint_rest_bad_request(
+    request_type=telcoautomation.DeleteBlueprintRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_blueprint(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.DeleteBlueprintRequest,
+        dict,
+    ],
+)
+def test_delete_blueprint_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_blueprint(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_blueprint_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_delete_blueprint"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = telcoautomation.DeleteBlueprintRequest.pb(
+            telcoautomation.DeleteBlueprintRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = telcoautomation.DeleteBlueprintRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_blueprint(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_list_blueprints_rest_bad_request(
+    request_type=telcoautomation.ListBlueprintsRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_blueprints(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ListBlueprintsRequest,
+        dict,
+    ],
+)
+def test_list_blueprints_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.ListBlueprintsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.ListBlueprintsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_blueprints(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBlueprintsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_blueprints_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_list_blueprints"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_list_blueprints"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.ListBlueprintsRequest.pb(
+            telcoautomation.ListBlueprintsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.ListBlueprintsResponse.to_json(
+            telcoautomation.ListBlueprintsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = telcoautomation.ListBlueprintsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.ListBlueprintsResponse()
+
+        client.list_blueprints(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_approve_blueprint_rest_bad_request(
+    request_type=telcoautomation.ApproveBlueprintRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.approve_blueprint(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ApproveBlueprintRequest,
+        dict,
+    ],
+)
+def test_approve_blueprint_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.Blueprint(
+            name="name_value",
+            revision_id="revision_id_value",
+            source_blueprint="source_blueprint_value",
+            approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
+            display_name="display_name_value",
+            repository="repository_value",
+            source_provider="source_provider_value",
+            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+            rollback_support=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.Blueprint.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.approve_blueprint(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.Blueprint)
+    assert response.name == "name_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.source_blueprint == "source_blueprint_value"
+    assert response.approval_state == telcoautomation.Blueprint.ApprovalState.DRAFT
+    assert response.display_name == "display_name_value"
+    assert response.repository == "repository_value"
+    assert response.source_provider == "source_provider_value"
+    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
+    assert response.rollback_support is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_approve_blueprint_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_approve_blueprint"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_approve_blueprint"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.ApproveBlueprintRequest.pb(
+            telcoautomation.ApproveBlueprintRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.Blueprint.to_json(telcoautomation.Blueprint())
+        req.return_value.content = return_value
+
+        request = telcoautomation.ApproveBlueprintRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.Blueprint()
+
+        client.approve_blueprint(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_propose_blueprint_rest_bad_request(
+    request_type=telcoautomation.ProposeBlueprintRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.propose_blueprint(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ProposeBlueprintRequest,
+        dict,
+    ],
+)
+def test_propose_blueprint_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.Blueprint(
+            name="name_value",
+            revision_id="revision_id_value",
+            source_blueprint="source_blueprint_value",
+            approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
+            display_name="display_name_value",
+            repository="repository_value",
+            source_provider="source_provider_value",
+            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+            rollback_support=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.Blueprint.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.propose_blueprint(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.Blueprint)
+    assert response.name == "name_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.source_blueprint == "source_blueprint_value"
+    assert response.approval_state == telcoautomation.Blueprint.ApprovalState.DRAFT
+    assert response.display_name == "display_name_value"
+    assert response.repository == "repository_value"
+    assert response.source_provider == "source_provider_value"
+    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
+    assert response.rollback_support is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_propose_blueprint_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_propose_blueprint"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_propose_blueprint"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.ProposeBlueprintRequest.pb(
+            telcoautomation.ProposeBlueprintRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.Blueprint.to_json(telcoautomation.Blueprint())
+        req.return_value.content = return_value
+
+        request = telcoautomation.ProposeBlueprintRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.Blueprint()
+
+        client.propose_blueprint(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_reject_blueprint_rest_bad_request(
+    request_type=telcoautomation.RejectBlueprintRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.reject_blueprint(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.RejectBlueprintRequest,
+        dict,
+    ],
+)
+def test_reject_blueprint_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.Blueprint(
+            name="name_value",
+            revision_id="revision_id_value",
+            source_blueprint="source_blueprint_value",
+            approval_state=telcoautomation.Blueprint.ApprovalState.DRAFT,
+            display_name="display_name_value",
+            repository="repository_value",
+            source_provider="source_provider_value",
+            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+            rollback_support=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.Blueprint.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.reject_blueprint(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.Blueprint)
+    assert response.name == "name_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.source_blueprint == "source_blueprint_value"
+    assert response.approval_state == telcoautomation.Blueprint.ApprovalState.DRAFT
+    assert response.display_name == "display_name_value"
+    assert response.repository == "repository_value"
+    assert response.source_provider == "source_provider_value"
+    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
+    assert response.rollback_support is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_reject_blueprint_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_reject_blueprint"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_reject_blueprint"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.RejectBlueprintRequest.pb(
+            telcoautomation.RejectBlueprintRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.Blueprint.to_json(telcoautomation.Blueprint())
+        req.return_value.content = return_value
+
+        request = telcoautomation.RejectBlueprintRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.Blueprint()
+
+        client.reject_blueprint(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_blueprint_revisions_rest_bad_request(
+    request_type=telcoautomation.ListBlueprintRevisionsRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_blueprint_revisions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ListBlueprintRevisionsRequest,
+        dict,
+    ],
+)
+def test_list_blueprint_revisions_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.ListBlueprintRevisionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.ListBlueprintRevisionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_blueprint_revisions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListBlueprintRevisionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_blueprint_revisions_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_list_blueprint_revisions"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_list_blueprint_revisions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.ListBlueprintRevisionsRequest.pb(
+            telcoautomation.ListBlueprintRevisionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.ListBlueprintRevisionsResponse.to_json(
+            telcoautomation.ListBlueprintRevisionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = telcoautomation.ListBlueprintRevisionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.ListBlueprintRevisionsResponse()
+
+        client.list_blueprint_revisions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_search_blueprint_revisions_rest_bad_request(
+    request_type=telcoautomation.SearchBlueprintRevisionsRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.search_blueprint_revisions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.SearchBlueprintRevisionsRequest,
+        dict,
+    ],
+)
+def test_search_blueprint_revisions_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.SearchBlueprintRevisionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.SearchBlueprintRevisionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.search_blueprint_revisions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.SearchBlueprintRevisionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_blueprint_revisions_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_search_blueprint_revisions"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_search_blueprint_revisions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.SearchBlueprintRevisionsRequest.pb(
+            telcoautomation.SearchBlueprintRevisionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.SearchBlueprintRevisionsResponse.to_json(
+            telcoautomation.SearchBlueprintRevisionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = telcoautomation.SearchBlueprintRevisionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.SearchBlueprintRevisionsResponse()
+
+        client.search_blueprint_revisions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_search_deployment_revisions_rest_bad_request(
+    request_type=telcoautomation.SearchDeploymentRevisionsRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.search_deployment_revisions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.SearchDeploymentRevisionsRequest,
+        dict,
+    ],
+)
+def test_search_deployment_revisions_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.SearchDeploymentRevisionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.SearchDeploymentRevisionsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.search_deployment_revisions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.SearchDeploymentRevisionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_deployment_revisions_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_search_deployment_revisions"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_search_deployment_revisions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.SearchDeploymentRevisionsRequest.pb(
+            telcoautomation.SearchDeploymentRevisionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.SearchDeploymentRevisionsResponse.to_json(
+            telcoautomation.SearchDeploymentRevisionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = telcoautomation.SearchDeploymentRevisionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.SearchDeploymentRevisionsResponse()
+
+        client.search_deployment_revisions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_discard_blueprint_changes_rest_bad_request(
+    request_type=telcoautomation.DiscardBlueprintChangesRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.discard_blueprint_changes(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.DiscardBlueprintChangesRequest,
+        dict,
+    ],
+)
+def test_discard_blueprint_changes_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/blueprints/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.DiscardBlueprintChangesResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.DiscardBlueprintChangesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.discard_blueprint_changes(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.DiscardBlueprintChangesResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_discard_blueprint_changes_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_discard_blueprint_changes"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_discard_blueprint_changes"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.DiscardBlueprintChangesRequest.pb(
+            telcoautomation.DiscardBlueprintChangesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.DiscardBlueprintChangesResponse.to_json(
+            telcoautomation.DiscardBlueprintChangesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = telcoautomation.DiscardBlueprintChangesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.DiscardBlueprintChangesResponse()
+
+        client.discard_blueprint_changes(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_public_blueprints_rest_bad_request(
+    request_type=telcoautomation.ListPublicBlueprintsRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_public_blueprints(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ListPublicBlueprintsRequest,
+        dict,
+    ],
+)
+def test_list_public_blueprints_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.ListPublicBlueprintsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.ListPublicBlueprintsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_public_blueprints(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListPublicBlueprintsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_public_blueprints_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_list_public_blueprints"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_list_public_blueprints"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.ListPublicBlueprintsRequest.pb(
+            telcoautomation.ListPublicBlueprintsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.ListPublicBlueprintsResponse.to_json(
+            telcoautomation.ListPublicBlueprintsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = telcoautomation.ListPublicBlueprintsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.ListPublicBlueprintsResponse()
+
+        client.list_public_blueprints(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_public_blueprint_rest_bad_request(
+    request_type=telcoautomation.GetPublicBlueprintRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/publicBlueprints/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_public_blueprint(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.GetPublicBlueprintRequest,
+        dict,
+    ],
+)
+def test_get_public_blueprint_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/publicBlueprints/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.PublicBlueprint(
+            name="name_value",
+            display_name="display_name_value",
+            description="description_value",
+            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+            source_provider="source_provider_value",
+            rollback_support=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.PublicBlueprint.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_public_blueprint(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.PublicBlueprint)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
+    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
+    assert response.source_provider == "source_provider_value"
+    assert response.rollback_support is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_public_blueprint_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_get_public_blueprint"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_get_public_blueprint"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.GetPublicBlueprintRequest.pb(
+            telcoautomation.GetPublicBlueprintRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.PublicBlueprint.to_json(
+            telcoautomation.PublicBlueprint()
+        )
+        req.return_value.content = return_value
+
+        request = telcoautomation.GetPublicBlueprintRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.PublicBlueprint()
+
+        client.get_public_blueprint(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_deployment_rest_bad_request(
+    request_type=telcoautomation.CreateDeploymentRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_deployment(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.CreateDeploymentRequest,
+        dict,
+    ],
+)
+def test_create_deployment_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
+    }
+    request_init["deployment"] = {
+        "name": "name_value",
+        "revision_id": "revision_id_value",
+        "source_blueprint_revision": "source_blueprint_revision_value",
+        "revision_create_time": {"seconds": 751, "nanos": 543},
+        "state": 1,
+        "display_name": "display_name_value",
+        "repository": "repository_value",
+        "files": [
+            {
+                "path": "path_value",
+                "content": "content_value",
+                "deleted": True,
+                "editable": True,
+            }
+        ],
+        "labels": {},
+        "create_time": {},
+        "update_time": {},
+        "source_provider": "source_provider_value",
+        "workload_cluster": "workload_cluster_value",
+        "deployment_level": 1,
+        "rollback_support": True,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = telcoautomation.CreateDeploymentRequest.meta.fields["deployment"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["deployment"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["deployment"][field])):
+                    del request_init["deployment"][field][i][subfield]
+            else:
+                del request_init["deployment"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.Deployment(
+            name="name_value",
+            revision_id="revision_id_value",
+            source_blueprint_revision="source_blueprint_revision_value",
+            state=telcoautomation.Deployment.State.DRAFT,
+            display_name="display_name_value",
+            repository="repository_value",
+            source_provider="source_provider_value",
+            workload_cluster="workload_cluster_value",
+            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+            rollback_support=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.Deployment)
+    assert response.name == "name_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.source_blueprint_revision == "source_blueprint_revision_value"
+    assert response.state == telcoautomation.Deployment.State.DRAFT
+    assert response.display_name == "display_name_value"
+    assert response.repository == "repository_value"
+    assert response.source_provider == "source_provider_value"
+    assert response.workload_cluster == "workload_cluster_value"
+    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
+    assert response.rollback_support is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_deployment_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_create_deployment"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_create_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.CreateDeploymentRequest.pb(
+            telcoautomation.CreateDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.Deployment.to_json(telcoautomation.Deployment())
+        req.return_value.content = return_value
+
+        request = telcoautomation.CreateDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.Deployment()
+
+        client.create_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_deployment_rest_bad_request(
+    request_type=telcoautomation.UpdateDeploymentRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "deployment": {
+            "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_deployment(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.UpdateDeploymentRequest,
+        dict,
+    ],
+)
+def test_update_deployment_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "deployment": {
+            "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
+        }
+    }
+    request_init["deployment"] = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4",
+        "revision_id": "revision_id_value",
+        "source_blueprint_revision": "source_blueprint_revision_value",
+        "revision_create_time": {"seconds": 751, "nanos": 543},
+        "state": 1,
+        "display_name": "display_name_value",
+        "repository": "repository_value",
+        "files": [
+            {
+                "path": "path_value",
+                "content": "content_value",
+                "deleted": True,
+                "editable": True,
+            }
+        ],
+        "labels": {},
+        "create_time": {},
+        "update_time": {},
+        "source_provider": "source_provider_value",
+        "workload_cluster": "workload_cluster_value",
+        "deployment_level": 1,
+        "rollback_support": True,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = telcoautomation.UpdateDeploymentRequest.meta.fields["deployment"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["deployment"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["deployment"][field])):
+                    del request_init["deployment"][field][i][subfield]
+            else:
+                del request_init["deployment"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.Deployment(
+            name="name_value",
+            revision_id="revision_id_value",
+            source_blueprint_revision="source_blueprint_revision_value",
+            state=telcoautomation.Deployment.State.DRAFT,
+            display_name="display_name_value",
+            repository="repository_value",
+            source_provider="source_provider_value",
+            workload_cluster="workload_cluster_value",
+            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+            rollback_support=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.Deployment)
+    assert response.name == "name_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.source_blueprint_revision == "source_blueprint_revision_value"
+    assert response.state == telcoautomation.Deployment.State.DRAFT
+    assert response.display_name == "display_name_value"
+    assert response.repository == "repository_value"
+    assert response.source_provider == "source_provider_value"
+    assert response.workload_cluster == "workload_cluster_value"
+    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
+    assert response.rollback_support is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_deployment_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_update_deployment"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_update_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.UpdateDeploymentRequest.pb(
+            telcoautomation.UpdateDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.Deployment.to_json(telcoautomation.Deployment())
+        req.return_value.content = return_value
+
+        request = telcoautomation.UpdateDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.Deployment()
+
+        client.update_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_deployment_rest_bad_request(
+    request_type=telcoautomation.GetDeploymentRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_deployment(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.GetDeploymentRequest,
+        dict,
+    ],
+)
+def test_get_deployment_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.Deployment(
+            name="name_value",
+            revision_id="revision_id_value",
+            source_blueprint_revision="source_blueprint_revision_value",
+            state=telcoautomation.Deployment.State.DRAFT,
+            display_name="display_name_value",
+            repository="repository_value",
+            source_provider="source_provider_value",
+            workload_cluster="workload_cluster_value",
+            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+            rollback_support=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.Deployment)
+    assert response.name == "name_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.source_blueprint_revision == "source_blueprint_revision_value"
+    assert response.state == telcoautomation.Deployment.State.DRAFT
+    assert response.display_name == "display_name_value"
+    assert response.repository == "repository_value"
+    assert response.source_provider == "source_provider_value"
+    assert response.workload_cluster == "workload_cluster_value"
+    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
+    assert response.rollback_support is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_deployment_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_get_deployment"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_get_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.GetDeploymentRequest.pb(
+            telcoautomation.GetDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.Deployment.to_json(telcoautomation.Deployment())
+        req.return_value.content = return_value
+
+        request = telcoautomation.GetDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.Deployment()
+
+        client.get_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_remove_deployment_rest_bad_request(
+    request_type=telcoautomation.RemoveDeploymentRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.remove_deployment(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.RemoveDeploymentRequest,
+        dict,
+    ],
+)
+def test_remove_deployment_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.remove_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_remove_deployment_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_remove_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = telcoautomation.RemoveDeploymentRequest.pb(
+            telcoautomation.RemoveDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = telcoautomation.RemoveDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.remove_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_list_deployments_rest_bad_request(
+    request_type=telcoautomation.ListDeploymentsRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_deployments(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ListDeploymentsRequest,
+        dict,
+    ],
+)
+def test_list_deployments_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.ListDeploymentsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.ListDeploymentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_deployments(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDeploymentsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_deployments_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_list_deployments"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_list_deployments"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.ListDeploymentsRequest.pb(
+            telcoautomation.ListDeploymentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.ListDeploymentsResponse.to_json(
+            telcoautomation.ListDeploymentsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = telcoautomation.ListDeploymentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.ListDeploymentsResponse()
+
+        client.list_deployments(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_deployment_revisions_rest_bad_request(
+    request_type=telcoautomation.ListDeploymentRevisionsRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_deployment_revisions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ListDeploymentRevisionsRequest,
+        dict,
+    ],
+)
+def test_list_deployment_revisions_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.ListDeploymentRevisionsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.ListDeploymentRevisionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_deployment_revisions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDeploymentRevisionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_deployment_revisions_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_list_deployment_revisions"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_list_deployment_revisions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.ListDeploymentRevisionsRequest.pb(
+            telcoautomation.ListDeploymentRevisionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.ListDeploymentRevisionsResponse.to_json(
+            telcoautomation.ListDeploymentRevisionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = telcoautomation.ListDeploymentRevisionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.ListDeploymentRevisionsResponse()
+
+        client.list_deployment_revisions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_discard_deployment_changes_rest_bad_request(
+    request_type=telcoautomation.DiscardDeploymentChangesRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.discard_deployment_changes(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.DiscardDeploymentChangesRequest,
+        dict,
+    ],
+)
+def test_discard_deployment_changes_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.DiscardDeploymentChangesResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.DiscardDeploymentChangesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.discard_deployment_changes(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.DiscardDeploymentChangesResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_discard_deployment_changes_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_discard_deployment_changes"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_discard_deployment_changes"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.DiscardDeploymentChangesRequest.pb(
+            telcoautomation.DiscardDeploymentChangesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.DiscardDeploymentChangesResponse.to_json(
+            telcoautomation.DiscardDeploymentChangesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = telcoautomation.DiscardDeploymentChangesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.DiscardDeploymentChangesResponse()
+
+        client.discard_deployment_changes(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_apply_deployment_rest_bad_request(
+    request_type=telcoautomation.ApplyDeploymentRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.apply_deployment(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ApplyDeploymentRequest,
+        dict,
+    ],
+)
+def test_apply_deployment_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.Deployment(
+            name="name_value",
+            revision_id="revision_id_value",
+            source_blueprint_revision="source_blueprint_revision_value",
+            state=telcoautomation.Deployment.State.DRAFT,
+            display_name="display_name_value",
+            repository="repository_value",
+            source_provider="source_provider_value",
+            workload_cluster="workload_cluster_value",
+            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+            rollback_support=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.apply_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.Deployment)
+    assert response.name == "name_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.source_blueprint_revision == "source_blueprint_revision_value"
+    assert response.state == telcoautomation.Deployment.State.DRAFT
+    assert response.display_name == "display_name_value"
+    assert response.repository == "repository_value"
+    assert response.source_provider == "source_provider_value"
+    assert response.workload_cluster == "workload_cluster_value"
+    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
+    assert response.rollback_support is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_apply_deployment_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_apply_deployment"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_apply_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.ApplyDeploymentRequest.pb(
+            telcoautomation.ApplyDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.Deployment.to_json(telcoautomation.Deployment())
+        req.return_value.content = return_value
+
+        request = telcoautomation.ApplyDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.Deployment()
+
+        client.apply_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_compute_deployment_status_rest_bad_request(
+    request_type=telcoautomation.ComputeDeploymentStatusRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.compute_deployment_status(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ComputeDeploymentStatusRequest,
+        dict,
+    ],
+)
+def test_compute_deployment_status_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.ComputeDeploymentStatusResponse(
+            name="name_value",
+            aggregated_status=telcoautomation.Status.STATUS_IN_PROGRESS,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.ComputeDeploymentStatusResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.compute_deployment_status(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.ComputeDeploymentStatusResponse)
+    assert response.name == "name_value"
+    assert response.aggregated_status == telcoautomation.Status.STATUS_IN_PROGRESS
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_compute_deployment_status_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_compute_deployment_status"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_compute_deployment_status"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.ComputeDeploymentStatusRequest.pb(
+            telcoautomation.ComputeDeploymentStatusRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.ComputeDeploymentStatusResponse.to_json(
+            telcoautomation.ComputeDeploymentStatusResponse()
+        )
+        req.return_value.content = return_value
+
+        request = telcoautomation.ComputeDeploymentStatusRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.ComputeDeploymentStatusResponse()
+
+        client.compute_deployment_status(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_rollback_deployment_rest_bad_request(
+    request_type=telcoautomation.RollbackDeploymentRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.rollback_deployment(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.RollbackDeploymentRequest,
+        dict,
+    ],
+)
+def test_rollback_deployment_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.Deployment(
+            name="name_value",
+            revision_id="revision_id_value",
+            source_blueprint_revision="source_blueprint_revision_value",
+            state=telcoautomation.Deployment.State.DRAFT,
+            display_name="display_name_value",
+            repository="repository_value",
+            source_provider="source_provider_value",
+            workload_cluster="workload_cluster_value",
+            deployment_level=telcoautomation.DeploymentLevel.HYDRATION,
+            rollback_support=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.Deployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.rollback_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.Deployment)
+    assert response.name == "name_value"
+    assert response.revision_id == "revision_id_value"
+    assert response.source_blueprint_revision == "source_blueprint_revision_value"
+    assert response.state == telcoautomation.Deployment.State.DRAFT
+    assert response.display_name == "display_name_value"
+    assert response.repository == "repository_value"
+    assert response.source_provider == "source_provider_value"
+    assert response.workload_cluster == "workload_cluster_value"
+    assert response.deployment_level == telcoautomation.DeploymentLevel.HYDRATION
+    assert response.rollback_support is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_rollback_deployment_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_rollback_deployment"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_rollback_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.RollbackDeploymentRequest.pb(
+            telcoautomation.RollbackDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.Deployment.to_json(telcoautomation.Deployment())
+        req.return_value.content = return_value
+
+        request = telcoautomation.RollbackDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.Deployment()
+
+        client.rollback_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_hydrated_deployment_rest_bad_request(
+    request_type=telcoautomation.GetHydratedDeploymentRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4/hydratedDeployments/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_hydrated_deployment(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.GetHydratedDeploymentRequest,
+        dict,
+    ],
+)
+def test_get_hydrated_deployment_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4/hydratedDeployments/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.HydratedDeployment(
+            name="name_value",
+            state=telcoautomation.HydratedDeployment.State.DRAFT,
+            workload_cluster="workload_cluster_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.HydratedDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_hydrated_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.HydratedDeployment)
+    assert response.name == "name_value"
+    assert response.state == telcoautomation.HydratedDeployment.State.DRAFT
+    assert response.workload_cluster == "workload_cluster_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_hydrated_deployment_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_get_hydrated_deployment"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_get_hydrated_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.GetHydratedDeploymentRequest.pb(
+            telcoautomation.GetHydratedDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.HydratedDeployment.to_json(
+            telcoautomation.HydratedDeployment()
+        )
+        req.return_value.content = return_value
+
+        request = telcoautomation.GetHydratedDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.HydratedDeployment()
+
+        client.get_hydrated_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_hydrated_deployments_rest_bad_request(
+    request_type=telcoautomation.ListHydratedDeploymentsRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_hydrated_deployments(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ListHydratedDeploymentsRequest,
+        dict,
+    ],
+)
+def test_list_hydrated_deployments_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.ListHydratedDeploymentsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.ListHydratedDeploymentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_hydrated_deployments(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListHydratedDeploymentsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_hydrated_deployments_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_list_hydrated_deployments"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_list_hydrated_deployments"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.ListHydratedDeploymentsRequest.pb(
+            telcoautomation.ListHydratedDeploymentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.ListHydratedDeploymentsResponse.to_json(
+            telcoautomation.ListHydratedDeploymentsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = telcoautomation.ListHydratedDeploymentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.ListHydratedDeploymentsResponse()
+
+        client.list_hydrated_deployments(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_hydrated_deployment_rest_bad_request(
+    request_type=telcoautomation.UpdateHydratedDeploymentRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "hydrated_deployment": {
+            "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4/hydratedDeployments/sample5"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_hydrated_deployment(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.UpdateHydratedDeploymentRequest,
+        dict,
+    ],
+)
+def test_update_hydrated_deployment_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "hydrated_deployment": {
+            "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4/hydratedDeployments/sample5"
+        }
+    }
+    request_init["hydrated_deployment"] = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4/hydratedDeployments/sample5",
+        "state": 1,
+        "files": [
+            {
+                "path": "path_value",
+                "content": "content_value",
+                "deleted": True,
+                "editable": True,
+            }
+        ],
+        "workload_cluster": "workload_cluster_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = telcoautomation.UpdateHydratedDeploymentRequest.meta.fields[
+        "hydrated_deployment"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["hydrated_deployment"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["hydrated_deployment"][field])):
+                    del request_init["hydrated_deployment"][field][i][subfield]
+            else:
+                del request_init["hydrated_deployment"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.HydratedDeployment(
+            name="name_value",
+            state=telcoautomation.HydratedDeployment.State.DRAFT,
+            workload_cluster="workload_cluster_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.HydratedDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_hydrated_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.HydratedDeployment)
+    assert response.name == "name_value"
+    assert response.state == telcoautomation.HydratedDeployment.State.DRAFT
+    assert response.workload_cluster == "workload_cluster_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_hydrated_deployment_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_update_hydrated_deployment"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_update_hydrated_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.UpdateHydratedDeploymentRequest.pb(
+            telcoautomation.UpdateHydratedDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.HydratedDeployment.to_json(
+            telcoautomation.HydratedDeployment()
+        )
+        req.return_value.content = return_value
+
+        request = telcoautomation.UpdateHydratedDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.HydratedDeployment()
+
+        client.update_hydrated_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_apply_hydrated_deployment_rest_bad_request(
+    request_type=telcoautomation.ApplyHydratedDeploymentRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4/hydratedDeployments/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.apply_hydrated_deployment(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        telcoautomation.ApplyHydratedDeploymentRequest,
+        dict,
+    ],
+)
+def test_apply_hydrated_deployment_rest_call_success(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/orchestrationClusters/sample3/deployments/sample4/hydratedDeployments/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = telcoautomation.HydratedDeployment(
+            name="name_value",
+            state=telcoautomation.HydratedDeployment.State.DRAFT,
+            workload_cluster="workload_cluster_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = telcoautomation.HydratedDeployment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.apply_hydrated_deployment(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, telcoautomation.HydratedDeployment)
+    assert response.name == "name_value"
+    assert response.state == telcoautomation.HydratedDeployment.State.DRAFT
+    assert response.workload_cluster == "workload_cluster_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_apply_hydrated_deployment_rest_interceptors(null_interceptor):
+    transport = transports.TelcoAutomationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TelcoAutomationRestInterceptor(),
+    )
+    client = TelcoAutomationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "post_apply_hydrated_deployment"
+    ) as post, mock.patch.object(
+        transports.TelcoAutomationRestInterceptor, "pre_apply_hydrated_deployment"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = telcoautomation.ApplyHydratedDeploymentRequest.pb(
+            telcoautomation.ApplyHydratedDeploymentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = telcoautomation.HydratedDeployment.to_json(
+            telcoautomation.HydratedDeployment()
+        )
+        req.return_value.content = return_value
+
+        request = telcoautomation.ApplyHydratedDeploymentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = telcoautomation.HydratedDeployment()
+
+        client.apply_hydrated_deployment(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    request_type=locations_pb2.ListLocationsRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1/locations"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_rest_bad_request(
+    request_type=operations_pb2.DeleteOperationRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.DeleteOperationRequest,
+        dict,
+    ],
+)
+def test_delete_operation_rest(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    request_type=operations_pb2.ListOperationsRequest,
+):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_initialize_client_w_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_orchestration_clusters_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_orchestration_clusters), "__call__"
+    ) as call:
+        client.list_orchestration_clusters(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListOrchestrationClustersRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_orchestration_cluster_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_orchestration_cluster), "__call__"
+    ) as call:
+        client.get_orchestration_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.GetOrchestrationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_orchestration_cluster_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_orchestration_cluster), "__call__"
+    ) as call:
+        client.create_orchestration_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.CreateOrchestrationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_orchestration_cluster_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_orchestration_cluster), "__call__"
+    ) as call:
+        client.delete_orchestration_cluster(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.DeleteOrchestrationClusterRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_edge_slms_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_edge_slms), "__call__") as call:
+        client.list_edge_slms(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListEdgeSlmsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_edge_slm_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_edge_slm), "__call__") as call:
+        client.get_edge_slm(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.GetEdgeSlmRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_edge_slm_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_edge_slm), "__call__") as call:
+        client.create_edge_slm(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.CreateEdgeSlmRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_edge_slm_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_edge_slm), "__call__") as call:
+        client.delete_edge_slm(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.DeleteEdgeSlmRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_blueprint_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_blueprint), "__call__") as call:
+        client.create_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.CreateBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_blueprint_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_blueprint), "__call__") as call:
+        client.update_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.UpdateBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_blueprint_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_blueprint), "__call__") as call:
+        client.get_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.GetBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_blueprint_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_blueprint), "__call__") as call:
+        client.delete_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.DeleteBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_blueprints_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_blueprints), "__call__") as call:
+        client.list_blueprints(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListBlueprintsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_approve_blueprint_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.approve_blueprint), "__call__"
+    ) as call:
+        client.approve_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ApproveBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_propose_blueprint_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.propose_blueprint), "__call__"
+    ) as call:
+        client.propose_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ProposeBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_reject_blueprint_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.reject_blueprint), "__call__") as call:
+        client.reject_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.RejectBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_blueprint_revisions_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_blueprint_revisions), "__call__"
+    ) as call:
+        client.list_blueprint_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListBlueprintRevisionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_search_blueprint_revisions_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_blueprint_revisions), "__call__"
+    ) as call:
+        client.search_blueprint_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.SearchBlueprintRevisionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_search_deployment_revisions_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_deployment_revisions), "__call__"
+    ) as call:
+        client.search_deployment_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.SearchDeploymentRevisionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_discard_blueprint_changes_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.discard_blueprint_changes), "__call__"
+    ) as call:
+        client.discard_blueprint_changes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.DiscardBlueprintChangesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_public_blueprints_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_public_blueprints), "__call__"
+    ) as call:
+        client.list_public_blueprints(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListPublicBlueprintsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_public_blueprint_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_public_blueprint), "__call__"
+    ) as call:
+        client.get_public_blueprint(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.GetPublicBlueprintRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_deployment_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_deployment), "__call__"
+    ) as call:
+        client.create_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.CreateDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_deployment_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_deployment), "__call__"
+    ) as call:
+        client.update_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.UpdateDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_deployment_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_deployment), "__call__") as call:
+        client.get_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.GetDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_remove_deployment_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_deployment), "__call__"
+    ) as call:
+        client.remove_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.RemoveDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_deployments_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_deployments), "__call__") as call:
+        client.list_deployments(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListDeploymentsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_deployment_revisions_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_deployment_revisions), "__call__"
+    ) as call:
+        client.list_deployment_revisions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListDeploymentRevisionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_discard_deployment_changes_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.discard_deployment_changes), "__call__"
+    ) as call:
+        client.discard_deployment_changes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.DiscardDeploymentChangesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_apply_deployment_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.apply_deployment), "__call__") as call:
+        client.apply_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ApplyDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_compute_deployment_status_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_deployment_status), "__call__"
+    ) as call:
+        client.compute_deployment_status(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ComputeDeploymentStatusRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_rollback_deployment_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_deployment), "__call__"
+    ) as call:
+        client.rollback_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.RollbackDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_hydrated_deployment_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_hydrated_deployment), "__call__"
+    ) as call:
+        client.get_hydrated_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.GetHydratedDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_hydrated_deployments_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_hydrated_deployments), "__call__"
+    ) as call:
+        client.list_hydrated_deployments(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ListHydratedDeploymentsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_hydrated_deployment_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_hydrated_deployment), "__call__"
+    ) as call:
+        client.update_hydrated_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.UpdateHydratedDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_apply_hydrated_deployment_empty_call_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.apply_hydrated_deployment), "__call__"
+    ) as call:
+        client.apply_hydrated_deployment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = telcoautomation.ApplyHydratedDeploymentRequest()
+
+        assert args[0] == request_msg
+
+
+def test_telco_automation_rest_lro_client():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 def test_transport_grpc_default():
@@ -30976,23 +32157,6 @@ def test_telco_automation_http_transport_client_cert_source_for_mtls():
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_telco_automation_rest_lro_client():
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -31632,366 +32796,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
-def test_get_location_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_location(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.GetLocationRequest,
-        dict,
-    ],
-)
-def test_get_location_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.Location()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_location(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.Location)
-
-
-def test_list_locations_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({"name": "projects/sample1/locations"}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_locations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.ListLocationsRequest,
-        dict,
-    ],
-)
-def test_list_locations_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.ListLocationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_locations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.ListLocationsResponse)
-
-
-def test_cancel_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.cancel_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.CancelOperationRequest,
-        dict,
-    ],
-)
-def test_cancel_operation_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.cancel_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.DeleteOperationRequest,
-        dict,
-    ],
-)
-def test_delete_operation_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.delete_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_get_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
-def test_list_operations_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
-):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_operations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.ListOperationsRequest,
-        dict,
-    ],
-)
-def test_list_operations_rest(request_type):
-    client = TelcoAutomationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.ListOperationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.ListOperationsResponse)
-
-
 def test_delete_operation(transport: str = "grpc"):
     client = TelcoAutomationClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -32019,7 +32823,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -32072,7 +32876,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -32117,7 +32921,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -32158,7 +32962,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -32211,7 +33015,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -32256,7 +33060,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -32297,7 +33101,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -32352,7 +33156,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -32399,7 +33203,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -32442,7 +33246,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -32497,7 +33301,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -32544,7 +33348,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -32587,7 +33391,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -32642,7 +33446,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -32689,7 +33493,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -32732,7 +33536,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -32784,9 +33588,7 @@ def test_get_location_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
-    client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    client = TelcoAutomationAsyncClient(credentials=async_anonymous_credentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -32832,7 +33634,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = TelcoAutomationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -32848,22 +33650,41 @@ async def test_get_location_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = TelcoAutomationClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = TelcoAutomationAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+    client = TelcoAutomationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():
