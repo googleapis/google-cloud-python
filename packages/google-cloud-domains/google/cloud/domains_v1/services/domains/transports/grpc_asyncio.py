@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -229,6 +230,9 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -773,85 +777,94 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.search_domains: gapic_v1.method_async.wrap_method(
+            self.search_domains: self._wrap_method(
                 self.search_domains,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.retrieve_register_parameters: gapic_v1.method_async.wrap_method(
+            self.retrieve_register_parameters: self._wrap_method(
                 self.retrieve_register_parameters,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.register_domain: gapic_v1.method_async.wrap_method(
+            self.register_domain: self._wrap_method(
                 self.register_domain,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.retrieve_transfer_parameters: gapic_v1.method_async.wrap_method(
+            self.retrieve_transfer_parameters: self._wrap_method(
                 self.retrieve_transfer_parameters,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.transfer_domain: gapic_v1.method_async.wrap_method(
+            self.transfer_domain: self._wrap_method(
                 self.transfer_domain,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_registrations: gapic_v1.method_async.wrap_method(
+            self.list_registrations: self._wrap_method(
                 self.list_registrations,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_registration: gapic_v1.method_async.wrap_method(
+            self.get_registration: self._wrap_method(
                 self.get_registration,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_registration: gapic_v1.method_async.wrap_method(
+            self.update_registration: self._wrap_method(
                 self.update_registration,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.configure_management_settings: gapic_v1.method_async.wrap_method(
+            self.configure_management_settings: self._wrap_method(
                 self.configure_management_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.configure_dns_settings: gapic_v1.method_async.wrap_method(
+            self.configure_dns_settings: self._wrap_method(
                 self.configure_dns_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.configure_contact_settings: gapic_v1.method_async.wrap_method(
+            self.configure_contact_settings: self._wrap_method(
                 self.configure_contact_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.export_registration: gapic_v1.method_async.wrap_method(
+            self.export_registration: self._wrap_method(
                 self.export_registration,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_registration: gapic_v1.method_async.wrap_method(
+            self.delete_registration: self._wrap_method(
                 self.delete_registration,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.retrieve_authorization_code: gapic_v1.method_async.wrap_method(
+            self.retrieve_authorization_code: self._wrap_method(
                 self.retrieve_authorization_code,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.reset_authorization_code: gapic_v1.method_async.wrap_method(
+            self.reset_authorization_code: self._wrap_method(
                 self.reset_authorization_code,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("DomainsGrpcAsyncIOTransport",)

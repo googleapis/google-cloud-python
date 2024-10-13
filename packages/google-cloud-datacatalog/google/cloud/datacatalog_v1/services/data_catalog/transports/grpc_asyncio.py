@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -232,6 +233,9 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1441,180 +1445,209 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.search_catalog: gapic_v1.method_async.wrap_method(
+            self.search_catalog: self._wrap_method(
                 self.search_catalog,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_entry_group: gapic_v1.method_async.wrap_method(
+            self.create_entry_group: self._wrap_method(
                 self.create_entry_group,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_entry_group: gapic_v1.method_async.wrap_method(
+            self.get_entry_group: self._wrap_method(
                 self.get_entry_group,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_entry_group: gapic_v1.method_async.wrap_method(
+            self.update_entry_group: self._wrap_method(
                 self.update_entry_group,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_entry_group: gapic_v1.method_async.wrap_method(
+            self.delete_entry_group: self._wrap_method(
                 self.delete_entry_group,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_entry_groups: gapic_v1.method_async.wrap_method(
+            self.list_entry_groups: self._wrap_method(
                 self.list_entry_groups,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_entry: gapic_v1.method_async.wrap_method(
+            self.create_entry: self._wrap_method(
                 self.create_entry,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_entry: gapic_v1.method_async.wrap_method(
+            self.update_entry: self._wrap_method(
                 self.update_entry,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_entry: gapic_v1.method_async.wrap_method(
+            self.delete_entry: self._wrap_method(
                 self.delete_entry,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_entry: gapic_v1.method_async.wrap_method(
+            self.get_entry: self._wrap_method(
                 self.get_entry,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.lookup_entry: gapic_v1.method_async.wrap_method(
+            self.lookup_entry: self._wrap_method(
                 self.lookup_entry,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_entries: gapic_v1.method_async.wrap_method(
+            self.list_entries: self._wrap_method(
                 self.list_entries,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.modify_entry_overview: gapic_v1.method_async.wrap_method(
+            self.modify_entry_overview: self._wrap_method(
                 self.modify_entry_overview,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.modify_entry_contacts: gapic_v1.method_async.wrap_method(
+            self.modify_entry_contacts: self._wrap_method(
                 self.modify_entry_contacts,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_tag_template: gapic_v1.method_async.wrap_method(
+            self.create_tag_template: self._wrap_method(
                 self.create_tag_template,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_tag_template: gapic_v1.method_async.wrap_method(
+            self.get_tag_template: self._wrap_method(
                 self.get_tag_template,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_tag_template: gapic_v1.method_async.wrap_method(
+            self.update_tag_template: self._wrap_method(
                 self.update_tag_template,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_tag_template: gapic_v1.method_async.wrap_method(
+            self.delete_tag_template: self._wrap_method(
                 self.delete_tag_template,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_tag_template_field: gapic_v1.method_async.wrap_method(
+            self.create_tag_template_field: self._wrap_method(
                 self.create_tag_template_field,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_tag_template_field: gapic_v1.method_async.wrap_method(
+            self.update_tag_template_field: self._wrap_method(
                 self.update_tag_template_field,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.rename_tag_template_field: gapic_v1.method_async.wrap_method(
+            self.rename_tag_template_field: self._wrap_method(
                 self.rename_tag_template_field,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.rename_tag_template_field_enum_value: gapic_v1.method_async.wrap_method(
+            self.rename_tag_template_field_enum_value: self._wrap_method(
                 self.rename_tag_template_field_enum_value,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_tag_template_field: gapic_v1.method_async.wrap_method(
+            self.delete_tag_template_field: self._wrap_method(
                 self.delete_tag_template_field,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_tag: gapic_v1.method_async.wrap_method(
+            self.create_tag: self._wrap_method(
                 self.create_tag,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_tag: gapic_v1.method_async.wrap_method(
+            self.update_tag: self._wrap_method(
                 self.update_tag,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_tag: gapic_v1.method_async.wrap_method(
+            self.delete_tag: self._wrap_method(
                 self.delete_tag,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_tags: gapic_v1.method_async.wrap_method(
+            self.list_tags: self._wrap_method(
                 self.list_tags,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.reconcile_tags: gapic_v1.method_async.wrap_method(
+            self.reconcile_tags: self._wrap_method(
                 self.reconcile_tags,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.star_entry: gapic_v1.method_async.wrap_method(
+            self.star_entry: self._wrap_method(
                 self.star_entry,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.unstar_entry: gapic_v1.method_async.wrap_method(
+            self.unstar_entry: self._wrap_method(
                 self.unstar_entry,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.set_iam_policy: gapic_v1.method_async.wrap_method(
+            self.set_iam_policy: self._wrap_method(
                 self.set_iam_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_iam_policy: gapic_v1.method_async.wrap_method(
+            self.get_iam_policy: self._wrap_method(
                 self.get_iam_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.test_iam_permissions: gapic_v1.method_async.wrap_method(
+            self.test_iam_permissions: self._wrap_method(
                 self.test_iam_permissions,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.import_entries: gapic_v1.method_async.wrap_method(
+            self.import_entries: self._wrap_method(
                 self.import_entries,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -230,6 +231,9 @@ class ParticipantsGrpcAsyncIOTransport(ParticipantsTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -656,27 +660,27 @@ class ParticipantsGrpcAsyncIOTransport(ParticipantsTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_participant: gapic_v1.method_async.wrap_method(
+            self.create_participant: self._wrap_method(
                 self.create_participant,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_participant: gapic_v1.method_async.wrap_method(
+            self.get_participant: self._wrap_method(
                 self.get_participant,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_participants: gapic_v1.method_async.wrap_method(
+            self.list_participants: self._wrap_method(
                 self.list_participants,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_participant: gapic_v1.method_async.wrap_method(
+            self.update_participant: self._wrap_method(
                 self.update_participant,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.analyze_content: gapic_v1.method_async.wrap_method(
+            self.analyze_content: self._wrap_method(
                 self.analyze_content,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -690,45 +694,79 @@ class ParticipantsGrpcAsyncIOTransport(ParticipantsTransport):
                 default_timeout=220.0,
                 client_info=client_info,
             ),
-            self.streaming_analyze_content: gapic_v1.method_async.wrap_method(
+            self.streaming_analyze_content: self._wrap_method(
                 self.streaming_analyze_content,
                 default_timeout=220.0,
                 client_info=client_info,
             ),
-            self.suggest_articles: gapic_v1.method_async.wrap_method(
+            self.suggest_articles: self._wrap_method(
                 self.suggest_articles,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.suggest_faq_answers: gapic_v1.method_async.wrap_method(
+            self.suggest_faq_answers: self._wrap_method(
                 self.suggest_faq_answers,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.suggest_smart_replies: gapic_v1.method_async.wrap_method(
+            self.suggest_smart_replies: self._wrap_method(
                 self.suggest_smart_replies,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.suggest_knowledge_assist: gapic_v1.method_async.wrap_method(
+            self.suggest_knowledge_assist: self._wrap_method(
                 self.suggest_knowledge_assist,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_suggestions: gapic_v1.method_async.wrap_method(
+            self.list_suggestions: self._wrap_method(
                 self.list_suggestions,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.compile_suggestion: gapic_v1.method_async.wrap_method(
+            self.compile_suggestion: self._wrap_method(
                 self.compile_suggestion,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def cancel_operation(

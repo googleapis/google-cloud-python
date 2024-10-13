@@ -24,6 +24,20 @@ except ImportError:  # pragma: NO COVER
 
 import math
 
+from google.api_core import api_core_version
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api_core import (
     future,
     gapic_v1,
@@ -33,7 +47,7 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
@@ -50,11 +64,6 @@ from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 
 from google.cloud.dataplex_v1.services.dataplex_service import (
     DataplexServiceAsyncClient,
@@ -65,8 +74,22 @@ from google.cloud.dataplex_v1.services.dataplex_service import (
 from google.cloud.dataplex_v1.types import analyze, resources, service, tasks
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1159,25 +1182,6 @@ def test_create_lake(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_create_lake_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_lake), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_lake()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateLakeRequest()
-
-
 def test_create_lake_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1249,27 +1253,6 @@ def test_create_lake_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_lake_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_lake), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_lake()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateLakeRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_lake_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1277,7 +1260,7 @@ async def test_create_lake_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1321,7 +1304,7 @@ async def test_create_lake_async(
     transport: str = "grpc_asyncio", request_type=service.CreateLakeRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1384,7 +1367,7 @@ def test_create_lake_field_headers():
 @pytest.mark.asyncio
 async def test_create_lake_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1464,7 +1447,7 @@ def test_create_lake_flattened_error():
 @pytest.mark.asyncio
 async def test_create_lake_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1501,7 +1484,7 @@ async def test_create_lake_flattened_async():
 @pytest.mark.asyncio
 async def test_create_lake_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1546,25 +1529,6 @@ def test_update_lake(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_lake_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_lake), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_lake()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateLakeRequest()
 
 
 def test_update_lake_non_empty_request_with_auto_populated_field():
@@ -1632,27 +1596,6 @@ def test_update_lake_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_lake_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_lake), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_lake()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateLakeRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_lake_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1660,7 +1603,7 @@ async def test_update_lake_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1704,7 +1647,7 @@ async def test_update_lake_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateLakeRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1767,7 +1710,7 @@ def test_update_lake_field_headers():
 @pytest.mark.asyncio
 async def test_update_lake_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1842,7 +1785,7 @@ def test_update_lake_flattened_error():
 @pytest.mark.asyncio
 async def test_update_lake_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1875,7 +1818,7 @@ async def test_update_lake_flattened_async():
 @pytest.mark.asyncio
 async def test_update_lake_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1919,25 +1862,6 @@ def test_delete_lake(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_lake_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_lake), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_lake()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteLakeRequest()
 
 
 def test_delete_lake_non_empty_request_with_auto_populated_field():
@@ -2009,27 +1933,6 @@ def test_delete_lake_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_lake_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_lake), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_lake()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteLakeRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_lake_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2037,7 +1940,7 @@ async def test_delete_lake_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2081,7 +1984,7 @@ async def test_delete_lake_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteLakeRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2144,7 +2047,7 @@ def test_delete_lake_field_headers():
 @pytest.mark.asyncio
 async def test_delete_lake_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2214,7 +2117,7 @@ def test_delete_lake_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_lake_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2243,7 +2146,7 @@ async def test_delete_lake_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_lake_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2291,25 +2194,6 @@ def test_list_lakes(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListLakesPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-def test_list_lakes_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_lakes), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_lakes()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListLakesRequest()
 
 
 def test_list_lakes_non_empty_request_with_auto_populated_field():
@@ -2382,36 +2266,12 @@ def test_list_lakes_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_lakes_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_lakes), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListLakesResponse(
-                next_page_token="next_page_token_value",
-                unreachable_locations=["unreachable_locations_value"],
-            )
-        )
-        response = await client.list_lakes()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListLakesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_lakes_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2450,7 +2310,7 @@ async def test_list_lakes_async(
     transport: str = "grpc_asyncio", request_type=service.ListLakesRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2518,7 +2378,7 @@ def test_list_lakes_field_headers():
 @pytest.mark.asyncio
 async def test_list_lakes_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2588,7 +2448,7 @@ def test_list_lakes_flattened_error():
 @pytest.mark.asyncio
 async def test_list_lakes_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2617,7 +2477,7 @@ async def test_list_lakes_flattened_async():
 @pytest.mark.asyncio
 async def test_list_lakes_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2727,7 +2587,7 @@ def test_list_lakes_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_lakes_async_pager():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2777,7 +2637,7 @@ async def test_list_lakes_async_pager():
 @pytest.mark.asyncio
 async def test_list_lakes_async_pages():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2869,25 +2729,6 @@ def test_get_lake(request_type, transport: str = "grpc"):
     assert response.service_account == "service_account_value"
 
 
-def test_get_lake_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_lake), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_lake()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetLakeRequest()
-
-
 def test_get_lake_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -2952,40 +2793,12 @@ def test_get_lake_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_lake_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_lake), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.Lake(
-                name="name_value",
-                display_name="display_name_value",
-                uid="uid_value",
-                description="description_value",
-                state=resources.State.ACTIVE,
-                service_account="service_account_value",
-            )
-        )
-        response = await client.get_lake()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetLakeRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_lake_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3024,7 +2837,7 @@ async def test_get_lake_async(
     transport: str = "grpc_asyncio", request_type=service.GetLakeRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3100,7 +2913,7 @@ def test_get_lake_field_headers():
 @pytest.mark.asyncio
 async def test_get_lake_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3168,7 +2981,7 @@ def test_get_lake_flattened_error():
 @pytest.mark.asyncio
 async def test_get_lake_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3195,7 +3008,7 @@ async def test_get_lake_flattened_async():
 @pytest.mark.asyncio
 async def test_get_lake_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3243,27 +3056,6 @@ def test_list_lake_actions(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLakeActionsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_lake_actions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_lake_actions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_lake_actions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListLakeActionsRequest()
 
 
 def test_list_lake_actions_non_empty_request_with_auto_populated_field():
@@ -3336,31 +3128,6 @@ def test_list_lake_actions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_lake_actions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_lake_actions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListActionsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_lake_actions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListLakeActionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_lake_actions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3368,7 +3135,7 @@ async def test_list_lake_actions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3407,7 +3174,7 @@ async def test_list_lake_actions_async(
     transport: str = "grpc_asyncio", request_type=service.ListLakeActionsRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3477,7 +3244,7 @@ def test_list_lake_actions_field_headers():
 @pytest.mark.asyncio
 async def test_list_lake_actions_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3551,7 +3318,7 @@ def test_list_lake_actions_flattened_error():
 @pytest.mark.asyncio
 async def test_list_lake_actions_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3582,7 +3349,7 @@ async def test_list_lake_actions_flattened_async():
 @pytest.mark.asyncio
 async def test_list_lake_actions_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3696,7 +3463,7 @@ def test_list_lake_actions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_lake_actions_async_pager():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3748,7 +3515,7 @@ async def test_list_lake_actions_async_pager():
 @pytest.mark.asyncio
 async def test_list_lake_actions_async_pages():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3829,25 +3596,6 @@ def test_create_zone(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_create_zone_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_zone), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_zone()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateZoneRequest()
-
-
 def test_create_zone_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -3919,27 +3667,6 @@ def test_create_zone_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_zone_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_zone), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_zone()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateZoneRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_zone_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3947,7 +3674,7 @@ async def test_create_zone_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3991,7 +3718,7 @@ async def test_create_zone_async(
     transport: str = "grpc_asyncio", request_type=service.CreateZoneRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4054,7 +3781,7 @@ def test_create_zone_field_headers():
 @pytest.mark.asyncio
 async def test_create_zone_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4134,7 +3861,7 @@ def test_create_zone_flattened_error():
 @pytest.mark.asyncio
 async def test_create_zone_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4171,7 +3898,7 @@ async def test_create_zone_flattened_async():
 @pytest.mark.asyncio
 async def test_create_zone_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4216,25 +3943,6 @@ def test_update_zone(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_zone_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_zone), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_zone()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateZoneRequest()
 
 
 def test_update_zone_non_empty_request_with_auto_populated_field():
@@ -4302,27 +4010,6 @@ def test_update_zone_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_zone_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_zone), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_zone()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateZoneRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_zone_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4330,7 +4017,7 @@ async def test_update_zone_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4374,7 +4061,7 @@ async def test_update_zone_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateZoneRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4437,7 +4124,7 @@ def test_update_zone_field_headers():
 @pytest.mark.asyncio
 async def test_update_zone_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4512,7 +4199,7 @@ def test_update_zone_flattened_error():
 @pytest.mark.asyncio
 async def test_update_zone_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4545,7 +4232,7 @@ async def test_update_zone_flattened_async():
 @pytest.mark.asyncio
 async def test_update_zone_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4589,25 +4276,6 @@ def test_delete_zone(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_zone_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_zone), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_zone()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteZoneRequest()
 
 
 def test_delete_zone_non_empty_request_with_auto_populated_field():
@@ -4679,27 +4347,6 @@ def test_delete_zone_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_zone_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_zone), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_zone()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteZoneRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_zone_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4707,7 +4354,7 @@ async def test_delete_zone_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4751,7 +4398,7 @@ async def test_delete_zone_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteZoneRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4814,7 +4461,7 @@ def test_delete_zone_field_headers():
 @pytest.mark.asyncio
 async def test_delete_zone_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4884,7 +4531,7 @@ def test_delete_zone_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_zone_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4913,7 +4560,7 @@ async def test_delete_zone_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_zone_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4959,25 +4606,6 @@ def test_list_zones(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListZonesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_zones_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_zones), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_zones()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListZonesRequest()
 
 
 def test_list_zones_non_empty_request_with_auto_populated_field():
@@ -5050,35 +4678,12 @@ def test_list_zones_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_zones_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_zones), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListZonesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_zones()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListZonesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_zones_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5117,7 +4722,7 @@ async def test_list_zones_async(
     transport: str = "grpc_asyncio", request_type=service.ListZonesRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5183,7 +4788,7 @@ def test_list_zones_field_headers():
 @pytest.mark.asyncio
 async def test_list_zones_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5253,7 +4858,7 @@ def test_list_zones_flattened_error():
 @pytest.mark.asyncio
 async def test_list_zones_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5282,7 +4887,7 @@ async def test_list_zones_flattened_async():
 @pytest.mark.asyncio
 async def test_list_zones_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5392,7 +4997,7 @@ def test_list_zones_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_zones_async_pager():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5442,7 +5047,7 @@ async def test_list_zones_async_pager():
 @pytest.mark.asyncio
 async def test_list_zones_async_pages():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5534,25 +5139,6 @@ def test_get_zone(request_type, transport: str = "grpc"):
     assert response.type_ == resources.Zone.Type.RAW
 
 
-def test_get_zone_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_zone), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_zone()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetZoneRequest()
-
-
 def test_get_zone_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -5617,40 +5203,12 @@ def test_get_zone_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_zone_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_zone), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.Zone(
-                name="name_value",
-                display_name="display_name_value",
-                uid="uid_value",
-                description="description_value",
-                state=resources.State.ACTIVE,
-                type_=resources.Zone.Type.RAW,
-            )
-        )
-        response = await client.get_zone()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetZoneRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_zone_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5689,7 +5247,7 @@ async def test_get_zone_async(
     transport: str = "grpc_asyncio", request_type=service.GetZoneRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5765,7 +5323,7 @@ def test_get_zone_field_headers():
 @pytest.mark.asyncio
 async def test_get_zone_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5833,7 +5391,7 @@ def test_get_zone_flattened_error():
 @pytest.mark.asyncio
 async def test_get_zone_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5860,7 +5418,7 @@ async def test_get_zone_flattened_async():
 @pytest.mark.asyncio
 async def test_get_zone_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5908,27 +5466,6 @@ def test_list_zone_actions(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListZoneActionsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_zone_actions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_zone_actions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_zone_actions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListZoneActionsRequest()
 
 
 def test_list_zone_actions_non_empty_request_with_auto_populated_field():
@@ -6001,31 +5538,6 @@ def test_list_zone_actions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_zone_actions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_zone_actions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListActionsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_zone_actions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListZoneActionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_zone_actions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6033,7 +5545,7 @@ async def test_list_zone_actions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6072,7 +5584,7 @@ async def test_list_zone_actions_async(
     transport: str = "grpc_asyncio", request_type=service.ListZoneActionsRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6142,7 +5654,7 @@ def test_list_zone_actions_field_headers():
 @pytest.mark.asyncio
 async def test_list_zone_actions_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6216,7 +5728,7 @@ def test_list_zone_actions_flattened_error():
 @pytest.mark.asyncio
 async def test_list_zone_actions_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6247,7 +5759,7 @@ async def test_list_zone_actions_flattened_async():
 @pytest.mark.asyncio
 async def test_list_zone_actions_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6361,7 +5873,7 @@ def test_list_zone_actions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_zone_actions_async_pager():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6413,7 +5925,7 @@ async def test_list_zone_actions_async_pager():
 @pytest.mark.asyncio
 async def test_list_zone_actions_async_pages():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6494,25 +6006,6 @@ def test_create_asset(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_create_asset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_asset), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_asset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateAssetRequest()
-
-
 def test_create_asset_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -6584,27 +6077,6 @@ def test_create_asset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_asset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_asset), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_asset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateAssetRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_asset_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6612,7 +6084,7 @@ async def test_create_asset_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6656,7 +6128,7 @@ async def test_create_asset_async(
     transport: str = "grpc_asyncio", request_type=service.CreateAssetRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6719,7 +6191,7 @@ def test_create_asset_field_headers():
 @pytest.mark.asyncio
 async def test_create_asset_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6799,7 +6271,7 @@ def test_create_asset_flattened_error():
 @pytest.mark.asyncio
 async def test_create_asset_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6836,7 +6308,7 @@ async def test_create_asset_flattened_async():
 @pytest.mark.asyncio
 async def test_create_asset_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6881,25 +6353,6 @@ def test_update_asset(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_asset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_asset), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_asset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateAssetRequest()
 
 
 def test_update_asset_non_empty_request_with_auto_populated_field():
@@ -6967,27 +6420,6 @@ def test_update_asset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_asset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_asset), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_asset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateAssetRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_asset_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6995,7 +6427,7 @@ async def test_update_asset_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7039,7 +6471,7 @@ async def test_update_asset_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateAssetRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7102,7 +6534,7 @@ def test_update_asset_field_headers():
 @pytest.mark.asyncio
 async def test_update_asset_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7177,7 +6609,7 @@ def test_update_asset_flattened_error():
 @pytest.mark.asyncio
 async def test_update_asset_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7210,7 +6642,7 @@ async def test_update_asset_flattened_async():
 @pytest.mark.asyncio
 async def test_update_asset_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7254,25 +6686,6 @@ def test_delete_asset(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_asset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_asset), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_asset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteAssetRequest()
 
 
 def test_delete_asset_non_empty_request_with_auto_populated_field():
@@ -7344,27 +6757,6 @@ def test_delete_asset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_asset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_asset), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_asset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteAssetRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_asset_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7372,7 +6764,7 @@ async def test_delete_asset_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7416,7 +6808,7 @@ async def test_delete_asset_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteAssetRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7479,7 +6871,7 @@ def test_delete_asset_field_headers():
 @pytest.mark.asyncio
 async def test_delete_asset_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7549,7 +6941,7 @@ def test_delete_asset_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_asset_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7578,7 +6970,7 @@ async def test_delete_asset_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_asset_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7624,25 +7016,6 @@ def test_list_assets(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssetsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_assets_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_assets()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListAssetsRequest()
 
 
 def test_list_assets_non_empty_request_with_auto_populated_field():
@@ -7715,29 +7088,6 @@ def test_list_assets_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_assets_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListAssetsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_assets()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListAssetsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_assets_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7745,7 +7095,7 @@ async def test_list_assets_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7784,7 +7134,7 @@ async def test_list_assets_async(
     transport: str = "grpc_asyncio", request_type=service.ListAssetsRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7850,7 +7200,7 @@ def test_list_assets_field_headers():
 @pytest.mark.asyncio
 async def test_list_assets_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7920,7 +7270,7 @@ def test_list_assets_flattened_error():
 @pytest.mark.asyncio
 async def test_list_assets_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7949,7 +7299,7 @@ async def test_list_assets_flattened_async():
 @pytest.mark.asyncio
 async def test_list_assets_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8059,7 +7409,7 @@ def test_list_assets_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_assets_async_pager():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8109,7 +7459,7 @@ async def test_list_assets_async_pager():
 @pytest.mark.asyncio
 async def test_list_assets_async_pages():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8199,25 +7549,6 @@ def test_get_asset(request_type, transport: str = "grpc"):
     assert response.state == resources.State.ACTIVE
 
 
-def test_get_asset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_asset), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_asset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetAssetRequest()
-
-
 def test_get_asset_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -8282,39 +7613,12 @@ def test_get_asset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_asset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_asset), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.Asset(
-                name="name_value",
-                display_name="display_name_value",
-                uid="uid_value",
-                description="description_value",
-                state=resources.State.ACTIVE,
-            )
-        )
-        response = await client.get_asset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetAssetRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_asset_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8353,7 +7657,7 @@ async def test_get_asset_async(
     transport: str = "grpc_asyncio", request_type=service.GetAssetRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8427,7 +7731,7 @@ def test_get_asset_field_headers():
 @pytest.mark.asyncio
 async def test_get_asset_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8495,7 +7799,7 @@ def test_get_asset_flattened_error():
 @pytest.mark.asyncio
 async def test_get_asset_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8522,7 +7826,7 @@ async def test_get_asset_flattened_async():
 @pytest.mark.asyncio
 async def test_get_asset_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8570,27 +7874,6 @@ def test_list_asset_actions(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssetActionsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_asset_actions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_asset_actions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_asset_actions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListAssetActionsRequest()
 
 
 def test_list_asset_actions_non_empty_request_with_auto_populated_field():
@@ -8665,31 +7948,6 @@ def test_list_asset_actions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_asset_actions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_asset_actions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListActionsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_asset_actions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListAssetActionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_asset_actions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8697,7 +7955,7 @@ async def test_list_asset_actions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8736,7 +7994,7 @@ async def test_list_asset_actions_async(
     transport: str = "grpc_asyncio", request_type=service.ListAssetActionsRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8806,7 +8064,7 @@ def test_list_asset_actions_field_headers():
 @pytest.mark.asyncio
 async def test_list_asset_actions_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8880,7 +8138,7 @@ def test_list_asset_actions_flattened_error():
 @pytest.mark.asyncio
 async def test_list_asset_actions_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8911,7 +8169,7 @@ async def test_list_asset_actions_flattened_async():
 @pytest.mark.asyncio
 async def test_list_asset_actions_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9025,7 +8283,7 @@ def test_list_asset_actions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_asset_actions_async_pager():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9077,7 +8335,7 @@ async def test_list_asset_actions_async_pager():
 @pytest.mark.asyncio
 async def test_list_asset_actions_async_pages():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9158,25 +8416,6 @@ def test_create_task(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_create_task_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_task), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_task()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateTaskRequest()
-
-
 def test_create_task_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -9248,27 +8487,6 @@ def test_create_task_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_task_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_task), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_task()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateTaskRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_task_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9276,7 +8494,7 @@ async def test_create_task_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9320,7 +8538,7 @@ async def test_create_task_async(
     transport: str = "grpc_asyncio", request_type=service.CreateTaskRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9383,7 +8601,7 @@ def test_create_task_field_headers():
 @pytest.mark.asyncio
 async def test_create_task_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9463,7 +8681,7 @@ def test_create_task_flattened_error():
 @pytest.mark.asyncio
 async def test_create_task_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9500,7 +8718,7 @@ async def test_create_task_flattened_async():
 @pytest.mark.asyncio
 async def test_create_task_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9545,25 +8763,6 @@ def test_update_task(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_task_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_task), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_task()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateTaskRequest()
 
 
 def test_update_task_non_empty_request_with_auto_populated_field():
@@ -9631,27 +8830,6 @@ def test_update_task_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_task_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_task), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_task()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateTaskRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_task_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9659,7 +8837,7 @@ async def test_update_task_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9703,7 +8881,7 @@ async def test_update_task_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateTaskRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9766,7 +8944,7 @@ def test_update_task_field_headers():
 @pytest.mark.asyncio
 async def test_update_task_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9841,7 +9019,7 @@ def test_update_task_flattened_error():
 @pytest.mark.asyncio
 async def test_update_task_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9874,7 +9052,7 @@ async def test_update_task_flattened_async():
 @pytest.mark.asyncio
 async def test_update_task_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9918,25 +9096,6 @@ def test_delete_task(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_task_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_task), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_task()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteTaskRequest()
 
 
 def test_delete_task_non_empty_request_with_auto_populated_field():
@@ -10008,27 +9167,6 @@ def test_delete_task_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_task_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_task), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_task()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteTaskRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_task_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -10036,7 +9174,7 @@ async def test_delete_task_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10080,7 +9218,7 @@ async def test_delete_task_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteTaskRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10143,7 +9281,7 @@ def test_delete_task_field_headers():
 @pytest.mark.asyncio
 async def test_delete_task_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10213,7 +9351,7 @@ def test_delete_task_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_task_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10242,7 +9380,7 @@ async def test_delete_task_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_task_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10290,25 +9428,6 @@ def test_list_tasks(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListTasksPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.unreachable_locations == ["unreachable_locations_value"]
-
-
-def test_list_tasks_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_tasks()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListTasksRequest()
 
 
 def test_list_tasks_non_empty_request_with_auto_populated_field():
@@ -10381,36 +9500,12 @@ def test_list_tasks_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_tasks_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListTasksResponse(
-                next_page_token="next_page_token_value",
-                unreachable_locations=["unreachable_locations_value"],
-            )
-        )
-        response = await client.list_tasks()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListTasksRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_tasks_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10449,7 +9544,7 @@ async def test_list_tasks_async(
     transport: str = "grpc_asyncio", request_type=service.ListTasksRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10517,7 +9612,7 @@ def test_list_tasks_field_headers():
 @pytest.mark.asyncio
 async def test_list_tasks_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10587,7 +9682,7 @@ def test_list_tasks_flattened_error():
 @pytest.mark.asyncio
 async def test_list_tasks_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10616,7 +9711,7 @@ async def test_list_tasks_flattened_async():
 @pytest.mark.asyncio
 async def test_list_tasks_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10726,7 +9821,7 @@ def test_list_tasks_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_tasks_async_pager():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10776,7 +9871,7 @@ async def test_list_tasks_async_pager():
 @pytest.mark.asyncio
 async def test_list_tasks_async_pages():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10866,25 +9961,6 @@ def test_get_task(request_type, transport: str = "grpc"):
     assert response.state == resources.State.ACTIVE
 
 
-def test_get_task_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_task), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_task()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetTaskRequest()
-
-
 def test_get_task_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -10949,39 +10025,12 @@ def test_get_task_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_task_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_task), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            tasks.Task(
-                name="name_value",
-                uid="uid_value",
-                description="description_value",
-                display_name="display_name_value",
-                state=resources.State.ACTIVE,
-            )
-        )
-        response = await client.get_task()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetTaskRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_task_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11020,7 +10069,7 @@ async def test_get_task_async(
     transport: str = "grpc_asyncio", request_type=service.GetTaskRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11094,7 +10143,7 @@ def test_get_task_field_headers():
 @pytest.mark.asyncio
 async def test_get_task_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11162,7 +10211,7 @@ def test_get_task_flattened_error():
 @pytest.mark.asyncio
 async def test_get_task_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11189,7 +10238,7 @@ async def test_get_task_flattened_async():
 @pytest.mark.asyncio
 async def test_get_task_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11235,25 +10284,6 @@ def test_list_jobs(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_jobs_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_jobs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListJobsRequest()
 
 
 def test_list_jobs_non_empty_request_with_auto_populated_field():
@@ -11322,35 +10352,12 @@ def test_list_jobs_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_jobs_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListJobsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_jobs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListJobsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_jobs_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11389,7 +10396,7 @@ async def test_list_jobs_async(
     transport: str = "grpc_asyncio", request_type=service.ListJobsRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11455,7 +10462,7 @@ def test_list_jobs_field_headers():
 @pytest.mark.asyncio
 async def test_list_jobs_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11525,7 +10532,7 @@ def test_list_jobs_flattened_error():
 @pytest.mark.asyncio
 async def test_list_jobs_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11554,7 +10561,7 @@ async def test_list_jobs_flattened_async():
 @pytest.mark.asyncio
 async def test_list_jobs_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11664,7 +10671,7 @@ def test_list_jobs_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_jobs_async_pager():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11714,7 +10721,7 @@ async def test_list_jobs_async_pager():
 @pytest.mark.asyncio
 async def test_list_jobs_async_pages():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11793,25 +10800,6 @@ def test_run_task(request_type, transport: str = "grpc"):
     assert isinstance(response, service.RunTaskResponse)
 
 
-def test_run_task_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.run_task), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.run_task()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.RunTaskRequest()
-
-
 def test_run_task_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -11876,33 +10864,12 @@ def test_run_task_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_run_task_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.run_task), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.RunTaskResponse()
-        )
-        response = await client.run_task()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.RunTaskRequest()
-
-
-@pytest.mark.asyncio
 async def test_run_task_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11941,7 +10908,7 @@ async def test_run_task_async(
     transport: str = "grpc_asyncio", request_type=service.RunTaskRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -12004,7 +10971,7 @@ def test_run_task_field_headers():
 @pytest.mark.asyncio
 async def test_run_task_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12074,7 +11041,7 @@ def test_run_task_flattened_error():
 @pytest.mark.asyncio
 async def test_run_task_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12103,7 +11070,7 @@ async def test_run_task_flattened_async():
 @pytest.mark.asyncio
 async def test_run_task_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12163,25 +11130,6 @@ def test_get_job(request_type, transport: str = "grpc"):
     assert response.service_job == "service_job_value"
     assert response.message == "message_value"
     assert response.trigger == tasks.Job.Trigger.TASK_CONFIG
-
-
-def test_get_job_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_job), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_job()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetJobRequest()
 
 
 def test_get_job_non_empty_request_with_auto_populated_field():
@@ -12248,42 +11196,12 @@ def test_get_job_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_job_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_job), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            tasks.Job(
-                name="name_value",
-                uid="uid_value",
-                state=tasks.Job.State.RUNNING,
-                retry_count=1214,
-                service=tasks.Job.Service.DATAPROC,
-                service_job="service_job_value",
-                message="message_value",
-                trigger=tasks.Job.Trigger.TASK_CONFIG,
-            )
-        )
-        response = await client.get_job()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetJobRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_job_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -12322,7 +11240,7 @@ async def test_get_job_async(
     transport: str = "grpc_asyncio", request_type=service.GetJobRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -12402,7 +11320,7 @@ def test_get_job_field_headers():
 @pytest.mark.asyncio
 async def test_get_job_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12470,7 +11388,7 @@ def test_get_job_flattened_error():
 @pytest.mark.asyncio
 async def test_get_job_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12497,7 +11415,7 @@ async def test_get_job_flattened_async():
 @pytest.mark.asyncio
 async def test_get_job_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12540,25 +11458,6 @@ def test_cancel_job(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_cancel_job_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.cancel_job), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.cancel_job()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CancelJobRequest()
 
 
 def test_cancel_job_non_empty_request_with_auto_populated_field():
@@ -12625,31 +11524,12 @@ def test_cancel_job_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_cancel_job_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.cancel_job), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.cancel_job()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CancelJobRequest()
-
-
-@pytest.mark.asyncio
 async def test_cancel_job_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -12688,7 +11568,7 @@ async def test_cancel_job_async(
     transport: str = "grpc_asyncio", request_type=service.CancelJobRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -12749,7 +11629,7 @@ def test_cancel_job_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_job_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12817,7 +11697,7 @@ def test_cancel_job_flattened_error():
 @pytest.mark.asyncio
 async def test_cancel_job_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12844,7 +11724,7 @@ async def test_cancel_job_flattened_async():
 @pytest.mark.asyncio
 async def test_cancel_job_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12889,27 +11769,6 @@ def test_create_environment(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_environment_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_environment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_environment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateEnvironmentRequest()
 
 
 def test_create_environment_non_empty_request_with_auto_populated_field():
@@ -12989,29 +11848,6 @@ def test_create_environment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_environment_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_environment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_environment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateEnvironmentRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_environment_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -13019,7 +11855,7 @@ async def test_create_environment_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -13063,7 +11899,7 @@ async def test_create_environment_async(
     transport: str = "grpc_asyncio", request_type=service.CreateEnvironmentRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -13130,7 +11966,7 @@ def test_create_environment_field_headers():
 @pytest.mark.asyncio
 async def test_create_environment_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13214,7 +12050,7 @@ def test_create_environment_flattened_error():
 @pytest.mark.asyncio
 async def test_create_environment_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13253,7 +12089,7 @@ async def test_create_environment_flattened_async():
 @pytest.mark.asyncio
 async def test_create_environment_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -13300,27 +12136,6 @@ def test_update_environment(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_environment_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_environment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_environment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateEnvironmentRequest()
 
 
 def test_update_environment_non_empty_request_with_auto_populated_field():
@@ -13394,29 +12209,6 @@ def test_update_environment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_environment_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_environment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_environment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateEnvironmentRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_environment_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -13424,7 +12216,7 @@ async def test_update_environment_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -13468,7 +12260,7 @@ async def test_update_environment_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateEnvironmentRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -13535,7 +12327,7 @@ def test_update_environment_field_headers():
 @pytest.mark.asyncio
 async def test_update_environment_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13614,7 +12406,7 @@ def test_update_environment_flattened_error():
 @pytest.mark.asyncio
 async def test_update_environment_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13649,7 +12441,7 @@ async def test_update_environment_flattened_async():
 @pytest.mark.asyncio
 async def test_update_environment_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -13695,27 +12487,6 @@ def test_delete_environment(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_environment_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_environment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_environment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteEnvironmentRequest()
 
 
 def test_delete_environment_non_empty_request_with_auto_populated_field():
@@ -13793,29 +12564,6 @@ def test_delete_environment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_environment_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_environment), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_environment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteEnvironmentRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_environment_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -13823,7 +12571,7 @@ async def test_delete_environment_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -13867,7 +12615,7 @@ async def test_delete_environment_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteEnvironmentRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -13934,7 +12682,7 @@ def test_delete_environment_field_headers():
 @pytest.mark.asyncio
 async def test_delete_environment_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -14008,7 +12756,7 @@ def test_delete_environment_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_environment_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14039,7 +12787,7 @@ async def test_delete_environment_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_environment_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -14087,27 +12835,6 @@ def test_list_environments(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEnvironmentsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_environments_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_environments), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_environments()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListEnvironmentsRequest()
 
 
 def test_list_environments_non_empty_request_with_auto_populated_field():
@@ -14184,31 +12911,6 @@ def test_list_environments_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_environments_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_environments), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListEnvironmentsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_environments()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListEnvironmentsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_environments_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -14216,7 +12918,7 @@ async def test_list_environments_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -14255,7 +12957,7 @@ async def test_list_environments_async(
     transport: str = "grpc_asyncio", request_type=service.ListEnvironmentsRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -14325,7 +13027,7 @@ def test_list_environments_field_headers():
 @pytest.mark.asyncio
 async def test_list_environments_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -14399,7 +13101,7 @@ def test_list_environments_flattened_error():
 @pytest.mark.asyncio
 async def test_list_environments_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14430,7 +13132,7 @@ async def test_list_environments_flattened_async():
 @pytest.mark.asyncio
 async def test_list_environments_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -14544,7 +13246,7 @@ def test_list_environments_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_environments_async_pager():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14596,7 +13298,7 @@ async def test_list_environments_async_pager():
 @pytest.mark.asyncio
 async def test_list_environments_async_pages():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14688,25 +13390,6 @@ def test_get_environment(request_type, transport: str = "grpc"):
     assert response.state == resources.State.ACTIVE
 
 
-def test_get_environment_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_environment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetEnvironmentRequest()
-
-
 def test_get_environment_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -14771,33 +13454,6 @@ def test_get_environment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_environment_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analyze.Environment(
-                name="name_value",
-                display_name="display_name_value",
-                uid="uid_value",
-                description="description_value",
-                state=resources.State.ACTIVE,
-            )
-        )
-        response = await client.get_environment()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetEnvironmentRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_environment_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -14805,7 +13461,7 @@ async def test_get_environment_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -14844,7 +13500,7 @@ async def test_get_environment_async(
     transport: str = "grpc_asyncio", request_type=service.GetEnvironmentRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -14918,7 +13574,7 @@ def test_get_environment_field_headers():
 @pytest.mark.asyncio
 async def test_get_environment_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -14986,7 +13642,7 @@ def test_get_environment_flattened_error():
 @pytest.mark.asyncio
 async def test_get_environment_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -15013,7 +13669,7 @@ async def test_get_environment_flattened_async():
 @pytest.mark.asyncio
 async def test_get_environment_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -15059,25 +13715,6 @@ def test_list_sessions(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSessionsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_sessions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_sessions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListSessionsRequest()
 
 
 def test_list_sessions_non_empty_request_with_auto_populated_field():
@@ -15148,29 +13785,6 @@ def test_list_sessions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_sessions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListSessionsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_sessions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListSessionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_sessions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -15178,7 +13792,7 @@ async def test_list_sessions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = DataplexServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -15217,7 +13831,7 @@ async def test_list_sessions_async(
     transport: str = "grpc_asyncio", request_type=service.ListSessionsRequest
 ):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -15283,7 +13897,7 @@ def test_list_sessions_field_headers():
 @pytest.mark.asyncio
 async def test_list_sessions_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15353,7 +13967,7 @@ def test_list_sessions_flattened_error():
 @pytest.mark.asyncio
 async def test_list_sessions_flattened_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -15382,7 +13996,7 @@ async def test_list_sessions_flattened_async():
 @pytest.mark.asyncio
 async def test_list_sessions_flattened_error_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -15492,7 +14106,7 @@ def test_list_sessions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_sessions_async_pager():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -15542,7 +14156,7 @@ async def test_list_sessions_async_pager():
 @pytest.mark.asyncio
 async def test_list_sessions_async_pages():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -15679,17 +14293,1639 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
-@pytest.mark.parametrize(
-    "transport_name",
-    [
-        "grpc",
-    ],
-)
-def test_transport_kind(transport_name):
-    transport = DataplexServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_transport_kind_grpc():
+    transport = DataplexServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
     )
-    assert transport.kind == transport_name
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_lake_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_lake), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_lake(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateLakeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_lake_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_lake), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_lake(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateLakeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_lake_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_lake), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_lake(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteLakeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_lakes_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_lakes), "__call__") as call:
+        call.return_value = service.ListLakesResponse()
+        client.list_lakes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListLakesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_lake_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_lake), "__call__") as call:
+        call.return_value = resources.Lake()
+        client.get_lake(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetLakeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_lake_actions_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_lake_actions), "__call__"
+    ) as call:
+        call.return_value = service.ListActionsResponse()
+        client.list_lake_actions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListLakeActionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_zone_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_zone), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_zone(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateZoneRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_zone_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_zone), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_zone(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateZoneRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_zone_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_zone), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_zone(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteZoneRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_zones_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_zones), "__call__") as call:
+        call.return_value = service.ListZonesResponse()
+        client.list_zones(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListZonesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_zone_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_zone), "__call__") as call:
+        call.return_value = resources.Zone()
+        client.get_zone(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetZoneRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_zone_actions_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_zone_actions), "__call__"
+    ) as call:
+        call.return_value = service.ListActionsResponse()
+        client.list_zone_actions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListZoneActionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_asset_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_asset), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_asset_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_asset), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_asset_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_asset), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_assets_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
+        call.return_value = service.ListAssetsResponse()
+        client.list_assets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListAssetsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_asset_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_asset), "__call__") as call:
+        call.return_value = resources.Asset()
+        client.get_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_asset_actions_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_asset_actions), "__call__"
+    ) as call:
+        call.return_value = service.ListActionsResponse()
+        client.list_asset_actions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListAssetActionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_task_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_task), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_task_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_task), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_task_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_task), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_tasks_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
+        call.return_value = service.ListTasksResponse()
+        client.list_tasks(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListTasksRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_task_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_task), "__call__") as call:
+        call.return_value = tasks.Task()
+        client.get_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_jobs_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
+        call.return_value = service.ListJobsResponse()
+        client.list_jobs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListJobsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_run_task_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.run_task), "__call__") as call:
+        call.return_value = service.RunTaskResponse()
+        client.run_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.RunTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_job_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_job), "__call__") as call:
+        call.return_value = tasks.Job()
+        client.get_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_cancel_job_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_job), "__call__") as call:
+        call.return_value = None
+        client.cancel_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CancelJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_environment_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_environment), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_environment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateEnvironmentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_environment_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_environment), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_environment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateEnvironmentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_environment_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_environment), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_environment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteEnvironmentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_environments_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_environments), "__call__"
+    ) as call:
+        call.return_value = service.ListEnvironmentsResponse()
+        client.list_environments(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListEnvironmentsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_environment_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
+        call.return_value = analyze.Environment()
+        client.get_environment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetEnvironmentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_sessions_empty_call_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        call.return_value = service.ListSessionsResponse()
+        client.list_sessions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListSessionsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = DataplexServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_lake_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_lake), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_lake(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateLakeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_lake_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_lake), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_lake(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateLakeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_lake_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_lake), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_lake(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteLakeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_lakes_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_lakes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListLakesResponse(
+                next_page_token="next_page_token_value",
+                unreachable_locations=["unreachable_locations_value"],
+            )
+        )
+        await client.list_lakes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListLakesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_lake_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_lake), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.Lake(
+                name="name_value",
+                display_name="display_name_value",
+                uid="uid_value",
+                description="description_value",
+                state=resources.State.ACTIVE,
+                service_account="service_account_value",
+            )
+        )
+        await client.get_lake(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetLakeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_lake_actions_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_lake_actions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListActionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_lake_actions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListLakeActionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_zone_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_zone), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_zone(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateZoneRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_zone_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_zone), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_zone(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateZoneRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_zone_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_zone), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_zone(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteZoneRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_zones_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_zones), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListZonesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_zones(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListZonesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_zone_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_zone), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.Zone(
+                name="name_value",
+                display_name="display_name_value",
+                uid="uid_value",
+                description="description_value",
+                state=resources.State.ACTIVE,
+                type_=resources.Zone.Type.RAW,
+            )
+        )
+        await client.get_zone(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetZoneRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_zone_actions_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_zone_actions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListActionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_zone_actions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListZoneActionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_asset_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_asset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_asset_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_asset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_asset_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_asset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_assets_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListAssetsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_assets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListAssetsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_asset_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_asset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.Asset(
+                name="name_value",
+                display_name="display_name_value",
+                uid="uid_value",
+                description="description_value",
+                state=resources.State.ACTIVE,
+            )
+        )
+        await client.get_asset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetAssetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_asset_actions_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_asset_actions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListActionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_asset_actions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListAssetActionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_task_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_task_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_task_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_tasks_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListTasksResponse(
+                next_page_token="next_page_token_value",
+                unreachable_locations=["unreachable_locations_value"],
+            )
+        )
+        await client.list_tasks(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListTasksRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_task_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tasks.Task(
+                name="name_value",
+                uid="uid_value",
+                description="description_value",
+                display_name="display_name_value",
+                state=resources.State.ACTIVE,
+            )
+        )
+        await client.get_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_jobs_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListJobsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_jobs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListJobsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_run_task_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.run_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.RunTaskResponse()
+        )
+        await client.run_task(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.RunTaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_job_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tasks.Job(
+                name="name_value",
+                uid="uid_value",
+                state=tasks.Job.State.RUNNING,
+                retry_count=1214,
+                service=tasks.Job.Service.DATAPROC,
+                service_job="service_job_value",
+                message="message_value",
+                trigger=tasks.Job.Trigger.TASK_CONFIG,
+            )
+        )
+        await client.get_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_cancel_job_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.cancel_job(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CancelJobRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_environment_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_environment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_environment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateEnvironmentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_environment_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_environment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_environment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateEnvironmentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_environment_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_environment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_environment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteEnvironmentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_environments_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_environments), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListEnvironmentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_environments(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListEnvironmentsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_environment_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analyze.Environment(
+                name="name_value",
+                display_name="display_name_value",
+                uid="uid_value",
+                description="description_value",
+                state=resources.State.ACTIVE,
+            )
+        )
+        await client.get_environment(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetEnvironmentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_sessions_empty_call_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListSessionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_sessions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListSessionsRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -16522,20 +16758,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
 def test_delete_operation(transport: str = "grpc"):
     client = DataplexServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -16563,7 +16785,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -16616,7 +16838,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -16661,7 +16883,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -16702,7 +16924,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -16755,7 +16977,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -16800,7 +17022,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -16841,7 +17063,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -16896,7 +17118,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -16943,7 +17165,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -16986,7 +17208,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -17041,7 +17263,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -17088,7 +17310,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -17131,7 +17353,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -17186,7 +17408,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -17233,7 +17455,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -17276,7 +17498,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -17328,9 +17550,7 @@ def test_get_location_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
-    client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    client = DataplexServiceAsyncClient(credentials=async_anonymous_credentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -17376,7 +17596,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = DataplexServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -17392,21 +17612,29 @@ async def test_get_location_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = DataplexServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = DataplexServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = DataplexServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

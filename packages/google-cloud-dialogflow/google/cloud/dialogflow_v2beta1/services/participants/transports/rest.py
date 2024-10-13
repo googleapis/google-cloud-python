@@ -16,34 +16,30 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.dialogflow_v2beta1.types import participant as gcd_participant
+from google.cloud.dialogflow_v2beta1.types import participant
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseParticipantsRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.longrunning import operations_pb2  # type: ignore
-
-from google.cloud.dialogflow_v2beta1.types import participant as gcd_participant
-from google.cloud.dialogflow_v2beta1.types import participant
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import ParticipantsTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -535,8 +531,8 @@ class ParticipantsRestStub:
     _interceptor: ParticipantsRestInterceptor
 
 
-class ParticipantsRestTransport(ParticipantsTransport):
-    """REST backend transport for Participants.
+class ParticipantsRestTransport(_BaseParticipantsRestTransport):
+    """REST backend synchronous transport for Participants.
 
     Service for managing
     [Participants][google.cloud.dialogflow.v2beta1.Participant].
@@ -546,7 +542,6 @@ class ParticipantsRestTransport(ParticipantsTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -600,21 +595,12 @@ class ParticipantsRestTransport(ParticipantsTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -625,19 +611,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
         self._interceptor = interceptor or ParticipantsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AnalyzeContent(ParticipantsRestStub):
+    class _AnalyzeContent(
+        _BaseParticipantsRestTransport._BaseAnalyzeContent, ParticipantsRestStub
+    ):
         def __hash__(self):
-            return hash("AnalyzeContent")
+            return hash("ParticipantsRestTransport.AnalyzeContent")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -666,50 +667,32 @@ class ParticipantsRestTransport(ParticipantsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{participant=projects/*/conversations/*/participants/*}:analyzeContent",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{participant=projects/*/locations/*/conversations/*/participants/*}:analyzeContent",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_analyze_content(request, metadata)
-            pb_request = gcd_participant.AnalyzeContentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseParticipantsRestTransport._BaseAnalyzeContent._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_analyze_content(request, metadata)
+            transcoded_request = _BaseParticipantsRestTransport._BaseAnalyzeContent._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseParticipantsRestTransport._BaseAnalyzeContent._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseParticipantsRestTransport._BaseAnalyzeContent._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ParticipantsRestTransport._AnalyzeContent._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -725,9 +708,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
             resp = self._interceptor.post_analyze_content(resp)
             return resp
 
-    class _CompileSuggestion(ParticipantsRestStub):
+    class _CompileSuggestion(
+        _BaseParticipantsRestTransport._BaseCompileSuggestion, ParticipantsRestStub
+    ):
         def __hash__(self):
-            return hash("CompileSuggestion")
+            return hash("ParticipantsRestTransport.CompileSuggestion")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -756,46 +764,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{parent=projects/*/conversations/*/participants/*}/suggestions:compile",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseParticipantsRestTransport._BaseCompileSuggestion._get_http_options()
+            )
             request, metadata = self._interceptor.pre_compile_suggestion(
                 request, metadata
             )
-            pb_request = participant.CompileSuggestionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseParticipantsRestTransport._BaseCompileSuggestion._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseParticipantsRestTransport._BaseCompileSuggestion._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseParticipantsRestTransport._BaseCompileSuggestion._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ParticipantsRestTransport._CompileSuggestion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -811,19 +807,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
             resp = self._interceptor.post_compile_suggestion(resp)
             return resp
 
-    class _CreateParticipant(ParticipantsRestStub):
+    class _CreateParticipant(
+        _BaseParticipantsRestTransport._BaseCreateParticipant, ParticipantsRestStub
+    ):
         def __hash__(self):
-            return hash("CreateParticipant")
+            return hash("ParticipantsRestTransport.CreateParticipant")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -852,52 +863,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{parent=projects/*/conversations/*}/participants",
-                    "body": "participant",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{parent=projects/*/locations/*/conversations/*}/participants",
-                    "body": "participant",
-                },
-            ]
+            http_options = (
+                _BaseParticipantsRestTransport._BaseCreateParticipant._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_participant(
                 request, metadata
             )
-            pb_request = gcd_participant.CreateParticipantRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseParticipantsRestTransport._BaseCreateParticipant._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseParticipantsRestTransport._BaseCreateParticipant._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseParticipantsRestTransport._BaseCreateParticipant._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ParticipantsRestTransport._CreateParticipant._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -913,19 +906,33 @@ class ParticipantsRestTransport(ParticipantsTransport):
             resp = self._interceptor.post_create_participant(resp)
             return resp
 
-    class _GetParticipant(ParticipantsRestStub):
+    class _GetParticipant(
+        _BaseParticipantsRestTransport._BaseGetParticipant, ParticipantsRestStub
+    ):
         def __hash__(self):
-            return hash("GetParticipant")
+            return hash("ParticipantsRestTransport.GetParticipant")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -954,42 +961,27 @@ class ParticipantsRestTransport(ParticipantsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{name=projects/*/conversations/*/participants/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{name=projects/*/locations/*/conversations/*/participants/*}",
-                },
-            ]
+            http_options = (
+                _BaseParticipantsRestTransport._BaseGetParticipant._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_participant(request, metadata)
-            pb_request = participant.GetParticipantRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseParticipantsRestTransport._BaseGetParticipant._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseParticipantsRestTransport._BaseGetParticipant._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ParticipantsRestTransport._GetParticipant._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1005,19 +997,33 @@ class ParticipantsRestTransport(ParticipantsTransport):
             resp = self._interceptor.post_get_participant(resp)
             return resp
 
-    class _ListParticipants(ParticipantsRestStub):
+    class _ListParticipants(
+        _BaseParticipantsRestTransport._BaseListParticipants, ParticipantsRestStub
+    ):
         def __hash__(self):
-            return hash("ListParticipants")
+            return hash("ParticipantsRestTransport.ListParticipants")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1046,44 +1052,29 @@ class ParticipantsRestTransport(ParticipantsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{parent=projects/*/conversations/*}/participants",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{parent=projects/*/locations/*/conversations/*}/participants",
-                },
-            ]
+            http_options = (
+                _BaseParticipantsRestTransport._BaseListParticipants._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_participants(
                 request, metadata
             )
-            pb_request = participant.ListParticipantsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseParticipantsRestTransport._BaseListParticipants._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseParticipantsRestTransport._BaseListParticipants._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ParticipantsRestTransport._ListParticipants._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1099,9 +1090,33 @@ class ParticipantsRestTransport(ParticipantsTransport):
             resp = self._interceptor.post_list_participants(resp)
             return resp
 
-    class _ListSuggestions(ParticipantsRestStub):
+    class _ListSuggestions(
+        _BaseParticipantsRestTransport._BaseListSuggestions, ParticipantsRestStub
+    ):
         def __hash__(self):
-            return hash("ListSuggestions")
+            return hash("ParticipantsRestTransport.ListSuggestions")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1130,39 +1145,29 @@ class ParticipantsRestTransport(ParticipantsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{parent=projects/*/conversations/*/participants/*}/suggestions",
-                },
-            ]
+            http_options = (
+                _BaseParticipantsRestTransport._BaseListSuggestions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_suggestions(
                 request, metadata
             )
-            pb_request = participant.ListSuggestionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseParticipantsRestTransport._BaseListSuggestions._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseParticipantsRestTransport._BaseListSuggestions._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ParticipantsRestTransport._ListSuggestions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1178,9 +1183,12 @@ class ParticipantsRestTransport(ParticipantsTransport):
             resp = self._interceptor.post_list_suggestions(resp)
             return resp
 
-    class _StreamingAnalyzeContent(ParticipantsRestStub):
+    class _StreamingAnalyzeContent(
+        _BaseParticipantsRestTransport._BaseStreamingAnalyzeContent,
+        ParticipantsRestStub,
+    ):
         def __hash__(self):
-            return hash("StreamingAnalyzeContent")
+            return hash("ParticipantsRestTransport.StreamingAnalyzeContent")
 
         def __call__(
             self,
@@ -1194,19 +1202,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
                 "Method StreamingAnalyzeContent is not available over REST transport"
             )
 
-    class _SuggestArticles(ParticipantsRestStub):
+    class _SuggestArticles(
+        _BaseParticipantsRestTransport._BaseSuggestArticles, ParticipantsRestStub
+    ):
         def __hash__(self):
-            return hash("SuggestArticles")
+            return hash("ParticipantsRestTransport.SuggestArticles")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1235,52 +1258,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{parent=projects/*/conversations/*/participants/*}/suggestions:suggestArticles",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{parent=projects/*/locations/*/conversations/*/participants/*}/suggestions:suggestArticles",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseParticipantsRestTransport._BaseSuggestArticles._get_http_options()
+            )
             request, metadata = self._interceptor.pre_suggest_articles(
                 request, metadata
             )
-            pb_request = participant.SuggestArticlesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseParticipantsRestTransport._BaseSuggestArticles._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseParticipantsRestTransport._BaseSuggestArticles._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseParticipantsRestTransport._BaseSuggestArticles._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ParticipantsRestTransport._SuggestArticles._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1296,19 +1301,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
             resp = self._interceptor.post_suggest_articles(resp)
             return resp
 
-    class _SuggestFaqAnswers(ParticipantsRestStub):
+    class _SuggestFaqAnswers(
+        _BaseParticipantsRestTransport._BaseSuggestFaqAnswers, ParticipantsRestStub
+    ):
         def __hash__(self):
-            return hash("SuggestFaqAnswers")
+            return hash("ParticipantsRestTransport.SuggestFaqAnswers")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1337,52 +1357,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{parent=projects/*/conversations/*/participants/*}/suggestions:suggestFaqAnswers",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{parent=projects/*/locations/*/conversations/*/participants/*}/suggestions:suggestFaqAnswers",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_http_options()
+            )
             request, metadata = self._interceptor.pre_suggest_faq_answers(
                 request, metadata
             )
-            pb_request = participant.SuggestFaqAnswersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ParticipantsRestTransport._SuggestFaqAnswers._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1398,19 +1400,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
             resp = self._interceptor.post_suggest_faq_answers(resp)
             return resp
 
-    class _SuggestKnowledgeAssist(ParticipantsRestStub):
+    class _SuggestKnowledgeAssist(
+        _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist, ParticipantsRestStub
+    ):
         def __hash__(self):
-            return hash("SuggestKnowledgeAssist")
+            return hash("ParticipantsRestTransport.SuggestKnowledgeAssist")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1439,52 +1456,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{parent=projects/*/conversations/*/participants/*}/suggestions:suggestKnowledgeAssist",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{parent=projects/*/locations/*/conversations/*/participants/*}/suggestions:suggestKnowledgeAssist",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_http_options()
+            )
             request, metadata = self._interceptor.pre_suggest_knowledge_assist(
                 request, metadata
             )
-            pb_request = participant.SuggestKnowledgeAssistRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ParticipantsRestTransport._SuggestKnowledgeAssist._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1500,19 +1499,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
             resp = self._interceptor.post_suggest_knowledge_assist(resp)
             return resp
 
-    class _SuggestSmartReplies(ParticipantsRestStub):
+    class _SuggestSmartReplies(
+        _BaseParticipantsRestTransport._BaseSuggestSmartReplies, ParticipantsRestStub
+    ):
         def __hash__(self):
-            return hash("SuggestSmartReplies")
+            return hash("ParticipantsRestTransport.SuggestSmartReplies")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1541,52 +1555,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{parent=projects/*/conversations/*/participants/*}/suggestions:suggestSmartReplies",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{parent=projects/*/locations/*/conversations/*/participants/*}/suggestions:suggestSmartReplies",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_http_options()
+            )
             request, metadata = self._interceptor.pre_suggest_smart_replies(
                 request, metadata
             )
-            pb_request = participant.SuggestSmartRepliesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ParticipantsRestTransport._SuggestSmartReplies._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1602,21 +1598,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
             resp = self._interceptor.post_suggest_smart_replies(resp)
             return resp
 
-    class _UpdateParticipant(ParticipantsRestStub):
+    class _UpdateParticipant(
+        _BaseParticipantsRestTransport._BaseUpdateParticipant, ParticipantsRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateParticipant")
+            return hash("ParticipantsRestTransport.UpdateParticipant")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1645,52 +1654,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v2beta1/{participant.name=projects/*/conversations/*/participants/*}",
-                    "body": "participant",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v2beta1/{participant.name=projects/*/locations/*/conversations/*/participants/*}",
-                    "body": "participant",
-                },
-            ]
+            http_options = (
+                _BaseParticipantsRestTransport._BaseUpdateParticipant._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_participant(
                 request, metadata
             )
-            pb_request = gcd_participant.UpdateParticipantRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseParticipantsRestTransport._BaseUpdateParticipant._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseParticipantsRestTransport._BaseUpdateParticipant._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseParticipantsRestTransport._BaseUpdateParticipant._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ParticipantsRestTransport._UpdateParticipant._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1831,7 +1822,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(ParticipantsRestStub):
+    class _GetLocation(
+        _BaseParticipantsRestTransport._BaseGetLocation, ParticipantsRestStub
+    ):
+        def __hash__(self):
+            return hash("ParticipantsRestTransport.GetLocation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -1855,32 +1873,31 @@ class ParticipantsRestTransport(ParticipantsTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{name=projects/*/locations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseParticipantsRestTransport._BaseGetLocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = (
+                _BaseParticipantsRestTransport._BaseGetLocation._get_transcoded_request(
+                    http_options, request
+                )
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseParticipantsRestTransport._BaseGetLocation._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = ParticipantsRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1888,8 +1905,9 @@ class ParticipantsRestTransport(ParticipantsTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -1897,7 +1915,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(ParticipantsRestStub):
+    class _ListLocations(
+        _BaseParticipantsRestTransport._BaseListLocations, ParticipantsRestStub
+    ):
+        def __hash__(self):
+            return hash("ParticipantsRestTransport.ListLocations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -1921,32 +1966,27 @@ class ParticipantsRestTransport(ParticipantsTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{name=projects/*}/locations",
-                },
-            ]
-
+            http_options = (
+                _BaseParticipantsRestTransport._BaseListLocations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseParticipantsRestTransport._BaseListLocations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseParticipantsRestTransport._BaseListLocations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = ParticipantsRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1954,8 +1994,9 @@ class ParticipantsRestTransport(ParticipantsTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 
@@ -1963,7 +2004,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(ParticipantsRestStub):
+    class _CancelOperation(
+        _BaseParticipantsRestTransport._BaseCancelOperation, ParticipantsRestStub
+    ):
+        def __hash__(self):
+            return hash("ParticipantsRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -1984,38 +2052,29 @@ class ParticipantsRestTransport(ParticipantsTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{name=projects/*/operations/*}:cancel",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v2beta1/{name=projects/*/locations/*/operations/*}:cancel",
-                },
-            ]
-
+            http_options = (
+                _BaseParticipantsRestTransport._BaseCancelOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseParticipantsRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseParticipantsRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = ParticipantsRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2029,7 +2088,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(ParticipantsRestStub):
+    class _GetOperation(
+        _BaseParticipantsRestTransport._BaseGetOperation, ParticipantsRestStub
+    ):
+        def __hash__(self):
+            return hash("ParticipantsRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -2053,36 +2139,29 @@ class ParticipantsRestTransport(ParticipantsTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{name=projects/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseParticipantsRestTransport._BaseGetOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseParticipantsRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = (
+                _BaseParticipantsRestTransport._BaseGetOperation._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = ParticipantsRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2090,8 +2169,9 @@ class ParticipantsRestTransport(ParticipantsTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -2099,7 +2179,34 @@ class ParticipantsRestTransport(ParticipantsTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(ParticipantsRestStub):
+    class _ListOperations(
+        _BaseParticipantsRestTransport._BaseListOperations, ParticipantsRestStub
+    ):
+        def __hash__(self):
+            return hash("ParticipantsRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -2123,36 +2230,27 @@ class ParticipantsRestTransport(ParticipantsTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{name=projects/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v2beta1/{name=projects/*/locations/*}/operations",
-                },
-            ]
-
+            http_options = (
+                _BaseParticipantsRestTransport._BaseListOperations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseParticipantsRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseParticipantsRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = ParticipantsRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2160,8 +2258,9 @@ class ParticipantsRestTransport(ParticipantsTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

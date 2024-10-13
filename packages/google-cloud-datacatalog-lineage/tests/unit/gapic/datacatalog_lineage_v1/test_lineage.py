@@ -22,9 +22,26 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
+
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import (
     future,
@@ -35,7 +52,7 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
@@ -46,16 +63,8 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.datacatalog_lineage_v1.services.lineage import (
     LineageAsyncClient,
@@ -66,8 +75,22 @@ from google.cloud.datacatalog_lineage_v1.services.lineage import (
 from google.cloud.datacatalog_lineage_v1.types import lineage
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1106,27 +1129,6 @@ def test_process_open_lineage_run_event(request_type, transport: str = "grpc"):
     assert response.lineage_events == ["lineage_events_value"]
 
 
-def test_process_open_lineage_run_event_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.process_open_lineage_run_event), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.process_open_lineage_run_event()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.ProcessOpenLineageRunEventRequest()
-
-
 def test_process_open_lineage_run_event_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1200,33 +1202,6 @@ def test_process_open_lineage_run_event_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_process_open_lineage_run_event_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.process_open_lineage_run_event), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            lineage.ProcessOpenLineageRunEventResponse(
-                process="process_value",
-                run="run_value",
-                lineage_events=["lineage_events_value"],
-            )
-        )
-        response = await client.process_open_lineage_run_event()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.ProcessOpenLineageRunEventRequest()
-
-
-@pytest.mark.asyncio
 async def test_process_open_lineage_run_event_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1234,7 +1209,7 @@ async def test_process_open_lineage_run_event_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LineageAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1274,7 +1249,7 @@ async def test_process_open_lineage_run_event_async(
     request_type=lineage.ProcessOpenLineageRunEventRequest,
 ):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1348,7 +1323,7 @@ def test_process_open_lineage_run_event_field_headers():
 @pytest.mark.asyncio
 async def test_process_open_lineage_run_event_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1445,7 +1420,7 @@ def test_process_open_lineage_run_event_flattened_error():
 @pytest.mark.asyncio
 async def test_process_open_lineage_run_event_flattened_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1492,7 +1467,7 @@ async def test_process_open_lineage_run_event_flattened_async():
 @pytest.mark.asyncio
 async def test_process_open_lineage_run_event_flattened_error_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1547,25 +1522,6 @@ def test_create_process(request_type, transport: str = "grpc"):
     assert isinstance(response, lineage.Process)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-def test_create_process_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_process), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_process()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.CreateProcessRequest()
 
 
 def test_create_process_non_empty_request_with_auto_populated_field():
@@ -1634,30 +1590,6 @@ def test_create_process_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_process_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_process), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            lineage.Process(
-                name="name_value",
-                display_name="display_name_value",
-            )
-        )
-        response = await client.create_process()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.CreateProcessRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_process_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1665,7 +1597,7 @@ async def test_create_process_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LineageAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1704,7 +1636,7 @@ async def test_create_process_async(
     transport: str = "grpc_asyncio", request_type=lineage.CreateProcessRequest
 ):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1772,7 +1704,7 @@ def test_create_process_field_headers():
 @pytest.mark.asyncio
 async def test_create_process_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1845,7 +1777,7 @@ def test_create_process_flattened_error():
 @pytest.mark.asyncio
 async def test_create_process_flattened_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1876,7 +1808,7 @@ async def test_create_process_flattened_async():
 @pytest.mark.asyncio
 async def test_create_process_flattened_error_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1925,25 +1857,6 @@ def test_update_process(request_type, transport: str = "grpc"):
     assert isinstance(response, lineage.Process)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-def test_update_process_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_process), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_process()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.UpdateProcessRequest()
 
 
 def test_update_process_non_empty_request_with_auto_populated_field():
@@ -2006,30 +1919,6 @@ def test_update_process_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_process_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_process), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            lineage.Process(
-                name="name_value",
-                display_name="display_name_value",
-            )
-        )
-        response = await client.update_process()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.UpdateProcessRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_process_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2037,7 +1926,7 @@ async def test_update_process_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LineageAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2076,7 +1965,7 @@ async def test_update_process_async(
     transport: str = "grpc_asyncio", request_type=lineage.UpdateProcessRequest
 ):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2144,7 +2033,7 @@ def test_update_process_field_headers():
 @pytest.mark.asyncio
 async def test_update_process_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2217,7 +2106,7 @@ def test_update_process_flattened_error():
 @pytest.mark.asyncio
 async def test_update_process_flattened_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2248,7 +2137,7 @@ async def test_update_process_flattened_async():
 @pytest.mark.asyncio
 async def test_update_process_flattened_error_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2297,25 +2186,6 @@ def test_get_process(request_type, transport: str = "grpc"):
     assert isinstance(response, lineage.Process)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
-
-
-def test_get_process_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_process), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_process()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.GetProcessRequest()
 
 
 def test_get_process_non_empty_request_with_auto_populated_field():
@@ -2382,30 +2252,6 @@ def test_get_process_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_process_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_process), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            lineage.Process(
-                name="name_value",
-                display_name="display_name_value",
-            )
-        )
-        response = await client.get_process()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.GetProcessRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_process_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2413,7 +2259,7 @@ async def test_get_process_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LineageAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2452,7 +2298,7 @@ async def test_get_process_async(
     transport: str = "grpc_asyncio", request_type=lineage.GetProcessRequest
 ):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2520,7 +2366,7 @@ def test_get_process_field_headers():
 @pytest.mark.asyncio
 async def test_get_process_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2588,7 +2434,7 @@ def test_get_process_flattened_error():
 @pytest.mark.asyncio
 async def test_get_process_flattened_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2615,7 +2461,7 @@ async def test_get_process_flattened_async():
 @pytest.mark.asyncio
 async def test_get_process_flattened_error_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2661,25 +2507,6 @@ def test_list_processes(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProcessesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_processes_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_processes), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_processes()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.ListProcessesRequest()
 
 
 def test_list_processes_non_empty_request_with_auto_populated_field():
@@ -2748,29 +2575,6 @@ def test_list_processes_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_processes_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_processes), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            lineage.ListProcessesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_processes()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.ListProcessesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_processes_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2778,7 +2582,7 @@ async def test_list_processes_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LineageAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2817,7 +2621,7 @@ async def test_list_processes_async(
     transport: str = "grpc_asyncio", request_type=lineage.ListProcessesRequest
 ):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2883,7 +2687,7 @@ def test_list_processes_field_headers():
 @pytest.mark.asyncio
 async def test_list_processes_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2953,7 +2757,7 @@ def test_list_processes_flattened_error():
 @pytest.mark.asyncio
 async def test_list_processes_flattened_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2982,7 +2786,7 @@ async def test_list_processes_flattened_async():
 @pytest.mark.asyncio
 async def test_list_processes_flattened_error_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3092,7 +2896,7 @@ def test_list_processes_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_processes_async_pager():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3142,7 +2946,7 @@ async def test_list_processes_async_pager():
 @pytest.mark.asyncio
 async def test_list_processes_async_pages():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3221,25 +3025,6 @@ def test_delete_process(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_delete_process_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_process), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_process()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.DeleteProcessRequest()
-
-
 def test_delete_process_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -3309,27 +3094,6 @@ def test_delete_process_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_process_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_process), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_process()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.DeleteProcessRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_process_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3337,7 +3101,7 @@ async def test_delete_process_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LineageAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3381,7 +3145,7 @@ async def test_delete_process_async(
     transport: str = "grpc_asyncio", request_type=lineage.DeleteProcessRequest
 ):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3444,7 +3208,7 @@ def test_delete_process_field_headers():
 @pytest.mark.asyncio
 async def test_delete_process_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3514,7 +3278,7 @@ def test_delete_process_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_process_flattened_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3543,7 +3307,7 @@ async def test_delete_process_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_process_flattened_error_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3593,25 +3357,6 @@ def test_create_run(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.state == lineage.Run.State.STARTED
-
-
-def test_create_run_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_run), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_run()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.CreateRunRequest()
 
 
 def test_create_run_non_empty_request_with_auto_populated_field():
@@ -3680,37 +3425,12 @@ def test_create_run_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_run_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_run), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            lineage.Run(
-                name="name_value",
-                display_name="display_name_value",
-                state=lineage.Run.State.STARTED,
-            )
-        )
-        response = await client.create_run()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.CreateRunRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_run_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LineageAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3749,7 +3469,7 @@ async def test_create_run_async(
     transport: str = "grpc_asyncio", request_type=lineage.CreateRunRequest
 ):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3819,7 +3539,7 @@ def test_create_run_field_headers():
 @pytest.mark.asyncio
 async def test_create_run_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3892,7 +3612,7 @@ def test_create_run_flattened_error():
 @pytest.mark.asyncio
 async def test_create_run_flattened_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3923,7 +3643,7 @@ async def test_create_run_flattened_async():
 @pytest.mark.asyncio
 async def test_create_run_flattened_error_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3974,25 +3694,6 @@ def test_update_run(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.state == lineage.Run.State.STARTED
-
-
-def test_update_run_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_run), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_run()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.UpdateRunRequest()
 
 
 def test_update_run_non_empty_request_with_auto_populated_field():
@@ -4055,37 +3756,12 @@ def test_update_run_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_run_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_run), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            lineage.Run(
-                name="name_value",
-                display_name="display_name_value",
-                state=lineage.Run.State.STARTED,
-            )
-        )
-        response = await client.update_run()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.UpdateRunRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_run_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LineageAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4124,7 +3800,7 @@ async def test_update_run_async(
     transport: str = "grpc_asyncio", request_type=lineage.UpdateRunRequest
 ):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4194,7 +3870,7 @@ def test_update_run_field_headers():
 @pytest.mark.asyncio
 async def test_update_run_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4267,7 +3943,7 @@ def test_update_run_flattened_error():
 @pytest.mark.asyncio
 async def test_update_run_flattened_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4298,7 +3974,7 @@ async def test_update_run_flattened_async():
 @pytest.mark.asyncio
 async def test_update_run_flattened_error_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4349,25 +4025,6 @@ def test_get_run(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.state == lineage.Run.State.STARTED
-
-
-def test_get_run_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_run), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_run()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.GetRunRequest()
 
 
 def test_get_run_non_empty_request_with_auto_populated_field():
@@ -4434,37 +4091,12 @@ def test_get_run_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_run_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_run), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            lineage.Run(
-                name="name_value",
-                display_name="display_name_value",
-                state=lineage.Run.State.STARTED,
-            )
-        )
-        response = await client.get_run()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.GetRunRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_run_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LineageAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4503,7 +4135,7 @@ async def test_get_run_async(
     transport: str = "grpc_asyncio", request_type=lineage.GetRunRequest
 ):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4573,7 +4205,7 @@ def test_get_run_field_headers():
 @pytest.mark.asyncio
 async def test_get_run_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4641,7 +4273,7 @@ def test_get_run_flattened_error():
 @pytest.mark.asyncio
 async def test_get_run_flattened_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4668,7 +4300,7 @@ async def test_get_run_flattened_async():
 @pytest.mark.asyncio
 async def test_get_run_flattened_error_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4714,25 +4346,6 @@ def test_list_runs(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRunsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_runs_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_runs), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_runs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.ListRunsRequest()
 
 
 def test_list_runs_non_empty_request_with_auto_populated_field():
@@ -4801,35 +4414,12 @@ def test_list_runs_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_runs_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_runs), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            lineage.ListRunsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_runs()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.ListRunsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_runs_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LineageAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4868,7 +4458,7 @@ async def test_list_runs_async(
     transport: str = "grpc_asyncio", request_type=lineage.ListRunsRequest
 ):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4934,7 +4524,7 @@ def test_list_runs_field_headers():
 @pytest.mark.asyncio
 async def test_list_runs_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5004,7 +4594,7 @@ def test_list_runs_flattened_error():
 @pytest.mark.asyncio
 async def test_list_runs_flattened_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5033,7 +4623,7 @@ async def test_list_runs_flattened_async():
 @pytest.mark.asyncio
 async def test_list_runs_flattened_error_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5143,7 +4733,7 @@ def test_list_runs_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_runs_async_pager():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5193,7 +4783,7 @@ async def test_list_runs_async_pager():
 @pytest.mark.asyncio
 async def test_list_runs_async_pages():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5272,25 +4862,6 @@ def test_delete_run(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_delete_run_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_run), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_run()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.DeleteRunRequest()
-
-
 def test_delete_run_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -5360,33 +4931,12 @@ def test_delete_run_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_run_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_run), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_run()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.DeleteRunRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_run_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LineageAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5430,7 +4980,7 @@ async def test_delete_run_async(
     transport: str = "grpc_asyncio", request_type=lineage.DeleteRunRequest
 ):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5493,7 +5043,7 @@ def test_delete_run_field_headers():
 @pytest.mark.asyncio
 async def test_delete_run_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5563,7 +5113,7 @@ def test_delete_run_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_run_flattened_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5592,7 +5142,7 @@ async def test_delete_run_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_run_flattened_error_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5640,27 +5190,6 @@ def test_create_lineage_event(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.LineageEvent)
     assert response.name == "name_value"
-
-
-def test_create_lineage_event_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_lineage_event), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_lineage_event()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.CreateLineageEventRequest()
 
 
 def test_create_lineage_event_non_empty_request_with_auto_populated_field():
@@ -5735,31 +5264,6 @@ def test_create_lineage_event_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_lineage_event_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_lineage_event), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            lineage.LineageEvent(
-                name="name_value",
-            )
-        )
-        response = await client.create_lineage_event()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.CreateLineageEventRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_lineage_event_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5767,7 +5271,7 @@ async def test_create_lineage_event_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LineageAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5806,7 +5310,7 @@ async def test_create_lineage_event_async(
     transport: str = "grpc_asyncio", request_type=lineage.CreateLineageEventRequest
 ):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5876,7 +5380,7 @@ def test_create_lineage_event_field_headers():
 @pytest.mark.asyncio
 async def test_create_lineage_event_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5955,7 +5459,7 @@ def test_create_lineage_event_flattened_error():
 @pytest.mark.asyncio
 async def test_create_lineage_event_flattened_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5990,7 +5494,7 @@ async def test_create_lineage_event_flattened_async():
 @pytest.mark.asyncio
 async def test_create_lineage_event_flattened_error_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6039,27 +5543,6 @@ def test_get_lineage_event(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, lineage.LineageEvent)
     assert response.name == "name_value"
-
-
-def test_get_lineage_event_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_lineage_event), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_lineage_event()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.GetLineageEventRequest()
 
 
 def test_get_lineage_event_non_empty_request_with_auto_populated_field():
@@ -6130,31 +5613,6 @@ def test_get_lineage_event_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_lineage_event_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_lineage_event), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            lineage.LineageEvent(
-                name="name_value",
-            )
-        )
-        response = await client.get_lineage_event()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.GetLineageEventRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_lineage_event_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6162,7 +5620,7 @@ async def test_get_lineage_event_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LineageAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6201,7 +5659,7 @@ async def test_get_lineage_event_async(
     transport: str = "grpc_asyncio", request_type=lineage.GetLineageEventRequest
 ):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6271,7 +5729,7 @@ def test_get_lineage_event_field_headers():
 @pytest.mark.asyncio
 async def test_get_lineage_event_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6345,7 +5803,7 @@ def test_get_lineage_event_flattened_error():
 @pytest.mark.asyncio
 async def test_get_lineage_event_flattened_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6376,7 +5834,7 @@ async def test_get_lineage_event_flattened_async():
 @pytest.mark.asyncio
 async def test_get_lineage_event_flattened_error_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6424,27 +5882,6 @@ def test_list_lineage_events(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLineageEventsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_lineage_events_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_lineage_events), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_lineage_events()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.ListLineageEventsRequest()
 
 
 def test_list_lineage_events_non_empty_request_with_auto_populated_field():
@@ -6519,31 +5956,6 @@ def test_list_lineage_events_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_lineage_events_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_lineage_events), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            lineage.ListLineageEventsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_lineage_events()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.ListLineageEventsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_lineage_events_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6551,7 +5963,7 @@ async def test_list_lineage_events_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LineageAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6590,7 +6002,7 @@ async def test_list_lineage_events_async(
     transport: str = "grpc_asyncio", request_type=lineage.ListLineageEventsRequest
 ):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6660,7 +6072,7 @@ def test_list_lineage_events_field_headers():
 @pytest.mark.asyncio
 async def test_list_lineage_events_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6734,7 +6146,7 @@ def test_list_lineage_events_flattened_error():
 @pytest.mark.asyncio
 async def test_list_lineage_events_flattened_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6765,7 +6177,7 @@ async def test_list_lineage_events_flattened_async():
 @pytest.mark.asyncio
 async def test_list_lineage_events_flattened_error_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6879,7 +6291,7 @@ def test_list_lineage_events_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_lineage_events_async_pager():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6931,7 +6343,7 @@ async def test_list_lineage_events_async_pager():
 @pytest.mark.asyncio
 async def test_list_lineage_events_async_pages():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7014,27 +6426,6 @@ def test_delete_lineage_event(request_type, transport: str = "grpc"):
     assert response is None
 
 
-def test_delete_lineage_event_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_lineage_event), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_lineage_event()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.DeleteLineageEventRequest()
-
-
 def test_delete_lineage_event_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -7105,27 +6496,6 @@ def test_delete_lineage_event_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_lineage_event_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_lineage_event), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_lineage_event()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.DeleteLineageEventRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_lineage_event_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7133,7 +6503,7 @@ async def test_delete_lineage_event_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LineageAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7172,7 +6542,7 @@ async def test_delete_lineage_event_async(
     transport: str = "grpc_asyncio", request_type=lineage.DeleteLineageEventRequest
 ):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7237,7 +6607,7 @@ def test_delete_lineage_event_field_headers():
 @pytest.mark.asyncio
 async def test_delete_lineage_event_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7309,7 +6679,7 @@ def test_delete_lineage_event_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_lineage_event_flattened_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7338,7 +6708,7 @@ async def test_delete_lineage_event_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_lineage_event_flattened_error_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7384,25 +6754,6 @@ def test_search_links(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchLinksPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_search_links_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.search_links), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.search_links()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.SearchLinksRequest()
 
 
 def test_search_links_non_empty_request_with_auto_populated_field():
@@ -7471,29 +6822,6 @@ def test_search_links_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_search_links_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.search_links), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            lineage.SearchLinksResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.search_links()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.SearchLinksRequest()
-
-
-@pytest.mark.asyncio
 async def test_search_links_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7501,7 +6829,7 @@ async def test_search_links_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LineageAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7540,7 +6868,7 @@ async def test_search_links_async(
     transport: str = "grpc_asyncio", request_type=lineage.SearchLinksRequest
 ):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7606,7 +6934,7 @@ def test_search_links_field_headers():
 @pytest.mark.asyncio
 async def test_search_links_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7733,7 +7061,7 @@ def test_search_links_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_search_links_async_pager():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7783,7 +7111,7 @@ async def test_search_links_async_pager():
 @pytest.mark.asyncio
 async def test_search_links_async_pages():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7867,27 +7195,6 @@ def test_batch_search_link_processes(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_batch_search_link_processes_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_search_link_processes), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.batch_search_link_processes()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.BatchSearchLinkProcessesRequest()
-
-
 def test_batch_search_link_processes_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -7961,31 +7268,6 @@ def test_batch_search_link_processes_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_batch_search_link_processes_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_search_link_processes), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            lineage.BatchSearchLinkProcessesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.batch_search_link_processes()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == lineage.BatchSearchLinkProcessesRequest()
-
-
-@pytest.mark.asyncio
 async def test_batch_search_link_processes_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7993,7 +7275,7 @@ async def test_batch_search_link_processes_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LineageAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8033,7 +7315,7 @@ async def test_batch_search_link_processes_async(
     request_type=lineage.BatchSearchLinkProcessesRequest,
 ):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8103,7 +7385,7 @@ def test_batch_search_link_processes_field_headers():
 @pytest.mark.asyncio
 async def test_batch_search_link_processes_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8238,7 +7520,7 @@ def test_batch_search_link_processes_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_batch_search_link_processes_async_pager():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8290,7 +7572,7 @@ async def test_batch_search_link_processes_async_pager():
 @pytest.mark.asyncio
 async def test_batch_search_link_processes_async_pages():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8336,118 +7618,6 @@ async def test_batch_search_link_processes_async_pages():
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lineage.ProcessOpenLineageRunEventRequest,
-        dict,
-    ],
-)
-def test_process_open_lineage_run_event_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["open_lineage"] = {"fields": {}}
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = lineage.ProcessOpenLineageRunEventRequest.meta.fields["open_lineage"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["open_lineage"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["open_lineage"][field])):
-                    del request_init["open_lineage"][field][i][subfield]
-            else:
-                del request_init["open_lineage"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = lineage.ProcessOpenLineageRunEventResponse(
-            process="process_value",
-            run="run_value",
-            lineage_events=["lineage_events_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = lineage.ProcessOpenLineageRunEventResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.process_open_lineage_run_event(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, lineage.ProcessOpenLineageRunEventResponse)
-    assert response.process == "process_value"
-    assert response.run == "run_value"
-    assert response.lineage_events == ["lineage_events_value"]
 
 
 def test_process_open_lineage_run_event_rest_use_cached_wrapped_rpc():
@@ -8587,85 +7757,6 @@ def test_process_open_lineage_run_event_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_process_open_lineage_run_event_rest_interceptors(null_interceptor):
-    transport = transports.LineageRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
-    )
-    client = LineageClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LineageRestInterceptor, "post_process_open_lineage_run_event"
-    ) as post, mock.patch.object(
-        transports.LineageRestInterceptor, "pre_process_open_lineage_run_event"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lineage.ProcessOpenLineageRunEventRequest.pb(
-            lineage.ProcessOpenLineageRunEventRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = lineage.ProcessOpenLineageRunEventResponse.to_json(
-            lineage.ProcessOpenLineageRunEventResponse()
-        )
-
-        request = lineage.ProcessOpenLineageRunEventRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = lineage.ProcessOpenLineageRunEventResponse()
-
-        client.process_open_lineage_run_event(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_process_open_lineage_run_event_rest_bad_request(
-    transport: str = "rest", request_type=lineage.ProcessOpenLineageRunEventRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.process_open_lineage_run_event(request)
-
-
 def test_process_open_lineage_run_event_rest_flattened():
     client = LineageClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8735,127 +7826,6 @@ def test_process_open_lineage_run_event_rest_flattened_error(transport: str = "r
                 }
             ),
         )
-
-
-def test_process_open_lineage_run_event_rest_error():
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lineage.CreateProcessRequest,
-        dict,
-    ],
-)
-def test_create_process_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["process"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "attributes": {},
-        "origin": {"source_type": 1, "name": "name_value"},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = lineage.CreateProcessRequest.meta.fields["process"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["process"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["process"][field])):
-                    del request_init["process"][field][i][subfield]
-            else:
-                del request_init["process"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = lineage.Process(
-            name="name_value",
-            display_name="display_name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = lineage.Process.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_process(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, lineage.Process)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
 
 
 def test_create_process_rest_use_cached_wrapped_rpc():
@@ -8986,81 +7956,6 @@ def test_create_process_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_process_rest_interceptors(null_interceptor):
-    transport = transports.LineageRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
-    )
-    client = LineageClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LineageRestInterceptor, "post_create_process"
-    ) as post, mock.patch.object(
-        transports.LineageRestInterceptor, "pre_create_process"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lineage.CreateProcessRequest.pb(lineage.CreateProcessRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = lineage.Process.to_json(lineage.Process())
-
-        request = lineage.CreateProcessRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = lineage.Process()
-
-        client.create_process(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_process_rest_bad_request(
-    transport: str = "rest", request_type=lineage.CreateProcessRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_process(request)
-
-
 def test_create_process_rest_flattened():
     client = LineageClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9117,129 +8012,6 @@ def test_create_process_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             process=lineage.Process(name="name_value"),
         )
-
-
-def test_create_process_rest_error():
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lineage.UpdateProcessRequest,
-        dict,
-    ],
-)
-def test_update_process_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "process": {"name": "projects/sample1/locations/sample2/processes/sample3"}
-    }
-    request_init["process"] = {
-        "name": "projects/sample1/locations/sample2/processes/sample3",
-        "display_name": "display_name_value",
-        "attributes": {},
-        "origin": {"source_type": 1, "name": "name_value"},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = lineage.UpdateProcessRequest.meta.fields["process"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["process"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["process"][field])):
-                    del request_init["process"][field][i][subfield]
-            else:
-                del request_init["process"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = lineage.Process(
-            name="name_value",
-            display_name="display_name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = lineage.Process.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_process(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, lineage.Process)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
 
 
 def test_update_process_rest_use_cached_wrapped_rpc():
@@ -9370,83 +8142,6 @@ def test_update_process_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_process_rest_interceptors(null_interceptor):
-    transport = transports.LineageRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
-    )
-    client = LineageClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LineageRestInterceptor, "post_update_process"
-    ) as post, mock.patch.object(
-        transports.LineageRestInterceptor, "pre_update_process"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lineage.UpdateProcessRequest.pb(lineage.UpdateProcessRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = lineage.Process.to_json(lineage.Process())
-
-        request = lineage.UpdateProcessRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = lineage.Process()
-
-        client.update_process(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_process_rest_bad_request(
-    transport: str = "rest", request_type=lineage.UpdateProcessRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "process": {"name": "projects/sample1/locations/sample2/processes/sample3"}
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_process(request)
-
-
 def test_update_process_rest_flattened():
     client = LineageClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9506,54 +8201,6 @@ def test_update_process_rest_flattened_error(transport: str = "rest"):
             process=lineage.Process(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_process_rest_error():
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lineage.GetProcessRequest,
-        dict,
-    ],
-)
-def test_get_process_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/processes/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = lineage.Process(
-            name="name_value",
-            display_name="display_name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = lineage.Process.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_process(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, lineage.Process)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
 
 
 def test_get_process_rest_use_cached_wrapped_rpc():
@@ -9673,81 +8320,6 @@ def test_get_process_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_process_rest_interceptors(null_interceptor):
-    transport = transports.LineageRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
-    )
-    client = LineageClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LineageRestInterceptor, "post_get_process"
-    ) as post, mock.patch.object(
-        transports.LineageRestInterceptor, "pre_get_process"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lineage.GetProcessRequest.pb(lineage.GetProcessRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = lineage.Process.to_json(lineage.Process())
-
-        request = lineage.GetProcessRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = lineage.Process()
-
-        client.get_process(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_process_rest_bad_request(
-    transport: str = "rest", request_type=lineage.GetProcessRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/processes/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_process(request)
-
-
 def test_get_process_rest_flattened():
     client = LineageClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9804,52 +8376,6 @@ def test_get_process_rest_flattened_error(transport: str = "rest"):
             lineage.GetProcessRequest(),
             name="name_value",
         )
-
-
-def test_get_process_rest_error():
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lineage.ListProcessesRequest,
-        dict,
-    ],
-)
-def test_list_processes_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = lineage.ListProcessesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = lineage.ListProcessesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_processes(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListProcessesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_processes_rest_use_cached_wrapped_rpc():
@@ -9984,83 +8510,6 @@ def test_list_processes_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_processes_rest_interceptors(null_interceptor):
-    transport = transports.LineageRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
-    )
-    client = LineageClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LineageRestInterceptor, "post_list_processes"
-    ) as post, mock.patch.object(
-        transports.LineageRestInterceptor, "pre_list_processes"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lineage.ListProcessesRequest.pb(lineage.ListProcessesRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = lineage.ListProcessesResponse.to_json(
-            lineage.ListProcessesResponse()
-        )
-
-        request = lineage.ListProcessesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = lineage.ListProcessesResponse()
-
-        client.list_processes(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_processes_rest_bad_request(
-    transport: str = "rest", request_type=lineage.ListProcessesRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_processes(request)
-
-
 def test_list_processes_rest_flattened():
     client = LineageClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10176,41 +8625,6 @@ def test_list_processes_rest_pager(transport: str = "rest"):
         pages = list(client.list_processes(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lineage.DeleteProcessRequest,
-        dict,
-    ],
-)
-def test_delete_process_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/processes/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_process(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_delete_process_rest_use_cached_wrapped_rpc():
@@ -10333,85 +8747,6 @@ def test_delete_process_rest_unset_required_fields():
     assert set(unset_fields) == (set(("allowMissing",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_process_rest_interceptors(null_interceptor):
-    transport = transports.LineageRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
-    )
-    client = LineageClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LineageRestInterceptor, "post_delete_process"
-    ) as post, mock.patch.object(
-        transports.LineageRestInterceptor, "pre_delete_process"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lineage.DeleteProcessRequest.pb(lineage.DeleteProcessRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = lineage.DeleteProcessRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_process(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_process_rest_bad_request(
-    transport: str = "rest", request_type=lineage.DeleteProcessRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/processes/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_process(request)
-
-
 def test_delete_process_rest_flattened():
     client = LineageClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10466,131 +8801,6 @@ def test_delete_process_rest_flattened_error(transport: str = "rest"):
             lineage.DeleteProcessRequest(),
             name="name_value",
         )
-
-
-def test_delete_process_rest_error():
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lineage.CreateRunRequest,
-        dict,
-    ],
-)
-def test_create_run_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/processes/sample3"}
-    request_init["run"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "attributes": {},
-        "start_time": {"seconds": 751, "nanos": 543},
-        "end_time": {},
-        "state": 1,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = lineage.CreateRunRequest.meta.fields["run"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["run"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["run"][field])):
-                    del request_init["run"][field][i][subfield]
-            else:
-                del request_init["run"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = lineage.Run(
-            name="name_value",
-            display_name="display_name_value",
-            state=lineage.Run.State.STARTED,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = lineage.Run.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_run(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, lineage.Run)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.state == lineage.Run.State.STARTED
 
 
 def test_create_run_rest_use_cached_wrapped_rpc():
@@ -10721,81 +8931,6 @@ def test_create_run_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_run_rest_interceptors(null_interceptor):
-    transport = transports.LineageRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
-    )
-    client = LineageClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LineageRestInterceptor, "post_create_run"
-    ) as post, mock.patch.object(
-        transports.LineageRestInterceptor, "pre_create_run"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lineage.CreateRunRequest.pb(lineage.CreateRunRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = lineage.Run.to_json(lineage.Run())
-
-        request = lineage.CreateRunRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = lineage.Run()
-
-        client.create_run(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_run_rest_bad_request(
-    transport: str = "rest", request_type=lineage.CreateRunRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/processes/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_run(request)
-
-
 def test_create_run_rest_flattened():
     client = LineageClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10855,135 +8990,6 @@ def test_create_run_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             run=lineage.Run(name="name_value"),
         )
-
-
-def test_create_run_rest_error():
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lineage.UpdateRunRequest,
-        dict,
-    ],
-)
-def test_update_run_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "run": {
-            "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
-        }
-    }
-    request_init["run"] = {
-        "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4",
-        "display_name": "display_name_value",
-        "attributes": {},
-        "start_time": {"seconds": 751, "nanos": 543},
-        "end_time": {},
-        "state": 1,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = lineage.UpdateRunRequest.meta.fields["run"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["run"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["run"][field])):
-                    del request_init["run"][field][i][subfield]
-            else:
-                del request_init["run"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = lineage.Run(
-            name="name_value",
-            display_name="display_name_value",
-            state=lineage.Run.State.STARTED,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = lineage.Run.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_run(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, lineage.Run)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.state == lineage.Run.State.STARTED
 
 
 def test_update_run_rest_use_cached_wrapped_rpc():
@@ -11114,85 +9120,6 @@ def test_update_run_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_run_rest_interceptors(null_interceptor):
-    transport = transports.LineageRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
-    )
-    client = LineageClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LineageRestInterceptor, "post_update_run"
-    ) as post, mock.patch.object(
-        transports.LineageRestInterceptor, "pre_update_run"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lineage.UpdateRunRequest.pb(lineage.UpdateRunRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = lineage.Run.to_json(lineage.Run())
-
-        request = lineage.UpdateRunRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = lineage.Run()
-
-        client.update_run(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_run_rest_bad_request(
-    transport: str = "rest", request_type=lineage.UpdateRunRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "run": {
-            "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_run(request)
-
-
 def test_update_run_rest_flattened():
     client = LineageClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11254,58 +9181,6 @@ def test_update_run_rest_flattened_error(transport: str = "rest"):
             run=lineage.Run(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_run_rest_error():
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lineage.GetRunRequest,
-        dict,
-    ],
-)
-def test_get_run_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = lineage.Run(
-            name="name_value",
-            display_name="display_name_value",
-            state=lineage.Run.State.STARTED,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = lineage.Run.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_run(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, lineage.Run)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.state == lineage.Run.State.STARTED
 
 
 def test_get_run_rest_use_cached_wrapped_rpc():
@@ -11425,83 +9300,6 @@ def test_get_run_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_run_rest_interceptors(null_interceptor):
-    transport = transports.LineageRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
-    )
-    client = LineageClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LineageRestInterceptor, "post_get_run"
-    ) as post, mock.patch.object(
-        transports.LineageRestInterceptor, "pre_get_run"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lineage.GetRunRequest.pb(lineage.GetRunRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = lineage.Run.to_json(lineage.Run())
-
-        request = lineage.GetRunRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = lineage.Run()
-
-        client.get_run(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_run_rest_bad_request(
-    transport: str = "rest", request_type=lineage.GetRunRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_run(request)
-
-
 def test_get_run_rest_flattened():
     client = LineageClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11559,52 +9357,6 @@ def test_get_run_rest_flattened_error(transport: str = "rest"):
             lineage.GetRunRequest(),
             name="name_value",
         )
-
-
-def test_get_run_rest_error():
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lineage.ListRunsRequest,
-        dict,
-    ],
-)
-def test_list_runs_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/processes/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = lineage.ListRunsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = lineage.ListRunsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_runs(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListRunsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_runs_rest_use_cached_wrapped_rpc():
@@ -11739,83 +9491,6 @@ def test_list_runs_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_runs_rest_interceptors(null_interceptor):
-    transport = transports.LineageRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
-    )
-    client = LineageClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LineageRestInterceptor, "post_list_runs"
-    ) as post, mock.patch.object(
-        transports.LineageRestInterceptor, "pre_list_runs"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lineage.ListRunsRequest.pb(lineage.ListRunsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = lineage.ListRunsResponse.to_json(
-            lineage.ListRunsResponse()
-        )
-
-        request = lineage.ListRunsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = lineage.ListRunsResponse()
-
-        client.list_runs(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_runs_rest_bad_request(
-    transport: str = "rest", request_type=lineage.ListRunsRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/processes/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_runs(request)
-
-
 def test_list_runs_rest_flattened():
     client = LineageClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11938,43 +9613,6 @@ def test_list_runs_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lineage.DeleteRunRequest,
-        dict,
-    ],
-)
-def test_delete_run_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_run(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
-
-
 def test_delete_run_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -12095,87 +9733,6 @@ def test_delete_run_rest_unset_required_fields():
     assert set(unset_fields) == (set(("allowMissing",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_run_rest_interceptors(null_interceptor):
-    transport = transports.LineageRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
-    )
-    client = LineageClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LineageRestInterceptor, "post_delete_run"
-    ) as post, mock.patch.object(
-        transports.LineageRestInterceptor, "pre_delete_run"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lineage.DeleteRunRequest.pb(lineage.DeleteRunRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = lineage.DeleteRunRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_run(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_run_rest_bad_request(
-    transport: str = "rest", request_type=lineage.DeleteRunRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_run(request)
-
-
 def test_delete_run_rest_flattened():
     client = LineageClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12231,132 +9788,6 @@ def test_delete_run_rest_flattened_error(transport: str = "rest"):
             lineage.DeleteRunRequest(),
             name="name_value",
         )
-
-
-def test_delete_run_rest_error():
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lineage.CreateLineageEventRequest,
-        dict,
-    ],
-)
-def test_create_lineage_event_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
-    }
-    request_init["lineage_event"] = {
-        "name": "name_value",
-        "links": [
-            {
-                "source": {"fully_qualified_name": "fully_qualified_name_value"},
-                "target": {},
-            }
-        ],
-        "start_time": {"seconds": 751, "nanos": 543},
-        "end_time": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = lineage.CreateLineageEventRequest.meta.fields["lineage_event"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["lineage_event"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["lineage_event"][field])):
-                    del request_init["lineage_event"][field][i][subfield]
-            else:
-                del request_init["lineage_event"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = lineage.LineageEvent(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = lineage.LineageEvent.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_lineage_event(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, lineage.LineageEvent)
-    assert response.name == "name_value"
 
 
 def test_create_lineage_event_rest_use_cached_wrapped_rpc():
@@ -12493,85 +9924,6 @@ def test_create_lineage_event_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_lineage_event_rest_interceptors(null_interceptor):
-    transport = transports.LineageRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
-    )
-    client = LineageClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LineageRestInterceptor, "post_create_lineage_event"
-    ) as post, mock.patch.object(
-        transports.LineageRestInterceptor, "pre_create_lineage_event"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lineage.CreateLineageEventRequest.pb(
-            lineage.CreateLineageEventRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = lineage.LineageEvent.to_json(lineage.LineageEvent())
-
-        request = lineage.CreateLineageEventRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = lineage.LineageEvent()
-
-        client.create_lineage_event(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_lineage_event_rest_bad_request(
-    transport: str = "rest", request_type=lineage.CreateLineageEventRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_lineage_event(request)
-
-
 def test_create_lineage_event_rest_flattened():
     client = LineageClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12631,54 +9983,6 @@ def test_create_lineage_event_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             lineage_event=lineage.LineageEvent(name="name_value"),
         )
-
-
-def test_create_lineage_event_rest_error():
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lineage.GetLineageEventRequest,
-        dict,
-    ],
-)
-def test_get_lineage_event_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4/lineageEvents/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = lineage.LineageEvent(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = lineage.LineageEvent.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_lineage_event(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, lineage.LineageEvent)
-    assert response.name == "name_value"
 
 
 def test_get_lineage_event_rest_use_cached_wrapped_rpc():
@@ -12802,83 +10106,6 @@ def test_get_lineage_event_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_lineage_event_rest_interceptors(null_interceptor):
-    transport = transports.LineageRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
-    )
-    client = LineageClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LineageRestInterceptor, "post_get_lineage_event"
-    ) as post, mock.patch.object(
-        transports.LineageRestInterceptor, "pre_get_lineage_event"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lineage.GetLineageEventRequest.pb(lineage.GetLineageEventRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = lineage.LineageEvent.to_json(lineage.LineageEvent())
-
-        request = lineage.GetLineageEventRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = lineage.LineageEvent()
-
-        client.get_lineage_event(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_lineage_event_rest_bad_request(
-    transport: str = "rest", request_type=lineage.GetLineageEventRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4/lineageEvents/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_lineage_event(request)
-
-
 def test_get_lineage_event_rest_flattened():
     client = LineageClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12936,54 +10163,6 @@ def test_get_lineage_event_rest_flattened_error(transport: str = "rest"):
             lineage.GetLineageEventRequest(),
             name="name_value",
         )
-
-
-def test_get_lineage_event_rest_error():
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lineage.ListLineageEventsRequest,
-        dict,
-    ],
-)
-def test_list_lineage_events_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = lineage.ListLineageEventsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = lineage.ListLineageEventsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_lineage_events(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListLineageEventsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_lineage_events_rest_use_cached_wrapped_rpc():
@@ -13124,87 +10303,6 @@ def test_list_lineage_events_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_lineage_events_rest_interceptors(null_interceptor):
-    transport = transports.LineageRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
-    )
-    client = LineageClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LineageRestInterceptor, "post_list_lineage_events"
-    ) as post, mock.patch.object(
-        transports.LineageRestInterceptor, "pre_list_lineage_events"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lineage.ListLineageEventsRequest.pb(
-            lineage.ListLineageEventsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = lineage.ListLineageEventsResponse.to_json(
-            lineage.ListLineageEventsResponse()
-        )
-
-        request = lineage.ListLineageEventsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = lineage.ListLineageEventsResponse()
-
-        client.list_lineage_events(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_lineage_events_rest_bad_request(
-    transport: str = "rest", request_type=lineage.ListLineageEventsRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_lineage_events(request)
-
-
 def test_list_lineage_events_rest_flattened():
     client = LineageClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13325,43 +10423,6 @@ def test_list_lineage_events_rest_pager(transport: str = "rest"):
         pages = list(client.list_lineage_events(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lineage.DeleteLineageEventRequest,
-        dict,
-    ],
-)
-def test_delete_lineage_event_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4/lineageEvents/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_lineage_event(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_lineage_event_rest_use_cached_wrapped_rpc():
@@ -13486,79 +10547,6 @@ def test_delete_lineage_event_rest_unset_required_fields():
     assert set(unset_fields) == (set(("allowMissing",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_lineage_event_rest_interceptors(null_interceptor):
-    transport = transports.LineageRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
-    )
-    client = LineageClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LineageRestInterceptor, "pre_delete_lineage_event"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = lineage.DeleteLineageEventRequest.pb(
-            lineage.DeleteLineageEventRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = lineage.DeleteLineageEventRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_lineage_event(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_lineage_event_rest_bad_request(
-    transport: str = "rest", request_type=lineage.DeleteLineageEventRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4/lineageEvents/sample5"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_lineage_event(request)
-
-
 def test_delete_lineage_event_rest_flattened():
     client = LineageClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13614,52 +10602,6 @@ def test_delete_lineage_event_rest_flattened_error(transport: str = "rest"):
             lineage.DeleteLineageEventRequest(),
             name="name_value",
         )
-
-
-def test_delete_lineage_event_rest_error():
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lineage.SearchLinksRequest,
-        dict,
-    ],
-)
-def test_search_links_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = lineage.SearchLinksResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = lineage.SearchLinksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.search_links(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.SearchLinksPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_search_links_rest_use_cached_wrapped_rpc():
@@ -13780,83 +10722,6 @@ def test_search_links_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("parent",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_search_links_rest_interceptors(null_interceptor):
-    transport = transports.LineageRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
-    )
-    client = LineageClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LineageRestInterceptor, "post_search_links"
-    ) as post, mock.patch.object(
-        transports.LineageRestInterceptor, "pre_search_links"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lineage.SearchLinksRequest.pb(lineage.SearchLinksRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = lineage.SearchLinksResponse.to_json(
-            lineage.SearchLinksResponse()
-        )
-
-        request = lineage.SearchLinksRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = lineage.SearchLinksResponse()
-
-        client.search_links(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_search_links_rest_bad_request(
-    transport: str = "rest", request_type=lineage.SearchLinksRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.search_links(request)
-
-
 def test_search_links_rest_pager(transport: str = "rest"):
     client = LineageClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -13916,46 +10781,6 @@ def test_search_links_rest_pager(transport: str = "rest"):
         pages = list(client.search_links(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        lineage.BatchSearchLinkProcessesRequest,
-        dict,
-    ],
-)
-def test_batch_search_link_processes_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = lineage.BatchSearchLinkProcessesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = lineage.BatchSearchLinkProcessesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.batch_search_link_processes(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.BatchSearchLinkProcessesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_batch_search_link_processes_rest_use_cached_wrapped_rpc():
@@ -14093,85 +10918,6 @@ def test_batch_search_link_processes_rest_unset_required_fields():
             )
         )
     )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_search_link_processes_rest_interceptors(null_interceptor):
-    transport = transports.LineageRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
-    )
-    client = LineageClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LineageRestInterceptor, "post_batch_search_link_processes"
-    ) as post, mock.patch.object(
-        transports.LineageRestInterceptor, "pre_batch_search_link_processes"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = lineage.BatchSearchLinkProcessesRequest.pb(
-            lineage.BatchSearchLinkProcessesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = lineage.BatchSearchLinkProcessesResponse.to_json(
-            lineage.BatchSearchLinkProcessesResponse()
-        )
-
-        request = lineage.BatchSearchLinkProcessesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = lineage.BatchSearchLinkProcessesResponse()
-
-        client.batch_search_link_processes(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_search_link_processes_rest_bad_request(
-    transport: str = "rest", request_type=lineage.BatchSearchLinkProcessesRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_search_link_processes(request)
 
 
 def test_batch_search_link_processes_rest_pager(transport: str = "rest"):
@@ -14329,18 +11075,3930 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = LineageClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_process_open_lineage_run_event_empty_call_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.process_open_lineage_run_event), "__call__"
+    ) as call:
+        call.return_value = lineage.ProcessOpenLineageRunEventResponse()
+        client.process_open_lineage_run_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.ProcessOpenLineageRunEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_process_empty_call_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_process), "__call__") as call:
+        call.return_value = lineage.Process()
+        client.create_process(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.CreateProcessRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_process_empty_call_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_process), "__call__") as call:
+        call.return_value = lineage.Process()
+        client.update_process(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.UpdateProcessRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_process_empty_call_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_process), "__call__") as call:
+        call.return_value = lineage.Process()
+        client.get_process(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.GetProcessRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_processes_empty_call_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_processes), "__call__") as call:
+        call.return_value = lineage.ListProcessesResponse()
+        client.list_processes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.ListProcessesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_process_empty_call_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_process), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_process(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.DeleteProcessRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_run_empty_call_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_run), "__call__") as call:
+        call.return_value = lineage.Run()
+        client.create_run(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.CreateRunRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_run_empty_call_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_run), "__call__") as call:
+        call.return_value = lineage.Run()
+        client.update_run(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.UpdateRunRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_run_empty_call_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_run), "__call__") as call:
+        call.return_value = lineage.Run()
+        client.get_run(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.GetRunRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_runs_empty_call_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_runs), "__call__") as call:
+        call.return_value = lineage.ListRunsResponse()
+        client.list_runs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.ListRunsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_run_empty_call_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_run), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_run(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.DeleteRunRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_lineage_event_empty_call_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_lineage_event), "__call__"
+    ) as call:
+        call.return_value = lineage.LineageEvent()
+        client.create_lineage_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.CreateLineageEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_lineage_event_empty_call_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_lineage_event), "__call__"
+    ) as call:
+        call.return_value = lineage.LineageEvent()
+        client.get_lineage_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.GetLineageEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_lineage_events_empty_call_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_lineage_events), "__call__"
+    ) as call:
+        call.return_value = lineage.ListLineageEventsResponse()
+        client.list_lineage_events(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.ListLineageEventsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_lineage_event_empty_call_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_lineage_event), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_lineage_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.DeleteLineageEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_search_links_empty_call_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.search_links), "__call__") as call:
+        call.return_value = lineage.SearchLinksResponse()
+        client.search_links(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.SearchLinksRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_search_link_processes_empty_call_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_search_link_processes), "__call__"
+    ) as call:
+        call.return_value = lineage.BatchSearchLinkProcessesResponse()
+        client.batch_search_link_processes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.BatchSearchLinkProcessesRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = LineageAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_process_open_lineage_run_event_empty_call_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.process_open_lineage_run_event), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.ProcessOpenLineageRunEventResponse(
+                process="process_value",
+                run="run_value",
+                lineage_events=["lineage_events_value"],
+            )
+        )
+        await client.process_open_lineage_run_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.ProcessOpenLineageRunEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_process_empty_call_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_process), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.Process(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        await client.create_process(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.CreateProcessRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_process_empty_call_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_process), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.Process(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        await client.update_process(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.UpdateProcessRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_process_empty_call_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_process), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.Process(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        await client.get_process(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.GetProcessRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_processes_empty_call_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_processes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.ListProcessesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_processes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.ListProcessesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_process_empty_call_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_process), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_process(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.DeleteProcessRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_run_empty_call_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_run), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.Run(
+                name="name_value",
+                display_name="display_name_value",
+                state=lineage.Run.State.STARTED,
+            )
+        )
+        await client.create_run(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.CreateRunRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_run_empty_call_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_run), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.Run(
+                name="name_value",
+                display_name="display_name_value",
+                state=lineage.Run.State.STARTED,
+            )
+        )
+        await client.update_run(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.UpdateRunRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_run_empty_call_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_run), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.Run(
+                name="name_value",
+                display_name="display_name_value",
+                state=lineage.Run.State.STARTED,
+            )
+        )
+        await client.get_run(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.GetRunRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_runs_empty_call_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_runs), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.ListRunsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_runs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.ListRunsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_run_empty_call_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_run), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_run(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.DeleteRunRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_lineage_event_empty_call_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_lineage_event), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.LineageEvent(
+                name="name_value",
+            )
+        )
+        await client.create_lineage_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.CreateLineageEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_lineage_event_empty_call_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_lineage_event), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.LineageEvent(
+                name="name_value",
+            )
+        )
+        await client.get_lineage_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.GetLineageEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_lineage_events_empty_call_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_lineage_events), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.ListLineageEventsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_lineage_events(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.ListLineageEventsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_lineage_event_empty_call_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_lineage_event), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_lineage_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.DeleteLineageEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_search_links_empty_call_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.search_links), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.SearchLinksResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.search_links(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.SearchLinksRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_batch_search_link_processes_empty_call_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_search_link_processes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            lineage.BatchSearchLinkProcessesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.batch_search_link_processes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.BatchSearchLinkProcessesRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = LineageClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_process_open_lineage_run_event_rest_bad_request(
+    request_type=lineage.ProcessOpenLineageRunEventRequest,
+):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.process_open_lineage_run_event(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        lineage.ProcessOpenLineageRunEventRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = LineageClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_process_open_lineage_run_event_rest_call_success(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["open_lineage"] = {"fields": {}}
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = lineage.ProcessOpenLineageRunEventRequest.meta.fields["open_lineage"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["open_lineage"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["open_lineage"][field])):
+                    del request_init["open_lineage"][field][i][subfield]
+            else:
+                del request_init["open_lineage"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lineage.ProcessOpenLineageRunEventResponse(
+            process="process_value",
+            run="run_value",
+            lineage_events=["lineage_events_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = lineage.ProcessOpenLineageRunEventResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.process_open_lineage_run_event(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, lineage.ProcessOpenLineageRunEventResponse)
+    assert response.process == "process_value"
+    assert response.run == "run_value"
+    assert response.lineage_events == ["lineage_events_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_process_open_lineage_run_event_rest_interceptors(null_interceptor):
+    transport = transports.LineageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
+    )
+    client = LineageClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LineageRestInterceptor, "post_process_open_lineage_run_event"
+    ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "pre_process_open_lineage_run_event"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lineage.ProcessOpenLineageRunEventRequest.pb(
+            lineage.ProcessOpenLineageRunEventRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = lineage.ProcessOpenLineageRunEventResponse.to_json(
+            lineage.ProcessOpenLineageRunEventResponse()
+        )
+        req.return_value.content = return_value
+
+        request = lineage.ProcessOpenLineageRunEventRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lineage.ProcessOpenLineageRunEventResponse()
+
+        client.process_open_lineage_run_event(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_process_rest_bad_request(request_type=lineage.CreateProcessRequest):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_process(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lineage.CreateProcessRequest,
+        dict,
+    ],
+)
+def test_create_process_rest_call_success(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["process"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "attributes": {},
+        "origin": {"source_type": 1, "name": "name_value"},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = lineage.CreateProcessRequest.meta.fields["process"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["process"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["process"][field])):
+                    del request_init["process"][field][i][subfield]
+            else:
+                del request_init["process"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lineage.Process(
+            name="name_value",
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = lineage.Process.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_process(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, lineage.Process)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_process_rest_interceptors(null_interceptor):
+    transport = transports.LineageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
+    )
+    client = LineageClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LineageRestInterceptor, "post_create_process"
+    ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "pre_create_process"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lineage.CreateProcessRequest.pb(lineage.CreateProcessRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = lineage.Process.to_json(lineage.Process())
+        req.return_value.content = return_value
+
+        request = lineage.CreateProcessRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lineage.Process()
+
+        client.create_process(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_process_rest_bad_request(request_type=lineage.UpdateProcessRequest):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "process": {"name": "projects/sample1/locations/sample2/processes/sample3"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_process(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lineage.UpdateProcessRequest,
+        dict,
+    ],
+)
+def test_update_process_rest_call_success(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "process": {"name": "projects/sample1/locations/sample2/processes/sample3"}
+    }
+    request_init["process"] = {
+        "name": "projects/sample1/locations/sample2/processes/sample3",
+        "display_name": "display_name_value",
+        "attributes": {},
+        "origin": {"source_type": 1, "name": "name_value"},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = lineage.UpdateProcessRequest.meta.fields["process"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["process"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["process"][field])):
+                    del request_init["process"][field][i][subfield]
+            else:
+                del request_init["process"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lineage.Process(
+            name="name_value",
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = lineage.Process.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_process(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, lineage.Process)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_process_rest_interceptors(null_interceptor):
+    transport = transports.LineageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
+    )
+    client = LineageClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LineageRestInterceptor, "post_update_process"
+    ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "pre_update_process"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lineage.UpdateProcessRequest.pb(lineage.UpdateProcessRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = lineage.Process.to_json(lineage.Process())
+        req.return_value.content = return_value
+
+        request = lineage.UpdateProcessRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lineage.Process()
+
+        client.update_process(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_process_rest_bad_request(request_type=lineage.GetProcessRequest):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/processes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_process(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lineage.GetProcessRequest,
+        dict,
+    ],
+)
+def test_get_process_rest_call_success(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/processes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lineage.Process(
+            name="name_value",
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = lineage.Process.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_process(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, lineage.Process)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_process_rest_interceptors(null_interceptor):
+    transport = transports.LineageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
+    )
+    client = LineageClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LineageRestInterceptor, "post_get_process"
+    ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "pre_get_process"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lineage.GetProcessRequest.pb(lineage.GetProcessRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = lineage.Process.to_json(lineage.Process())
+        req.return_value.content = return_value
+
+        request = lineage.GetProcessRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lineage.Process()
+
+        client.get_process(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_processes_rest_bad_request(request_type=lineage.ListProcessesRequest):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_processes(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lineage.ListProcessesRequest,
+        dict,
+    ],
+)
+def test_list_processes_rest_call_success(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lineage.ListProcessesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = lineage.ListProcessesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_processes(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListProcessesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_processes_rest_interceptors(null_interceptor):
+    transport = transports.LineageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
+    )
+    client = LineageClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LineageRestInterceptor, "post_list_processes"
+    ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "pre_list_processes"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lineage.ListProcessesRequest.pb(lineage.ListProcessesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = lineage.ListProcessesResponse.to_json(
+            lineage.ListProcessesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = lineage.ListProcessesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lineage.ListProcessesResponse()
+
+        client.list_processes(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_process_rest_bad_request(request_type=lineage.DeleteProcessRequest):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/processes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_process(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lineage.DeleteProcessRequest,
+        dict,
+    ],
+)
+def test_delete_process_rest_call_success(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/processes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_process(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_process_rest_interceptors(null_interceptor):
+    transport = transports.LineageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
+    )
+    client = LineageClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.LineageRestInterceptor, "post_delete_process"
+    ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "pre_delete_process"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lineage.DeleteProcessRequest.pb(lineage.DeleteProcessRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = lineage.DeleteProcessRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_process(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_run_rest_bad_request(request_type=lineage.CreateRunRequest):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/processes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_run(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lineage.CreateRunRequest,
+        dict,
+    ],
+)
+def test_create_run_rest_call_success(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/processes/sample3"}
+    request_init["run"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "attributes": {},
+        "start_time": {"seconds": 751, "nanos": 543},
+        "end_time": {},
+        "state": 1,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = lineage.CreateRunRequest.meta.fields["run"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["run"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["run"][field])):
+                    del request_init["run"][field][i][subfield]
+            else:
+                del request_init["run"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lineage.Run(
+            name="name_value",
+            display_name="display_name_value",
+            state=lineage.Run.State.STARTED,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = lineage.Run.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_run(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, lineage.Run)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.state == lineage.Run.State.STARTED
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_run_rest_interceptors(null_interceptor):
+    transport = transports.LineageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
+    )
+    client = LineageClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LineageRestInterceptor, "post_create_run"
+    ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "pre_create_run"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lineage.CreateRunRequest.pb(lineage.CreateRunRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = lineage.Run.to_json(lineage.Run())
+        req.return_value.content = return_value
+
+        request = lineage.CreateRunRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lineage.Run()
+
+        client.create_run(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_run_rest_bad_request(request_type=lineage.UpdateRunRequest):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "run": {
+            "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_run(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lineage.UpdateRunRequest,
+        dict,
+    ],
+)
+def test_update_run_rest_call_success(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "run": {
+            "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
+        }
+    }
+    request_init["run"] = {
+        "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4",
+        "display_name": "display_name_value",
+        "attributes": {},
+        "start_time": {"seconds": 751, "nanos": 543},
+        "end_time": {},
+        "state": 1,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = lineage.UpdateRunRequest.meta.fields["run"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["run"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["run"][field])):
+                    del request_init["run"][field][i][subfield]
+            else:
+                del request_init["run"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lineage.Run(
+            name="name_value",
+            display_name="display_name_value",
+            state=lineage.Run.State.STARTED,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = lineage.Run.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_run(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, lineage.Run)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.state == lineage.Run.State.STARTED
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_run_rest_interceptors(null_interceptor):
+    transport = transports.LineageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
+    )
+    client = LineageClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LineageRestInterceptor, "post_update_run"
+    ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "pre_update_run"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lineage.UpdateRunRequest.pb(lineage.UpdateRunRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = lineage.Run.to_json(lineage.Run())
+        req.return_value.content = return_value
+
+        request = lineage.UpdateRunRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lineage.Run()
+
+        client.update_run(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_run_rest_bad_request(request_type=lineage.GetRunRequest):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_run(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lineage.GetRunRequest,
+        dict,
+    ],
+)
+def test_get_run_rest_call_success(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lineage.Run(
+            name="name_value",
+            display_name="display_name_value",
+            state=lineage.Run.State.STARTED,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = lineage.Run.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_run(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, lineage.Run)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.state == lineage.Run.State.STARTED
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_run_rest_interceptors(null_interceptor):
+    transport = transports.LineageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
+    )
+    client = LineageClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LineageRestInterceptor, "post_get_run"
+    ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "pre_get_run"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lineage.GetRunRequest.pb(lineage.GetRunRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = lineage.Run.to_json(lineage.Run())
+        req.return_value.content = return_value
+
+        request = lineage.GetRunRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lineage.Run()
+
+        client.get_run(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_runs_rest_bad_request(request_type=lineage.ListRunsRequest):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/processes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_runs(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lineage.ListRunsRequest,
+        dict,
+    ],
+)
+def test_list_runs_rest_call_success(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/processes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lineage.ListRunsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = lineage.ListRunsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_runs(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListRunsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_runs_rest_interceptors(null_interceptor):
+    transport = transports.LineageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
+    )
+    client = LineageClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LineageRestInterceptor, "post_list_runs"
+    ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "pre_list_runs"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lineage.ListRunsRequest.pb(lineage.ListRunsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = lineage.ListRunsResponse.to_json(lineage.ListRunsResponse())
+        req.return_value.content = return_value
+
+        request = lineage.ListRunsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lineage.ListRunsResponse()
+
+        client.list_runs(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_run_rest_bad_request(request_type=lineage.DeleteRunRequest):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_run(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lineage.DeleteRunRequest,
+        dict,
+    ],
+)
+def test_delete_run_rest_call_success(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_run(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_run_rest_interceptors(null_interceptor):
+    transport = transports.LineageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
+    )
+    client = LineageClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.LineageRestInterceptor, "post_delete_run"
+    ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "pre_delete_run"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lineage.DeleteRunRequest.pb(lineage.DeleteRunRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = lineage.DeleteRunRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_run(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_lineage_event_rest_bad_request(
+    request_type=lineage.CreateLineageEventRequest,
+):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_lineage_event(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lineage.CreateLineageEventRequest,
+        dict,
+    ],
+)
+def test_create_lineage_event_rest_call_success(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
+    }
+    request_init["lineage_event"] = {
+        "name": "name_value",
+        "links": [
+            {
+                "source": {"fully_qualified_name": "fully_qualified_name_value"},
+                "target": {},
+            }
+        ],
+        "start_time": {"seconds": 751, "nanos": 543},
+        "end_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = lineage.CreateLineageEventRequest.meta.fields["lineage_event"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["lineage_event"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["lineage_event"][field])):
+                    del request_init["lineage_event"][field][i][subfield]
+            else:
+                del request_init["lineage_event"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lineage.LineageEvent(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = lineage.LineageEvent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_lineage_event(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, lineage.LineageEvent)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_lineage_event_rest_interceptors(null_interceptor):
+    transport = transports.LineageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
+    )
+    client = LineageClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LineageRestInterceptor, "post_create_lineage_event"
+    ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "pre_create_lineage_event"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lineage.CreateLineageEventRequest.pb(
+            lineage.CreateLineageEventRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = lineage.LineageEvent.to_json(lineage.LineageEvent())
+        req.return_value.content = return_value
+
+        request = lineage.CreateLineageEventRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lineage.LineageEvent()
+
+        client.create_lineage_event(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_lineage_event_rest_bad_request(
+    request_type=lineage.GetLineageEventRequest,
+):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4/lineageEvents/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_lineage_event(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lineage.GetLineageEventRequest,
+        dict,
+    ],
+)
+def test_get_lineage_event_rest_call_success(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4/lineageEvents/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lineage.LineageEvent(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = lineage.LineageEvent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_lineage_event(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, lineage.LineageEvent)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_lineage_event_rest_interceptors(null_interceptor):
+    transport = transports.LineageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
+    )
+    client = LineageClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LineageRestInterceptor, "post_get_lineage_event"
+    ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "pre_get_lineage_event"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lineage.GetLineageEventRequest.pb(lineage.GetLineageEventRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = lineage.LineageEvent.to_json(lineage.LineageEvent())
+        req.return_value.content = return_value
+
+        request = lineage.GetLineageEventRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lineage.LineageEvent()
+
+        client.get_lineage_event(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_lineage_events_rest_bad_request(
+    request_type=lineage.ListLineageEventsRequest,
+):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_lineage_events(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lineage.ListLineageEventsRequest,
+        dict,
+    ],
+)
+def test_list_lineage_events_rest_call_success(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/processes/sample3/runs/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lineage.ListLineageEventsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = lineage.ListLineageEventsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_lineage_events(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListLineageEventsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_lineage_events_rest_interceptors(null_interceptor):
+    transport = transports.LineageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
+    )
+    client = LineageClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LineageRestInterceptor, "post_list_lineage_events"
+    ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "pre_list_lineage_events"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lineage.ListLineageEventsRequest.pb(
+            lineage.ListLineageEventsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = lineage.ListLineageEventsResponse.to_json(
+            lineage.ListLineageEventsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = lineage.ListLineageEventsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lineage.ListLineageEventsResponse()
+
+        client.list_lineage_events(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_lineage_event_rest_bad_request(
+    request_type=lineage.DeleteLineageEventRequest,
+):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4/lineageEvents/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_lineage_event(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lineage.DeleteLineageEventRequest,
+        dict,
+    ],
+)
+def test_delete_lineage_event_rest_call_success(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/processes/sample3/runs/sample4/lineageEvents/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_lineage_event(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_lineage_event_rest_interceptors(null_interceptor):
+    transport = transports.LineageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
+    )
+    client = LineageClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LineageRestInterceptor, "pre_delete_lineage_event"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = lineage.DeleteLineageEventRequest.pb(
+            lineage.DeleteLineageEventRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = lineage.DeleteLineageEventRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_lineage_event(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_search_links_rest_bad_request(request_type=lineage.SearchLinksRequest):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.search_links(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lineage.SearchLinksRequest,
+        dict,
+    ],
+)
+def test_search_links_rest_call_success(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lineage.SearchLinksResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = lineage.SearchLinksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.search_links(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.SearchLinksPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_search_links_rest_interceptors(null_interceptor):
+    transport = transports.LineageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
+    )
+    client = LineageClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LineageRestInterceptor, "post_search_links"
+    ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "pre_search_links"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lineage.SearchLinksRequest.pb(lineage.SearchLinksRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = lineage.SearchLinksResponse.to_json(
+            lineage.SearchLinksResponse()
+        )
+        req.return_value.content = return_value
+
+        request = lineage.SearchLinksRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lineage.SearchLinksResponse()
+
+        client.search_links(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_search_link_processes_rest_bad_request(
+    request_type=lineage.BatchSearchLinkProcessesRequest,
+):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.batch_search_link_processes(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        lineage.BatchSearchLinkProcessesRequest,
+        dict,
+    ],
+)
+def test_batch_search_link_processes_rest_call_success(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = lineage.BatchSearchLinkProcessesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = lineage.BatchSearchLinkProcessesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_search_link_processes(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.BatchSearchLinkProcessesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_search_link_processes_rest_interceptors(null_interceptor):
+    transport = transports.LineageRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.LineageRestInterceptor(),
+    )
+    client = LineageClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LineageRestInterceptor, "post_batch_search_link_processes"
+    ) as post, mock.patch.object(
+        transports.LineageRestInterceptor, "pre_batch_search_link_processes"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lineage.BatchSearchLinkProcessesRequest.pb(
+            lineage.BatchSearchLinkProcessesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = lineage.BatchSearchLinkProcessesResponse.to_json(
+            lineage.BatchSearchLinkProcessesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = lineage.BatchSearchLinkProcessesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = lineage.BatchSearchLinkProcessesResponse()
+
+        client.batch_search_link_processes(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_rest_bad_request(
+    request_type=operations_pb2.DeleteOperationRequest,
+):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.DeleteOperationRequest,
+        dict,
+    ],
+)
+def test_delete_operation_rest(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    request_type=operations_pb2.ListOperationsRequest,
+):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_initialize_client_w_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_process_open_lineage_run_event_empty_call_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.process_open_lineage_run_event), "__call__"
+    ) as call:
+        client.process_open_lineage_run_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.ProcessOpenLineageRunEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_process_empty_call_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_process), "__call__") as call:
+        client.create_process(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.CreateProcessRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_process_empty_call_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_process), "__call__") as call:
+        client.update_process(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.UpdateProcessRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_process_empty_call_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_process), "__call__") as call:
+        client.get_process(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.GetProcessRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_processes_empty_call_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_processes), "__call__") as call:
+        client.list_processes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.ListProcessesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_process_empty_call_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_process), "__call__") as call:
+        client.delete_process(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.DeleteProcessRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_run_empty_call_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_run), "__call__") as call:
+        client.create_run(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.CreateRunRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_run_empty_call_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_run), "__call__") as call:
+        client.update_run(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.UpdateRunRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_run_empty_call_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_run), "__call__") as call:
+        client.get_run(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.GetRunRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_runs_empty_call_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_runs), "__call__") as call:
+        client.list_runs(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.ListRunsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_run_empty_call_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_run), "__call__") as call:
+        client.delete_run(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.DeleteRunRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_lineage_event_empty_call_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_lineage_event), "__call__"
+    ) as call:
+        client.create_lineage_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.CreateLineageEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_lineage_event_empty_call_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_lineage_event), "__call__"
+    ) as call:
+        client.get_lineage_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.GetLineageEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_lineage_events_empty_call_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_lineage_events), "__call__"
+    ) as call:
+        client.list_lineage_events(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.ListLineageEventsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_lineage_event_empty_call_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_lineage_event), "__call__"
+    ) as call:
+        client.delete_lineage_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.DeleteLineageEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_search_links_empty_call_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.search_links), "__call__") as call:
+        client.search_links(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.SearchLinksRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_search_link_processes_empty_call_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_search_link_processes), "__call__"
+    ) as call:
+        client.batch_search_link_processes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = lineage.BatchSearchLinkProcessesRequest()
+
+        assert args[0] == request_msg
+
+
+def test_lineage_rest_lro_client():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 def test_transport_grpc_default():
@@ -14592,23 +15250,6 @@ def test_lineage_http_transport_client_cert_source_for_mtls():
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_lineage_rest_lro_client():
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -15096,252 +15737,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
-def test_cancel_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.cancel_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.CancelOperationRequest,
-        dict,
-    ],
-)
-def test_cancel_operation_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.cancel_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.DeleteOperationRequest,
-        dict,
-    ],
-)
-def test_delete_operation_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.delete_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_get_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
-def test_list_operations_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
-):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_operations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.ListOperationsRequest,
-        dict,
-    ],
-)
-def test_list_operations_rest(request_type):
-    client = LineageClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.ListOperationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.ListOperationsResponse)
-
-
 def test_delete_operation(transport: str = "grpc"):
     client = LineageClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -15369,7 +15764,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -15422,7 +15817,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15467,7 +15862,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -15508,7 +15903,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -15561,7 +15956,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15606,7 +16001,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -15647,7 +16042,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -15702,7 +16097,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15749,7 +16144,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -15792,7 +16187,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -15847,7 +16242,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15894,7 +16289,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = LineageAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -15910,22 +16305,41 @@ async def test_list_operations_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = LineageClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = LineageAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+    client = LineageClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

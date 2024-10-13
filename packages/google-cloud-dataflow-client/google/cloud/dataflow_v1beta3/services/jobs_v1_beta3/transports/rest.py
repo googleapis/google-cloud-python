@@ -16,30 +16,27 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.dataflow_v1beta3.types import jobs, snapshots
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseJobsV1Beta3RestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.cloud.dataflow_v1beta3.types import jobs, snapshots
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import JobsV1Beta3Transport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -249,8 +246,8 @@ class JobsV1Beta3RestStub:
     _interceptor: JobsV1Beta3RestInterceptor
 
 
-class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
-    """REST backend transport for JobsV1Beta3.
+class JobsV1Beta3RestTransport(_BaseJobsV1Beta3RestTransport):
+    """REST backend synchronous transport for JobsV1Beta3.
 
     Provides a method to create and modify Google Cloud Dataflow
     jobs. A Job is a multi-stage computation graph run by the Cloud
@@ -261,7 +258,6 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -315,21 +311,12 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -340,9 +327,33 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
         self._interceptor = interceptor or JobsV1Beta3RestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AggregatedListJobs(JobsV1Beta3RestStub):
+    class _AggregatedListJobs(
+        _BaseJobsV1Beta3RestTransport._BaseAggregatedListJobs, JobsV1Beta3RestStub
+    ):
         def __hash__(self):
-            return hash("AggregatedListJobs")
+            return hash("JobsV1Beta3RestTransport.AggregatedListJobs")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -376,39 +387,29 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1b3/projects/{project_id}/jobs:aggregated",
-                },
-            ]
+            http_options = (
+                _BaseJobsV1Beta3RestTransport._BaseAggregatedListJobs._get_http_options()
+            )
             request, metadata = self._interceptor.pre_aggregated_list_jobs(
                 request, metadata
             )
-            pb_request = jobs.ListJobsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseJobsV1Beta3RestTransport._BaseAggregatedListJobs._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseJobsV1Beta3RestTransport._BaseAggregatedListJobs._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = JobsV1Beta3RestTransport._AggregatedListJobs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -424,9 +425,11 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
             resp = self._interceptor.post_aggregated_list_jobs(resp)
             return resp
 
-    class _CheckActiveJobs(JobsV1Beta3RestStub):
+    class _CheckActiveJobs(
+        _BaseJobsV1Beta3RestTransport._BaseCheckActiveJobs, JobsV1Beta3RestStub
+    ):
         def __hash__(self):
-            return hash("CheckActiveJobs")
+            return hash("JobsV1Beta3RestTransport.CheckActiveJobs")
 
         def __call__(
             self,
@@ -440,9 +443,32 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
                 "Method CheckActiveJobs is not available over REST transport"
             )
 
-    class _CreateJob(JobsV1Beta3RestStub):
+    class _CreateJob(_BaseJobsV1Beta3RestTransport._BaseCreateJob, JobsV1Beta3RestStub):
         def __hash__(self):
-            return hash("CreateJob")
+            return hash("JobsV1Beta3RestTransport.CreateJob")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -471,49 +497,36 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1b3/projects/{project_id}/locations/{location}/jobs",
-                    "body": "job",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1b3/projects/{project_id}/jobs",
-                    "body": "job",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_job(request, metadata)
-            pb_request = jobs.CreateJobRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseJobsV1Beta3RestTransport._BaseCreateJob._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_create_job(request, metadata)
+            transcoded_request = (
+                _BaseJobsV1Beta3RestTransport._BaseCreateJob._get_transcoded_request(
+                    http_options, request
                 )
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseJobsV1Beta3RestTransport._BaseCreateJob._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseJobsV1Beta3RestTransport._BaseCreateJob._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = JobsV1Beta3RestTransport._CreateJob._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -529,9 +542,31 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
             resp = self._interceptor.post_create_job(resp)
             return resp
 
-    class _GetJob(JobsV1Beta3RestStub):
+    class _GetJob(_BaseJobsV1Beta3RestTransport._BaseGetJob, JobsV1Beta3RestStub):
         def __hash__(self):
-            return hash("GetJob")
+            return hash("JobsV1Beta3RestTransport.GetJob")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -560,41 +595,29 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1b3/projects/{project_id}/locations/{location}/jobs/{job_id}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1b3/projects/{project_id}/jobs/{job_id}",
-                },
-            ]
+            http_options = _BaseJobsV1Beta3RestTransport._BaseGetJob._get_http_options()
             request, metadata = self._interceptor.pre_get_job(request, metadata)
-            pb_request = jobs.GetJobRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseJobsV1Beta3RestTransport._BaseGetJob._get_transcoded_request(
+                    http_options, request
                 )
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseJobsV1Beta3RestTransport._BaseGetJob._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = JobsV1Beta3RestTransport._GetJob._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -610,9 +633,31 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
             resp = self._interceptor.post_get_job(resp)
             return resp
 
-    class _ListJobs(JobsV1Beta3RestStub):
+    class _ListJobs(_BaseJobsV1Beta3RestTransport._BaseListJobs, JobsV1Beta3RestStub):
         def __hash__(self):
-            return hash("ListJobs")
+            return hash("JobsV1Beta3RestTransport.ListJobs")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -646,41 +691,31 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1b3/projects/{project_id}/locations/{location}/jobs",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1b3/projects/{project_id}/jobs",
-                },
-            ]
+            http_options = (
+                _BaseJobsV1Beta3RestTransport._BaseListJobs._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_jobs(request, metadata)
-            pb_request = jobs.ListJobsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseJobsV1Beta3RestTransport._BaseListJobs._get_transcoded_request(
+                    http_options, request
                 )
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseJobsV1Beta3RestTransport._BaseListJobs._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = JobsV1Beta3RestTransport._ListJobs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -696,9 +731,34 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
             resp = self._interceptor.post_list_jobs(resp)
             return resp
 
-    class _SnapshotJob(JobsV1Beta3RestStub):
+    class _SnapshotJob(
+        _BaseJobsV1Beta3RestTransport._BaseSnapshotJob, JobsV1Beta3RestStub
+    ):
         def __hash__(self):
-            return hash("SnapshotJob")
+            return hash("JobsV1Beta3RestTransport.SnapshotJob")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -725,49 +785,38 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
                     Represents a snapshot of a job.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1b3/projects/{project_id}/locations/{location}/jobs/{job_id}:snapshot",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1b3/projects/{project_id}/jobs/{job_id}:snapshot",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_snapshot_job(request, metadata)
-            pb_request = jobs.SnapshotJobRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseJobsV1Beta3RestTransport._BaseSnapshotJob._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_snapshot_job(request, metadata)
+            transcoded_request = (
+                _BaseJobsV1Beta3RestTransport._BaseSnapshotJob._get_transcoded_request(
+                    http_options, request
                 )
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = (
+                _BaseJobsV1Beta3RestTransport._BaseSnapshotJob._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseJobsV1Beta3RestTransport._BaseSnapshotJob._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = JobsV1Beta3RestTransport._SnapshotJob._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -783,9 +832,32 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
             resp = self._interceptor.post_snapshot_job(resp)
             return resp
 
-    class _UpdateJob(JobsV1Beta3RestStub):
+    class _UpdateJob(_BaseJobsV1Beta3RestTransport._BaseUpdateJob, JobsV1Beta3RestStub):
         def __hash__(self):
-            return hash("UpdateJob")
+            return hash("JobsV1Beta3RestTransport.UpdateJob")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -814,49 +886,36 @@ class JobsV1Beta3RestTransport(JobsV1Beta3Transport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "put",
-                    "uri": "/v1b3/projects/{project_id}/locations/{location}/jobs/{job_id}",
-                    "body": "job",
-                },
-                {
-                    "method": "put",
-                    "uri": "/v1b3/projects/{project_id}/jobs/{job_id}",
-                    "body": "job",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_job(request, metadata)
-            pb_request = jobs.UpdateJobRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseJobsV1Beta3RestTransport._BaseUpdateJob._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_update_job(request, metadata)
+            transcoded_request = (
+                _BaseJobsV1Beta3RestTransport._BaseUpdateJob._get_transcoded_request(
+                    http_options, request
                 )
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseJobsV1Beta3RestTransport._BaseUpdateJob._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseJobsV1Beta3RestTransport._BaseUpdateJob._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = JobsV1Beta3RestTransport._UpdateJob._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
