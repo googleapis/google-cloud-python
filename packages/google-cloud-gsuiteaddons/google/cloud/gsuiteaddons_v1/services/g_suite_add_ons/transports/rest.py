@@ -16,32 +16,28 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.gsuiteaddons_v1.types import gsuiteaddons
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseGSuiteAddOnsRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.protobuf import empty_pb2  # type: ignore
-
-from google.cloud.gsuiteaddons_v1.types import gsuiteaddons
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import GSuiteAddOnsTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -313,8 +309,8 @@ class GSuiteAddOnsRestStub:
     _interceptor: GSuiteAddOnsRestInterceptor
 
 
-class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
-    """REST backend transport for GSuiteAddOns.
+class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
+    """REST backend synchronous transport for GSuiteAddOns.
 
     A service for managing Google Workspace Add-ons deployments.
 
@@ -357,7 +353,6 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -411,21 +406,12 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -436,21 +422,34 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
         self._interceptor = interceptor or GSuiteAddOnsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateDeployment(GSuiteAddOnsRestStub):
+    class _CreateDeployment(
+        _BaseGSuiteAddOnsRestTransport._BaseCreateDeployment, GSuiteAddOnsRestStub
+    ):
         def __hash__(self):
-            return hash("CreateDeployment")
+            return hash("GSuiteAddOnsRestTransport.CreateDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "deploymentId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -477,47 +476,34 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
                     A Google Workspace Add-on deployment
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*}/deployments",
-                    "body": "deployment",
-                },
-            ]
+            http_options = (
+                _BaseGSuiteAddOnsRestTransport._BaseCreateDeployment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_deployment(
                 request, metadata
             )
-            pb_request = gsuiteaddons.CreateDeploymentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseCreateDeployment._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseGSuiteAddOnsRestTransport._BaseCreateDeployment._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseGSuiteAddOnsRestTransport._BaseCreateDeployment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = GSuiteAddOnsRestTransport._CreateDeployment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -533,19 +519,33 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
             resp = self._interceptor.post_create_deployment(resp)
             return resp
 
-    class _DeleteDeployment(GSuiteAddOnsRestStub):
+    class _DeleteDeployment(
+        _BaseGSuiteAddOnsRestTransport._BaseDeleteDeployment, GSuiteAddOnsRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteDeployment")
+            return hash("GSuiteAddOnsRestTransport.DeleteDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -568,40 +568,29 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/deployments/*}",
-                },
-            ]
+            http_options = (
+                _BaseGSuiteAddOnsRestTransport._BaseDeleteDeployment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_deployment(
                 request, metadata
             )
-            pb_request = gsuiteaddons.DeleteDeploymentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseDeleteDeployment._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseGSuiteAddOnsRestTransport._BaseDeleteDeployment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = GSuiteAddOnsRestTransport._DeleteDeployment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -609,19 +598,33 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetAuthorization(GSuiteAddOnsRestStub):
+    class _GetAuthorization(
+        _BaseGSuiteAddOnsRestTransport._BaseGetAuthorization, GSuiteAddOnsRestStub
+    ):
         def __hash__(self):
-            return hash("GetAuthorization")
+            return hash("GSuiteAddOnsRestTransport.GetAuthorization")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -651,40 +654,29 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/authorization}",
-                },
-            ]
+            http_options = (
+                _BaseGSuiteAddOnsRestTransport._BaseGetAuthorization._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_authorization(
                 request, metadata
             )
-            pb_request = gsuiteaddons.GetAuthorizationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseGetAuthorization._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseGSuiteAddOnsRestTransport._BaseGetAuthorization._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = GSuiteAddOnsRestTransport._GetAuthorization._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -700,19 +692,33 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
             resp = self._interceptor.post_get_authorization(resp)
             return resp
 
-    class _GetDeployment(GSuiteAddOnsRestStub):
+    class _GetDeployment(
+        _BaseGSuiteAddOnsRestTransport._BaseGetDeployment, GSuiteAddOnsRestStub
+    ):
         def __hash__(self):
-            return hash("GetDeployment")
+            return hash("GSuiteAddOnsRestTransport.GetDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -738,38 +744,27 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
                     A Google Workspace Add-on deployment
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/deployments/*}",
-                },
-            ]
+            http_options = (
+                _BaseGSuiteAddOnsRestTransport._BaseGetDeployment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_deployment(request, metadata)
-            pb_request = gsuiteaddons.GetDeploymentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseGetDeployment._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseGSuiteAddOnsRestTransport._BaseGetDeployment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = GSuiteAddOnsRestTransport._GetDeployment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -785,19 +780,33 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
             resp = self._interceptor.post_get_deployment(resp)
             return resp
 
-    class _GetInstallStatus(GSuiteAddOnsRestStub):
+    class _GetInstallStatus(
+        _BaseGSuiteAddOnsRestTransport._BaseGetInstallStatus, GSuiteAddOnsRestStub
+    ):
         def __hash__(self):
-            return hash("GetInstallStatus")
+            return hash("GSuiteAddOnsRestTransport.GetInstallStatus")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -826,40 +835,29 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/deployments/*/installStatus}",
-                },
-            ]
+            http_options = (
+                _BaseGSuiteAddOnsRestTransport._BaseGetInstallStatus._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_install_status(
                 request, metadata
             )
-            pb_request = gsuiteaddons.GetInstallStatusRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseGetInstallStatus._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseGSuiteAddOnsRestTransport._BaseGetInstallStatus._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = GSuiteAddOnsRestTransport._GetInstallStatus._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -875,19 +873,34 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
             resp = self._interceptor.post_get_install_status(resp)
             return resp
 
-    class _InstallDeployment(GSuiteAddOnsRestStub):
+    class _InstallDeployment(
+        _BaseGSuiteAddOnsRestTransport._BaseInstallDeployment, GSuiteAddOnsRestStub
+    ):
         def __hash__(self):
-            return hash("InstallDeployment")
+            return hash("GSuiteAddOnsRestTransport.InstallDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -910,47 +923,34 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/deployments/*}:install",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseGSuiteAddOnsRestTransport._BaseInstallDeployment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_install_deployment(
                 request, metadata
             )
-            pb_request = gsuiteaddons.InstallDeploymentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseInstallDeployment._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseGSuiteAddOnsRestTransport._BaseInstallDeployment._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseGSuiteAddOnsRestTransport._BaseInstallDeployment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = GSuiteAddOnsRestTransport._InstallDeployment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -958,19 +958,33 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _ListDeployments(GSuiteAddOnsRestStub):
+    class _ListDeployments(
+        _BaseGSuiteAddOnsRestTransport._BaseListDeployments, GSuiteAddOnsRestStub
+    ):
         def __hash__(self):
-            return hash("ListDeployments")
+            return hash("GSuiteAddOnsRestTransport.ListDeployments")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -997,40 +1011,29 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
                     Response message to list deployments.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*}/deployments",
-                },
-            ]
+            http_options = (
+                _BaseGSuiteAddOnsRestTransport._BaseListDeployments._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_deployments(
                 request, metadata
             )
-            pb_request = gsuiteaddons.ListDeploymentsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseListDeployments._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseGSuiteAddOnsRestTransport._BaseListDeployments._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = GSuiteAddOnsRestTransport._ListDeployments._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1046,19 +1049,34 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
             resp = self._interceptor.post_list_deployments(resp)
             return resp
 
-    class _ReplaceDeployment(GSuiteAddOnsRestStub):
+    class _ReplaceDeployment(
+        _BaseGSuiteAddOnsRestTransport._BaseReplaceDeployment, GSuiteAddOnsRestStub
+    ):
         def __hash__(self):
-            return hash("ReplaceDeployment")
+            return hash("GSuiteAddOnsRestTransport.ReplaceDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1085,47 +1103,34 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
                     A Google Workspace Add-on deployment
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "put",
-                    "uri": "/v1/{deployment.name=projects/*/deployments/*}",
-                    "body": "deployment",
-                },
-            ]
+            http_options = (
+                _BaseGSuiteAddOnsRestTransport._BaseReplaceDeployment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_replace_deployment(
                 request, metadata
             )
-            pb_request = gsuiteaddons.ReplaceDeploymentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseReplaceDeployment._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseGSuiteAddOnsRestTransport._BaseReplaceDeployment._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseGSuiteAddOnsRestTransport._BaseReplaceDeployment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = GSuiteAddOnsRestTransport._ReplaceDeployment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1141,19 +1146,34 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
             resp = self._interceptor.post_replace_deployment(resp)
             return resp
 
-    class _UninstallDeployment(GSuiteAddOnsRestStub):
+    class _UninstallDeployment(
+        _BaseGSuiteAddOnsRestTransport._BaseUninstallDeployment, GSuiteAddOnsRestStub
+    ):
         def __hash__(self):
-            return hash("UninstallDeployment")
+            return hash("GSuiteAddOnsRestTransport.UninstallDeployment")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1176,47 +1196,34 @@ class GSuiteAddOnsRestTransport(GSuiteAddOnsTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/deployments/*}:uninstall",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseGSuiteAddOnsRestTransport._BaseUninstallDeployment._get_http_options()
+            )
             request, metadata = self._interceptor.pre_uninstall_deployment(
                 request, metadata
             )
-            pb_request = gsuiteaddons.UninstallDeploymentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseUninstallDeployment._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseGSuiteAddOnsRestTransport._BaseUninstallDeployment._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseGSuiteAddOnsRestTransport._BaseUninstallDeployment._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = GSuiteAddOnsRestTransport._UninstallDeployment._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

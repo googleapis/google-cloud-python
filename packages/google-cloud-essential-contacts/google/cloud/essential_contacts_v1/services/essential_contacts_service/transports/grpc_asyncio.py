@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -227,6 +228,9 @@ class EssentialContactsServiceGrpcAsyncIOTransport(EssentialContactsServiceTrans
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -432,17 +436,17 @@ class EssentialContactsServiceGrpcAsyncIOTransport(EssentialContactsServiceTrans
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_contact: gapic_v1.method_async.wrap_method(
+            self.create_contact: self._wrap_method(
                 self.create_contact,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_contact: gapic_v1.method_async.wrap_method(
+            self.update_contact: self._wrap_method(
                 self.update_contact,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_contacts: gapic_v1.method_async.wrap_method(
+            self.list_contacts: self._wrap_method(
                 self.list_contacts,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -456,7 +460,7 @@ class EssentialContactsServiceGrpcAsyncIOTransport(EssentialContactsServiceTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_contact: gapic_v1.method_async.wrap_method(
+            self.get_contact: self._wrap_method(
                 self.get_contact,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -470,25 +474,34 @@ class EssentialContactsServiceGrpcAsyncIOTransport(EssentialContactsServiceTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_contact: gapic_v1.method_async.wrap_method(
+            self.delete_contact: self._wrap_method(
                 self.delete_contact,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.compute_contacts: gapic_v1.method_async.wrap_method(
+            self.compute_contacts: self._wrap_method(
                 self.compute_contacts,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.send_test_message: gapic_v1.method_async.wrap_method(
+            self.send_test_message: self._wrap_method(
                 self.send_test_message,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("EssentialContactsServiceGrpcAsyncIOTransport",)

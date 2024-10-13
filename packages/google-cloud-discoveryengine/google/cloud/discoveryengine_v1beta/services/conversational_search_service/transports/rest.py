@@ -16,29 +16,19 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.protobuf import json_format
-import grpc  # type: ignore
-from requests import __version__ as requests_version
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import json_format
+from requests import __version__ as requests_version
 
 from google.cloud.discoveryengine_v1beta.types import conversation as gcd_conversation
 from google.cloud.discoveryengine_v1beta.types import conversational_search_service
@@ -47,8 +37,14 @@ from google.cloud.discoveryengine_v1beta.types import conversation
 from google.cloud.discoveryengine_v1beta.types import session
 from google.cloud.discoveryengine_v1beta.types import session as gcd_session
 
-from .base import ConversationalSearchServiceTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseConversationalSearchServiceRestTransport
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -549,8 +545,10 @@ class ConversationalSearchServiceRestStub:
     _interceptor: ConversationalSearchServiceRestInterceptor
 
 
-class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransport):
-    """REST backend transport for ConversationalSearchService.
+class ConversationalSearchServiceRestTransport(
+    _BaseConversationalSearchServiceRestTransport
+):
+    """REST backend synchronous transport for ConversationalSearchService.
 
     Service for conversational search.
 
@@ -559,7 +557,6 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -613,21 +610,12 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -638,19 +626,35 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
         self._interceptor = interceptor or ConversationalSearchServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AnswerQuery(ConversationalSearchServiceRestStub):
+    class _AnswerQuery(
+        _BaseConversationalSearchServiceRestTransport._BaseAnswerQuery,
+        ConversationalSearchServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("AnswerQuery")
+            return hash("ConversationalSearchServiceRestTransport.AnswerQuery")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -681,55 +685,34 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{serving_config=projects/*/locations/*/dataStores/*/servingConfigs/*}:answer",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{serving_config=projects/*/locations/*/collections/*/dataStores/*/servingConfigs/*}:answer",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{serving_config=projects/*/locations/*/collections/*/engines/*/servingConfigs/*}:answer",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_answer_query(request, metadata)
-            pb_request = conversational_search_service.AnswerQueryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseConversationalSearchServiceRestTransport._BaseAnswerQuery._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_answer_query(request, metadata)
+            transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseAnswerQuery._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseConversationalSearchServiceRestTransport._BaseAnswerQuery._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConversationalSearchServiceRestTransport._BaseAnswerQuery._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                ConversationalSearchServiceRestTransport._AnswerQuery._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -745,19 +728,35 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             resp = self._interceptor.post_answer_query(resp)
             return resp
 
-    class _ConverseConversation(ConversationalSearchServiceRestStub):
+    class _ConverseConversation(
+        _BaseConversationalSearchServiceRestTransport._BaseConverseConversation,
+        ConversationalSearchServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ConverseConversation")
+            return hash("ConversationalSearchServiceRestTransport.ConverseConversation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -788,59 +787,34 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/conversations/*}:converse",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}:converse",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/conversations/*}:converse",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseConversationalSearchServiceRestTransport._BaseConverseConversation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_converse_conversation(
                 request, metadata
             )
-            pb_request = conversational_search_service.ConverseConversationRequest.pb(
-                request
+            transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseConverseConversation._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseConversationalSearchServiceRestTransport._BaseConverseConversation._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConversationalSearchServiceRestTransport._BaseConverseConversation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ConversationalSearchServiceRestTransport._ConverseConversation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -858,19 +832,35 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             resp = self._interceptor.post_converse_conversation(resp)
             return resp
 
-    class _CreateConversation(ConversationalSearchServiceRestStub):
+    class _CreateConversation(
+        _BaseConversationalSearchServiceRestTransport._BaseCreateConversation,
+        ConversationalSearchServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateConversation")
+            return hash("ConversationalSearchServiceRestTransport.CreateConversation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -899,59 +889,34 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/*}/conversations",
-                    "body": "conversation",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*}/conversations",
-                    "body": "conversation",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/engines/*}/conversations",
-                    "body": "conversation",
-                },
-            ]
+            http_options = (
+                _BaseConversationalSearchServiceRestTransport._BaseCreateConversation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_conversation(
                 request, metadata
             )
-            pb_request = conversational_search_service.CreateConversationRequest.pb(
-                request
+            transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseCreateConversation._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseConversationalSearchServiceRestTransport._BaseCreateConversation._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConversationalSearchServiceRestTransport._BaseCreateConversation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ConversationalSearchServiceRestTransport._CreateConversation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -967,19 +932,35 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             resp = self._interceptor.post_create_conversation(resp)
             return resp
 
-    class _CreateSession(ConversationalSearchServiceRestStub):
+    class _CreateSession(
+        _BaseConversationalSearchServiceRestTransport._BaseCreateSession,
+        ConversationalSearchServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateSession")
+            return hash("ConversationalSearchServiceRestTransport.CreateSession")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1005,55 +986,34 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
                     External session proto definition.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/*}/sessions",
-                    "body": "session",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*}/sessions",
-                    "body": "session",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/engines/*}/sessions",
-                    "body": "session",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_session(request, metadata)
-            pb_request = conversational_search_service.CreateSessionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseConversationalSearchServiceRestTransport._BaseCreateSession._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_session(request, metadata)
+            transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseCreateSession._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseConversationalSearchServiceRestTransport._BaseCreateSession._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConversationalSearchServiceRestTransport._BaseCreateSession._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                ConversationalSearchServiceRestTransport._CreateSession._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1069,19 +1029,34 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             resp = self._interceptor.post_create_session(resp)
             return resp
 
-    class _DeleteConversation(ConversationalSearchServiceRestStub):
+    class _DeleteConversation(
+        _BaseConversationalSearchServiceRestTransport._BaseDeleteConversation,
+        ConversationalSearchServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteConversation")
+            return hash("ConversationalSearchServiceRestTransport.DeleteConversation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1104,50 +1079,29 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/conversations/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/conversations/*}",
-                },
-            ]
+            http_options = (
+                _BaseConversationalSearchServiceRestTransport._BaseDeleteConversation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_conversation(
                 request, metadata
             )
-            pb_request = conversational_search_service.DeleteConversationRequest.pb(
-                request
+            transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseDeleteConversation._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConversationalSearchServiceRestTransport._BaseDeleteConversation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ConversationalSearchServiceRestTransport._DeleteConversation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1155,19 +1109,34 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteSession(ConversationalSearchServiceRestStub):
+    class _DeleteSession(
+        _BaseConversationalSearchServiceRestTransport._BaseDeleteSession,
+        ConversationalSearchServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteSession")
+            return hash("ConversationalSearchServiceRestTransport.DeleteSession")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1189,46 +1158,29 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/sessions/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/sessions/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/sessions/*}",
-                },
-            ]
+            http_options = (
+                _BaseConversationalSearchServiceRestTransport._BaseDeleteSession._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_session(request, metadata)
-            pb_request = conversational_search_service.DeleteSessionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseDeleteSession._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConversationalSearchServiceRestTransport._BaseDeleteSession._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ConversationalSearchServiceRestTransport._DeleteSession._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1236,19 +1188,34 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetAnswer(ConversationalSearchServiceRestStub):
+    class _GetAnswer(
+        _BaseConversationalSearchServiceRestTransport._BaseGetAnswer,
+        ConversationalSearchServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetAnswer")
+            return hash("ConversationalSearchServiceRestTransport.GetAnswer")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1274,46 +1241,29 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
                     Defines an answer.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/sessions/*/answers/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/sessions/*/answers/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/sessions/*/answers/*}",
-                },
-            ]
+            http_options = (
+                _BaseConversationalSearchServiceRestTransport._BaseGetAnswer._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_answer(request, metadata)
-            pb_request = conversational_search_service.GetAnswerRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseGetAnswer._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConversationalSearchServiceRestTransport._BaseGetAnswer._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ConversationalSearchServiceRestTransport._GetAnswer._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1329,19 +1279,34 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             resp = self._interceptor.post_get_answer(resp)
             return resp
 
-    class _GetConversation(ConversationalSearchServiceRestStub):
+    class _GetConversation(
+        _BaseConversationalSearchServiceRestTransport._BaseGetConversation,
+        ConversationalSearchServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetConversation")
+            return hash("ConversationalSearchServiceRestTransport.GetConversation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1369,50 +1334,31 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/conversations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/conversations/*}",
-                },
-            ]
+            http_options = (
+                _BaseConversationalSearchServiceRestTransport._BaseGetConversation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_conversation(
                 request, metadata
             )
-            pb_request = conversational_search_service.GetConversationRequest.pb(
-                request
+            transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseGetConversation._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConversationalSearchServiceRestTransport._BaseGetConversation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ConversationalSearchServiceRestTransport._GetConversation._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1428,19 +1374,34 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             resp = self._interceptor.post_get_conversation(resp)
             return resp
 
-    class _GetSession(ConversationalSearchServiceRestStub):
+    class _GetSession(
+        _BaseConversationalSearchServiceRestTransport._BaseGetSession,
+        ConversationalSearchServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetSession")
+            return hash("ConversationalSearchServiceRestTransport.GetSession")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1466,46 +1427,29 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
                     External session proto definition.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/sessions/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/sessions/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/sessions/*}",
-                },
-            ]
+            http_options = (
+                _BaseConversationalSearchServiceRestTransport._BaseGetSession._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_session(request, metadata)
-            pb_request = conversational_search_service.GetSessionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseGetSession._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConversationalSearchServiceRestTransport._BaseGetSession._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ConversationalSearchServiceRestTransport._GetSession._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1521,19 +1465,34 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             resp = self._interceptor.post_get_session(resp)
             return resp
 
-    class _ListConversations(ConversationalSearchServiceRestStub):
+    class _ListConversations(
+        _BaseConversationalSearchServiceRestTransport._BaseListConversations,
+        ConversationalSearchServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListConversations")
+            return hash("ConversationalSearchServiceRestTransport.ListConversations")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1561,50 +1520,29 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/*}/conversations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*}/conversations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/engines/*}/conversations",
-                },
-            ]
+            http_options = (
+                _BaseConversationalSearchServiceRestTransport._BaseListConversations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_conversations(
                 request, metadata
             )
-            pb_request = conversational_search_service.ListConversationsRequest.pb(
-                request
+            transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseListConversations._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConversationalSearchServiceRestTransport._BaseListConversations._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ConversationalSearchServiceRestTransport._ListConversations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1620,19 +1558,34 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             resp = self._interceptor.post_list_conversations(resp)
             return resp
 
-    class _ListSessions(ConversationalSearchServiceRestStub):
+    class _ListSessions(
+        _BaseConversationalSearchServiceRestTransport._BaseListSessions,
+        ConversationalSearchServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListSessions")
+            return hash("ConversationalSearchServiceRestTransport.ListSessions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1658,46 +1611,29 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
                     Response for ListSessions method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/*}/sessions",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*}/sessions",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/engines/*}/sessions",
-                },
-            ]
+            http_options = (
+                _BaseConversationalSearchServiceRestTransport._BaseListSessions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_sessions(request, metadata)
-            pb_request = conversational_search_service.ListSessionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseListSessions._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConversationalSearchServiceRestTransport._BaseListSessions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ConversationalSearchServiceRestTransport._ListSessions._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1713,19 +1649,35 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             resp = self._interceptor.post_list_sessions(resp)
             return resp
 
-    class _UpdateConversation(ConversationalSearchServiceRestStub):
+    class _UpdateConversation(
+        _BaseConversationalSearchServiceRestTransport._BaseUpdateConversation,
+        ConversationalSearchServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateConversation")
+            return hash("ConversationalSearchServiceRestTransport.UpdateConversation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1754,59 +1706,34 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1beta/{conversation.name=projects/*/locations/*/dataStores/*/conversations/*}",
-                    "body": "conversation",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1beta/{conversation.name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}",
-                    "body": "conversation",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1beta/{conversation.name=projects/*/locations/*/collections/*/engines/*/conversations/*}",
-                    "body": "conversation",
-                },
-            ]
+            http_options = (
+                _BaseConversationalSearchServiceRestTransport._BaseUpdateConversation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_conversation(
                 request, metadata
             )
-            pb_request = conversational_search_service.UpdateConversationRequest.pb(
-                request
+            transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseUpdateConversation._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseConversationalSearchServiceRestTransport._BaseUpdateConversation._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConversationalSearchServiceRestTransport._BaseUpdateConversation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = ConversationalSearchServiceRestTransport._UpdateConversation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1822,19 +1749,35 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             resp = self._interceptor.post_update_conversation(resp)
             return resp
 
-    class _UpdateSession(ConversationalSearchServiceRestStub):
+    class _UpdateSession(
+        _BaseConversationalSearchServiceRestTransport._BaseUpdateSession,
+        ConversationalSearchServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateSession")
+            return hash("ConversationalSearchServiceRestTransport.UpdateSession")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1860,55 +1803,34 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
                     External session proto definition.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1beta/{session.name=projects/*/locations/*/dataStores/*/sessions/*}",
-                    "body": "session",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1beta/{session.name=projects/*/locations/*/collections/*/dataStores/*/sessions/*}",
-                    "body": "session",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1beta/{session.name=projects/*/locations/*/collections/*/engines/*/sessions/*}",
-                    "body": "session",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_session(request, metadata)
-            pb_request = conversational_search_service.UpdateSessionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseConversationalSearchServiceRestTransport._BaseUpdateSession._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_session(request, metadata)
+            transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseUpdateSession._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseConversationalSearchServiceRestTransport._BaseUpdateSession._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConversationalSearchServiceRestTransport._BaseUpdateSession._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                ConversationalSearchServiceRestTransport._UpdateSession._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2061,7 +1983,36 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(ConversationalSearchServiceRestStub):
+    class _CancelOperation(
+        _BaseConversationalSearchServiceRestTransport._BaseCancelOperation,
+        ConversationalSearchServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ConversationalSearchServiceRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -2082,42 +2033,36 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}:cancel",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}:cancel",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseConversationalSearchServiceRestTransport._BaseCancelOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseConversationalSearchServiceRestTransport._BaseCancelOperation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseConversationalSearchServiceRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = (
+                ConversationalSearchServiceRestTransport._CancelOperation._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2131,7 +2076,35 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(ConversationalSearchServiceRestStub):
+    class _GetOperation(
+        _BaseConversationalSearchServiceRestTransport._BaseGetOperation,
+        ConversationalSearchServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ConversationalSearchServiceRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -2155,92 +2128,29 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/evaluations/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/sampleQuerySets/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseConversationalSearchServiceRestTransport._BaseGetOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseConversationalSearchServiceRestTransport._BaseGetOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = (
+                ConversationalSearchServiceRestTransport._GetOperation._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2248,8 +2158,9 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -2257,7 +2168,35 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(ConversationalSearchServiceRestStub):
+    class _ListOperations(
+        _BaseConversationalSearchServiceRestTransport._BaseListOperations,
+        ConversationalSearchServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("ConversationalSearchServiceRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -2281,84 +2220,29 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/models/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*}/operations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*}/operations",
-                },
-            ]
-
+            http_options = (
+                _BaseConversationalSearchServiceRestTransport._BaseListOperations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseConversationalSearchServiceRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseConversationalSearchServiceRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = (
+                ConversationalSearchServiceRestTransport._ListOperations._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2366,8 +2250,9 @@ class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransp
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

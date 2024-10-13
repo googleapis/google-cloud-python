@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -226,6 +227,9 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -619,7 +623,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.get_conference_record: gapic_v1.method_async.wrap_method(
+            self.get_conference_record: self._wrap_method(
                 self.get_conference_record,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -633,7 +637,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_conference_records: gapic_v1.method_async.wrap_method(
+            self.list_conference_records: self._wrap_method(
                 self.list_conference_records,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -647,7 +651,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_participant: gapic_v1.method_async.wrap_method(
+            self.get_participant: self._wrap_method(
                 self.get_participant,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -661,7 +665,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_participants: gapic_v1.method_async.wrap_method(
+            self.list_participants: self._wrap_method(
                 self.list_participants,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -675,7 +679,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_participant_session: gapic_v1.method_async.wrap_method(
+            self.get_participant_session: self._wrap_method(
                 self.get_participant_session,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -689,7 +693,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_participant_sessions: gapic_v1.method_async.wrap_method(
+            self.list_participant_sessions: self._wrap_method(
                 self.list_participant_sessions,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -703,7 +707,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_recording: gapic_v1.method_async.wrap_method(
+            self.get_recording: self._wrap_method(
                 self.get_recording,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -717,7 +721,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_recordings: gapic_v1.method_async.wrap_method(
+            self.list_recordings: self._wrap_method(
                 self.list_recordings,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -731,7 +735,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_transcript: gapic_v1.method_async.wrap_method(
+            self.get_transcript: self._wrap_method(
                 self.get_transcript,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -745,7 +749,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_transcripts: gapic_v1.method_async.wrap_method(
+            self.list_transcripts: self._wrap_method(
                 self.list_transcripts,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -759,7 +763,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_transcript_entry: gapic_v1.method_async.wrap_method(
+            self.get_transcript_entry: self._wrap_method(
                 self.get_transcript_entry,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -773,7 +777,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_transcript_entries: gapic_v1.method_async.wrap_method(
+            self.list_transcript_entries: self._wrap_method(
                 self.list_transcript_entries,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -789,8 +793,17 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("ConferenceRecordsServiceGrpcAsyncIOTransport",)

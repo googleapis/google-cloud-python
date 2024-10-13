@@ -15,6 +15,8 @@ description: Fix formatting issues in docs
 url: https://github.com/googleapis/gapic-generator-python/issues/1829
 replacements:
   - paths: [
+      packages/google-cloud-kms/google/cloud/kms_v1/services/autokey/async_client.py,
+      packages/google-cloud-kms/google/cloud/kms_v1/services/autokey_admin/async_client.py,
       packages/google-cloud-kms/google/cloud/kms_v1/services/ekm_service/async_client.py,
       packages/google-cloud-kms/google/cloud/kms_v1/services/key_management_service/async_client.py,
     ]
@@ -22,7 +24,7 @@ replacements:
       \                ::
       \                    {
     after: "                ::\n\n                    {\n"
-    count: 2
+    count: 4
   - paths: [
       packages/google-cloud-compute/google/cloud/compute_v1/types/compute.py,
     ]
@@ -202,4 +204,171 @@ replacements:
     ]
     before: CREATIVE_CUSTOM_FIELD_\\\*
     after: "`CREATIVE_CUSTOM_FIELD_*`"
+    count: 1
+  - paths: [
+      packages/google-analytics-admin/google/analytics/admin_v1alpha/services/analytics_admin_service/async_client.py,
+      packages/google-analytics-admin/google/analytics/admin_v1alpha/services/analytics_admin_service/client.py,
+      packages/google-analytics-admin/google/analytics/admin_v1alpha/types/analytics_admin.py,
+    ]
+    before: \/\[a-zA-Z0-9_\]\/
+    after: "`[a-zA-Z0-9_]`"
+    count: 3
+  - paths: [
+      packages/google-apps-chat/google/apps/chat_v1/services/chat_service/async_client.py,
+    ]
+    before: \|Message sent with app authentication\|
+    after: "|Message sent with app authentication async|"
+    count: 2
+  - paths: [
+      packages/google-apps-chat/google/apps/chat_v1/services/chat_service/transports/grpc_asyncio.py,
+    ]
+    before: \|Message sent with app authentication\|
+    after: "|Message sent with app authentication async gRPC|"
+    count: 2
+  - paths: [
+      packages/google-apps-chat/google/apps/chat_v1/services/chat_service/transports/grpc.py,
+    ]
+    before: \|Message sent with app authentication\|
+    after: "|Message sent with app authentication gRPC|"
+    count: 2
+  - paths: [
+      packages/google-apps-chat/google/apps/chat_v1/services/chat_service/async_client.py,
+    ]
+    before: \|Message sent with user authentication\|
+    after: "|Message sent with user authentication async|"
+    count: 2
+  - paths: [
+      packages/google-apps-chat/google/apps/chat_v1/services/chat_service/transports/grpc_asyncio.py,
+    ]
+    before: \|Message sent with user authentication\|
+    after: "|Message sent with user authentication async gRPC|"
+    count: 2
+  - paths: [
+      packages/google-apps-chat/google/apps/chat_v1/services/chat_service/transports/grpc.py,
+    ]
+    before: \|Message sent with user authentication\|
+    after: "|Message sent with user authentication gRPC|"
+    count: 2
+  - paths: [
+      packages/google-cloud-alloydb/google/cloud/alloydb_v1/types/resources.py,
+      packages/google-cloud-alloydb/google/cloud/alloydb_v1alpha/types/resources.py,
+      packages/google-cloud-alloydb/google/cloud/alloydb_v1beta/types/resources.py,
+    ]
+    before: |
+      \                1024. Any integer between 256 and 4500 is
+      \                    considered valid.
+    after: "                1024. Any integer between 256 and 4500 is\n                considered valid.\n"
+    count: 3
+  - paths: [
+      packages/google-cloud-dataplex/google/cloud/dataplex_v1/types/catalog.py,
+    ]
+    before: |
+      :
+      \            \"entry_source.display_name=AnExampleDisplayName\"
+      \            \"entry_type=projects\/example-project\/locations\/global\/entryTypes\/example-entry_type\"
+      \            \"entry_type=projects\/example-project\/locations\/us\/entryTypes\/a\*
+      \            OR entry_type=projects\/another-project\/locations\/\*\" \"NOT
+      \            entry_source.display_name=AnotherExampleDisplayName\".
+    after: |
+      :
+                  `entry_source.display_name=AnExampleDisplayName`
+                  `entry_type=projects/example-project/locations/global/entryTypes/example-entry_type`
+                  `entry_type=projects/example-project/locations/us/entryTypes/a*
+                  OR entry_type=projects/another-project/locations/*` `NOT
+                  entry_source.display_name=AnotherExampleDisplayName`.
+    count: 1
+  - paths: [
+      packages/google-cloud-deploy/google/cloud/deploy_v1/types/cloud_deploy.py,
+    ]
+    before: \"gs:\/\/my-bucket\/dir\/configs\/\*\"
+    after: "`gs://my-bucket/dir/configs/*`"
+    count: 1
+  - paths: [
+      packages/google-cloud-dialogflow-cx/google/cloud/dialogflowcx_v3beta1/types/tool.py,
+    ]
+    before: |
+      For instance a certificate can be self-signed
+      \                    using the following command,    openssl x509
+      \                    -req -days 200 -in example.com.csr \\\
+      \                    -signkey example.com.key \\\
+      \                         -out example.com.crt \\\
+      \                         -extfile \<\(printf
+      \                    \"\\nsubjectAltName=\'DNS:www.example.com\'\"\)
+    after: |
+      For instance a certificate can be self-signed
+                          using the following command:
+
+                          ::
+
+                              openssl x509
+                              -req -days 200 -in example.com.csr \
+                              -signkey example.com.key \
+                              -out example.com.crt \
+                              -extfile <(printf
+                              "\\nsubjectAltName='DNS:www.example.com'")\n
+    count: 1
+  - paths: [
+      packages/google-cloud-dms/google/cloud/clouddms_v1/types/conversionworkspace_resources.py,
+    ]
+    before: |
+      Optional. Column fractional seconds precision
+      \            - used only for timestamp based datatypes - if
+      \              not specified and relevant uses the source
+    after: |
+      Optional. Column fractional seconds precision:
+
+                  - used only for timestamp based datatypes
+                  - if not specified and relevant uses the source
+    count: 1
+  - paths: [
+      packages/google-cloud-edgecontainer/google/cloud/edgecontainer_v1/types/resources.py,
+    ]
+    before: projects\/\\ \*\/locations\/\*\/operations\/\*.
+    after: "`projects/*/locations/*/operations/*.`"
+    count: 1
+  - paths: [
+      packages/google-cloud-enterpriseknowledgegraph/google/cloud/enterpriseknowledgegraph_v1/types/service.py,
+    ]
+    before: |
+      If true, separate clusters by their
+      \                geographic region \(from geocoding\). Uses the
+      \                following entity features:\n
+      \                - schema.org/addressLocality
+      \                - schema.org/addressRegion
+      \                - schema.org/addressCountry
+      \                Warning: processing will no longer be
+      \                regionalized!
+    after: |
+      If true, separate clusters by their
+                      geographic region (from geocoding). Uses the
+                      following entity features:\n
+                      - schema.org/addressLocality
+                      - schema.org/addressRegion
+                      - schema.org/addressCountry\n
+                      Warning: processing will no longer be
+                      regionalized!
+    count: 1
+  - paths: [
+      packages/google-cloud-gdchardwaremanagement/google/cloud/gdchardwaremanagement_v1alpha/types/resources.py,
+    ]
+    before: |
+      Optional. Any additional notes for this Site.
+      \            Please include information about:\n
+      \             - security or access restrictions
+      \             - any regulations affecting the technicians
+      \              visiting the site
+      \             - any special process or approval required to
+      \              move the equipment
+      \             - whether a representative will be available
+      \              during site visits
+    after: |
+      Optional. Any additional notes for this Site.
+                  Please include information about:\n
+                  - security or access restrictions
+                  - any regulations affecting the technicians
+                    visiting the site
+                  - any special process or approval required to
+                    move the equipment
+                  - whether a representative will be available
+                    during site visits\n
     count: 1

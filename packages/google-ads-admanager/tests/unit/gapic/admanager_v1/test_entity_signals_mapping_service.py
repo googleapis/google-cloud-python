@@ -22,20 +22,11 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account
-from google.protobuf import field_mask_pb2  # type: ignore
+from google.api_core import api_core_version
 from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
@@ -44,6 +35,24 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import client_options
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+import google.auth
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account
+from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.ads.admanager_v1.services.entity_signals_mapping_service import (
     EntitySignalsMappingServiceClient,
@@ -56,8 +65,22 @@ from google.ads.admanager_v1.types import (
 )
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1020,53 +1043,6 @@ def test_entity_signals_mapping_service_client_client_options_credentials_file(
         )
 
 
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        entity_signals_mapping_service.GetEntitySignalsMappingRequest,
-        dict,
-    ],
-)
-def test_get_entity_signals_mapping_rest(request_type):
-    client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "networks/sample1/entitySignalsMappings/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = entity_signals_mapping_messages.EntitySignalsMapping(
-            name="name_value",
-            entity_signals_mapping_id=2660,
-            taxonomy_category_ids=[2267],
-            audience_segment_id=1980,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = entity_signals_mapping_messages.EntitySignalsMapping.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_entity_signals_mapping(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, entity_signals_mapping_messages.EntitySignalsMapping)
-    assert response.name == "name_value"
-    assert response.entity_signals_mapping_id == 2660
-    assert response.taxonomy_category_ids == [2267]
-
-
 def test_get_entity_signals_mapping_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -1193,92 +1169,6 @@ def test_get_entity_signals_mapping_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_entity_signals_mapping_rest_interceptors(null_interceptor):
-    transport = transports.EntitySignalsMappingServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EntitySignalsMappingServiceRestInterceptor(),
-    )
-    client = EntitySignalsMappingServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EntitySignalsMappingServiceRestInterceptor,
-        "post_get_entity_signals_mapping",
-    ) as post, mock.patch.object(
-        transports.EntitySignalsMappingServiceRestInterceptor,
-        "pre_get_entity_signals_mapping",
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = entity_signals_mapping_service.GetEntitySignalsMappingRequest.pb(
-            entity_signals_mapping_service.GetEntitySignalsMappingRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            entity_signals_mapping_messages.EntitySignalsMapping.to_json(
-                entity_signals_mapping_messages.EntitySignalsMapping()
-            )
-        )
-
-        request = entity_signals_mapping_service.GetEntitySignalsMappingRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = entity_signals_mapping_messages.EntitySignalsMapping()
-
-        client.get_entity_signals_mapping(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_entity_signals_mapping_rest_bad_request(
-    transport: str = "rest",
-    request_type=entity_signals_mapping_service.GetEntitySignalsMappingRequest,
-):
-    client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "networks/sample1/entitySignalsMappings/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_entity_signals_mapping(request)
-
-
 def test_get_entity_signals_mapping_rest_flattened():
     client = EntitySignalsMappingServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1335,58 +1225,6 @@ def test_get_entity_signals_mapping_rest_flattened_error(transport: str = "rest"
             entity_signals_mapping_service.GetEntitySignalsMappingRequest(),
             name="name_value",
         )
-
-
-def test_get_entity_signals_mapping_rest_error():
-    client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        entity_signals_mapping_service.ListEntitySignalsMappingsRequest,
-        dict,
-    ],
-)
-def test_list_entity_signals_mappings_rest(request_type):
-    client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "networks/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = entity_signals_mapping_service.ListEntitySignalsMappingsResponse(
-            next_page_token="next_page_token_value",
-            total_size=1086,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = (
-            entity_signals_mapping_service.ListEntitySignalsMappingsResponse.pb(
-                return_value
-            )
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_entity_signals_mappings(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListEntitySignalsMappingsPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.total_size == 1086
 
 
 def test_list_entity_signals_mappings_rest_use_cached_wrapped_rpc():
@@ -1538,94 +1376,6 @@ def test_list_entity_signals_mappings_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_entity_signals_mappings_rest_interceptors(null_interceptor):
-    transport = transports.EntitySignalsMappingServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EntitySignalsMappingServiceRestInterceptor(),
-    )
-    client = EntitySignalsMappingServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EntitySignalsMappingServiceRestInterceptor,
-        "post_list_entity_signals_mappings",
-    ) as post, mock.patch.object(
-        transports.EntitySignalsMappingServiceRestInterceptor,
-        "pre_list_entity_signals_mappings",
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = entity_signals_mapping_service.ListEntitySignalsMappingsRequest.pb(
-            entity_signals_mapping_service.ListEntitySignalsMappingsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            entity_signals_mapping_service.ListEntitySignalsMappingsResponse.to_json(
-                entity_signals_mapping_service.ListEntitySignalsMappingsResponse()
-            )
-        )
-
-        request = entity_signals_mapping_service.ListEntitySignalsMappingsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = (
-            entity_signals_mapping_service.ListEntitySignalsMappingsResponse()
-        )
-
-        client.list_entity_signals_mappings(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_entity_signals_mappings_rest_bad_request(
-    transport: str = "rest",
-    request_type=entity_signals_mapping_service.ListEntitySignalsMappingsRequest,
-):
-    client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "networks/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_entity_signals_mappings(request)
-
-
 def test_list_entity_signals_mappings_rest_flattened():
     client = EntitySignalsMappingServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1753,134 +1503,6 @@ def test_list_entity_signals_mappings_rest_pager(transport: str = "rest"):
         pages = list(client.list_entity_signals_mappings(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        entity_signals_mapping_service.CreateEntitySignalsMappingRequest,
-        dict,
-    ],
-)
-def test_create_entity_signals_mapping_rest(request_type):
-    client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "networks/sample1"}
-    request_init["entity_signals_mapping"] = {
-        "audience_segment_id": 1980,
-        "content_bundle_id": 1792,
-        "custom_targeting_value_id": 2663,
-        "name": "name_value",
-        "entity_signals_mapping_id": 2660,
-        "taxonomy_category_ids": [2268, 2269],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = (
-        entity_signals_mapping_service.CreateEntitySignalsMappingRequest.meta.fields[
-            "entity_signals_mapping"
-        ]
-    )
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "entity_signals_mapping"
-    ].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["entity_signals_mapping"][field])):
-                    del request_init["entity_signals_mapping"][field][i][subfield]
-            else:
-                del request_init["entity_signals_mapping"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = entity_signals_mapping_messages.EntitySignalsMapping(
-            name="name_value",
-            entity_signals_mapping_id=2660,
-            taxonomy_category_ids=[2267],
-            audience_segment_id=1980,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = entity_signals_mapping_messages.EntitySignalsMapping.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_entity_signals_mapping(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, entity_signals_mapping_messages.EntitySignalsMapping)
-    assert response.name == "name_value"
-    assert response.entity_signals_mapping_id == 2660
-    assert response.taxonomy_category_ids == [2267]
 
 
 def test_create_entity_signals_mapping_rest_use_cached_wrapped_rpc():
@@ -2020,94 +1642,6 @@ def test_create_entity_signals_mapping_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_entity_signals_mapping_rest_interceptors(null_interceptor):
-    transport = transports.EntitySignalsMappingServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EntitySignalsMappingServiceRestInterceptor(),
-    )
-    client = EntitySignalsMappingServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EntitySignalsMappingServiceRestInterceptor,
-        "post_create_entity_signals_mapping",
-    ) as post, mock.patch.object(
-        transports.EntitySignalsMappingServiceRestInterceptor,
-        "pre_create_entity_signals_mapping",
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = (
-            entity_signals_mapping_service.CreateEntitySignalsMappingRequest.pb(
-                entity_signals_mapping_service.CreateEntitySignalsMappingRequest()
-            )
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            entity_signals_mapping_messages.EntitySignalsMapping.to_json(
-                entity_signals_mapping_messages.EntitySignalsMapping()
-            )
-        )
-
-        request = entity_signals_mapping_service.CreateEntitySignalsMappingRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = entity_signals_mapping_messages.EntitySignalsMapping()
-
-        client.create_entity_signals_mapping(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_entity_signals_mapping_rest_bad_request(
-    transport: str = "rest",
-    request_type=entity_signals_mapping_service.CreateEntitySignalsMappingRequest,
-):
-    client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "networks/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_entity_signals_mapping(request)
-
-
 def test_create_entity_signals_mapping_rest_flattened():
     client = EntitySignalsMappingServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2170,144 +1704,6 @@ def test_create_entity_signals_mapping_rest_flattened_error(transport: str = "re
                 audience_segment_id=1980
             ),
         )
-
-
-def test_create_entity_signals_mapping_rest_error():
-    client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        entity_signals_mapping_service.UpdateEntitySignalsMappingRequest,
-        dict,
-    ],
-)
-def test_update_entity_signals_mapping_rest(request_type):
-    client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "entity_signals_mapping": {
-            "name": "networks/sample1/entitySignalsMappings/sample2"
-        }
-    }
-    request_init["entity_signals_mapping"] = {
-        "audience_segment_id": 1980,
-        "content_bundle_id": 1792,
-        "custom_targeting_value_id": 2663,
-        "name": "networks/sample1/entitySignalsMappings/sample2",
-        "entity_signals_mapping_id": 2660,
-        "taxonomy_category_ids": [2268, 2269],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = (
-        entity_signals_mapping_service.UpdateEntitySignalsMappingRequest.meta.fields[
-            "entity_signals_mapping"
-        ]
-    )
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "entity_signals_mapping"
-    ].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["entity_signals_mapping"][field])):
-                    del request_init["entity_signals_mapping"][field][i][subfield]
-            else:
-                del request_init["entity_signals_mapping"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = entity_signals_mapping_messages.EntitySignalsMapping(
-            name="name_value",
-            entity_signals_mapping_id=2660,
-            taxonomy_category_ids=[2267],
-            audience_segment_id=1980,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = entity_signals_mapping_messages.EntitySignalsMapping.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_entity_signals_mapping(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, entity_signals_mapping_messages.EntitySignalsMapping)
-    assert response.name == "name_value"
-    assert response.entity_signals_mapping_id == 2660
-    assert response.taxonomy_category_ids == [2267]
 
 
 def test_update_entity_signals_mapping_rest_use_cached_wrapped_rpc():
@@ -2444,98 +1840,6 @@ def test_update_entity_signals_mapping_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_entity_signals_mapping_rest_interceptors(null_interceptor):
-    transport = transports.EntitySignalsMappingServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EntitySignalsMappingServiceRestInterceptor(),
-    )
-    client = EntitySignalsMappingServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EntitySignalsMappingServiceRestInterceptor,
-        "post_update_entity_signals_mapping",
-    ) as post, mock.patch.object(
-        transports.EntitySignalsMappingServiceRestInterceptor,
-        "pre_update_entity_signals_mapping",
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = (
-            entity_signals_mapping_service.UpdateEntitySignalsMappingRequest.pb(
-                entity_signals_mapping_service.UpdateEntitySignalsMappingRequest()
-            )
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            entity_signals_mapping_messages.EntitySignalsMapping.to_json(
-                entity_signals_mapping_messages.EntitySignalsMapping()
-            )
-        )
-
-        request = entity_signals_mapping_service.UpdateEntitySignalsMappingRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = entity_signals_mapping_messages.EntitySignalsMapping()
-
-        client.update_entity_signals_mapping(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_entity_signals_mapping_rest_bad_request(
-    transport: str = "rest",
-    request_type=entity_signals_mapping_service.UpdateEntitySignalsMappingRequest,
-):
-    client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "entity_signals_mapping": {
-            "name": "networks/sample1/entitySignalsMappings/sample2"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_entity_signals_mapping(request)
-
-
 def test_update_entity_signals_mapping_rest_flattened():
     client = EntitySignalsMappingServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2603,58 +1907,6 @@ def test_update_entity_signals_mapping_rest_flattened_error(transport: str = "re
             ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_entity_signals_mapping_rest_error():
-    client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        entity_signals_mapping_service.BatchCreateEntitySignalsMappingsRequest,
-        dict,
-    ],
-)
-def test_batch_create_entity_signals_mappings_rest(request_type):
-    client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "networks/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = (
-            entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse()
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = (
-            entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse.pb(
-                return_value
-            )
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.batch_create_entity_signals_mappings(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(
-        response,
-        entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse,
-    )
 
 
 def test_batch_create_entity_signals_mappings_rest_use_cached_wrapped_rpc():
@@ -2796,96 +2048,6 @@ def test_batch_create_entity_signals_mappings_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_create_entity_signals_mappings_rest_interceptors(null_interceptor):
-    transport = transports.EntitySignalsMappingServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EntitySignalsMappingServiceRestInterceptor(),
-    )
-    client = EntitySignalsMappingServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EntitySignalsMappingServiceRestInterceptor,
-        "post_batch_create_entity_signals_mappings",
-    ) as post, mock.patch.object(
-        transports.EntitySignalsMappingServiceRestInterceptor,
-        "pre_batch_create_entity_signals_mappings",
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = (
-            entity_signals_mapping_service.BatchCreateEntitySignalsMappingsRequest.pb(
-                entity_signals_mapping_service.BatchCreateEntitySignalsMappingsRequest()
-            )
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse.to_json(
-            entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse()
-        )
-
-        request = (
-            entity_signals_mapping_service.BatchCreateEntitySignalsMappingsRequest()
-        )
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = (
-            entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse()
-        )
-
-        client.batch_create_entity_signals_mappings(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_create_entity_signals_mappings_rest_bad_request(
-    transport: str = "rest",
-    request_type=entity_signals_mapping_service.BatchCreateEntitySignalsMappingsRequest,
-):
-    client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "networks/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_create_entity_signals_mappings(request)
-
-
 def test_batch_create_entity_signals_mappings_rest_flattened():
     client = EntitySignalsMappingServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2959,58 +2121,6 @@ def test_batch_create_entity_signals_mappings_rest_flattened_error(
                 )
             ],
         )
-
-
-def test_batch_create_entity_signals_mappings_rest_error():
-    client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsRequest,
-        dict,
-    ],
-)
-def test_batch_update_entity_signals_mappings_rest(request_type):
-    client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "networks/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = (
-            entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse()
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = (
-            entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse.pb(
-                return_value
-            )
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.batch_update_entity_signals_mappings(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(
-        response,
-        entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse,
-    )
 
 
 def test_batch_update_entity_signals_mappings_rest_use_cached_wrapped_rpc():
@@ -3152,96 +2262,6 @@ def test_batch_update_entity_signals_mappings_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_update_entity_signals_mappings_rest_interceptors(null_interceptor):
-    transport = transports.EntitySignalsMappingServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.EntitySignalsMappingServiceRestInterceptor(),
-    )
-    client = EntitySignalsMappingServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EntitySignalsMappingServiceRestInterceptor,
-        "post_batch_update_entity_signals_mappings",
-    ) as post, mock.patch.object(
-        transports.EntitySignalsMappingServiceRestInterceptor,
-        "pre_batch_update_entity_signals_mappings",
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = (
-            entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsRequest.pb(
-                entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsRequest()
-            )
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse.to_json(
-            entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse()
-        )
-
-        request = (
-            entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsRequest()
-        )
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = (
-            entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse()
-        )
-
-        client.batch_update_entity_signals_mappings(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_update_entity_signals_mappings_rest_bad_request(
-    transport: str = "rest",
-    request_type=entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsRequest,
-):
-    client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "networks/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_update_entity_signals_mappings(request)
-
-
 def test_batch_update_entity_signals_mappings_rest_flattened():
     client = EntitySignalsMappingServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3321,12 +2341,6 @@ def test_batch_update_entity_signals_mappings_rest_flattened_error(
         )
 
 
-def test_batch_update_entity_signals_mappings_rest_error():
-    client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.EntitySignalsMappingServiceRestTransport(
@@ -3402,17 +2416,1181 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_rest():
+    transport = EntitySignalsMappingServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_get_entity_signals_mapping_rest_bad_request(
+    request_type=entity_signals_mapping_service.GetEntitySignalsMappingRequest,
+):
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "networks/sample1/entitySignalsMappings/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_entity_signals_mapping(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "rest",
+        entity_signals_mapping_service.GetEntitySignalsMappingRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = EntitySignalsMappingServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_get_entity_signals_mapping_rest_call_success(request_type):
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "networks/sample1/entitySignalsMappings/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = entity_signals_mapping_messages.EntitySignalsMapping(
+            name="name_value",
+            entity_signals_mapping_id=2660,
+            taxonomy_category_ids=[2267],
+            audience_segment_id=1980,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = entity_signals_mapping_messages.EntitySignalsMapping.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_entity_signals_mapping(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, entity_signals_mapping_messages.EntitySignalsMapping)
+    assert response.name == "name_value"
+    assert response.entity_signals_mapping_id == 2660
+    assert response.taxonomy_category_ids == [2267]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_entity_signals_mapping_rest_interceptors(null_interceptor):
+    transport = transports.EntitySignalsMappingServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EntitySignalsMappingServiceRestInterceptor(),
+    )
+    client = EntitySignalsMappingServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EntitySignalsMappingServiceRestInterceptor,
+        "post_get_entity_signals_mapping",
+    ) as post, mock.patch.object(
+        transports.EntitySignalsMappingServiceRestInterceptor,
+        "pre_get_entity_signals_mapping",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = entity_signals_mapping_service.GetEntitySignalsMappingRequest.pb(
+            entity_signals_mapping_service.GetEntitySignalsMappingRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = entity_signals_mapping_messages.EntitySignalsMapping.to_json(
+            entity_signals_mapping_messages.EntitySignalsMapping()
+        )
+        req.return_value.content = return_value
+
+        request = entity_signals_mapping_service.GetEntitySignalsMappingRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = entity_signals_mapping_messages.EntitySignalsMapping()
+
+        client.get_entity_signals_mapping(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_entity_signals_mappings_rest_bad_request(
+    request_type=entity_signals_mapping_service.ListEntitySignalsMappingsRequest,
+):
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_entity_signals_mappings(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_signals_mapping_service.ListEntitySignalsMappingsRequest,
+        dict,
+    ],
+)
+def test_list_entity_signals_mappings_rest_call_success(request_type):
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = entity_signals_mapping_service.ListEntitySignalsMappingsResponse(
+            next_page_token="next_page_token_value",
+            total_size=1086,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = (
+            entity_signals_mapping_service.ListEntitySignalsMappingsResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_entity_signals_mappings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListEntitySignalsMappingsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_entity_signals_mappings_rest_interceptors(null_interceptor):
+    transport = transports.EntitySignalsMappingServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EntitySignalsMappingServiceRestInterceptor(),
+    )
+    client = EntitySignalsMappingServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EntitySignalsMappingServiceRestInterceptor,
+        "post_list_entity_signals_mappings",
+    ) as post, mock.patch.object(
+        transports.EntitySignalsMappingServiceRestInterceptor,
+        "pre_list_entity_signals_mappings",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = entity_signals_mapping_service.ListEntitySignalsMappingsRequest.pb(
+            entity_signals_mapping_service.ListEntitySignalsMappingsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = (
+            entity_signals_mapping_service.ListEntitySignalsMappingsResponse.to_json(
+                entity_signals_mapping_service.ListEntitySignalsMappingsResponse()
+            )
+        )
+        req.return_value.content = return_value
+
+        request = entity_signals_mapping_service.ListEntitySignalsMappingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            entity_signals_mapping_service.ListEntitySignalsMappingsResponse()
+        )
+
+        client.list_entity_signals_mappings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_entity_signals_mapping_rest_bad_request(
+    request_type=entity_signals_mapping_service.CreateEntitySignalsMappingRequest,
+):
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_entity_signals_mapping(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_signals_mapping_service.CreateEntitySignalsMappingRequest,
+        dict,
+    ],
+)
+def test_create_entity_signals_mapping_rest_call_success(request_type):
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request_init["entity_signals_mapping"] = {
+        "audience_segment_id": 1980,
+        "content_bundle_id": 1792,
+        "custom_targeting_value_id": 2663,
+        "name": "name_value",
+        "entity_signals_mapping_id": 2660,
+        "taxonomy_category_ids": [2268, 2269],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = (
+        entity_signals_mapping_service.CreateEntitySignalsMappingRequest.meta.fields[
+            "entity_signals_mapping"
+        ]
+    )
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "entity_signals_mapping"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["entity_signals_mapping"][field])):
+                    del request_init["entity_signals_mapping"][field][i][subfield]
+            else:
+                del request_init["entity_signals_mapping"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = entity_signals_mapping_messages.EntitySignalsMapping(
+            name="name_value",
+            entity_signals_mapping_id=2660,
+            taxonomy_category_ids=[2267],
+            audience_segment_id=1980,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = entity_signals_mapping_messages.EntitySignalsMapping.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_entity_signals_mapping(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, entity_signals_mapping_messages.EntitySignalsMapping)
+    assert response.name == "name_value"
+    assert response.entity_signals_mapping_id == 2660
+    assert response.taxonomy_category_ids == [2267]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_entity_signals_mapping_rest_interceptors(null_interceptor):
+    transport = transports.EntitySignalsMappingServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EntitySignalsMappingServiceRestInterceptor(),
+    )
+    client = EntitySignalsMappingServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EntitySignalsMappingServiceRestInterceptor,
+        "post_create_entity_signals_mapping",
+    ) as post, mock.patch.object(
+        transports.EntitySignalsMappingServiceRestInterceptor,
+        "pre_create_entity_signals_mapping",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = (
+            entity_signals_mapping_service.CreateEntitySignalsMappingRequest.pb(
+                entity_signals_mapping_service.CreateEntitySignalsMappingRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = entity_signals_mapping_messages.EntitySignalsMapping.to_json(
+            entity_signals_mapping_messages.EntitySignalsMapping()
+        )
+        req.return_value.content = return_value
+
+        request = entity_signals_mapping_service.CreateEntitySignalsMappingRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = entity_signals_mapping_messages.EntitySignalsMapping()
+
+        client.create_entity_signals_mapping(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_entity_signals_mapping_rest_bad_request(
+    request_type=entity_signals_mapping_service.UpdateEntitySignalsMappingRequest,
+):
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "entity_signals_mapping": {
+            "name": "networks/sample1/entitySignalsMappings/sample2"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_entity_signals_mapping(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_signals_mapping_service.UpdateEntitySignalsMappingRequest,
+        dict,
+    ],
+)
+def test_update_entity_signals_mapping_rest_call_success(request_type):
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "entity_signals_mapping": {
+            "name": "networks/sample1/entitySignalsMappings/sample2"
+        }
+    }
+    request_init["entity_signals_mapping"] = {
+        "audience_segment_id": 1980,
+        "content_bundle_id": 1792,
+        "custom_targeting_value_id": 2663,
+        "name": "networks/sample1/entitySignalsMappings/sample2",
+        "entity_signals_mapping_id": 2660,
+        "taxonomy_category_ids": [2268, 2269],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = (
+        entity_signals_mapping_service.UpdateEntitySignalsMappingRequest.meta.fields[
+            "entity_signals_mapping"
+        ]
+    )
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "entity_signals_mapping"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["entity_signals_mapping"][field])):
+                    del request_init["entity_signals_mapping"][field][i][subfield]
+            else:
+                del request_init["entity_signals_mapping"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = entity_signals_mapping_messages.EntitySignalsMapping(
+            name="name_value",
+            entity_signals_mapping_id=2660,
+            taxonomy_category_ids=[2267],
+            audience_segment_id=1980,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = entity_signals_mapping_messages.EntitySignalsMapping.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_entity_signals_mapping(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, entity_signals_mapping_messages.EntitySignalsMapping)
+    assert response.name == "name_value"
+    assert response.entity_signals_mapping_id == 2660
+    assert response.taxonomy_category_ids == [2267]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_entity_signals_mapping_rest_interceptors(null_interceptor):
+    transport = transports.EntitySignalsMappingServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EntitySignalsMappingServiceRestInterceptor(),
+    )
+    client = EntitySignalsMappingServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EntitySignalsMappingServiceRestInterceptor,
+        "post_update_entity_signals_mapping",
+    ) as post, mock.patch.object(
+        transports.EntitySignalsMappingServiceRestInterceptor,
+        "pre_update_entity_signals_mapping",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = (
+            entity_signals_mapping_service.UpdateEntitySignalsMappingRequest.pb(
+                entity_signals_mapping_service.UpdateEntitySignalsMappingRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = entity_signals_mapping_messages.EntitySignalsMapping.to_json(
+            entity_signals_mapping_messages.EntitySignalsMapping()
+        )
+        req.return_value.content = return_value
+
+        request = entity_signals_mapping_service.UpdateEntitySignalsMappingRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = entity_signals_mapping_messages.EntitySignalsMapping()
+
+        client.update_entity_signals_mapping(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_create_entity_signals_mappings_rest_bad_request(
+    request_type=entity_signals_mapping_service.BatchCreateEntitySignalsMappingsRequest,
+):
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.batch_create_entity_signals_mappings(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_signals_mapping_service.BatchCreateEntitySignalsMappingsRequest,
+        dict,
+    ],
+)
+def test_batch_create_entity_signals_mappings_rest_call_success(request_type):
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse()
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = (
+            entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_create_entity_signals_mappings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse,
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_create_entity_signals_mappings_rest_interceptors(null_interceptor):
+    transport = transports.EntitySignalsMappingServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EntitySignalsMappingServiceRestInterceptor(),
+    )
+    client = EntitySignalsMappingServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EntitySignalsMappingServiceRestInterceptor,
+        "post_batch_create_entity_signals_mappings",
+    ) as post, mock.patch.object(
+        transports.EntitySignalsMappingServiceRestInterceptor,
+        "pre_batch_create_entity_signals_mappings",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = (
+            entity_signals_mapping_service.BatchCreateEntitySignalsMappingsRequest.pb(
+                entity_signals_mapping_service.BatchCreateEntitySignalsMappingsRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse.to_json(
+            entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = (
+            entity_signals_mapping_service.BatchCreateEntitySignalsMappingsRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse()
+        )
+
+        client.batch_create_entity_signals_mappings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_update_entity_signals_mappings_rest_bad_request(
+    request_type=entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsRequest,
+):
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.batch_update_entity_signals_mappings(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsRequest,
+        dict,
+    ],
+)
+def test_batch_update_entity_signals_mappings_rest_call_success(request_type):
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "networks/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = (
+            entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse()
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = (
+            entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_update_entity_signals_mappings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response,
+        entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse,
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_update_entity_signals_mappings_rest_interceptors(null_interceptor):
+    transport = transports.EntitySignalsMappingServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.EntitySignalsMappingServiceRestInterceptor(),
+    )
+    client = EntitySignalsMappingServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.EntitySignalsMappingServiceRestInterceptor,
+        "post_batch_update_entity_signals_mappings",
+    ) as post, mock.patch.object(
+        transports.EntitySignalsMappingServiceRestInterceptor,
+        "pre_batch_update_entity_signals_mappings",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = (
+            entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsRequest.pb(
+                entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsRequest()
+            )
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse.to_json(
+            entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = (
+            entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsRequest()
+        )
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse()
+        )
+
+        client.batch_update_entity_signals_mappings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "networks/sample1/operations/reports/runs/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "networks/sample1/operations/reports/runs/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_initialize_client_w_rest():
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_entity_signals_mapping_empty_call_rest():
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_entity_signals_mapping), "__call__"
+    ) as call:
+        client.get_entity_signals_mapping(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_signals_mapping_service.GetEntitySignalsMappingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_entity_signals_mappings_empty_call_rest():
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entity_signals_mappings), "__call__"
+    ) as call:
+        client.list_entity_signals_mappings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_signals_mapping_service.ListEntitySignalsMappingsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_entity_signals_mapping_empty_call_rest():
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entity_signals_mapping), "__call__"
+    ) as call:
+        client.create_entity_signals_mapping(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_signals_mapping_service.CreateEntitySignalsMappingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_entity_signals_mapping_empty_call_rest():
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_entity_signals_mapping), "__call__"
+    ) as call:
+        client.update_entity_signals_mapping(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = entity_signals_mapping_service.UpdateEntitySignalsMappingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_create_entity_signals_mappings_empty_call_rest():
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_entity_signals_mappings), "__call__"
+    ) as call:
+        client.batch_create_entity_signals_mappings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            entity_signals_mapping_service.BatchCreateEntitySignalsMappingsRequest()
+        )
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_update_entity_signals_mappings_empty_call_rest():
+    client = EntitySignalsMappingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_entity_signals_mappings), "__call__"
+    ) as call:
+        client.batch_update_entity_signals_mappings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = (
+            entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsRequest()
+        )
+
+        assert args[0] == request_msg
 
 
 def test_entity_signals_mapping_service_base_transport_error():
@@ -3772,79 +3950,16 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-def test_get_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
-):
+def test_transport_close_rest():
     client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "networks/sample1/operations/reports/runs/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = EntitySignalsMappingServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "networks/sample1/operations/reports/runs/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-    }
-
-    for transport, close_name in transports.items():
-        client = EntitySignalsMappingServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

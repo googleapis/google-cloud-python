@@ -22,12 +22,29 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 import google.auth
@@ -37,14 +54,6 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.commerce_consumer_procurement_v1.services.license_management_service import (
     LicenseManagementServiceAsyncClient,
@@ -57,8 +66,22 @@ from google.cloud.commerce_consumer_procurement_v1.types import (
 )
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1240,25 +1263,6 @@ def test_get_license_pool(request_type, transport: str = "grpc"):
     assert response.total_license_count == 2030
 
 
-def test_get_license_pool_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_license_pool), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_license_pool()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == license_management_service.GetLicensePoolRequest()
-
-
 def test_get_license_pool_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1325,31 +1329,6 @@ def test_get_license_pool_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_license_pool_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_license_pool), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            license_management_service.LicensePool(
-                name="name_value",
-                available_license_count=2411,
-                total_license_count=2030,
-            )
-        )
-        response = await client.get_license_pool()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == license_management_service.GetLicensePoolRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_license_pool_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1357,7 +1336,7 @@ async def test_get_license_pool_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LicenseManagementServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1397,7 +1376,7 @@ async def test_get_license_pool_async(
     request_type=license_management_service.GetLicensePoolRequest,
 ):
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1467,7 +1446,7 @@ def test_get_license_pool_field_headers():
 @pytest.mark.asyncio
 async def test_get_license_pool_field_headers_async():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1537,7 +1516,7 @@ def test_get_license_pool_flattened_error():
 @pytest.mark.asyncio
 async def test_get_license_pool_flattened_async():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1566,7 +1545,7 @@ async def test_get_license_pool_flattened_async():
 @pytest.mark.asyncio
 async def test_get_license_pool_flattened_error_async():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1618,27 +1597,6 @@ def test_update_license_pool(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.available_license_count == 2411
     assert response.total_license_count == 2030
-
-
-def test_update_license_pool_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_license_pool), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_license_pool()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == license_management_service.UpdateLicensePoolRequest()
 
 
 def test_update_license_pool_non_empty_request_with_auto_populated_field():
@@ -1707,33 +1665,6 @@ def test_update_license_pool_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_license_pool_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_license_pool), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            license_management_service.LicensePool(
-                name="name_value",
-                available_license_count=2411,
-                total_license_count=2030,
-            )
-        )
-        response = await client.update_license_pool()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == license_management_service.UpdateLicensePoolRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_license_pool_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1741,7 +1672,7 @@ async def test_update_license_pool_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LicenseManagementServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1781,7 +1712,7 @@ async def test_update_license_pool_async(
     request_type=license_management_service.UpdateLicensePoolRequest,
 ):
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1855,7 +1786,7 @@ def test_update_license_pool_field_headers():
 @pytest.mark.asyncio
 async def test_update_license_pool_field_headers_async():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1934,7 +1865,7 @@ def test_update_license_pool_flattened_error():
 @pytest.mark.asyncio
 async def test_update_license_pool_flattened_async():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1969,7 +1900,7 @@ async def test_update_license_pool_flattened_async():
 @pytest.mark.asyncio
 async def test_update_license_pool_flattened_error_async():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2013,25 +1944,6 @@ def test_assign(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, license_management_service.AssignResponse)
-
-
-def test_assign_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.assign), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.assign()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == license_management_service.AssignRequest()
 
 
 def test_assign_non_empty_request_with_auto_populated_field():
@@ -2098,33 +2010,12 @@ def test_assign_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_assign_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.assign), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            license_management_service.AssignResponse()
-        )
-        response = await client.assign()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == license_management_service.AssignRequest()
-
-
-@pytest.mark.asyncio
 async def test_assign_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LicenseManagementServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2164,7 +2055,7 @@ async def test_assign_async(
     request_type=license_management_service.AssignRequest,
 ):
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2227,7 +2118,7 @@ def test_assign_field_headers():
 @pytest.mark.asyncio
 async def test_assign_field_headers_async():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2302,7 +2193,7 @@ def test_assign_flattened_error():
 @pytest.mark.asyncio
 async def test_assign_flattened_async():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2335,7 +2226,7 @@ async def test_assign_flattened_async():
 @pytest.mark.asyncio
 async def test_assign_flattened_error_async():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2379,25 +2270,6 @@ def test_unassign(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, license_management_service.UnassignResponse)
-
-
-def test_unassign_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.unassign), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.unassign()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == license_management_service.UnassignRequest()
 
 
 def test_unassign_non_empty_request_with_auto_populated_field():
@@ -2464,33 +2336,12 @@ def test_unassign_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_unassign_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.unassign), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            license_management_service.UnassignResponse()
-        )
-        response = await client.unassign()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == license_management_service.UnassignRequest()
-
-
-@pytest.mark.asyncio
 async def test_unassign_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LicenseManagementServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2530,7 +2381,7 @@ async def test_unassign_async(
     request_type=license_management_service.UnassignRequest,
 ):
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2593,7 +2444,7 @@ def test_unassign_field_headers():
 @pytest.mark.asyncio
 async def test_unassign_field_headers_async():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2668,7 +2519,7 @@ def test_unassign_flattened_error():
 @pytest.mark.asyncio
 async def test_unassign_flattened_async():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2701,7 +2552,7 @@ async def test_unassign_flattened_async():
 @pytest.mark.asyncio
 async def test_unassign_flattened_error_async():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2750,27 +2601,6 @@ def test_enumerate_licensed_users(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.EnumerateLicensedUsersPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_enumerate_licensed_users_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enumerate_licensed_users), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.enumerate_licensed_users()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == license_management_service.EnumerateLicensedUsersRequest()
 
 
 def test_enumerate_licensed_users_non_empty_request_with_auto_populated_field():
@@ -2846,31 +2676,6 @@ def test_enumerate_licensed_users_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_enumerate_licensed_users_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enumerate_licensed_users), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            license_management_service.EnumerateLicensedUsersResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.enumerate_licensed_users()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == license_management_service.EnumerateLicensedUsersRequest()
-
-
-@pytest.mark.asyncio
 async def test_enumerate_licensed_users_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2878,7 +2683,7 @@ async def test_enumerate_licensed_users_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = LicenseManagementServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2918,7 +2723,7 @@ async def test_enumerate_licensed_users_async(
     request_type=license_management_service.EnumerateLicensedUsersRequest,
 ):
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2988,7 +2793,7 @@ def test_enumerate_licensed_users_field_headers():
 @pytest.mark.asyncio
 async def test_enumerate_licensed_users_field_headers_async():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3062,7 +2867,7 @@ def test_enumerate_licensed_users_flattened_error():
 @pytest.mark.asyncio
 async def test_enumerate_licensed_users_flattened_async():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3093,7 +2898,7 @@ async def test_enumerate_licensed_users_flattened_async():
 @pytest.mark.asyncio
 async def test_enumerate_licensed_users_flattened_error_async():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3211,7 +3016,7 @@ def test_enumerate_licensed_users_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_enumerate_licensed_users_async_pager():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3265,7 +3070,7 @@ async def test_enumerate_licensed_users_async_pager():
 @pytest.mark.asyncio
 async def test_enumerate_licensed_users_async_pages():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3311,50 +3116,6 @@ async def test_enumerate_licensed_users_async_pages():
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        license_management_service.GetLicensePoolRequest,
-        dict,
-    ],
-)
-def test_get_license_pool_rest(request_type):
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "billingAccounts/sample1/orders/sample2/licensePool"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = license_management_service.LicensePool(
-            name="name_value",
-            available_license_count=2411,
-            total_license_count=2030,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = license_management_service.LicensePool.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_license_pool(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, license_management_service.LicensePool)
-    assert response.name == "name_value"
-    assert response.available_license_count == 2411
-    assert response.total_license_count == 2030
 
 
 def test_get_license_pool_rest_use_cached_wrapped_rpc():
@@ -3478,88 +3239,6 @@ def test_get_license_pool_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_license_pool_rest_interceptors(null_interceptor):
-    transport = transports.LicenseManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.LicenseManagementServiceRestInterceptor(),
-    )
-    client = LicenseManagementServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LicenseManagementServiceRestInterceptor, "post_get_license_pool"
-    ) as post, mock.patch.object(
-        transports.LicenseManagementServiceRestInterceptor, "pre_get_license_pool"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = license_management_service.GetLicensePoolRequest.pb(
-            license_management_service.GetLicensePoolRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = license_management_service.LicensePool.to_json(
-            license_management_service.LicensePool()
-        )
-
-        request = license_management_service.GetLicensePoolRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = license_management_service.LicensePool()
-
-        client.get_license_pool(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_license_pool_rest_bad_request(
-    transport: str = "rest",
-    request_type=license_management_service.GetLicensePoolRequest,
-):
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "billingAccounts/sample1/orders/sample2/licensePool"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_license_pool(request)
-
-
 def test_get_license_pool_rest_flattened():
     client = LicenseManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3615,140 +3294,6 @@ def test_get_license_pool_rest_flattened_error(transport: str = "rest"):
             license_management_service.GetLicensePoolRequest(),
             name="name_value",
         )
-
-
-def test_get_license_pool_rest_error():
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        license_management_service.UpdateLicensePoolRequest,
-        dict,
-    ],
-)
-def test_update_license_pool_rest(request_type):
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "license_pool": {
-            "name": "billingAccounts/sample1/orders/sample2/licensePool/sample3"
-        }
-    }
-    request_init["license_pool"] = {
-        "name": "billingAccounts/sample1/orders/sample2/licensePool/sample3",
-        "license_assignment_protocol": {
-            "manual_assignment_type": {},
-            "auto_assignment_type": {
-                "inactive_license_ttl": {"seconds": 751, "nanos": 543}
-            },
-        },
-        "available_license_count": 2411,
-        "total_license_count": 2030,
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = license_management_service.UpdateLicensePoolRequest.meta.fields[
-        "license_pool"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["license_pool"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["license_pool"][field])):
-                    del request_init["license_pool"][field][i][subfield]
-            else:
-                del request_init["license_pool"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = license_management_service.LicensePool(
-            name="name_value",
-            available_license_count=2411,
-            total_license_count=2030,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = license_management_service.LicensePool.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_license_pool(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, license_management_service.LicensePool)
-    assert response.name == "name_value"
-    assert response.available_license_count == 2411
-    assert response.total_license_count == 2030
 
 
 def test_update_license_pool_rest_use_cached_wrapped_rpc():
@@ -3880,92 +3425,6 @@ def test_update_license_pool_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_license_pool_rest_interceptors(null_interceptor):
-    transport = transports.LicenseManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.LicenseManagementServiceRestInterceptor(),
-    )
-    client = LicenseManagementServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LicenseManagementServiceRestInterceptor, "post_update_license_pool"
-    ) as post, mock.patch.object(
-        transports.LicenseManagementServiceRestInterceptor, "pre_update_license_pool"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = license_management_service.UpdateLicensePoolRequest.pb(
-            license_management_service.UpdateLicensePoolRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = license_management_service.LicensePool.to_json(
-            license_management_service.LicensePool()
-        )
-
-        request = license_management_service.UpdateLicensePoolRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = license_management_service.LicensePool()
-
-        client.update_license_pool(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_license_pool_rest_bad_request(
-    transport: str = "rest",
-    request_type=license_management_service.UpdateLicensePoolRequest,
-):
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "license_pool": {
-            "name": "billingAccounts/sample1/orders/sample2/licensePool/sample3"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_license_pool(request)
-
-
 def test_update_license_pool_rest_flattened():
     client = LicenseManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4027,49 +3486,6 @@ def test_update_license_pool_rest_flattened_error(transport: str = "rest"):
             license_pool=license_management_service.LicensePool(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_license_pool_rest_error():
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        license_management_service.AssignRequest,
-        dict,
-    ],
-)
-def test_assign_rest(request_type):
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "billingAccounts/sample1/orders/sample2/licensePool"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = license_management_service.AssignResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = license_management_service.AssignResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.assign(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, license_management_service.AssignResponse)
 
 
 def test_assign_rest_use_cached_wrapped_rpc():
@@ -4204,87 +3620,6 @@ def test_assign_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_assign_rest_interceptors(null_interceptor):
-    transport = transports.LicenseManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.LicenseManagementServiceRestInterceptor(),
-    )
-    client = LicenseManagementServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LicenseManagementServiceRestInterceptor, "post_assign"
-    ) as post, mock.patch.object(
-        transports.LicenseManagementServiceRestInterceptor, "pre_assign"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = license_management_service.AssignRequest.pb(
-            license_management_service.AssignRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = license_management_service.AssignResponse.to_json(
-            license_management_service.AssignResponse()
-        )
-
-        request = license_management_service.AssignRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = license_management_service.AssignResponse()
-
-        client.assign(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_assign_rest_bad_request(
-    transport: str = "rest", request_type=license_management_service.AssignRequest
-):
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "billingAccounts/sample1/orders/sample2/licensePool"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.assign(request)
-
-
 def test_assign_rest_flattened():
     client = LicenseManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4344,49 +3679,6 @@ def test_assign_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             usernames=["usernames_value"],
         )
-
-
-def test_assign_rest_error():
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        license_management_service.UnassignRequest,
-        dict,
-    ],
-)
-def test_unassign_rest(request_type):
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "billingAccounts/sample1/orders/sample2/licensePool"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = license_management_service.UnassignResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = license_management_service.UnassignResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.unassign(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, license_management_service.UnassignResponse)
 
 
 def test_unassign_rest_use_cached_wrapped_rpc():
@@ -4521,87 +3813,6 @@ def test_unassign_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_unassign_rest_interceptors(null_interceptor):
-    transport = transports.LicenseManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.LicenseManagementServiceRestInterceptor(),
-    )
-    client = LicenseManagementServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LicenseManagementServiceRestInterceptor, "post_unassign"
-    ) as post, mock.patch.object(
-        transports.LicenseManagementServiceRestInterceptor, "pre_unassign"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = license_management_service.UnassignRequest.pb(
-            license_management_service.UnassignRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = license_management_service.UnassignResponse.to_json(
-            license_management_service.UnassignResponse()
-        )
-
-        request = license_management_service.UnassignRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = license_management_service.UnassignResponse()
-
-        client.unassign(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_unassign_rest_bad_request(
-    transport: str = "rest", request_type=license_management_service.UnassignRequest
-):
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "billingAccounts/sample1/orders/sample2/licensePool"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.unassign(request)
-
-
 def test_unassign_rest_flattened():
     client = LicenseManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4661,54 +3872,6 @@ def test_unassign_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             usernames=["usernames_value"],
         )
-
-
-def test_unassign_rest_error():
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        license_management_service.EnumerateLicensedUsersRequest,
-        dict,
-    ],
-)
-def test_enumerate_licensed_users_rest(request_type):
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "billingAccounts/sample1/orders/sample2/licensePool"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = license_management_service.EnumerateLicensedUsersResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = license_management_service.EnumerateLicensedUsersResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.enumerate_licensed_users(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.EnumerateLicensedUsersPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_enumerate_licensed_users_rest_use_cached_wrapped_rpc():
@@ -4850,92 +4013,6 @@ def test_enumerate_licensed_users_rest_unset_required_fields():
         )
         & set(("parent",))
     )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_enumerate_licensed_users_rest_interceptors(null_interceptor):
-    transport = transports.LicenseManagementServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.LicenseManagementServiceRestInterceptor(),
-    )
-    client = LicenseManagementServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LicenseManagementServiceRestInterceptor,
-        "post_enumerate_licensed_users",
-    ) as post, mock.patch.object(
-        transports.LicenseManagementServiceRestInterceptor,
-        "pre_enumerate_licensed_users",
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = license_management_service.EnumerateLicensedUsersRequest.pb(
-            license_management_service.EnumerateLicensedUsersRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            license_management_service.EnumerateLicensedUsersResponse.to_json(
-                license_management_service.EnumerateLicensedUsersResponse()
-            )
-        )
-
-        request = license_management_service.EnumerateLicensedUsersRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = license_management_service.EnumerateLicensedUsersResponse()
-
-        client.enumerate_licensed_users(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_enumerate_licensed_users_rest_bad_request(
-    transport: str = "rest",
-    request_type=license_management_service.EnumerateLicensedUsersRequest,
-):
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "billingAccounts/sample1/orders/sample2/licensePool"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.enumerate_licensed_users(request)
 
 
 def test_enumerate_licensed_users_rest_flattened():
@@ -5159,18 +4236,1157 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = LicenseManagementServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_license_pool_empty_call_grpc():
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_license_pool), "__call__") as call:
+        call.return_value = license_management_service.LicensePool()
+        client.get_license_pool(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = license_management_service.GetLicensePoolRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_license_pool_empty_call_grpc():
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_license_pool), "__call__"
+    ) as call:
+        call.return_value = license_management_service.LicensePool()
+        client.update_license_pool(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = license_management_service.UpdateLicensePoolRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_assign_empty_call_grpc():
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.assign), "__call__") as call:
+        call.return_value = license_management_service.AssignResponse()
+        client.assign(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = license_management_service.AssignRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_unassign_empty_call_grpc():
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.unassign), "__call__") as call:
+        call.return_value = license_management_service.UnassignResponse()
+        client.unassign(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = license_management_service.UnassignRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_enumerate_licensed_users_empty_call_grpc():
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enumerate_licensed_users), "__call__"
+    ) as call:
+        call.return_value = license_management_service.EnumerateLicensedUsersResponse()
+        client.enumerate_licensed_users(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = license_management_service.EnumerateLicensedUsersRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = LicenseManagementServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = LicenseManagementServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_license_pool_empty_call_grpc_asyncio():
+    client = LicenseManagementServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_license_pool), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            license_management_service.LicensePool(
+                name="name_value",
+                available_license_count=2411,
+                total_license_count=2030,
+            )
+        )
+        await client.get_license_pool(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = license_management_service.GetLicensePoolRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_license_pool_empty_call_grpc_asyncio():
+    client = LicenseManagementServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_license_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            license_management_service.LicensePool(
+                name="name_value",
+                available_license_count=2411,
+                total_license_count=2030,
+            )
+        )
+        await client.update_license_pool(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = license_management_service.UpdateLicensePoolRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_assign_empty_call_grpc_asyncio():
+    client = LicenseManagementServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.assign), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            license_management_service.AssignResponse()
+        )
+        await client.assign(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = license_management_service.AssignRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_unassign_empty_call_grpc_asyncio():
+    client = LicenseManagementServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.unassign), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            license_management_service.UnassignResponse()
+        )
+        await client.unassign(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = license_management_service.UnassignRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_enumerate_licensed_users_empty_call_grpc_asyncio():
+    client = LicenseManagementServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enumerate_licensed_users), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            license_management_service.EnumerateLicensedUsersResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.enumerate_licensed_users(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = license_management_service.EnumerateLicensedUsersRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = LicenseManagementServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_get_license_pool_rest_bad_request(
+    request_type=license_management_service.GetLicensePoolRequest,
+):
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "billingAccounts/sample1/orders/sample2/licensePool"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_license_pool(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        license_management_service.GetLicensePoolRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = LicenseManagementServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_get_license_pool_rest_call_success(request_type):
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "billingAccounts/sample1/orders/sample2/licensePool"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = license_management_service.LicensePool(
+            name="name_value",
+            available_license_count=2411,
+            total_license_count=2030,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = license_management_service.LicensePool.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_license_pool(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, license_management_service.LicensePool)
+    assert response.name == "name_value"
+    assert response.available_license_count == 2411
+    assert response.total_license_count == 2030
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_license_pool_rest_interceptors(null_interceptor):
+    transport = transports.LicenseManagementServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.LicenseManagementServiceRestInterceptor(),
+    )
+    client = LicenseManagementServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LicenseManagementServiceRestInterceptor, "post_get_license_pool"
+    ) as post, mock.patch.object(
+        transports.LicenseManagementServiceRestInterceptor, "pre_get_license_pool"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = license_management_service.GetLicensePoolRequest.pb(
+            license_management_service.GetLicensePoolRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = license_management_service.LicensePool.to_json(
+            license_management_service.LicensePool()
+        )
+        req.return_value.content = return_value
+
+        request = license_management_service.GetLicensePoolRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = license_management_service.LicensePool()
+
+        client.get_license_pool(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_license_pool_rest_bad_request(
+    request_type=license_management_service.UpdateLicensePoolRequest,
+):
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "license_pool": {
+            "name": "billingAccounts/sample1/orders/sample2/licensePool/sample3"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_license_pool(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        license_management_service.UpdateLicensePoolRequest,
+        dict,
+    ],
+)
+def test_update_license_pool_rest_call_success(request_type):
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "license_pool": {
+            "name": "billingAccounts/sample1/orders/sample2/licensePool/sample3"
+        }
+    }
+    request_init["license_pool"] = {
+        "name": "billingAccounts/sample1/orders/sample2/licensePool/sample3",
+        "license_assignment_protocol": {
+            "manual_assignment_type": {},
+            "auto_assignment_type": {
+                "inactive_license_ttl": {"seconds": 751, "nanos": 543}
+            },
+        },
+        "available_license_count": 2411,
+        "total_license_count": 2030,
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = license_management_service.UpdateLicensePoolRequest.meta.fields[
+        "license_pool"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["license_pool"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["license_pool"][field])):
+                    del request_init["license_pool"][field][i][subfield]
+            else:
+                del request_init["license_pool"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = license_management_service.LicensePool(
+            name="name_value",
+            available_license_count=2411,
+            total_license_count=2030,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = license_management_service.LicensePool.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_license_pool(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, license_management_service.LicensePool)
+    assert response.name == "name_value"
+    assert response.available_license_count == 2411
+    assert response.total_license_count == 2030
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_license_pool_rest_interceptors(null_interceptor):
+    transport = transports.LicenseManagementServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.LicenseManagementServiceRestInterceptor(),
+    )
+    client = LicenseManagementServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LicenseManagementServiceRestInterceptor, "post_update_license_pool"
+    ) as post, mock.patch.object(
+        transports.LicenseManagementServiceRestInterceptor, "pre_update_license_pool"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = license_management_service.UpdateLicensePoolRequest.pb(
+            license_management_service.UpdateLicensePoolRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = license_management_service.LicensePool.to_json(
+            license_management_service.LicensePool()
+        )
+        req.return_value.content = return_value
+
+        request = license_management_service.UpdateLicensePoolRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = license_management_service.LicensePool()
+
+        client.update_license_pool(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_assign_rest_bad_request(request_type=license_management_service.AssignRequest):
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "billingAccounts/sample1/orders/sample2/licensePool"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.assign(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        license_management_service.AssignRequest,
+        dict,
+    ],
+)
+def test_assign_rest_call_success(request_type):
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "billingAccounts/sample1/orders/sample2/licensePool"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = license_management_service.AssignResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = license_management_service.AssignResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.assign(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, license_management_service.AssignResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_assign_rest_interceptors(null_interceptor):
+    transport = transports.LicenseManagementServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.LicenseManagementServiceRestInterceptor(),
+    )
+    client = LicenseManagementServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LicenseManagementServiceRestInterceptor, "post_assign"
+    ) as post, mock.patch.object(
+        transports.LicenseManagementServiceRestInterceptor, "pre_assign"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = license_management_service.AssignRequest.pb(
+            license_management_service.AssignRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = license_management_service.AssignResponse.to_json(
+            license_management_service.AssignResponse()
+        )
+        req.return_value.content = return_value
+
+        request = license_management_service.AssignRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = license_management_service.AssignResponse()
+
+        client.assign(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_unassign_rest_bad_request(
+    request_type=license_management_service.UnassignRequest,
+):
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "billingAccounts/sample1/orders/sample2/licensePool"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.unassign(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        license_management_service.UnassignRequest,
+        dict,
+    ],
+)
+def test_unassign_rest_call_success(request_type):
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "billingAccounts/sample1/orders/sample2/licensePool"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = license_management_service.UnassignResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = license_management_service.UnassignResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.unassign(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, license_management_service.UnassignResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_unassign_rest_interceptors(null_interceptor):
+    transport = transports.LicenseManagementServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.LicenseManagementServiceRestInterceptor(),
+    )
+    client = LicenseManagementServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LicenseManagementServiceRestInterceptor, "post_unassign"
+    ) as post, mock.patch.object(
+        transports.LicenseManagementServiceRestInterceptor, "pre_unassign"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = license_management_service.UnassignRequest.pb(
+            license_management_service.UnassignRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = license_management_service.UnassignResponse.to_json(
+            license_management_service.UnassignResponse()
+        )
+        req.return_value.content = return_value
+
+        request = license_management_service.UnassignRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = license_management_service.UnassignResponse()
+
+        client.unassign(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_enumerate_licensed_users_rest_bad_request(
+    request_type=license_management_service.EnumerateLicensedUsersRequest,
+):
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "billingAccounts/sample1/orders/sample2/licensePool"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.enumerate_licensed_users(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        license_management_service.EnumerateLicensedUsersRequest,
+        dict,
+    ],
+)
+def test_enumerate_licensed_users_rest_call_success(request_type):
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "billingAccounts/sample1/orders/sample2/licensePool"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = license_management_service.EnumerateLicensedUsersResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = license_management_service.EnumerateLicensedUsersResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.enumerate_licensed_users(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.EnumerateLicensedUsersPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_enumerate_licensed_users_rest_interceptors(null_interceptor):
+    transport = transports.LicenseManagementServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.LicenseManagementServiceRestInterceptor(),
+    )
+    client = LicenseManagementServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.LicenseManagementServiceRestInterceptor,
+        "post_enumerate_licensed_users",
+    ) as post, mock.patch.object(
+        transports.LicenseManagementServiceRestInterceptor,
+        "pre_enumerate_licensed_users",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = license_management_service.EnumerateLicensedUsersRequest.pb(
+            license_management_service.EnumerateLicensedUsersRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = (
+            license_management_service.EnumerateLicensedUsersResponse.to_json(
+                license_management_service.EnumerateLicensedUsersResponse()
+            )
+        )
+        req.return_value.content = return_value
+
+        request = license_management_service.EnumerateLicensedUsersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = license_management_service.EnumerateLicensedUsersResponse()
+
+        client.enumerate_licensed_users(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "billingAccounts/sample1/orders/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "billingAccounts/sample1/orders/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_initialize_client_w_rest():
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_license_pool_empty_call_rest():
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_license_pool), "__call__") as call:
+        client.get_license_pool(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = license_management_service.GetLicensePoolRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_license_pool_empty_call_rest():
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_license_pool), "__call__"
+    ) as call:
+        client.update_license_pool(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = license_management_service.UpdateLicensePoolRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_assign_empty_call_rest():
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.assign), "__call__") as call:
+        client.assign(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = license_management_service.AssignRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_unassign_empty_call_rest():
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.unassign), "__call__") as call:
+        client.unassign(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = license_management_service.UnassignRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_enumerate_licensed_users_empty_call_rest():
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enumerate_licensed_users), "__call__"
+    ) as call:
+        client.enumerate_licensed_users(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = license_management_service.EnumerateLicensedUsersRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -5766,78 +5982,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
-def test_get_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
-):
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "billingAccounts/sample1/orders/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = LicenseManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "billingAccounts/sample1/orders/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
 def test_get_operation(transport: str = "grpc"):
     client = LicenseManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5865,7 +6009,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5920,7 +6064,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5967,7 +6111,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = LicenseManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -5983,22 +6127,41 @@ async def test_get_operation_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = LicenseManagementServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = LicenseManagementServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+    client = LicenseManagementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

@@ -16,38 +16,28 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.analytics.data_v1beta.types import analytics_data_api
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseBetaAnalyticsDataRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.longrunning import operations_pb2  # type: ignore
-
-from google.analytics.data_v1beta.types import analytics_data_api
-
-from .base import BetaAnalyticsDataTransport
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -434,8 +424,8 @@ class BetaAnalyticsDataRestStub:
     _interceptor: BetaAnalyticsDataRestInterceptor
 
 
-class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
-    """REST backend transport for BetaAnalyticsData.
+class BetaAnalyticsDataRestTransport(_BaseBetaAnalyticsDataRestTransport):
+    """REST backend synchronous transport for BetaAnalyticsData.
 
     Google Analytics reporting data service.
 
@@ -444,7 +434,6 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -498,21 +487,12 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -551,9 +531,35 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _BatchRunPivotReports(BetaAnalyticsDataRestStub):
+    class _BatchRunPivotReports(
+        _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports,
+        BetaAnalyticsDataRestStub,
+    ):
         def __hash__(self):
-            return hash("BatchRunPivotReports")
+            return hash("BetaAnalyticsDataRestTransport.BatchRunPivotReports")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -582,46 +588,36 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{property=properties/*}:batchRunPivotReports",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports._get_http_options()
+            )
             request, metadata = self._interceptor.pre_batch_run_pivot_reports(
                 request, metadata
             )
-            pb_request = analytics_data_api.BatchRunPivotReportsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunPivotReports._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                BetaAnalyticsDataRestTransport._BatchRunPivotReports._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -637,9 +633,35 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
             resp = self._interceptor.post_batch_run_pivot_reports(resp)
             return resp
 
-    class _BatchRunReports(BetaAnalyticsDataRestStub):
+    class _BatchRunReports(
+        _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports,
+        BetaAnalyticsDataRestStub,
+    ):
         def __hash__(self):
-            return hash("BatchRunReports")
+            return hash("BetaAnalyticsDataRestTransport.BatchRunReports")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -668,46 +690,34 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{property=properties/*}:batchRunReports",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports._get_http_options()
+            )
             request, metadata = self._interceptor.pre_batch_run_reports(
                 request, metadata
             )
-            pb_request = analytics_data_api.BatchRunReportsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseBatchRunReports._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BetaAnalyticsDataRestTransport._BatchRunReports._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -723,9 +733,35 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
             resp = self._interceptor.post_batch_run_reports(resp)
             return resp
 
-    class _CheckCompatibility(BetaAnalyticsDataRestStub):
+    class _CheckCompatibility(
+        _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility,
+        BetaAnalyticsDataRestStub,
+    ):
         def __hash__(self):
-            return hash("CheckCompatibility")
+            return hash("BetaAnalyticsDataRestTransport.CheckCompatibility")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -758,46 +794,34 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{property=properties/*}:checkCompatibility",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility._get_http_options()
+            )
             request, metadata = self._interceptor.pre_check_compatibility(
                 request, metadata
             )
-            pb_request = analytics_data_api.CheckCompatibilityRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseCheckCompatibility._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BetaAnalyticsDataRestTransport._CheckCompatibility._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -813,19 +837,35 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
             resp = self._interceptor.post_check_compatibility(resp)
             return resp
 
-    class _CreateAudienceExport(BetaAnalyticsDataRestStub):
+    class _CreateAudienceExport(
+        _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport,
+        BetaAnalyticsDataRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateAudienceExport")
+            return hash("BetaAnalyticsDataRestTransport.CreateAudienceExport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -855,47 +895,36 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{parent=properties/*}/audienceExports",
-                    "body": "audience_export",
-                },
-            ]
+            http_options = (
+                _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_audience_export(
                 request, metadata
             )
-            pb_request = analytics_data_api.CreateAudienceExportRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseCreateAudienceExport._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                BetaAnalyticsDataRestTransport._CreateAudienceExport._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -909,19 +938,34 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
             resp = self._interceptor.post_create_audience_export(resp)
             return resp
 
-    class _GetAudienceExport(BetaAnalyticsDataRestStub):
+    class _GetAudienceExport(
+        _BaseBetaAnalyticsDataRestTransport._BaseGetAudienceExport,
+        BetaAnalyticsDataRestStub,
+    ):
         def __hash__(self):
-            return hash("GetAudienceExport")
+            return hash("BetaAnalyticsDataRestTransport.GetAudienceExport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -954,40 +998,29 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=properties/*/audienceExports/*}",
-                },
-            ]
+            http_options = (
+                _BaseBetaAnalyticsDataRestTransport._BaseGetAudienceExport._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_audience_export(
                 request, metadata
             )
-            pb_request = analytics_data_api.GetAudienceExportRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseGetAudienceExport._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseGetAudienceExport._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BetaAnalyticsDataRestTransport._GetAudienceExport._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1003,19 +1036,33 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
             resp = self._interceptor.post_get_audience_export(resp)
             return resp
 
-    class _GetMetadata(BetaAnalyticsDataRestStub):
+    class _GetMetadata(
+        _BaseBetaAnalyticsDataRestTransport._BaseGetMetadata, BetaAnalyticsDataRestStub
+    ):
         def __hash__(self):
-            return hash("GetMetadata")
+            return hash("BetaAnalyticsDataRestTransport.GetMetadata")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1045,38 +1092,27 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=properties/*/metadata}",
-                },
-            ]
+            http_options = (
+                _BaseBetaAnalyticsDataRestTransport._BaseGetMetadata._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_metadata(request, metadata)
-            pb_request = analytics_data_api.GetMetadataRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseGetMetadata._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseGetMetadata._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = BetaAnalyticsDataRestTransport._GetMetadata._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1092,19 +1128,34 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
             resp = self._interceptor.post_get_metadata(resp)
             return resp
 
-    class _ListAudienceExports(BetaAnalyticsDataRestStub):
+    class _ListAudienceExports(
+        _BaseBetaAnalyticsDataRestTransport._BaseListAudienceExports,
+        BetaAnalyticsDataRestStub,
+    ):
         def __hash__(self):
-            return hash("ListAudienceExports")
+            return hash("BetaAnalyticsDataRestTransport.ListAudienceExports")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1133,40 +1184,31 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{parent=properties/*}/audienceExports",
-                },
-            ]
+            http_options = (
+                _BaseBetaAnalyticsDataRestTransport._BaseListAudienceExports._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_audience_exports(
                 request, metadata
             )
-            pb_request = analytics_data_api.ListAudienceExportsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseListAudienceExports._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseListAudienceExports._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                BetaAnalyticsDataRestTransport._ListAudienceExports._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1182,19 +1224,35 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
             resp = self._interceptor.post_list_audience_exports(resp)
             return resp
 
-    class _QueryAudienceExport(BetaAnalyticsDataRestStub):
+    class _QueryAudienceExport(
+        _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport,
+        BetaAnalyticsDataRestStub,
+    ):
         def __hash__(self):
-            return hash("QueryAudienceExport")
+            return hash("BetaAnalyticsDataRestTransport.QueryAudienceExport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1223,47 +1281,36 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{name=properties/*/audienceExports/*}:query",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport._get_http_options()
+            )
             request, metadata = self._interceptor.pre_query_audience_export(
                 request, metadata
             )
-            pb_request = analytics_data_api.QueryAudienceExportRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseQueryAudienceExport._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                BetaAnalyticsDataRestTransport._QueryAudienceExport._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1279,9 +1326,35 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
             resp = self._interceptor.post_query_audience_export(resp)
             return resp
 
-    class _RunPivotReport(BetaAnalyticsDataRestStub):
+    class _RunPivotReport(
+        _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport,
+        BetaAnalyticsDataRestStub,
+    ):
         def __hash__(self):
-            return hash("RunPivotReport")
+            return hash("BetaAnalyticsDataRestTransport.RunPivotReport")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1310,46 +1383,34 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{property=properties/*}:runPivotReport",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport._get_http_options()
+            )
             request, metadata = self._interceptor.pre_run_pivot_report(
                 request, metadata
             )
-            pb_request = analytics_data_api.RunPivotReportRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseRunPivotReport._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BetaAnalyticsDataRestTransport._RunPivotReport._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1365,9 +1426,35 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
             resp = self._interceptor.post_run_pivot_report(resp)
             return resp
 
-    class _RunRealtimeReport(BetaAnalyticsDataRestStub):
+    class _RunRealtimeReport(
+        _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport,
+        BetaAnalyticsDataRestStub,
+    ):
         def __hash__(self):
-            return hash("RunRealtimeReport")
+            return hash("BetaAnalyticsDataRestTransport.RunRealtimeReport")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1396,46 +1483,34 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{property=properties/*}:runRealtimeReport",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport._get_http_options()
+            )
             request, metadata = self._interceptor.pre_run_realtime_report(
                 request, metadata
             )
-            pb_request = analytics_data_api.RunRealtimeReportRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseRunRealtimeReport._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BetaAnalyticsDataRestTransport._RunRealtimeReport._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1451,9 +1526,34 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
             resp = self._interceptor.post_run_realtime_report(resp)
             return resp
 
-    class _RunReport(BetaAnalyticsDataRestStub):
+    class _RunReport(
+        _BaseBetaAnalyticsDataRestTransport._BaseRunReport, BetaAnalyticsDataRestStub
+    ):
         def __hash__(self):
-            return hash("RunReport")
+            return hash("BetaAnalyticsDataRestTransport.RunReport")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1481,44 +1581,32 @@ class BetaAnalyticsDataRestTransport(BetaAnalyticsDataTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta/{property=properties/*}:runReport",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_run_report(request, metadata)
-            pb_request = analytics_data_api.RunReportRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseBetaAnalyticsDataRestTransport._BaseRunReport._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_run_report(request, metadata)
+            transcoded_request = _BaseBetaAnalyticsDataRestTransport._BaseRunReport._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseBetaAnalyticsDataRestTransport._BaseRunReport._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseBetaAnalyticsDataRestTransport._BaseRunReport._get_query_params_json(
+                transcoded_request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
-
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = BetaAnalyticsDataRestTransport._RunReport._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
