@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -228,6 +229,9 @@ class AutofeedSettingsServiceGrpcAsyncIOTransport(AutofeedSettingsServiceTranspo
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -301,20 +305,29 @@ class AutofeedSettingsServiceGrpcAsyncIOTransport(AutofeedSettingsServiceTranspo
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.get_autofeed_settings: gapic_v1.method_async.wrap_method(
+            self.get_autofeed_settings: self._wrap_method(
                 self.get_autofeed_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_autofeed_settings: gapic_v1.method_async.wrap_method(
+            self.update_autofeed_settings: self._wrap_method(
                 self.update_autofeed_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("AutofeedSettingsServiceGrpcAsyncIOTransport",)

@@ -16,32 +16,28 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.shopping.merchant_inventories_v1beta.types import regionalinventory
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseRegionalInventoryServiceRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.protobuf import empty_pb2  # type: ignore
-
-from google.shopping.merchant_inventories_v1beta.types import regionalinventory
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import RegionalInventoryServiceTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -163,8 +159,8 @@ class RegionalInventoryServiceRestStub:
     _interceptor: RegionalInventoryServiceRestInterceptor
 
 
-class RegionalInventoryServiceRestTransport(RegionalInventoryServiceTransport):
-    """REST backend transport for RegionalInventoryService.
+class RegionalInventoryServiceRestTransport(_BaseRegionalInventoryServiceRestTransport):
+    """REST backend synchronous transport for RegionalInventoryService.
 
     Service to manage regional inventory for products. There is also
     separate ``regions`` resource and API to manage regions definitions.
@@ -174,7 +170,6 @@ class RegionalInventoryServiceRestTransport(RegionalInventoryServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -228,21 +223,12 @@ class RegionalInventoryServiceRestTransport(RegionalInventoryServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -253,19 +239,34 @@ class RegionalInventoryServiceRestTransport(RegionalInventoryServiceTransport):
         self._interceptor = interceptor or RegionalInventoryServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _DeleteRegionalInventory(RegionalInventoryServiceRestStub):
+    class _DeleteRegionalInventory(
+        _BaseRegionalInventoryServiceRestTransport._BaseDeleteRegionalInventory,
+        RegionalInventoryServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteRegionalInventory")
+            return hash("RegionalInventoryServiceRestTransport.DeleteRegionalInventory")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -288,40 +289,29 @@ class RegionalInventoryServiceRestTransport(RegionalInventoryServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/inventories/v1beta/{name=accounts/*/products/*/regionalInventories/*}",
-                },
-            ]
+            http_options = (
+                _BaseRegionalInventoryServiceRestTransport._BaseDeleteRegionalInventory._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_regional_inventory(
                 request, metadata
             )
-            pb_request = regionalinventory.DeleteRegionalInventoryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseRegionalInventoryServiceRestTransport._BaseDeleteRegionalInventory._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegionalInventoryServiceRestTransport._BaseDeleteRegionalInventory._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = RegionalInventoryServiceRestTransport._DeleteRegionalInventory._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -329,19 +319,35 @@ class RegionalInventoryServiceRestTransport(RegionalInventoryServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _InsertRegionalInventory(RegionalInventoryServiceRestStub):
+    class _InsertRegionalInventory(
+        _BaseRegionalInventoryServiceRestTransport._BaseInsertRegionalInventory,
+        RegionalInventoryServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("InsertRegionalInventory")
+            return hash("RegionalInventoryServiceRestTransport.InsertRegionalInventory")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -375,47 +381,34 @@ class RegionalInventoryServiceRestTransport(RegionalInventoryServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/inventories/v1beta/{parent=accounts/*/products/*}/regionalInventories:insert",
-                    "body": "regional_inventory",
-                },
-            ]
+            http_options = (
+                _BaseRegionalInventoryServiceRestTransport._BaseInsertRegionalInventory._get_http_options()
+            )
             request, metadata = self._interceptor.pre_insert_regional_inventory(
                 request, metadata
             )
-            pb_request = regionalinventory.InsertRegionalInventoryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseRegionalInventoryServiceRestTransport._BaseInsertRegionalInventory._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseRegionalInventoryServiceRestTransport._BaseInsertRegionalInventory._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegionalInventoryServiceRestTransport._BaseInsertRegionalInventory._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = RegionalInventoryServiceRestTransport._InsertRegionalInventory._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -431,19 +424,34 @@ class RegionalInventoryServiceRestTransport(RegionalInventoryServiceTransport):
             resp = self._interceptor.post_insert_regional_inventory(resp)
             return resp
 
-    class _ListRegionalInventories(RegionalInventoryServiceRestStub):
+    class _ListRegionalInventories(
+        _BaseRegionalInventoryServiceRestTransport._BaseListRegionalInventories,
+        RegionalInventoryServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListRegionalInventories")
+            return hash("RegionalInventoryServiceRestTransport.ListRegionalInventories")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -472,40 +480,29 @@ class RegionalInventoryServiceRestTransport(RegionalInventoryServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/inventories/v1beta/{parent=accounts/*/products/*}/regionalInventories",
-                },
-            ]
+            http_options = (
+                _BaseRegionalInventoryServiceRestTransport._BaseListRegionalInventories._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_regional_inventories(
                 request, metadata
             )
-            pb_request = regionalinventory.ListRegionalInventoriesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseRegionalInventoryServiceRestTransport._BaseListRegionalInventories._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseRegionalInventoryServiceRestTransport._BaseListRegionalInventories._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = RegionalInventoryServiceRestTransport._ListRegionalInventories._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

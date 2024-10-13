@@ -16,32 +16,28 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.shopping.css_v1.types import accounts_labels
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseAccountLabelsServiceRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.protobuf import empty_pb2  # type: ignore
-
-from google.shopping.css_v1.types import accounts_labels
-
-from .base import AccountLabelsServiceTransport
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -188,8 +184,8 @@ class AccountLabelsServiceRestStub:
     _interceptor: AccountLabelsServiceRestInterceptor
 
 
-class AccountLabelsServiceRestTransport(AccountLabelsServiceTransport):
-    """REST backend transport for AccountLabelsService.
+class AccountLabelsServiceRestTransport(_BaseAccountLabelsServiceRestTransport):
+    """REST backend synchronous transport for AccountLabelsService.
 
     Manages Merchant Center and CSS accounts labels.
 
@@ -198,7 +194,6 @@ class AccountLabelsServiceRestTransport(AccountLabelsServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -252,21 +247,12 @@ class AccountLabelsServiceRestTransport(AccountLabelsServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -277,19 +263,35 @@ class AccountLabelsServiceRestTransport(AccountLabelsServiceTransport):
         self._interceptor = interceptor or AccountLabelsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateAccountLabel(AccountLabelsServiceRestStub):
+    class _CreateAccountLabel(
+        _BaseAccountLabelsServiceRestTransport._BaseCreateAccountLabel,
+        AccountLabelsServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateAccountLabel")
+            return hash("AccountLabelsServiceRestTransport.CreateAccountLabel")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -318,47 +320,36 @@ class AccountLabelsServiceRestTransport(AccountLabelsServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=accounts/*}/labels",
-                    "body": "account_label",
-                },
-            ]
+            http_options = (
+                _BaseAccountLabelsServiceRestTransport._BaseCreateAccountLabel._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_account_label(
                 request, metadata
             )
-            pb_request = accounts_labels.CreateAccountLabelRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAccountLabelsServiceRestTransport._BaseCreateAccountLabel._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAccountLabelsServiceRestTransport._BaseCreateAccountLabel._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAccountLabelsServiceRestTransport._BaseCreateAccountLabel._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AccountLabelsServiceRestTransport._CreateAccountLabel._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -374,19 +365,34 @@ class AccountLabelsServiceRestTransport(AccountLabelsServiceTransport):
             resp = self._interceptor.post_create_account_label(resp)
             return resp
 
-    class _DeleteAccountLabel(AccountLabelsServiceRestStub):
+    class _DeleteAccountLabel(
+        _BaseAccountLabelsServiceRestTransport._BaseDeleteAccountLabel,
+        AccountLabelsServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteAccountLabel")
+            return hash("AccountLabelsServiceRestTransport.DeleteAccountLabel")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -409,40 +415,31 @@ class AccountLabelsServiceRestTransport(AccountLabelsServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=accounts/*/labels/*}",
-                },
-            ]
+            http_options = (
+                _BaseAccountLabelsServiceRestTransport._BaseDeleteAccountLabel._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_account_label(
                 request, metadata
             )
-            pb_request = accounts_labels.DeleteAccountLabelRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAccountLabelsServiceRestTransport._BaseDeleteAccountLabel._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAccountLabelsServiceRestTransport._BaseDeleteAccountLabel._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AccountLabelsServiceRestTransport._DeleteAccountLabel._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -450,19 +447,34 @@ class AccountLabelsServiceRestTransport(AccountLabelsServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _ListAccountLabels(AccountLabelsServiceRestStub):
+    class _ListAccountLabels(
+        _BaseAccountLabelsServiceRestTransport._BaseListAccountLabels,
+        AccountLabelsServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListAccountLabels")
+            return hash("AccountLabelsServiceRestTransport.ListAccountLabels")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -488,40 +500,31 @@ class AccountLabelsServiceRestTransport(AccountLabelsServiceTransport):
                     Response message for the ``ListAccountLabels`` method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=accounts/*}/labels",
-                },
-            ]
+            http_options = (
+                _BaseAccountLabelsServiceRestTransport._BaseListAccountLabels._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_account_labels(
                 request, metadata
             )
-            pb_request = accounts_labels.ListAccountLabelsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseAccountLabelsServiceRestTransport._BaseListAccountLabels._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAccountLabelsServiceRestTransport._BaseListAccountLabels._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                AccountLabelsServiceRestTransport._ListAccountLabels._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -537,19 +540,35 @@ class AccountLabelsServiceRestTransport(AccountLabelsServiceTransport):
             resp = self._interceptor.post_list_account_labels(resp)
             return resp
 
-    class _UpdateAccountLabel(AccountLabelsServiceRestStub):
+    class _UpdateAccountLabel(
+        _BaseAccountLabelsServiceRestTransport._BaseUpdateAccountLabel,
+        AccountLabelsServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateAccountLabel")
+            return hash("AccountLabelsServiceRestTransport.UpdateAccountLabel")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -577,47 +596,36 @@ class AccountLabelsServiceRestTransport(AccountLabelsServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{account_label.name=accounts/*/labels/*}",
-                    "body": "account_label",
-                },
-            ]
+            http_options = (
+                _BaseAccountLabelsServiceRestTransport._BaseUpdateAccountLabel._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_account_label(
                 request, metadata
             )
-            pb_request = accounts_labels.UpdateAccountLabelRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseAccountLabelsServiceRestTransport._BaseUpdateAccountLabel._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseAccountLabelsServiceRestTransport._BaseUpdateAccountLabel._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseAccountLabelsServiceRestTransport._BaseUpdateAccountLabel._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                AccountLabelsServiceRestTransport._UpdateAccountLabel._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

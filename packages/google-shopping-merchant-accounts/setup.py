@@ -49,6 +49,7 @@ dependencies = [
     "protobuf>=3.20.2,<6.0.0dev,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     "google-shopping-type >= 0.1.6, <1.0.0dev",
 ]
+extras = {}
 url = "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-accounts"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
@@ -91,6 +92,7 @@ setuptools.setup(
     packages=packages,
     python_requires=">=3.7",
     install_requires=dependencies,
+    extras_require=extras,
     include_package_data=True,
     zip_safe=False,
 )
