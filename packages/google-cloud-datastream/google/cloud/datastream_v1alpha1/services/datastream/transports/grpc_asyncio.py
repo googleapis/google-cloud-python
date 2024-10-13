@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -228,6 +229,9 @@ class DatastreamGrpcAsyncIOTransport(DatastreamTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -864,115 +868,124 @@ class DatastreamGrpcAsyncIOTransport(DatastreamTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_connection_profiles: gapic_v1.method_async.wrap_method(
+            self.list_connection_profiles: self._wrap_method(
                 self.list_connection_profiles,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_connection_profile: gapic_v1.method_async.wrap_method(
+            self.get_connection_profile: self._wrap_method(
                 self.get_connection_profile,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_connection_profile: gapic_v1.method_async.wrap_method(
+            self.create_connection_profile: self._wrap_method(
                 self.create_connection_profile,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_connection_profile: gapic_v1.method_async.wrap_method(
+            self.update_connection_profile: self._wrap_method(
                 self.update_connection_profile,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_connection_profile: gapic_v1.method_async.wrap_method(
+            self.delete_connection_profile: self._wrap_method(
                 self.delete_connection_profile,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.discover_connection_profile: gapic_v1.method_async.wrap_method(
+            self.discover_connection_profile: self._wrap_method(
                 self.discover_connection_profile,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_streams: gapic_v1.method_async.wrap_method(
+            self.list_streams: self._wrap_method(
                 self.list_streams,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_stream: gapic_v1.method_async.wrap_method(
+            self.get_stream: self._wrap_method(
                 self.get_stream,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_stream: gapic_v1.method_async.wrap_method(
+            self.create_stream: self._wrap_method(
                 self.create_stream,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_stream: gapic_v1.method_async.wrap_method(
+            self.update_stream: self._wrap_method(
                 self.update_stream,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_stream: gapic_v1.method_async.wrap_method(
+            self.delete_stream: self._wrap_method(
                 self.delete_stream,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.fetch_errors: gapic_v1.method_async.wrap_method(
+            self.fetch_errors: self._wrap_method(
                 self.fetch_errors,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.fetch_static_ips: gapic_v1.method_async.wrap_method(
+            self.fetch_static_ips: self._wrap_method(
                 self.fetch_static_ips,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_private_connection: gapic_v1.method_async.wrap_method(
+            self.create_private_connection: self._wrap_method(
                 self.create_private_connection,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_private_connection: gapic_v1.method_async.wrap_method(
+            self.get_private_connection: self._wrap_method(
                 self.get_private_connection,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_private_connections: gapic_v1.method_async.wrap_method(
+            self.list_private_connections: self._wrap_method(
                 self.list_private_connections,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_private_connection: gapic_v1.method_async.wrap_method(
+            self.delete_private_connection: self._wrap_method(
                 self.delete_private_connection,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_route: gapic_v1.method_async.wrap_method(
+            self.create_route: self._wrap_method(
                 self.create_route,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_route: gapic_v1.method_async.wrap_method(
+            self.get_route: self._wrap_method(
                 self.get_route,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_routes: gapic_v1.method_async.wrap_method(
+            self.list_routes: self._wrap_method(
                 self.list_routes,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_route: gapic_v1.method_async.wrap_method(
+            self.delete_route: self._wrap_method(
                 self.delete_route,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("DatastreamGrpcAsyncIOTransport",)

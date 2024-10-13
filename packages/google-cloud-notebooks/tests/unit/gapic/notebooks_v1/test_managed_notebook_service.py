@@ -24,6 +24,20 @@ except ImportError:  # pragma: NO COVER
 
 import math
 
+from google.api_core import api_core_version
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api_core import (
     future,
     gapic_v1,
@@ -33,7 +47,7 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
@@ -49,11 +63,6 @@ from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 
 from google.cloud.notebooks_v1.services.managed_notebook_service import (
     ManagedNotebookServiceAsyncClient,
@@ -68,8 +77,22 @@ from google.cloud.notebooks_v1.types import runtime as gcn_runtime
 from google.cloud.notebooks_v1.types import service
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1198,25 +1221,6 @@ def test_list_runtimes(request_type, transport: str = "grpc"):
     assert response.unreachable == ["unreachable_value"]
 
 
-def test_list_runtimes_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_runtimes), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_runtimes()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.ListRuntimesRequest()
-
-
 def test_list_runtimes_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1283,30 +1287,6 @@ def test_list_runtimes_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_runtimes_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_runtimes), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            managed_service.ListRuntimesResponse(
-                next_page_token="next_page_token_value",
-                unreachable=["unreachable_value"],
-            )
-        )
-        response = await client.list_runtimes()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.ListRuntimesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_runtimes_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1314,7 +1294,7 @@ async def test_list_runtimes_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ManagedNotebookServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1353,7 +1333,7 @@ async def test_list_runtimes_async(
     transport: str = "grpc_asyncio", request_type=managed_service.ListRuntimesRequest
 ):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1421,7 +1401,7 @@ def test_list_runtimes_field_headers():
 @pytest.mark.asyncio
 async def test_list_runtimes_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1491,7 +1471,7 @@ def test_list_runtimes_flattened_error():
 @pytest.mark.asyncio
 async def test_list_runtimes_flattened_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1520,7 +1500,7 @@ async def test_list_runtimes_flattened_async():
 @pytest.mark.asyncio
 async def test_list_runtimes_flattened_error_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1630,7 +1610,7 @@ def test_list_runtimes_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_runtimes_async_pager():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1680,7 +1660,7 @@ async def test_list_runtimes_async_pager():
 @pytest.mark.asyncio
 async def test_list_runtimes_async_pages():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1766,25 +1746,6 @@ def test_get_runtime(request_type, transport: str = "grpc"):
     assert response.health_state == runtime.Runtime.HealthState.HEALTHY
 
 
-def test_get_runtime_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_runtime), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.GetRuntimeRequest()
-
-
 def test_get_runtime_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1849,31 +1810,6 @@ def test_get_runtime_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_runtime_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_runtime), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            runtime.Runtime(
-                name="name_value",
-                state=runtime.Runtime.State.STARTING,
-                health_state=runtime.Runtime.HealthState.HEALTHY,
-            )
-        )
-        response = await client.get_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.GetRuntimeRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_runtime_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1881,7 +1817,7 @@ async def test_get_runtime_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ManagedNotebookServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1920,7 +1856,7 @@ async def test_get_runtime_async(
     transport: str = "grpc_asyncio", request_type=managed_service.GetRuntimeRequest
 ):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1990,7 +1926,7 @@ def test_get_runtime_field_headers():
 @pytest.mark.asyncio
 async def test_get_runtime_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2058,7 +1994,7 @@ def test_get_runtime_flattened_error():
 @pytest.mark.asyncio
 async def test_get_runtime_flattened_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2085,7 +2021,7 @@ async def test_get_runtime_flattened_async():
 @pytest.mark.asyncio
 async def test_get_runtime_flattened_error_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2128,25 +2064,6 @@ def test_create_runtime(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_runtime_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_runtime), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.CreateRuntimeRequest()
 
 
 def test_create_runtime_non_empty_request_with_auto_populated_field():
@@ -2222,27 +2139,6 @@ def test_create_runtime_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_runtime_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_runtime), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.CreateRuntimeRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_runtime_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2250,7 +2146,7 @@ async def test_create_runtime_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ManagedNotebookServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2294,7 +2190,7 @@ async def test_create_runtime_async(
     transport: str = "grpc_asyncio", request_type=managed_service.CreateRuntimeRequest
 ):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2357,7 +2253,7 @@ def test_create_runtime_field_headers():
 @pytest.mark.asyncio
 async def test_create_runtime_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2437,7 +2333,7 @@ def test_create_runtime_flattened_error():
 @pytest.mark.asyncio
 async def test_create_runtime_flattened_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2474,7 +2370,7 @@ async def test_create_runtime_flattened_async():
 @pytest.mark.asyncio
 async def test_create_runtime_flattened_error_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2519,25 +2415,6 @@ def test_update_runtime(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_runtime_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_runtime), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.UpdateRuntimeRequest()
 
 
 def test_update_runtime_non_empty_request_with_auto_populated_field():
@@ -2609,27 +2486,6 @@ def test_update_runtime_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_runtime_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_runtime), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.UpdateRuntimeRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_runtime_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2637,7 +2493,7 @@ async def test_update_runtime_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ManagedNotebookServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2681,7 +2537,7 @@ async def test_update_runtime_async(
     transport: str = "grpc_asyncio", request_type=managed_service.UpdateRuntimeRequest
 ):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2744,7 +2600,7 @@ def test_update_runtime_field_headers():
 @pytest.mark.asyncio
 async def test_update_runtime_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2819,7 +2675,7 @@ def test_update_runtime_flattened_error():
 @pytest.mark.asyncio
 async def test_update_runtime_flattened_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2852,7 +2708,7 @@ async def test_update_runtime_flattened_async():
 @pytest.mark.asyncio
 async def test_update_runtime_flattened_error_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2896,25 +2752,6 @@ def test_delete_runtime(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_runtime_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_runtime), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.DeleteRuntimeRequest()
 
 
 def test_delete_runtime_non_empty_request_with_auto_populated_field():
@@ -2988,27 +2825,6 @@ def test_delete_runtime_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_runtime_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_runtime), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.DeleteRuntimeRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_runtime_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3016,7 +2832,7 @@ async def test_delete_runtime_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ManagedNotebookServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3060,7 +2876,7 @@ async def test_delete_runtime_async(
     transport: str = "grpc_asyncio", request_type=managed_service.DeleteRuntimeRequest
 ):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3123,7 +2939,7 @@ def test_delete_runtime_field_headers():
 @pytest.mark.asyncio
 async def test_delete_runtime_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3193,7 +3009,7 @@ def test_delete_runtime_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_runtime_flattened_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3222,7 +3038,7 @@ async def test_delete_runtime_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_runtime_flattened_error_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3265,25 +3081,6 @@ def test_start_runtime(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_start_runtime_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.start_runtime), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.start_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.StartRuntimeRequest()
 
 
 def test_start_runtime_non_empty_request_with_auto_populated_field():
@@ -3357,27 +3154,6 @@ def test_start_runtime_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_start_runtime_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.start_runtime), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.start_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.StartRuntimeRequest()
-
-
-@pytest.mark.asyncio
 async def test_start_runtime_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3385,7 +3161,7 @@ async def test_start_runtime_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ManagedNotebookServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3429,7 +3205,7 @@ async def test_start_runtime_async(
     transport: str = "grpc_asyncio", request_type=managed_service.StartRuntimeRequest
 ):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3492,7 +3268,7 @@ def test_start_runtime_field_headers():
 @pytest.mark.asyncio
 async def test_start_runtime_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3562,7 +3338,7 @@ def test_start_runtime_flattened_error():
 @pytest.mark.asyncio
 async def test_start_runtime_flattened_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3591,7 +3367,7 @@ async def test_start_runtime_flattened_async():
 @pytest.mark.asyncio
 async def test_start_runtime_flattened_error_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3634,25 +3410,6 @@ def test_stop_runtime(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_stop_runtime_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.stop_runtime), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.stop_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.StopRuntimeRequest()
 
 
 def test_stop_runtime_non_empty_request_with_auto_populated_field():
@@ -3726,27 +3483,6 @@ def test_stop_runtime_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_stop_runtime_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.stop_runtime), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.stop_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.StopRuntimeRequest()
-
-
-@pytest.mark.asyncio
 async def test_stop_runtime_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3754,7 +3490,7 @@ async def test_stop_runtime_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ManagedNotebookServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3798,7 +3534,7 @@ async def test_stop_runtime_async(
     transport: str = "grpc_asyncio", request_type=managed_service.StopRuntimeRequest
 ):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3861,7 +3597,7 @@ def test_stop_runtime_field_headers():
 @pytest.mark.asyncio
 async def test_stop_runtime_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3931,7 +3667,7 @@ def test_stop_runtime_flattened_error():
 @pytest.mark.asyncio
 async def test_stop_runtime_flattened_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3960,7 +3696,7 @@ async def test_stop_runtime_flattened_async():
 @pytest.mark.asyncio
 async def test_stop_runtime_flattened_error_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4003,25 +3739,6 @@ def test_switch_runtime(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_switch_runtime_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.switch_runtime), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.switch_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.SwitchRuntimeRequest()
 
 
 def test_switch_runtime_non_empty_request_with_auto_populated_field():
@@ -4097,27 +3814,6 @@ def test_switch_runtime_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_switch_runtime_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.switch_runtime), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.switch_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.SwitchRuntimeRequest()
-
-
-@pytest.mark.asyncio
 async def test_switch_runtime_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4125,7 +3821,7 @@ async def test_switch_runtime_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ManagedNotebookServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4169,7 +3865,7 @@ async def test_switch_runtime_async(
     transport: str = "grpc_asyncio", request_type=managed_service.SwitchRuntimeRequest
 ):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4232,7 +3928,7 @@ def test_switch_runtime_field_headers():
 @pytest.mark.asyncio
 async def test_switch_runtime_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4302,7 +3998,7 @@ def test_switch_runtime_flattened_error():
 @pytest.mark.asyncio
 async def test_switch_runtime_flattened_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4331,7 +4027,7 @@ async def test_switch_runtime_flattened_async():
 @pytest.mark.asyncio
 async def test_switch_runtime_flattened_error_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4374,25 +4070,6 @@ def test_reset_runtime(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_reset_runtime_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.reset_runtime), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.reset_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.ResetRuntimeRequest()
 
 
 def test_reset_runtime_non_empty_request_with_auto_populated_field():
@@ -4466,27 +4143,6 @@ def test_reset_runtime_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_reset_runtime_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.reset_runtime), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.reset_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.ResetRuntimeRequest()
-
-
-@pytest.mark.asyncio
 async def test_reset_runtime_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4494,7 +4150,7 @@ async def test_reset_runtime_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ManagedNotebookServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4538,7 +4194,7 @@ async def test_reset_runtime_async(
     transport: str = "grpc_asyncio", request_type=managed_service.ResetRuntimeRequest
 ):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4601,7 +4257,7 @@ def test_reset_runtime_field_headers():
 @pytest.mark.asyncio
 async def test_reset_runtime_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4671,7 +4327,7 @@ def test_reset_runtime_flattened_error():
 @pytest.mark.asyncio
 async def test_reset_runtime_flattened_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4700,7 +4356,7 @@ async def test_reset_runtime_flattened_async():
 @pytest.mark.asyncio
 async def test_reset_runtime_flattened_error_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4743,25 +4399,6 @@ def test_upgrade_runtime(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_upgrade_runtime_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.upgrade_runtime), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.upgrade_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.UpgradeRuntimeRequest()
 
 
 def test_upgrade_runtime_non_empty_request_with_auto_populated_field():
@@ -4835,27 +4472,6 @@ def test_upgrade_runtime_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_upgrade_runtime_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.upgrade_runtime), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.upgrade_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.UpgradeRuntimeRequest()
-
-
-@pytest.mark.asyncio
 async def test_upgrade_runtime_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4863,7 +4479,7 @@ async def test_upgrade_runtime_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ManagedNotebookServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4907,7 +4523,7 @@ async def test_upgrade_runtime_async(
     transport: str = "grpc_asyncio", request_type=managed_service.UpgradeRuntimeRequest
 ):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4970,7 +4586,7 @@ def test_upgrade_runtime_field_headers():
 @pytest.mark.asyncio
 async def test_upgrade_runtime_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5040,7 +4656,7 @@ def test_upgrade_runtime_flattened_error():
 @pytest.mark.asyncio
 async def test_upgrade_runtime_flattened_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5069,7 +4685,7 @@ async def test_upgrade_runtime_flattened_async():
 @pytest.mark.asyncio
 async def test_upgrade_runtime_flattened_error_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5114,27 +4730,6 @@ def test_report_runtime_event(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_report_runtime_event_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.report_runtime_event), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.report_runtime_event()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.ReportRuntimeEventRequest()
 
 
 def test_report_runtime_event_non_empty_request_with_auto_populated_field():
@@ -5214,29 +4809,6 @@ def test_report_runtime_event_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_report_runtime_event_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.report_runtime_event), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.report_runtime_event()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.ReportRuntimeEventRequest()
-
-
-@pytest.mark.asyncio
 async def test_report_runtime_event_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5244,7 +4816,7 @@ async def test_report_runtime_event_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ManagedNotebookServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5289,7 +4861,7 @@ async def test_report_runtime_event_async(
     request_type=managed_service.ReportRuntimeEventRequest,
 ):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5356,7 +4928,7 @@ def test_report_runtime_event_field_headers():
 @pytest.mark.asyncio
 async def test_report_runtime_event_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5430,7 +5002,7 @@ def test_report_runtime_event_flattened_error():
 @pytest.mark.asyncio
 async def test_report_runtime_event_flattened_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5461,7 +5033,7 @@ async def test_report_runtime_event_flattened_async():
 @pytest.mark.asyncio
 async def test_report_runtime_event_flattened_error_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5509,27 +5081,6 @@ def test_refresh_runtime_token_internal(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, managed_service.RefreshRuntimeTokenInternalResponse)
     assert response.access_token == "access_token_value"
-
-
-def test_refresh_runtime_token_internal_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.refresh_runtime_token_internal), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.refresh_runtime_token_internal()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.RefreshRuntimeTokenInternalRequest()
 
 
 def test_refresh_runtime_token_internal_non_empty_request_with_auto_populated_field():
@@ -5605,31 +5156,6 @@ def test_refresh_runtime_token_internal_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_refresh_runtime_token_internal_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.refresh_runtime_token_internal), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            managed_service.RefreshRuntimeTokenInternalResponse(
-                access_token="access_token_value",
-            )
-        )
-        response = await client.refresh_runtime_token_internal()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.RefreshRuntimeTokenInternalRequest()
-
-
-@pytest.mark.asyncio
 async def test_refresh_runtime_token_internal_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5637,7 +5163,7 @@ async def test_refresh_runtime_token_internal_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ManagedNotebookServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5677,7 +5203,7 @@ async def test_refresh_runtime_token_internal_async(
     request_type=managed_service.RefreshRuntimeTokenInternalRequest,
 ):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5747,7 +5273,7 @@ def test_refresh_runtime_token_internal_field_headers():
 @pytest.mark.asyncio
 async def test_refresh_runtime_token_internal_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5826,7 +5352,7 @@ def test_refresh_runtime_token_internal_flattened_error():
 @pytest.mark.asyncio
 async def test_refresh_runtime_token_internal_flattened_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5861,7 +5387,7 @@ async def test_refresh_runtime_token_internal_flattened_async():
 @pytest.mark.asyncio
 async def test_refresh_runtime_token_internal_flattened_error_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5905,25 +5431,6 @@ def test_diagnose_runtime(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_diagnose_runtime_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.diagnose_runtime), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.diagnose_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.DiagnoseRuntimeRequest()
 
 
 def test_diagnose_runtime_non_empty_request_with_auto_populated_field():
@@ -5997,27 +5504,6 @@ def test_diagnose_runtime_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_diagnose_runtime_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.diagnose_runtime), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.diagnose_runtime()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == managed_service.DiagnoseRuntimeRequest()
-
-
-@pytest.mark.asyncio
 async def test_diagnose_runtime_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6025,7 +5511,7 @@ async def test_diagnose_runtime_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ManagedNotebookServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6069,7 +5555,7 @@ async def test_diagnose_runtime_async(
     transport: str = "grpc_asyncio", request_type=managed_service.DiagnoseRuntimeRequest
 ):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6132,7 +5618,7 @@ def test_diagnose_runtime_field_headers():
 @pytest.mark.asyncio
 async def test_diagnose_runtime_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6211,7 +5697,7 @@ def test_diagnose_runtime_flattened_error():
 @pytest.mark.asyncio
 async def test_diagnose_runtime_flattened_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6246,7 +5732,7 @@ async def test_diagnose_runtime_flattened_async():
 @pytest.mark.asyncio
 async def test_diagnose_runtime_flattened_error_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6352,17 +5838,647 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
-@pytest.mark.parametrize(
-    "transport_name",
-    [
-        "grpc",
-    ],
-)
-def test_transport_kind(transport_name):
-    transport = ManagedNotebookServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_transport_kind_grpc():
+    transport = ManagedNotebookServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
     )
-    assert transport.kind == transport_name
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_runtimes_empty_call_grpc():
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_runtimes), "__call__") as call:
+        call.return_value = managed_service.ListRuntimesResponse()
+        client.list_runtimes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.ListRuntimesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_runtime_empty_call_grpc():
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_runtime), "__call__") as call:
+        call.return_value = runtime.Runtime()
+        client.get_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.GetRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_runtime_empty_call_grpc():
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_runtime), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.CreateRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_runtime_empty_call_grpc():
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_runtime), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.UpdateRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_runtime_empty_call_grpc():
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_runtime), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.DeleteRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_start_runtime_empty_call_grpc():
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.start_runtime), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.start_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.StartRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_stop_runtime_empty_call_grpc():
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.stop_runtime), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.stop_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.StopRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_switch_runtime_empty_call_grpc():
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.switch_runtime), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.switch_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.SwitchRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_reset_runtime_empty_call_grpc():
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.reset_runtime), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.reset_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.ResetRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_upgrade_runtime_empty_call_grpc():
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.upgrade_runtime), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.upgrade_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.UpgradeRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_report_runtime_event_empty_call_grpc():
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.report_runtime_event), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.report_runtime_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.ReportRuntimeEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_refresh_runtime_token_internal_empty_call_grpc():
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_runtime_token_internal), "__call__"
+    ) as call:
+        call.return_value = managed_service.RefreshRuntimeTokenInternalResponse()
+        client.refresh_runtime_token_internal(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.RefreshRuntimeTokenInternalRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_diagnose_runtime_empty_call_grpc():
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.diagnose_runtime), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.diagnose_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.DiagnoseRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = ManagedNotebookServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_runtimes_empty_call_grpc_asyncio():
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_runtimes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            managed_service.ListRuntimesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.list_runtimes(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.ListRuntimesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_runtime_empty_call_grpc_asyncio():
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            runtime.Runtime(
+                name="name_value",
+                state=runtime.Runtime.State.STARTING,
+                health_state=runtime.Runtime.HealthState.HEALTHY,
+            )
+        )
+        await client.get_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.GetRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_runtime_empty_call_grpc_asyncio():
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.CreateRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_runtime_empty_call_grpc_asyncio():
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.UpdateRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_runtime_empty_call_grpc_asyncio():
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.DeleteRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_start_runtime_empty_call_grpc_asyncio():
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.start_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.start_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.StartRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_stop_runtime_empty_call_grpc_asyncio():
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.stop_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.stop_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.StopRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_switch_runtime_empty_call_grpc_asyncio():
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.switch_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.switch_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.SwitchRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_reset_runtime_empty_call_grpc_asyncio():
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.reset_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.reset_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.ResetRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_upgrade_runtime_empty_call_grpc_asyncio():
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.upgrade_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.upgrade_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.UpgradeRuntimeRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_report_runtime_event_empty_call_grpc_asyncio():
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.report_runtime_event), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.report_runtime_event(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.ReportRuntimeEventRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_refresh_runtime_token_internal_empty_call_grpc_asyncio():
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_runtime_token_internal), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            managed_service.RefreshRuntimeTokenInternalResponse(
+                access_token="access_token_value",
+            )
+        )
+        await client.refresh_runtime_token_internal(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.RefreshRuntimeTokenInternalRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_diagnose_runtime_empty_call_grpc_asyncio():
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.diagnose_runtime), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.diagnose_runtime(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = managed_service.DiagnoseRuntimeRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -6960,20 +7076,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
 def test_delete_operation(transport: str = "grpc"):
     client = ManagedNotebookServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7001,7 +7103,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7054,7 +7156,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7099,7 +7201,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -7140,7 +7242,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7193,7 +7295,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7238,7 +7340,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -7279,7 +7381,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7334,7 +7436,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7381,7 +7483,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -7424,7 +7526,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7479,7 +7581,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7526,7 +7628,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -7569,7 +7671,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7624,7 +7726,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7671,7 +7773,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -7714,7 +7816,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7769,7 +7871,7 @@ def test_get_location_field_headers():
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=async_anonymous_credentials()
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7816,7 +7918,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -7867,7 +7969,7 @@ def test_set_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7932,7 +8034,7 @@ def test_set_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7980,7 +8082,7 @@ def test_set_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_set_iam_policy_from_dict_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -8033,7 +8135,7 @@ def test_get_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8099,7 +8201,7 @@ def test_get_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8147,7 +8249,7 @@ def test_get_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_get_iam_policy_from_dict_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -8199,7 +8301,7 @@ def test_test_iam_permissions(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8266,7 +8368,7 @@ def test_test_iam_permissions_field_headers():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8320,7 +8422,7 @@ def test_test_iam_permissions_from_dict():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_from_dict_async():
     client = ManagedNotebookServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8340,21 +8442,29 @@ async def test_test_iam_permissions_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = ManagedNotebookServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

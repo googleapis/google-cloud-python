@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -250,6 +251,9 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -969,17 +973,17 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.import_apt_artifacts: gapic_v1.method_async.wrap_method(
+            self.import_apt_artifacts: self._wrap_method(
                 self.import_apt_artifacts,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.import_yum_artifacts: gapic_v1.method_async.wrap_method(
+            self.import_yum_artifacts: self._wrap_method(
                 self.import_yum_artifacts,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_repositories: gapic_v1.method_async.wrap_method(
+            self.list_repositories: self._wrap_method(
                 self.list_repositories,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -993,7 +997,7 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_repository: gapic_v1.method_async.wrap_method(
+            self.get_repository: self._wrap_method(
                 self.get_repository,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1007,17 +1011,17 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.create_repository: gapic_v1.method_async.wrap_method(
+            self.create_repository: self._wrap_method(
                 self.create_repository,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.update_repository: gapic_v1.method_async.wrap_method(
+            self.update_repository: self._wrap_method(
                 self.update_repository,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.delete_repository: gapic_v1.method_async.wrap_method(
+            self.delete_repository: self._wrap_method(
                 self.delete_repository,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1031,7 +1035,7 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_packages: gapic_v1.method_async.wrap_method(
+            self.list_packages: self._wrap_method(
                 self.list_packages,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1045,7 +1049,7 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_package: gapic_v1.method_async.wrap_method(
+            self.get_package: self._wrap_method(
                 self.get_package,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1059,7 +1063,7 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.delete_package: gapic_v1.method_async.wrap_method(
+            self.delete_package: self._wrap_method(
                 self.delete_package,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1073,7 +1077,7 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_versions: gapic_v1.method_async.wrap_method(
+            self.list_versions: self._wrap_method(
                 self.list_versions,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1087,7 +1091,7 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_version: gapic_v1.method_async.wrap_method(
+            self.get_version: self._wrap_method(
                 self.get_version,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1101,7 +1105,7 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.delete_version: gapic_v1.method_async.wrap_method(
+            self.delete_version: self._wrap_method(
                 self.delete_version,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1115,7 +1119,7 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_files: gapic_v1.method_async.wrap_method(
+            self.list_files: self._wrap_method(
                 self.list_files,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1129,7 +1133,7 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_file: gapic_v1.method_async.wrap_method(
+            self.get_file: self._wrap_method(
                 self.get_file,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1143,7 +1147,7 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_tags: gapic_v1.method_async.wrap_method(
+            self.list_tags: self._wrap_method(
                 self.list_tags,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1157,7 +1161,7 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_tag: gapic_v1.method_async.wrap_method(
+            self.get_tag: self._wrap_method(
                 self.get_tag,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1171,17 +1175,17 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.create_tag: gapic_v1.method_async.wrap_method(
+            self.create_tag: self._wrap_method(
                 self.create_tag,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.update_tag: gapic_v1.method_async.wrap_method(
+            self.update_tag: self._wrap_method(
                 self.update_tag,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.delete_tag: gapic_v1.method_async.wrap_method(
+            self.delete_tag: self._wrap_method(
                 self.delete_tag,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1195,12 +1199,12 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.set_iam_policy: gapic_v1.method_async.wrap_method(
+            self.set_iam_policy: self._wrap_method(
                 self.set_iam_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_iam_policy: gapic_v1.method_async.wrap_method(
+            self.get_iam_policy: self._wrap_method(
                 self.get_iam_policy,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1214,25 +1218,44 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.test_iam_permissions: gapic_v1.method_async.wrap_method(
+            self.test_iam_permissions: self._wrap_method(
                 self.test_iam_permissions,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_project_settings: gapic_v1.method_async.wrap_method(
+            self.get_project_settings: self._wrap_method(
                 self.get_project_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_project_settings: gapic_v1.method_async.wrap_method(
+            self.update_project_settings: self._wrap_method(
                 self.update_project_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def list_locations(

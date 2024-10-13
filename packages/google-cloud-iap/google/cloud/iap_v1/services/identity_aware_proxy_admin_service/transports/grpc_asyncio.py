@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -231,6 +232,9 @@ class IdentityAwareProxyAdminServiceGrpcAsyncIOTransport(
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -531,60 +535,69 @@ class IdentityAwareProxyAdminServiceGrpcAsyncIOTransport(
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.set_iam_policy: gapic_v1.method_async.wrap_method(
+            self.set_iam_policy: self._wrap_method(
                 self.set_iam_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_iam_policy: gapic_v1.method_async.wrap_method(
+            self.get_iam_policy: self._wrap_method(
                 self.get_iam_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.test_iam_permissions: gapic_v1.method_async.wrap_method(
+            self.test_iam_permissions: self._wrap_method(
                 self.test_iam_permissions,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_iap_settings: gapic_v1.method_async.wrap_method(
+            self.get_iap_settings: self._wrap_method(
                 self.get_iap_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_iap_settings: gapic_v1.method_async.wrap_method(
+            self.update_iap_settings: self._wrap_method(
                 self.update_iap_settings,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_tunnel_dest_groups: gapic_v1.method_async.wrap_method(
+            self.list_tunnel_dest_groups: self._wrap_method(
                 self.list_tunnel_dest_groups,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_tunnel_dest_group: gapic_v1.method_async.wrap_method(
+            self.create_tunnel_dest_group: self._wrap_method(
                 self.create_tunnel_dest_group,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_tunnel_dest_group: gapic_v1.method_async.wrap_method(
+            self.get_tunnel_dest_group: self._wrap_method(
                 self.get_tunnel_dest_group,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_tunnel_dest_group: gapic_v1.method_async.wrap_method(
+            self.delete_tunnel_dest_group: self._wrap_method(
                 self.delete_tunnel_dest_group,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_tunnel_dest_group: gapic_v1.method_async.wrap_method(
+            self.update_tunnel_dest_group: self._wrap_method(
                 self.update_tunnel_dest_group,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("IdentityAwareProxyAdminServiceGrpcAsyncIOTransport",)

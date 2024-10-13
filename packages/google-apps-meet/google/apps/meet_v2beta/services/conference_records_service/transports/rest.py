@@ -16,30 +16,27 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.apps.meet_v2beta.types import resource, service
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseConferenceRecordsServiceRestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.apps.meet_v2beta.types import resource, service
-
-from .base import ConferenceRecordsServiceTransport
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -441,8 +438,8 @@ class ConferenceRecordsServiceRestStub:
     _interceptor: ConferenceRecordsServiceRestInterceptor
 
 
-class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
-    """REST backend transport for ConferenceRecordsService.
+class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTransport):
+    """REST backend synchronous transport for ConferenceRecordsService.
 
     REST API for services dealing with conference records.
 
@@ -451,7 +448,6 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -505,21 +501,12 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -530,19 +517,34 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
         self._interceptor = interceptor or ConferenceRecordsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetConferenceRecord(ConferenceRecordsServiceRestStub):
+    class _GetConferenceRecord(
+        _BaseConferenceRecordsServiceRestTransport._BaseGetConferenceRecord,
+        ConferenceRecordsServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetConferenceRecord")
+            return hash("ConferenceRecordsServiceRestTransport.GetConferenceRecord")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -571,40 +573,29 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta/{name=conferenceRecords/*}",
-                },
-            ]
+            http_options = (
+                _BaseConferenceRecordsServiceRestTransport._BaseGetConferenceRecord._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_conference_record(
                 request, metadata
             )
-            pb_request = service.GetConferenceRecordRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetConferenceRecord._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetConferenceRecord._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ConferenceRecordsServiceRestTransport._GetConferenceRecord._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -620,19 +611,34 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             resp = self._interceptor.post_get_conference_record(resp)
             return resp
 
-    class _GetParticipant(ConferenceRecordsServiceRestStub):
+    class _GetParticipant(
+        _BaseConferenceRecordsServiceRestTransport._BaseGetParticipant,
+        ConferenceRecordsServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetParticipant")
+            return hash("ConferenceRecordsServiceRestTransport.GetParticipant")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -661,38 +667,29 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta/{name=conferenceRecords/*/participants/*}",
-                },
-            ]
+            http_options = (
+                _BaseConferenceRecordsServiceRestTransport._BaseGetParticipant._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_participant(request, metadata)
-            pb_request = service.GetParticipantRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipant._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipant._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ConferenceRecordsServiceRestTransport._GetParticipant._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -708,19 +705,34 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             resp = self._interceptor.post_get_participant(resp)
             return resp
 
-    class _GetParticipantSession(ConferenceRecordsServiceRestStub):
+    class _GetParticipantSession(
+        _BaseConferenceRecordsServiceRestTransport._BaseGetParticipantSession,
+        ConferenceRecordsServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetParticipantSession")
+            return hash("ConferenceRecordsServiceRestTransport.GetParticipantSession")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -754,40 +766,29 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta/{name=conferenceRecords/*/participants/*/participantSessions/*}",
-                },
-            ]
+            http_options = (
+                _BaseConferenceRecordsServiceRestTransport._BaseGetParticipantSession._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_participant_session(
                 request, metadata
             )
-            pb_request = service.GetParticipantSessionRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipantSession._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipantSession._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ConferenceRecordsServiceRestTransport._GetParticipantSession._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -803,19 +804,34 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             resp = self._interceptor.post_get_participant_session(resp)
             return resp
 
-    class _GetRecording(ConferenceRecordsServiceRestStub):
+    class _GetRecording(
+        _BaseConferenceRecordsServiceRestTransport._BaseGetRecording,
+        ConferenceRecordsServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetRecording")
+            return hash("ConferenceRecordsServiceRestTransport.GetRecording")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -845,38 +861,29 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta/{name=conferenceRecords/*/recordings/*}",
-                },
-            ]
+            http_options = (
+                _BaseConferenceRecordsServiceRestTransport._BaseGetRecording._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_recording(request, metadata)
-            pb_request = service.GetRecordingRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetRecording._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetRecording._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ConferenceRecordsServiceRestTransport._GetRecording._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -892,19 +899,34 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             resp = self._interceptor.post_get_recording(resp)
             return resp
 
-    class _GetTranscript(ConferenceRecordsServiceRestStub):
+    class _GetTranscript(
+        _BaseConferenceRecordsServiceRestTransport._BaseGetTranscript,
+        ConferenceRecordsServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetTranscript")
+            return hash("ConferenceRecordsServiceRestTransport.GetTranscript")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -935,38 +957,29 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta/{name=conferenceRecords/*/transcripts/*}",
-                },
-            ]
+            http_options = (
+                _BaseConferenceRecordsServiceRestTransport._BaseGetTranscript._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_transcript(request, metadata)
-            pb_request = service.GetTranscriptRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscript._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscript._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ConferenceRecordsServiceRestTransport._GetTranscript._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -982,19 +995,34 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             resp = self._interceptor.post_get_transcript(resp)
             return resp
 
-    class _GetTranscriptEntry(ConferenceRecordsServiceRestStub):
+    class _GetTranscriptEntry(
+        _BaseConferenceRecordsServiceRestTransport._BaseGetTranscriptEntry,
+        ConferenceRecordsServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetTranscriptEntry")
+            return hash("ConferenceRecordsServiceRestTransport.GetTranscriptEntry")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1025,40 +1053,31 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta/{name=conferenceRecords/*/transcripts/*/entries/*}",
-                },
-            ]
+            http_options = (
+                _BaseConferenceRecordsServiceRestTransport._BaseGetTranscriptEntry._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_transcript_entry(
                 request, metadata
             )
-            pb_request = service.GetTranscriptEntryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscriptEntry._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscriptEntry._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ConferenceRecordsServiceRestTransport._GetTranscriptEntry._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1074,9 +1093,34 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             resp = self._interceptor.post_get_transcript_entry(resp)
             return resp
 
-    class _ListConferenceRecords(ConferenceRecordsServiceRestStub):
+    class _ListConferenceRecords(
+        _BaseConferenceRecordsServiceRestTransport._BaseListConferenceRecords,
+        ConferenceRecordsServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListConferenceRecords")
+            return hash("ConferenceRecordsServiceRestTransport.ListConferenceRecords")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1105,39 +1149,29 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta/conferenceRecords",
-                },
-            ]
+            http_options = (
+                _BaseConferenceRecordsServiceRestTransport._BaseListConferenceRecords._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_conference_records(
                 request, metadata
             )
-            pb_request = service.ListConferenceRecordsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListConferenceRecords._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListConferenceRecords._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ConferenceRecordsServiceRestTransport._ListConferenceRecords._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1153,19 +1187,34 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             resp = self._interceptor.post_list_conference_records(resp)
             return resp
 
-    class _ListParticipants(ConferenceRecordsServiceRestStub):
+    class _ListParticipants(
+        _BaseConferenceRecordsServiceRestTransport._BaseListParticipants,
+        ConferenceRecordsServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListParticipants")
+            return hash("ConferenceRecordsServiceRestTransport.ListParticipants")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1192,40 +1241,31 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
                     Response of ListParticipants method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta/{parent=conferenceRecords/*}/participants",
-                },
-            ]
+            http_options = (
+                _BaseConferenceRecordsServiceRestTransport._BaseListParticipants._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_participants(
                 request, metadata
             )
-            pb_request = service.ListParticipantsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListParticipants._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListParticipants._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ConferenceRecordsServiceRestTransport._ListParticipants._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1241,19 +1281,34 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             resp = self._interceptor.post_list_participants(resp)
             return resp
 
-    class _ListParticipantSessions(ConferenceRecordsServiceRestStub):
+    class _ListParticipantSessions(
+        _BaseConferenceRecordsServiceRestTransport._BaseListParticipantSessions,
+        ConferenceRecordsServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListParticipantSessions")
+            return hash("ConferenceRecordsServiceRestTransport.ListParticipantSessions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1281,40 +1336,29 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
                     Response of ListParticipants method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta/{parent=conferenceRecords/*/participants/*}/participantSessions",
-                },
-            ]
+            http_options = (
+                _BaseConferenceRecordsServiceRestTransport._BaseListParticipantSessions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_participant_sessions(
                 request, metadata
             )
-            pb_request = service.ListParticipantSessionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListParticipantSessions._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListParticipantSessions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ConferenceRecordsServiceRestTransport._ListParticipantSessions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1330,19 +1374,34 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             resp = self._interceptor.post_list_participant_sessions(resp)
             return resp
 
-    class _ListRecordings(ConferenceRecordsServiceRestStub):
+    class _ListRecordings(
+        _BaseConferenceRecordsServiceRestTransport._BaseListRecordings,
+        ConferenceRecordsServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListRecordings")
+            return hash("ConferenceRecordsServiceRestTransport.ListRecordings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1368,38 +1427,29 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
                     Response for ListRecordings method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta/{parent=conferenceRecords/*}/recordings",
-                },
-            ]
+            http_options = (
+                _BaseConferenceRecordsServiceRestTransport._BaseListRecordings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_recordings(request, metadata)
-            pb_request = service.ListRecordingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListRecordings._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListRecordings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ConferenceRecordsServiceRestTransport._ListRecordings._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1415,19 +1465,34 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             resp = self._interceptor.post_list_recordings(resp)
             return resp
 
-    class _ListTranscriptEntries(ConferenceRecordsServiceRestStub):
+    class _ListTranscriptEntries(
+        _BaseConferenceRecordsServiceRestTransport._BaseListTranscriptEntries,
+        ConferenceRecordsServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListTranscriptEntries")
+            return hash("ConferenceRecordsServiceRestTransport.ListTranscriptEntries")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1456,40 +1521,29 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta/{parent=conferenceRecords/*/transcripts/*}/entries",
-                },
-            ]
+            http_options = (
+                _BaseConferenceRecordsServiceRestTransport._BaseListTranscriptEntries._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_transcript_entries(
                 request, metadata
             )
-            pb_request = service.ListTranscriptEntriesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListTranscriptEntries._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListTranscriptEntries._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = ConferenceRecordsServiceRestTransport._ListTranscriptEntries._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1505,19 +1559,34 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             resp = self._interceptor.post_list_transcript_entries(resp)
             return resp
 
-    class _ListTranscripts(ConferenceRecordsServiceRestStub):
+    class _ListTranscripts(
+        _BaseConferenceRecordsServiceRestTransport._BaseListTranscripts,
+        ConferenceRecordsServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListTranscripts")
+            return hash("ConferenceRecordsServiceRestTransport.ListTranscripts")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1543,40 +1612,31 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
                     Response for ListTranscripts method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v2beta/{parent=conferenceRecords/*}/transcripts",
-                },
-            ]
+            http_options = (
+                _BaseConferenceRecordsServiceRestTransport._BaseListTranscripts._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_transcripts(
                 request, metadata
             )
-            pb_request = service.ListTranscriptsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListTranscripts._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListTranscripts._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                ConferenceRecordsServiceRestTransport._ListTranscripts._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

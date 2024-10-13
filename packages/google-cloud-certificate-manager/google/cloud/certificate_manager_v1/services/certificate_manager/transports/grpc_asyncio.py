@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -262,6 +263,9 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1155,7 +1159,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_certificates: gapic_v1.method_async.wrap_method(
+            self.list_certificates: self._wrap_method(
                 self.list_certificates,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1169,7 +1173,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_certificate: gapic_v1.method_async.wrap_method(
+            self.get_certificate: self._wrap_method(
                 self.get_certificate,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1183,7 +1187,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_certificate: gapic_v1.method_async.wrap_method(
+            self.create_certificate: self._wrap_method(
                 self.create_certificate,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1197,7 +1201,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_certificate: gapic_v1.method_async.wrap_method(
+            self.update_certificate: self._wrap_method(
                 self.update_certificate,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1211,7 +1215,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_certificate: gapic_v1.method_async.wrap_method(
+            self.delete_certificate: self._wrap_method(
                 self.delete_certificate,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1225,7 +1229,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_certificate_maps: gapic_v1.method_async.wrap_method(
+            self.list_certificate_maps: self._wrap_method(
                 self.list_certificate_maps,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1239,7 +1243,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_certificate_map: gapic_v1.method_async.wrap_method(
+            self.get_certificate_map: self._wrap_method(
                 self.get_certificate_map,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1253,7 +1257,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_certificate_map: gapic_v1.method_async.wrap_method(
+            self.create_certificate_map: self._wrap_method(
                 self.create_certificate_map,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1267,7 +1271,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_certificate_map: gapic_v1.method_async.wrap_method(
+            self.update_certificate_map: self._wrap_method(
                 self.update_certificate_map,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1281,7 +1285,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_certificate_map: gapic_v1.method_async.wrap_method(
+            self.delete_certificate_map: self._wrap_method(
                 self.delete_certificate_map,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1295,7 +1299,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_certificate_map_entries: gapic_v1.method_async.wrap_method(
+            self.list_certificate_map_entries: self._wrap_method(
                 self.list_certificate_map_entries,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1309,7 +1313,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_certificate_map_entry: gapic_v1.method_async.wrap_method(
+            self.get_certificate_map_entry: self._wrap_method(
                 self.get_certificate_map_entry,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1323,7 +1327,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_certificate_map_entry: gapic_v1.method_async.wrap_method(
+            self.create_certificate_map_entry: self._wrap_method(
                 self.create_certificate_map_entry,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1337,7 +1341,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_certificate_map_entry: gapic_v1.method_async.wrap_method(
+            self.update_certificate_map_entry: self._wrap_method(
                 self.update_certificate_map_entry,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1351,7 +1355,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_certificate_map_entry: gapic_v1.method_async.wrap_method(
+            self.delete_certificate_map_entry: self._wrap_method(
                 self.delete_certificate_map_entry,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1365,7 +1369,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_dns_authorizations: gapic_v1.method_async.wrap_method(
+            self.list_dns_authorizations: self._wrap_method(
                 self.list_dns_authorizations,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1379,7 +1383,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_dns_authorization: gapic_v1.method_async.wrap_method(
+            self.get_dns_authorization: self._wrap_method(
                 self.get_dns_authorization,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1393,7 +1397,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_dns_authorization: gapic_v1.method_async.wrap_method(
+            self.create_dns_authorization: self._wrap_method(
                 self.create_dns_authorization,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1407,7 +1411,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_dns_authorization: gapic_v1.method_async.wrap_method(
+            self.update_dns_authorization: self._wrap_method(
                 self.update_dns_authorization,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1421,7 +1425,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_dns_authorization: gapic_v1.method_async.wrap_method(
+            self.delete_dns_authorization: self._wrap_method(
                 self.delete_dns_authorization,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1435,7 +1439,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_certificate_issuance_configs: gapic_v1.method_async.wrap_method(
+            self.list_certificate_issuance_configs: self._wrap_method(
                 self.list_certificate_issuance_configs,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1449,7 +1453,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_certificate_issuance_config: gapic_v1.method_async.wrap_method(
+            self.get_certificate_issuance_config: self._wrap_method(
                 self.get_certificate_issuance_config,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1463,7 +1467,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_certificate_issuance_config: gapic_v1.method_async.wrap_method(
+            self.create_certificate_issuance_config: self._wrap_method(
                 self.create_certificate_issuance_config,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1477,7 +1481,7 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_certificate_issuance_config: gapic_v1.method_async.wrap_method(
+            self.delete_certificate_issuance_config: self._wrap_method(
                 self.delete_certificate_issuance_config,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1491,35 +1495,74 @@ class CertificateManagerGrpcAsyncIOTransport(CertificateManagerTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_trust_configs: gapic_v1.method_async.wrap_method(
+            self.list_trust_configs: self._wrap_method(
                 self.list_trust_configs,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_trust_config: gapic_v1.method_async.wrap_method(
+            self.get_trust_config: self._wrap_method(
                 self.get_trust_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_trust_config: gapic_v1.method_async.wrap_method(
+            self.create_trust_config: self._wrap_method(
                 self.create_trust_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_trust_config: gapic_v1.method_async.wrap_method(
+            self.update_trust_config: self._wrap_method(
                 self.update_trust_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_trust_config: gapic_v1.method_async.wrap_method(
+            self.delete_trust_config: self._wrap_method(
                 self.delete_trust_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(

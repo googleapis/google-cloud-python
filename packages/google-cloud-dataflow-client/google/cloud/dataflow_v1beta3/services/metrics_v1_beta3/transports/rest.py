@@ -16,30 +16,27 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
+
+from google.cloud.dataflow_v1beta3.types import metrics
+
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+from .rest_base import _BaseMetricsV1Beta3RestTransport
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-
-from google.cloud.dataflow_v1beta3.types import metrics
-
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import MetricsV1Beta3Transport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -166,8 +163,8 @@ class MetricsV1Beta3RestStub:
     _interceptor: MetricsV1Beta3RestInterceptor
 
 
-class MetricsV1Beta3RestTransport(MetricsV1Beta3Transport):
-    """REST backend transport for MetricsV1Beta3.
+class MetricsV1Beta3RestTransport(_BaseMetricsV1Beta3RestTransport):
+    """REST backend synchronous transport for MetricsV1Beta3.
 
     The Dataflow Metrics API lets you monitor the progress of
     Dataflow jobs.
@@ -177,7 +174,6 @@ class MetricsV1Beta3RestTransport(MetricsV1Beta3Transport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -231,21 +227,12 @@ class MetricsV1Beta3RestTransport(MetricsV1Beta3Transport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -256,9 +243,34 @@ class MetricsV1Beta3RestTransport(MetricsV1Beta3Transport):
         self._interceptor = interceptor or MetricsV1Beta3RestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetJobExecutionDetails(MetricsV1Beta3RestStub):
+    class _GetJobExecutionDetails(
+        _BaseMetricsV1Beta3RestTransport._BaseGetJobExecutionDetails,
+        MetricsV1Beta3RestStub,
+    ):
         def __hash__(self):
-            return hash("GetJobExecutionDetails")
+            return hash("MetricsV1Beta3RestTransport.GetJobExecutionDetails")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -286,39 +298,31 @@ class MetricsV1Beta3RestTransport(MetricsV1Beta3Transport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1b3/projects/{project_id}/locations/{location}/jobs/{job_id}/executionDetails",
-                },
-            ]
+            http_options = (
+                _BaseMetricsV1Beta3RestTransport._BaseGetJobExecutionDetails._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_job_execution_details(
                 request, metadata
             )
-            pb_request = metrics.GetJobExecutionDetailsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseMetricsV1Beta3RestTransport._BaseGetJobExecutionDetails._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseMetricsV1Beta3RestTransport._BaseGetJobExecutionDetails._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                MetricsV1Beta3RestTransport._GetJobExecutionDetails._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -334,9 +338,33 @@ class MetricsV1Beta3RestTransport(MetricsV1Beta3Transport):
             resp = self._interceptor.post_get_job_execution_details(resp)
             return resp
 
-    class _GetJobMetrics(MetricsV1Beta3RestStub):
+    class _GetJobMetrics(
+        _BaseMetricsV1Beta3RestTransport._BaseGetJobMetrics, MetricsV1Beta3RestStub
+    ):
         def __hash__(self):
-            return hash("GetJobMetrics")
+            return hash("MetricsV1Beta3RestTransport.GetJobMetrics")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -373,41 +401,27 @@ class MetricsV1Beta3RestTransport(MetricsV1Beta3Transport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1b3/projects/{project_id}/locations/{location}/jobs/{job_id}/metrics",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1b3/projects/{project_id}/jobs/{job_id}/metrics",
-                },
-            ]
+            http_options = (
+                _BaseMetricsV1Beta3RestTransport._BaseGetJobMetrics._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_job_metrics(request, metadata)
-            pb_request = metrics.GetJobMetricsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseMetricsV1Beta3RestTransport._BaseGetJobMetrics._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseMetricsV1Beta3RestTransport._BaseGetJobMetrics._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = MetricsV1Beta3RestTransport._GetJobMetrics._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -423,9 +437,34 @@ class MetricsV1Beta3RestTransport(MetricsV1Beta3Transport):
             resp = self._interceptor.post_get_job_metrics(resp)
             return resp
 
-    class _GetStageExecutionDetails(MetricsV1Beta3RestStub):
+    class _GetStageExecutionDetails(
+        _BaseMetricsV1Beta3RestTransport._BaseGetStageExecutionDetails,
+        MetricsV1Beta3RestStub,
+    ):
         def __hash__(self):
-            return hash("GetStageExecutionDetails")
+            return hash("MetricsV1Beta3RestTransport.GetStageExecutionDetails")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -456,39 +495,31 @@ class MetricsV1Beta3RestTransport(MetricsV1Beta3Transport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1b3/projects/{project_id}/locations/{location}/jobs/{job_id}/stages/{stage_id}/executionDetails",
-                },
-            ]
+            http_options = (
+                _BaseMetricsV1Beta3RestTransport._BaseGetStageExecutionDetails._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_stage_execution_details(
                 request, metadata
             )
-            pb_request = metrics.GetStageExecutionDetailsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            transcoded_request = _BaseMetricsV1Beta3RestTransport._BaseGetStageExecutionDetails._get_transcoded_request(
+                http_options, request
             )
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = _BaseMetricsV1Beta3RestTransport._BaseGetStageExecutionDetails._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                MetricsV1Beta3RestTransport._GetStageExecutionDetails._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

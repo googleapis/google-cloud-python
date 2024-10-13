@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -255,6 +256,9 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1524,230 +1528,249 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_instances: gapic_v1.method_async.wrap_method(
+            self.list_instances: self._wrap_method(
                 self.list_instances,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_instance: gapic_v1.method_async.wrap_method(
+            self.get_instance: self._wrap_method(
                 self.get_instance,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_instance: gapic_v1.method_async.wrap_method(
+            self.update_instance: self._wrap_method(
                 self.update_instance,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.rename_instance: gapic_v1.method_async.wrap_method(
+            self.rename_instance: self._wrap_method(
                 self.rename_instance,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.reset_instance: gapic_v1.method_async.wrap_method(
+            self.reset_instance: self._wrap_method(
                 self.reset_instance,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.start_instance: gapic_v1.method_async.wrap_method(
+            self.start_instance: self._wrap_method(
                 self.start_instance,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.stop_instance: gapic_v1.method_async.wrap_method(
+            self.stop_instance: self._wrap_method(
                 self.stop_instance,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.enable_interactive_serial_console: gapic_v1.method_async.wrap_method(
+            self.enable_interactive_serial_console: self._wrap_method(
                 self.enable_interactive_serial_console,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.disable_interactive_serial_console: gapic_v1.method_async.wrap_method(
+            self.disable_interactive_serial_console: self._wrap_method(
                 self.disable_interactive_serial_console,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.detach_lun: gapic_v1.method_async.wrap_method(
+            self.detach_lun: self._wrap_method(
                 self.detach_lun,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_ssh_keys: gapic_v1.method_async.wrap_method(
+            self.list_ssh_keys: self._wrap_method(
                 self.list_ssh_keys,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_ssh_key: gapic_v1.method_async.wrap_method(
+            self.create_ssh_key: self._wrap_method(
                 self.create_ssh_key,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_ssh_key: gapic_v1.method_async.wrap_method(
+            self.delete_ssh_key: self._wrap_method(
                 self.delete_ssh_key,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_volumes: gapic_v1.method_async.wrap_method(
+            self.list_volumes: self._wrap_method(
                 self.list_volumes,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_volume: gapic_v1.method_async.wrap_method(
+            self.get_volume: self._wrap_method(
                 self.get_volume,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_volume: gapic_v1.method_async.wrap_method(
+            self.update_volume: self._wrap_method(
                 self.update_volume,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.rename_volume: gapic_v1.method_async.wrap_method(
+            self.rename_volume: self._wrap_method(
                 self.rename_volume,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.evict_volume: gapic_v1.method_async.wrap_method(
+            self.evict_volume: self._wrap_method(
                 self.evict_volume,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.resize_volume: gapic_v1.method_async.wrap_method(
+            self.resize_volume: self._wrap_method(
                 self.resize_volume,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_networks: gapic_v1.method_async.wrap_method(
+            self.list_networks: self._wrap_method(
                 self.list_networks,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_network_usage: gapic_v1.method_async.wrap_method(
+            self.list_network_usage: self._wrap_method(
                 self.list_network_usage,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_network: gapic_v1.method_async.wrap_method(
+            self.get_network: self._wrap_method(
                 self.get_network,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_network: gapic_v1.method_async.wrap_method(
+            self.update_network: self._wrap_method(
                 self.update_network,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_volume_snapshot: gapic_v1.method_async.wrap_method(
+            self.create_volume_snapshot: self._wrap_method(
                 self.create_volume_snapshot,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.restore_volume_snapshot: gapic_v1.method_async.wrap_method(
+            self.restore_volume_snapshot: self._wrap_method(
                 self.restore_volume_snapshot,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_volume_snapshot: gapic_v1.method_async.wrap_method(
+            self.delete_volume_snapshot: self._wrap_method(
                 self.delete_volume_snapshot,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_volume_snapshot: gapic_v1.method_async.wrap_method(
+            self.get_volume_snapshot: self._wrap_method(
                 self.get_volume_snapshot,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_volume_snapshots: gapic_v1.method_async.wrap_method(
+            self.list_volume_snapshots: self._wrap_method(
                 self.list_volume_snapshots,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_lun: gapic_v1.method_async.wrap_method(
+            self.get_lun: self._wrap_method(
                 self.get_lun,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_luns: gapic_v1.method_async.wrap_method(
+            self.list_luns: self._wrap_method(
                 self.list_luns,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.evict_lun: gapic_v1.method_async.wrap_method(
+            self.evict_lun: self._wrap_method(
                 self.evict_lun,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_nfs_share: gapic_v1.method_async.wrap_method(
+            self.get_nfs_share: self._wrap_method(
                 self.get_nfs_share,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_nfs_shares: gapic_v1.method_async.wrap_method(
+            self.list_nfs_shares: self._wrap_method(
                 self.list_nfs_shares,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_nfs_share: gapic_v1.method_async.wrap_method(
+            self.update_nfs_share: self._wrap_method(
                 self.update_nfs_share,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_nfs_share: gapic_v1.method_async.wrap_method(
+            self.create_nfs_share: self._wrap_method(
                 self.create_nfs_share,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.rename_nfs_share: gapic_v1.method_async.wrap_method(
+            self.rename_nfs_share: self._wrap_method(
                 self.rename_nfs_share,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_nfs_share: gapic_v1.method_async.wrap_method(
+            self.delete_nfs_share: self._wrap_method(
                 self.delete_nfs_share,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_provisioning_quotas: gapic_v1.method_async.wrap_method(
+            self.list_provisioning_quotas: self._wrap_method(
                 self.list_provisioning_quotas,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.submit_provisioning_config: gapic_v1.method_async.wrap_method(
+            self.submit_provisioning_config: self._wrap_method(
                 self.submit_provisioning_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_provisioning_config: gapic_v1.method_async.wrap_method(
+            self.get_provisioning_config: self._wrap_method(
                 self.get_provisioning_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_provisioning_config: gapic_v1.method_async.wrap_method(
+            self.create_provisioning_config: self._wrap_method(
                 self.create_provisioning_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_provisioning_config: gapic_v1.method_async.wrap_method(
+            self.update_provisioning_config: self._wrap_method(
                 self.update_provisioning_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.rename_network: gapic_v1.method_async.wrap_method(
+            self.rename_network: self._wrap_method(
                 self.rename_network,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_os_images: gapic_v1.method_async.wrap_method(
+            self.list_os_images: self._wrap_method(
                 self.list_os_images,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def list_locations(

@@ -24,10 +24,24 @@ except ImportError:  # pragma: NO COVER
 
 import math
 
+from google.api_core import api_core_version
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api import distribution_pb2  # type: ignore
 from google.api import metric_pb2  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 import google.auth
@@ -38,11 +52,6 @@ from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import error_details_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 
 from google.cloud.bigquery_migration_v2.services.migration_service import (
     MigrationServiceAsyncClient,
@@ -61,8 +70,22 @@ from google.cloud.bigquery_migration_v2.types import (
 )
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1165,27 +1188,6 @@ def test_create_migration_workflow(request_type, transport: str = "grpc"):
     assert response.state == migration_entities.MigrationWorkflow.State.DRAFT
 
 
-def test_create_migration_workflow_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_migration_workflow), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_migration_workflow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == migration_service.CreateMigrationWorkflowRequest()
-
-
 def test_create_migration_workflow_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1257,33 +1259,6 @@ def test_create_migration_workflow_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_migration_workflow_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_migration_workflow), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            migration_entities.MigrationWorkflow(
-                name="name_value",
-                display_name="display_name_value",
-                state=migration_entities.MigrationWorkflow.State.DRAFT,
-            )
-        )
-        response = await client.create_migration_workflow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == migration_service.CreateMigrationWorkflowRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_migration_workflow_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1291,7 +1266,7 @@ async def test_create_migration_workflow_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = MigrationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1331,7 +1306,7 @@ async def test_create_migration_workflow_async(
     request_type=migration_service.CreateMigrationWorkflowRequest,
 ):
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1405,7 +1380,7 @@ def test_create_migration_workflow_field_headers():
 @pytest.mark.asyncio
 async def test_create_migration_workflow_field_headers_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1484,7 +1459,7 @@ def test_create_migration_workflow_flattened_error():
 @pytest.mark.asyncio
 async def test_create_migration_workflow_flattened_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1519,7 +1494,7 @@ async def test_create_migration_workflow_flattened_async():
 @pytest.mark.asyncio
 async def test_create_migration_workflow_flattened_error_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1572,27 +1547,6 @@ def test_get_migration_workflow(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.state == migration_entities.MigrationWorkflow.State.DRAFT
-
-
-def test_get_migration_workflow_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_migration_workflow), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_migration_workflow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == migration_service.GetMigrationWorkflowRequest()
 
 
 def test_get_migration_workflow_non_empty_request_with_auto_populated_field():
@@ -1666,33 +1620,6 @@ def test_get_migration_workflow_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_migration_workflow_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_migration_workflow), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            migration_entities.MigrationWorkflow(
-                name="name_value",
-                display_name="display_name_value",
-                state=migration_entities.MigrationWorkflow.State.DRAFT,
-            )
-        )
-        response = await client.get_migration_workflow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == migration_service.GetMigrationWorkflowRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_migration_workflow_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1700,7 +1627,7 @@ async def test_get_migration_workflow_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = MigrationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1740,7 +1667,7 @@ async def test_get_migration_workflow_async(
     request_type=migration_service.GetMigrationWorkflowRequest,
 ):
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1814,7 +1741,7 @@ def test_get_migration_workflow_field_headers():
 @pytest.mark.asyncio
 async def test_get_migration_workflow_field_headers_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1888,7 +1815,7 @@ def test_get_migration_workflow_flattened_error():
 @pytest.mark.asyncio
 async def test_get_migration_workflow_flattened_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1919,7 +1846,7 @@ async def test_get_migration_workflow_flattened_async():
 @pytest.mark.asyncio
 async def test_get_migration_workflow_flattened_error_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1967,27 +1894,6 @@ def test_list_migration_workflows(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMigrationWorkflowsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_migration_workflows_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_migration_workflows), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_migration_workflows()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == migration_service.ListMigrationWorkflowsRequest()
 
 
 def test_list_migration_workflows_non_empty_request_with_auto_populated_field():
@@ -2063,31 +1969,6 @@ def test_list_migration_workflows_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_migration_workflows_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_migration_workflows), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            migration_service.ListMigrationWorkflowsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_migration_workflows()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == migration_service.ListMigrationWorkflowsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_migration_workflows_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2095,7 +1976,7 @@ async def test_list_migration_workflows_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = MigrationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2135,7 +2016,7 @@ async def test_list_migration_workflows_async(
     request_type=migration_service.ListMigrationWorkflowsRequest,
 ):
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2205,7 +2086,7 @@ def test_list_migration_workflows_field_headers():
 @pytest.mark.asyncio
 async def test_list_migration_workflows_field_headers_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2279,7 +2160,7 @@ def test_list_migration_workflows_flattened_error():
 @pytest.mark.asyncio
 async def test_list_migration_workflows_flattened_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2310,7 +2191,7 @@ async def test_list_migration_workflows_flattened_async():
 @pytest.mark.asyncio
 async def test_list_migration_workflows_flattened_error_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2426,7 +2307,7 @@ def test_list_migration_workflows_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_migration_workflows_async_pager():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2480,7 +2361,7 @@ async def test_list_migration_workflows_async_pager():
 @pytest.mark.asyncio
 async def test_list_migration_workflows_async_pages():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2563,27 +2444,6 @@ def test_delete_migration_workflow(request_type, transport: str = "grpc"):
     assert response is None
 
 
-def test_delete_migration_workflow_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_migration_workflow), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_migration_workflow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == migration_service.DeleteMigrationWorkflowRequest()
-
-
 def test_delete_migration_workflow_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -2655,27 +2515,6 @@ def test_delete_migration_workflow_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_migration_workflow_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_migration_workflow), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_migration_workflow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == migration_service.DeleteMigrationWorkflowRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_migration_workflow_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2683,7 +2522,7 @@ async def test_delete_migration_workflow_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = MigrationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2723,7 +2562,7 @@ async def test_delete_migration_workflow_async(
     request_type=migration_service.DeleteMigrationWorkflowRequest,
 ):
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2788,7 +2627,7 @@ def test_delete_migration_workflow_field_headers():
 @pytest.mark.asyncio
 async def test_delete_migration_workflow_field_headers_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2860,7 +2699,7 @@ def test_delete_migration_workflow_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_migration_workflow_flattened_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2889,7 +2728,7 @@ async def test_delete_migration_workflow_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_migration_workflow_flattened_error_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2934,27 +2773,6 @@ def test_start_migration_workflow(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_start_migration_workflow_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_migration_workflow), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.start_migration_workflow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == migration_service.StartMigrationWorkflowRequest()
 
 
 def test_start_migration_workflow_non_empty_request_with_auto_populated_field():
@@ -3028,27 +2846,6 @@ def test_start_migration_workflow_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_start_migration_workflow_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_migration_workflow), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.start_migration_workflow()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == migration_service.StartMigrationWorkflowRequest()
-
-
-@pytest.mark.asyncio
 async def test_start_migration_workflow_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3056,7 +2853,7 @@ async def test_start_migration_workflow_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = MigrationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3096,7 +2893,7 @@ async def test_start_migration_workflow_async(
     request_type=migration_service.StartMigrationWorkflowRequest,
 ):
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3161,7 +2958,7 @@ def test_start_migration_workflow_field_headers():
 @pytest.mark.asyncio
 async def test_start_migration_workflow_field_headers_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3233,7 +3030,7 @@ def test_start_migration_workflow_flattened_error():
 @pytest.mark.asyncio
 async def test_start_migration_workflow_flattened_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3262,7 +3059,7 @@ async def test_start_migration_workflow_flattened_async():
 @pytest.mark.asyncio
 async def test_start_migration_workflow_flattened_error_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3318,27 +3115,6 @@ def test_get_migration_subtask(request_type, transport: str = "grpc"):
     assert response.type_ == "type__value"
     assert response.state == migration_entities.MigrationSubtask.State.ACTIVE
     assert response.resource_error_count == 2169
-
-
-def test_get_migration_subtask_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_migration_subtask), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_migration_subtask()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == migration_service.GetMigrationSubtaskRequest()
 
 
 def test_get_migration_subtask_non_empty_request_with_auto_populated_field():
@@ -3412,35 +3188,6 @@ def test_get_migration_subtask_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_migration_subtask_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_migration_subtask), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            migration_entities.MigrationSubtask(
-                name="name_value",
-                task_id="task_id_value",
-                type_="type__value",
-                state=migration_entities.MigrationSubtask.State.ACTIVE,
-                resource_error_count=2169,
-            )
-        )
-        response = await client.get_migration_subtask()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == migration_service.GetMigrationSubtaskRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_migration_subtask_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3448,7 +3195,7 @@ async def test_get_migration_subtask_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = MigrationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3488,7 +3235,7 @@ async def test_get_migration_subtask_async(
     request_type=migration_service.GetMigrationSubtaskRequest,
 ):
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3566,7 +3313,7 @@ def test_get_migration_subtask_field_headers():
 @pytest.mark.asyncio
 async def test_get_migration_subtask_field_headers_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3640,7 +3387,7 @@ def test_get_migration_subtask_flattened_error():
 @pytest.mark.asyncio
 async def test_get_migration_subtask_flattened_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3671,7 +3418,7 @@ async def test_get_migration_subtask_flattened_async():
 @pytest.mark.asyncio
 async def test_get_migration_subtask_flattened_error_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3719,27 +3466,6 @@ def test_list_migration_subtasks(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMigrationSubtasksPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_migration_subtasks_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_migration_subtasks), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_migration_subtasks()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == migration_service.ListMigrationSubtasksRequest()
 
 
 def test_list_migration_subtasks_non_empty_request_with_auto_populated_field():
@@ -3817,31 +3543,6 @@ def test_list_migration_subtasks_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_migration_subtasks_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_migration_subtasks), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            migration_service.ListMigrationSubtasksResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_migration_subtasks()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == migration_service.ListMigrationSubtasksRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_migration_subtasks_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3849,7 +3550,7 @@ async def test_list_migration_subtasks_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = MigrationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3889,7 +3590,7 @@ async def test_list_migration_subtasks_async(
     request_type=migration_service.ListMigrationSubtasksRequest,
 ):
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3959,7 +3660,7 @@ def test_list_migration_subtasks_field_headers():
 @pytest.mark.asyncio
 async def test_list_migration_subtasks_field_headers_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4033,7 +3734,7 @@ def test_list_migration_subtasks_flattened_error():
 @pytest.mark.asyncio
 async def test_list_migration_subtasks_flattened_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4064,7 +3765,7 @@ async def test_list_migration_subtasks_flattened_async():
 @pytest.mark.asyncio
 async def test_list_migration_subtasks_flattened_error_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4178,7 +3879,7 @@ def test_list_migration_subtasks_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_migration_subtasks_async_pager():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4232,7 +3933,7 @@ async def test_list_migration_subtasks_async_pager():
 @pytest.mark.asyncio
 async def test_list_migration_subtasks_async_pages():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4371,17 +4072,396 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
-@pytest.mark.parametrize(
-    "transport_name",
-    [
-        "grpc",
-    ],
-)
-def test_transport_kind(transport_name):
-    transport = MigrationServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_transport_kind_grpc():
+    transport = MigrationServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
     )
-    assert transport.kind == transport_name
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_migration_workflow_empty_call_grpc():
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_migration_workflow), "__call__"
+    ) as call:
+        call.return_value = migration_entities.MigrationWorkflow()
+        client.create_migration_workflow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = migration_service.CreateMigrationWorkflowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_migration_workflow_empty_call_grpc():
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_migration_workflow), "__call__"
+    ) as call:
+        call.return_value = migration_entities.MigrationWorkflow()
+        client.get_migration_workflow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = migration_service.GetMigrationWorkflowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_migration_workflows_empty_call_grpc():
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_migration_workflows), "__call__"
+    ) as call:
+        call.return_value = migration_service.ListMigrationWorkflowsResponse()
+        client.list_migration_workflows(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = migration_service.ListMigrationWorkflowsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_migration_workflow_empty_call_grpc():
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_migration_workflow), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_migration_workflow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = migration_service.DeleteMigrationWorkflowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_start_migration_workflow_empty_call_grpc():
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_migration_workflow), "__call__"
+    ) as call:
+        call.return_value = None
+        client.start_migration_workflow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = migration_service.StartMigrationWorkflowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_migration_subtask_empty_call_grpc():
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_migration_subtask), "__call__"
+    ) as call:
+        call.return_value = migration_entities.MigrationSubtask()
+        client.get_migration_subtask(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = migration_service.GetMigrationSubtaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_migration_subtasks_empty_call_grpc():
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_migration_subtasks), "__call__"
+    ) as call:
+        call.return_value = migration_service.ListMigrationSubtasksResponse()
+        client.list_migration_subtasks(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = migration_service.ListMigrationSubtasksRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = MigrationServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = MigrationServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_migration_workflow_empty_call_grpc_asyncio():
+    client = MigrationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_migration_workflow), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migration_entities.MigrationWorkflow(
+                name="name_value",
+                display_name="display_name_value",
+                state=migration_entities.MigrationWorkflow.State.DRAFT,
+            )
+        )
+        await client.create_migration_workflow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = migration_service.CreateMigrationWorkflowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_migration_workflow_empty_call_grpc_asyncio():
+    client = MigrationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_migration_workflow), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migration_entities.MigrationWorkflow(
+                name="name_value",
+                display_name="display_name_value",
+                state=migration_entities.MigrationWorkflow.State.DRAFT,
+            )
+        )
+        await client.get_migration_workflow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = migration_service.GetMigrationWorkflowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_migration_workflows_empty_call_grpc_asyncio():
+    client = MigrationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_migration_workflows), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migration_service.ListMigrationWorkflowsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_migration_workflows(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = migration_service.ListMigrationWorkflowsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_migration_workflow_empty_call_grpc_asyncio():
+    client = MigrationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_migration_workflow), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_migration_workflow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = migration_service.DeleteMigrationWorkflowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_start_migration_workflow_empty_call_grpc_asyncio():
+    client = MigrationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_migration_workflow), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.start_migration_workflow(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = migration_service.StartMigrationWorkflowRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_migration_subtask_empty_call_grpc_asyncio():
+    client = MigrationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_migration_subtask), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migration_entities.MigrationSubtask(
+                name="name_value",
+                task_id="task_id_value",
+                type_="type__value",
+                state=migration_entities.MigrationSubtask.State.ACTIVE,
+                resource_error_count=2169,
+            )
+        )
+        await client.get_migration_subtask(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = migration_service.GetMigrationSubtaskRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_migration_subtasks_empty_call_grpc_asyncio():
+    client = MigrationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_migration_subtasks), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            migration_service.ListMigrationSubtasksResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_migration_subtasks(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = migration_service.ListMigrationSubtasksRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -4952,35 +5032,29 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
-        async with client:
+        with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = MigrationServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = MigrationServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

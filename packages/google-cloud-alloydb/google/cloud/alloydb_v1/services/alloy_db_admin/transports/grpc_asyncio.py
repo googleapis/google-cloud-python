@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -232,6 +233,9 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1125,7 +1129,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_clusters: gapic_v1.method_async.wrap_method(
+            self.list_clusters: self._wrap_method(
                 self.list_clusters,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1139,7 +1143,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_cluster: gapic_v1.method_async.wrap_method(
+            self.get_cluster: self._wrap_method(
                 self.get_cluster,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1153,37 +1157,37 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_cluster: gapic_v1.method_async.wrap_method(
+            self.create_cluster: self._wrap_method(
                 self.create_cluster,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_cluster: gapic_v1.method_async.wrap_method(
+            self.update_cluster: self._wrap_method(
                 self.update_cluster,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_cluster: gapic_v1.method_async.wrap_method(
+            self.delete_cluster: self._wrap_method(
                 self.delete_cluster,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.promote_cluster: gapic_v1.method_async.wrap_method(
+            self.promote_cluster: self._wrap_method(
                 self.promote_cluster,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.restore_cluster: gapic_v1.method_async.wrap_method(
+            self.restore_cluster: self._wrap_method(
                 self.restore_cluster,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_secondary_cluster: gapic_v1.method_async.wrap_method(
+            self.create_secondary_cluster: self._wrap_method(
                 self.create_secondary_cluster,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_instances: gapic_v1.method_async.wrap_method(
+            self.list_instances: self._wrap_method(
                 self.list_instances,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1197,7 +1201,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_instance: gapic_v1.method_async.wrap_method(
+            self.get_instance: self._wrap_method(
                 self.get_instance,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1211,47 +1215,47 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_instance: gapic_v1.method_async.wrap_method(
+            self.create_instance: self._wrap_method(
                 self.create_instance,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_secondary_instance: gapic_v1.method_async.wrap_method(
+            self.create_secondary_instance: self._wrap_method(
                 self.create_secondary_instance,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.batch_create_instances: gapic_v1.method_async.wrap_method(
+            self.batch_create_instances: self._wrap_method(
                 self.batch_create_instances,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_instance: gapic_v1.method_async.wrap_method(
+            self.update_instance: self._wrap_method(
                 self.update_instance,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_instance: gapic_v1.method_async.wrap_method(
+            self.delete_instance: self._wrap_method(
                 self.delete_instance,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.failover_instance: gapic_v1.method_async.wrap_method(
+            self.failover_instance: self._wrap_method(
                 self.failover_instance,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.inject_fault: gapic_v1.method_async.wrap_method(
+            self.inject_fault: self._wrap_method(
                 self.inject_fault,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.restart_instance: gapic_v1.method_async.wrap_method(
+            self.restart_instance: self._wrap_method(
                 self.restart_instance,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_backups: gapic_v1.method_async.wrap_method(
+            self.list_backups: self._wrap_method(
                 self.list_backups,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1265,7 +1269,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_backup: gapic_v1.method_async.wrap_method(
+            self.get_backup: self._wrap_method(
                 self.get_backup,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1279,22 +1283,22 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_backup: gapic_v1.method_async.wrap_method(
+            self.create_backup: self._wrap_method(
                 self.create_backup,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_backup: gapic_v1.method_async.wrap_method(
+            self.update_backup: self._wrap_method(
                 self.update_backup,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_backup: gapic_v1.method_async.wrap_method(
+            self.delete_backup: self._wrap_method(
                 self.delete_backup,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_supported_database_flags: gapic_v1.method_async.wrap_method(
+            self.list_supported_database_flags: self._wrap_method(
                 self.list_supported_database_flags,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1308,7 +1312,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.generate_client_certificate: gapic_v1.method_async.wrap_method(
+            self.generate_client_certificate: self._wrap_method(
                 self.generate_client_certificate,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1322,7 +1326,7 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_connection_info: gapic_v1.method_async.wrap_method(
+            self.get_connection_info: self._wrap_method(
                 self.get_connection_info,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1336,35 +1340,74 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_users: gapic_v1.method_async.wrap_method(
+            self.list_users: self._wrap_method(
                 self.list_users,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_user: gapic_v1.method_async.wrap_method(
+            self.get_user: self._wrap_method(
                 self.get_user,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_user: gapic_v1.method_async.wrap_method(
+            self.create_user: self._wrap_method(
                 self.create_user,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_user: gapic_v1.method_async.wrap_method(
+            self.update_user: self._wrap_method(
                 self.update_user,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_user: gapic_v1.method_async.wrap_method(
+            self.delete_user: self._wrap_method(
                 self.delete_user,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(

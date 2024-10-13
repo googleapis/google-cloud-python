@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -245,6 +246,9 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1740,7 +1744,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_storage_pools: gapic_v1.method_async.wrap_method(
+            self.list_storage_pools: self._wrap_method(
                 self.list_storage_pools,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1754,12 +1758,12 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_storage_pool: gapic_v1.method_async.wrap_method(
+            self.create_storage_pool: self._wrap_method(
                 self.create_storage_pool,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_storage_pool: gapic_v1.method_async.wrap_method(
+            self.get_storage_pool: self._wrap_method(
                 self.get_storage_pool,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1773,22 +1777,22 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_storage_pool: gapic_v1.method_async.wrap_method(
+            self.update_storage_pool: self._wrap_method(
                 self.update_storage_pool,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_storage_pool: gapic_v1.method_async.wrap_method(
+            self.delete_storage_pool: self._wrap_method(
                 self.delete_storage_pool,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.switch_active_replica_zone: gapic_v1.method_async.wrap_method(
+            self.switch_active_replica_zone: self._wrap_method(
                 self.switch_active_replica_zone,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_volumes: gapic_v1.method_async.wrap_method(
+            self.list_volumes: self._wrap_method(
                 self.list_volumes,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1802,7 +1806,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_volume: gapic_v1.method_async.wrap_method(
+            self.get_volume: self._wrap_method(
                 self.get_volume,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1816,27 +1820,27 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_volume: gapic_v1.method_async.wrap_method(
+            self.create_volume: self._wrap_method(
                 self.create_volume,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_volume: gapic_v1.method_async.wrap_method(
+            self.update_volume: self._wrap_method(
                 self.update_volume,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_volume: gapic_v1.method_async.wrap_method(
+            self.delete_volume: self._wrap_method(
                 self.delete_volume,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.revert_volume: gapic_v1.method_async.wrap_method(
+            self.revert_volume: self._wrap_method(
                 self.revert_volume,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_snapshots: gapic_v1.method_async.wrap_method(
+            self.list_snapshots: self._wrap_method(
                 self.list_snapshots,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1850,7 +1854,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_snapshot: gapic_v1.method_async.wrap_method(
+            self.get_snapshot: self._wrap_method(
                 self.get_snapshot,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1864,22 +1868,22 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_snapshot: gapic_v1.method_async.wrap_method(
+            self.create_snapshot: self._wrap_method(
                 self.create_snapshot,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_snapshot: gapic_v1.method_async.wrap_method(
+            self.delete_snapshot: self._wrap_method(
                 self.delete_snapshot,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_snapshot: gapic_v1.method_async.wrap_method(
+            self.update_snapshot: self._wrap_method(
                 self.update_snapshot,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_active_directories: gapic_v1.method_async.wrap_method(
+            self.list_active_directories: self._wrap_method(
                 self.list_active_directories,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1893,7 +1897,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_active_directory: gapic_v1.method_async.wrap_method(
+            self.get_active_directory: self._wrap_method(
                 self.get_active_directory,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1907,22 +1911,22 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_active_directory: gapic_v1.method_async.wrap_method(
+            self.create_active_directory: self._wrap_method(
                 self.create_active_directory,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_active_directory: gapic_v1.method_async.wrap_method(
+            self.update_active_directory: self._wrap_method(
                 self.update_active_directory,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_active_directory: gapic_v1.method_async.wrap_method(
+            self.delete_active_directory: self._wrap_method(
                 self.delete_active_directory,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_kms_configs: gapic_v1.method_async.wrap_method(
+            self.list_kms_configs: self._wrap_method(
                 self.list_kms_configs,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1936,12 +1940,12 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_kms_config: gapic_v1.method_async.wrap_method(
+            self.create_kms_config: self._wrap_method(
                 self.create_kms_config,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_kms_config: gapic_v1.method_async.wrap_method(
+            self.get_kms_config: self._wrap_method(
                 self.get_kms_config,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1955,27 +1959,27 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_kms_config: gapic_v1.method_async.wrap_method(
+            self.update_kms_config: self._wrap_method(
                 self.update_kms_config,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.encrypt_volumes: gapic_v1.method_async.wrap_method(
+            self.encrypt_volumes: self._wrap_method(
                 self.encrypt_volumes,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.verify_kms_config: gapic_v1.method_async.wrap_method(
+            self.verify_kms_config: self._wrap_method(
                 self.verify_kms_config,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_kms_config: gapic_v1.method_async.wrap_method(
+            self.delete_kms_config: self._wrap_method(
                 self.delete_kms_config,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_replications: gapic_v1.method_async.wrap_method(
+            self.list_replications: self._wrap_method(
                 self.list_replications,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -1989,7 +1993,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_replication: gapic_v1.method_async.wrap_method(
+            self.get_replication: self._wrap_method(
                 self.get_replication,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2003,42 +2007,42 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_replication: gapic_v1.method_async.wrap_method(
+            self.create_replication: self._wrap_method(
                 self.create_replication,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_replication: gapic_v1.method_async.wrap_method(
+            self.delete_replication: self._wrap_method(
                 self.delete_replication,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_replication: gapic_v1.method_async.wrap_method(
+            self.update_replication: self._wrap_method(
                 self.update_replication,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.stop_replication: gapic_v1.method_async.wrap_method(
+            self.stop_replication: self._wrap_method(
                 self.stop_replication,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.resume_replication: gapic_v1.method_async.wrap_method(
+            self.resume_replication: self._wrap_method(
                 self.resume_replication,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.reverse_replication_direction: gapic_v1.method_async.wrap_method(
+            self.reverse_replication_direction: self._wrap_method(
                 self.reverse_replication_direction,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_backup_vault: gapic_v1.method_async.wrap_method(
+            self.create_backup_vault: self._wrap_method(
                 self.create_backup_vault,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_backup_vault: gapic_v1.method_async.wrap_method(
+            self.get_backup_vault: self._wrap_method(
                 self.get_backup_vault,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2052,7 +2056,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_backup_vaults: gapic_v1.method_async.wrap_method(
+            self.list_backup_vaults: self._wrap_method(
                 self.list_backup_vaults,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2066,22 +2070,22 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_backup_vault: gapic_v1.method_async.wrap_method(
+            self.update_backup_vault: self._wrap_method(
                 self.update_backup_vault,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_backup_vault: gapic_v1.method_async.wrap_method(
+            self.delete_backup_vault: self._wrap_method(
                 self.delete_backup_vault,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_backup: gapic_v1.method_async.wrap_method(
+            self.create_backup: self._wrap_method(
                 self.create_backup,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_backup: gapic_v1.method_async.wrap_method(
+            self.get_backup: self._wrap_method(
                 self.get_backup,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2095,7 +2099,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_backups: gapic_v1.method_async.wrap_method(
+            self.list_backups: self._wrap_method(
                 self.list_backups,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2109,22 +2113,22 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_backup: gapic_v1.method_async.wrap_method(
+            self.delete_backup: self._wrap_method(
                 self.delete_backup,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_backup: gapic_v1.method_async.wrap_method(
+            self.update_backup: self._wrap_method(
                 self.update_backup,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_backup_policy: gapic_v1.method_async.wrap_method(
+            self.create_backup_policy: self._wrap_method(
                 self.create_backup_policy,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_backup_policy: gapic_v1.method_async.wrap_method(
+            self.get_backup_policy: self._wrap_method(
                 self.get_backup_policy,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2138,7 +2142,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_backup_policies: gapic_v1.method_async.wrap_method(
+            self.list_backup_policies: self._wrap_method(
                 self.list_backup_policies,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2152,20 +2156,59 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_backup_policy: gapic_v1.method_async.wrap_method(
+            self.update_backup_policy: self._wrap_method(
                 self.update_backup_policy,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_backup_policy: gapic_v1.method_async.wrap_method(
+            self.delete_backup_policy: self._wrap_method(
                 self.delete_backup_policy,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
+
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
 
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(

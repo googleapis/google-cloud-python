@@ -16,34 +16,18 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.protobuf import json_format
-import grpc  # type: ignore
-from requests import __version__ as requests_version
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import json_format
+from requests import __version__ as requests_version
 
 from google.cloud.documentai_v1beta3.types import document_processor_service, evaluation
 from google.cloud.documentai_v1beta3.types import processor
@@ -51,7 +35,13 @@ from google.cloud.documentai_v1beta3.types import processor as gcd_processor
 from google.cloud.documentai_v1beta3.types import processor_type
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import DocumentProcessorServiceTransport
+from .rest_base import _BaseDocumentProcessorServiceRestTransport
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -965,8 +955,8 @@ class DocumentProcessorServiceRestStub:
     _interceptor: DocumentProcessorServiceRestInterceptor
 
 
-class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
-    """REST backend transport for DocumentProcessorService.
+class DocumentProcessorServiceRestTransport(_BaseDocumentProcessorServiceRestTransport):
+    """REST backend synchronous transport for DocumentProcessorService.
 
     Service to call Document AI to process documents according to
     the processor's definition. Processors are built using
@@ -979,7 +969,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -1033,21 +1022,12 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -1117,19 +1097,35 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _BatchProcessDocuments(DocumentProcessorServiceRestStub):
+    class _BatchProcessDocuments(
+        _BaseDocumentProcessorServiceRestTransport._BaseBatchProcessDocuments,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("BatchProcessDocuments")
+            return hash("DocumentProcessorServiceRestTransport.BatchProcessDocuments")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1159,52 +1155,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta3/{name=projects/*/locations/*/processors/*}:batchProcess",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta3/{name=projects/*/locations/*/processors/*/processorVersions/*}:batchProcess",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseBatchProcessDocuments._get_http_options()
+            )
             request, metadata = self._interceptor.pre_batch_process_documents(
                 request, metadata
             )
-            pb_request = document_processor_service.BatchProcessRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseBatchProcessDocuments._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDocumentProcessorServiceRestTransport._BaseBatchProcessDocuments._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseBatchProcessDocuments._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DocumentProcessorServiceRestTransport._BatchProcessDocuments._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1218,19 +1196,35 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_batch_process_documents(resp)
             return resp
 
-    class _CreateProcessor(DocumentProcessorServiceRestStub):
+    class _CreateProcessor(
+        _BaseDocumentProcessorServiceRestTransport._BaseCreateProcessor,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateProcessor")
+            return hash("DocumentProcessorServiceRestTransport.CreateProcessor")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1265,47 +1259,36 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta3/{parent=projects/*/locations/*}/processors",
-                    "body": "processor",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseCreateProcessor._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_processor(
                 request, metadata
             )
-            pb_request = document_processor_service.CreateProcessorRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseCreateProcessor._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDocumentProcessorServiceRestTransport._BaseCreateProcessor._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseCreateProcessor._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                DocumentProcessorServiceRestTransport._CreateProcessor._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1321,19 +1304,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_create_processor(resp)
             return resp
 
-    class _DeleteProcessor(DocumentProcessorServiceRestStub):
+    class _DeleteProcessor(
+        _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessor,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteProcessor")
+            return hash("DocumentProcessorServiceRestTransport.DeleteProcessor")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1364,40 +1362,31 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta3/{name=projects/*/locations/*/processors/*}",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessor._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_processor(
                 request, metadata
             )
-            pb_request = document_processor_service.DeleteProcessorRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessor._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessor._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                DocumentProcessorServiceRestTransport._DeleteProcessor._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1411,19 +1400,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_delete_processor(resp)
             return resp
 
-    class _DeleteProcessorVersion(DocumentProcessorServiceRestStub):
+    class _DeleteProcessorVersion(
+        _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessorVersion,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteProcessorVersion")
+            return hash("DocumentProcessorServiceRestTransport.DeleteProcessorVersion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1454,42 +1458,29 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1beta3/{name=projects/*/locations/*/processors/*/processorVersions/*}",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessorVersion._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_processor_version(
                 request, metadata
             )
-            pb_request = document_processor_service.DeleteProcessorVersionRequest.pb(
-                request
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessorVersion._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseDeleteProcessorVersion._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DocumentProcessorServiceRestTransport._DeleteProcessorVersion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1503,19 +1494,35 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_delete_processor_version(resp)
             return resp
 
-    class _DeployProcessorVersion(DocumentProcessorServiceRestStub):
+    class _DeployProcessorVersion(
+        _BaseDocumentProcessorServiceRestTransport._BaseDeployProcessorVersion,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DeployProcessorVersion")
+            return hash("DocumentProcessorServiceRestTransport.DeployProcessorVersion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1546,49 +1553,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta3/{name=projects/*/locations/*/processors/*/processorVersions/*}:deploy",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseDeployProcessorVersion._get_http_options()
+            )
             request, metadata = self._interceptor.pre_deploy_processor_version(
                 request, metadata
             )
-            pb_request = document_processor_service.DeployProcessorVersionRequest.pb(
-                request
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseDeployProcessorVersion._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseDocumentProcessorServiceRestTransport._BaseDeployProcessorVersion._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseDeployProcessorVersion._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DocumentProcessorServiceRestTransport._DeployProcessorVersion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1602,19 +1594,35 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_deploy_processor_version(resp)
             return resp
 
-    class _DisableProcessor(DocumentProcessorServiceRestStub):
+    class _DisableProcessor(
+        _BaseDocumentProcessorServiceRestTransport._BaseDisableProcessor,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("DisableProcessor")
+            return hash("DocumentProcessorServiceRestTransport.DisableProcessor")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1645,47 +1653,36 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta3/{name=projects/*/locations/*/processors/*}:disable",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseDisableProcessor._get_http_options()
+            )
             request, metadata = self._interceptor.pre_disable_processor(
                 request, metadata
             )
-            pb_request = document_processor_service.DisableProcessorRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseDisableProcessor._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDocumentProcessorServiceRestTransport._BaseDisableProcessor._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseDisableProcessor._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                DocumentProcessorServiceRestTransport._DisableProcessor._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1699,19 +1696,35 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_disable_processor(resp)
             return resp
 
-    class _EnableProcessor(DocumentProcessorServiceRestStub):
+    class _EnableProcessor(
+        _BaseDocumentProcessorServiceRestTransport._BaseEnableProcessor,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("EnableProcessor")
+            return hash("DocumentProcessorServiceRestTransport.EnableProcessor")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1742,47 +1755,36 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta3/{name=projects/*/locations/*/processors/*}:enable",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseEnableProcessor._get_http_options()
+            )
             request, metadata = self._interceptor.pre_enable_processor(
                 request, metadata
             )
-            pb_request = document_processor_service.EnableProcessorRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseEnableProcessor._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDocumentProcessorServiceRestTransport._BaseEnableProcessor._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseEnableProcessor._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                DocumentProcessorServiceRestTransport._EnableProcessor._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1796,19 +1798,37 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_enable_processor(resp)
             return resp
 
-    class _EvaluateProcessorVersion(DocumentProcessorServiceRestStub):
+    class _EvaluateProcessorVersion(
+        _BaseDocumentProcessorServiceRestTransport._BaseEvaluateProcessorVersion,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("EvaluateProcessorVersion")
+            return hash(
+                "DocumentProcessorServiceRestTransport.EvaluateProcessorVersion"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1840,49 +1860,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta3/{processor_version=projects/*/locations/*/processors/*/processorVersions/*}:evaluateProcessorVersion",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseEvaluateProcessorVersion._get_http_options()
+            )
             request, metadata = self._interceptor.pre_evaluate_processor_version(
                 request, metadata
             )
-            pb_request = document_processor_service.EvaluateProcessorVersionRequest.pb(
-                request
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseEvaluateProcessorVersion._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseDocumentProcessorServiceRestTransport._BaseEvaluateProcessorVersion._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseEvaluateProcessorVersion._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DocumentProcessorServiceRestTransport._EvaluateProcessorVersion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1896,19 +1901,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_evaluate_processor_version(resp)
             return resp
 
-    class _FetchProcessorTypes(DocumentProcessorServiceRestStub):
+    class _FetchProcessorTypes(
+        _BaseDocumentProcessorServiceRestTransport._BaseFetchProcessorTypes,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("FetchProcessorTypes")
+            return hash("DocumentProcessorServiceRestTransport.FetchProcessorTypes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1940,42 +1960,29 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta3/{parent=projects/*/locations/*}:fetchProcessorTypes",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseFetchProcessorTypes._get_http_options()
+            )
             request, metadata = self._interceptor.pre_fetch_processor_types(
                 request, metadata
             )
-            pb_request = document_processor_service.FetchProcessorTypesRequest.pb(
-                request
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseFetchProcessorTypes._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseFetchProcessorTypes._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DocumentProcessorServiceRestTransport._FetchProcessorTypes._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1991,19 +1998,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_fetch_processor_types(resp)
             return resp
 
-    class _GetEvaluation(DocumentProcessorServiceRestStub):
+    class _GetEvaluation(
+        _BaseDocumentProcessorServiceRestTransport._BaseGetEvaluation,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetEvaluation")
+            return hash("DocumentProcessorServiceRestTransport.GetEvaluation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2031,38 +2053,29 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta3/{name=projects/*/locations/*/processors/*/processorVersions/*/evaluations/*}",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseGetEvaluation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_evaluation(request, metadata)
-            pb_request = document_processor_service.GetEvaluationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseGetEvaluation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseGetEvaluation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                DocumentProcessorServiceRestTransport._GetEvaluation._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2078,19 +2091,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_get_evaluation(resp)
             return resp
 
-    class _GetProcessor(DocumentProcessorServiceRestStub):
+    class _GetProcessor(
+        _BaseDocumentProcessorServiceRestTransport._BaseGetProcessor,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetProcessor")
+            return hash("DocumentProcessorServiceRestTransport.GetProcessor")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2122,38 +2150,29 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta3/{name=projects/*/locations/*/processors/*}",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseGetProcessor._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_processor(request, metadata)
-            pb_request = document_processor_service.GetProcessorRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessor._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessor._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                DocumentProcessorServiceRestTransport._GetProcessor._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2169,19 +2188,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_get_processor(resp)
             return resp
 
-    class _GetProcessorType(DocumentProcessorServiceRestStub):
+    class _GetProcessorType(
+        _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorType,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetProcessorType")
+            return hash("DocumentProcessorServiceRestTransport.GetProcessorType")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2213,40 +2247,31 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta3/{name=projects/*/locations/*/processorTypes/*}",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorType._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_processor_type(
                 request, metadata
             )
-            pb_request = document_processor_service.GetProcessorTypeRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorType._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorType._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                DocumentProcessorServiceRestTransport._GetProcessorType._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2262,19 +2287,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_get_processor_type(resp)
             return resp
 
-    class _GetProcessorVersion(DocumentProcessorServiceRestStub):
+    class _GetProcessorVersion(
+        _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorVersion,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetProcessorVersion")
+            return hash("DocumentProcessorServiceRestTransport.GetProcessorVersion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2310,42 +2350,29 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta3/{name=projects/*/locations/*/processors/*/processorVersions/*}",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorVersion._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_processor_version(
                 request, metadata
             )
-            pb_request = document_processor_service.GetProcessorVersionRequest.pb(
-                request
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorVersion._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseGetProcessorVersion._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DocumentProcessorServiceRestTransport._GetProcessorVersion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2361,19 +2388,35 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_get_processor_version(resp)
             return resp
 
-    class _ImportProcessorVersion(DocumentProcessorServiceRestStub):
+    class _ImportProcessorVersion(
+        _BaseDocumentProcessorServiceRestTransport._BaseImportProcessorVersion,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ImportProcessorVersion")
+            return hash("DocumentProcessorServiceRestTransport.ImportProcessorVersion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2418,49 +2461,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta3/{parent=projects/*/locations/*/processors/*}/processorVersions:importProcessorVersion",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseImportProcessorVersion._get_http_options()
+            )
             request, metadata = self._interceptor.pre_import_processor_version(
                 request, metadata
             )
-            pb_request = document_processor_service.ImportProcessorVersionRequest.pb(
-                request
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseImportProcessorVersion._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseDocumentProcessorServiceRestTransport._BaseImportProcessorVersion._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseImportProcessorVersion._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DocumentProcessorServiceRestTransport._ImportProcessorVersion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2474,19 +2502,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_import_processor_version(resp)
             return resp
 
-    class _ListEvaluations(DocumentProcessorServiceRestStub):
+    class _ListEvaluations(
+        _BaseDocumentProcessorServiceRestTransport._BaseListEvaluations,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListEvaluations")
+            return hash("DocumentProcessorServiceRestTransport.ListEvaluations")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2513,40 +2556,31 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                     The response from ``ListEvaluations``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta3/{parent=projects/*/locations/*/processors/*/processorVersions/*}/evaluations",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseListEvaluations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_evaluations(
                 request, metadata
             )
-            pb_request = document_processor_service.ListEvaluationsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseListEvaluations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseListEvaluations._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                DocumentProcessorServiceRestTransport._ListEvaluations._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2562,19 +2596,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_list_evaluations(resp)
             return resp
 
-    class _ListProcessors(DocumentProcessorServiceRestStub):
+    class _ListProcessors(
+        _BaseDocumentProcessorServiceRestTransport._BaseListProcessors,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListProcessors")
+            return hash("DocumentProcessorServiceRestTransport.ListProcessors")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2604,38 +2653,29 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta3/{parent=projects/*/locations/*}/processors",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseListProcessors._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_processors(request, metadata)
-            pb_request = document_processor_service.ListProcessorsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseListProcessors._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseListProcessors._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                DocumentProcessorServiceRestTransport._ListProcessors._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2651,19 +2691,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_list_processors(resp)
             return resp
 
-    class _ListProcessorTypes(DocumentProcessorServiceRestStub):
+    class _ListProcessorTypes(
+        _BaseDocumentProcessorServiceRestTransport._BaseListProcessorTypes,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListProcessorTypes")
+            return hash("DocumentProcessorServiceRestTransport.ListProcessorTypes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2695,42 +2750,31 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta3/{parent=projects/*/locations/*}/processorTypes",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseListProcessorTypes._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_processor_types(
                 request, metadata
             )
-            pb_request = document_processor_service.ListProcessorTypesRequest.pb(
-                request
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseListProcessorTypes._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseListProcessorTypes._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                DocumentProcessorServiceRestTransport._ListProcessorTypes._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2746,19 +2790,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_list_processor_types(resp)
             return resp
 
-    class _ListProcessorVersions(DocumentProcessorServiceRestStub):
+    class _ListProcessorVersions(
+        _BaseDocumentProcessorServiceRestTransport._BaseListProcessorVersions,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListProcessorVersions")
+            return hash("DocumentProcessorServiceRestTransport.ListProcessorVersions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2789,42 +2848,29 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta3/{parent=projects/*/locations/*/processors/*}/processorVersions",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseListProcessorVersions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_processor_versions(
                 request, metadata
             )
-            pb_request = document_processor_service.ListProcessorVersionsRequest.pb(
-                request
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseListProcessorVersions._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseListProcessorVersions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DocumentProcessorServiceRestTransport._ListProcessorVersions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2840,19 +2886,35 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_list_processor_versions(resp)
             return resp
 
-    class _ProcessDocument(DocumentProcessorServiceRestStub):
+    class _ProcessDocument(
+        _BaseDocumentProcessorServiceRestTransport._BaseProcessDocument,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ProcessDocument")
+            return hash("DocumentProcessorServiceRestTransport.ProcessDocument")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2883,52 +2945,36 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta3/{name=projects/*/locations/*/processors/*}:process",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1beta3/{name=projects/*/locations/*/processors/*/processorVersions/*}:process",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseProcessDocument._get_http_options()
+            )
             request, metadata = self._interceptor.pre_process_document(
                 request, metadata
             )
-            pb_request = document_processor_service.ProcessRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseProcessDocument._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDocumentProcessorServiceRestTransport._BaseProcessDocument._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseProcessDocument._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                DocumentProcessorServiceRestTransport._ProcessDocument._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2944,19 +2990,35 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_process_document(resp)
             return resp
 
-    class _ReviewDocument(DocumentProcessorServiceRestStub):
+    class _ReviewDocument(
+        _BaseDocumentProcessorServiceRestTransport._BaseReviewDocument,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ReviewDocument")
+            return hash("DocumentProcessorServiceRestTransport.ReviewDocument")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2987,45 +3049,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta3/{human_review_config=projects/*/locations/*/processors/*/humanReviewConfig}:reviewDocument",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_review_document(request, metadata)
-            pb_request = document_processor_service.ReviewDocumentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseReviewDocument._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_review_document(request, metadata)
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseReviewDocument._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDocumentProcessorServiceRestTransport._BaseReviewDocument._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseReviewDocument._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                DocumentProcessorServiceRestTransport._ReviewDocument._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3039,19 +3090,37 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_review_document(resp)
             return resp
 
-    class _SetDefaultProcessorVersion(DocumentProcessorServiceRestStub):
+    class _SetDefaultProcessorVersion(
+        _BaseDocumentProcessorServiceRestTransport._BaseSetDefaultProcessorVersion,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("SetDefaultProcessorVersion")
+            return hash(
+                "DocumentProcessorServiceRestTransport.SetDefaultProcessorVersion"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3083,49 +3152,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta3/{processor=projects/*/locations/*/processors/*}:setDefaultProcessorVersion",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseSetDefaultProcessorVersion._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_default_processor_version(
                 request, metadata
             )
-            pb_request = (
-                document_processor_service.SetDefaultProcessorVersionRequest.pb(request)
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseSetDefaultProcessorVersion._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseDocumentProcessorServiceRestTransport._BaseSetDefaultProcessorVersion._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseSetDefaultProcessorVersion._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DocumentProcessorServiceRestTransport._SetDefaultProcessorVersion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3139,19 +3193,35 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_set_default_processor_version(resp)
             return resp
 
-    class _TrainProcessorVersion(DocumentProcessorServiceRestStub):
+    class _TrainProcessorVersion(
+        _BaseDocumentProcessorServiceRestTransport._BaseTrainProcessorVersion,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("TrainProcessorVersion")
+            return hash("DocumentProcessorServiceRestTransport.TrainProcessorVersion")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3182,49 +3252,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta3/{parent=projects/*/locations/*/processors/*}/processorVersions:train",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseTrainProcessorVersion._get_http_options()
+            )
             request, metadata = self._interceptor.pre_train_processor_version(
                 request, metadata
             )
-            pb_request = document_processor_service.TrainProcessorVersionRequest.pb(
-                request
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseTrainProcessorVersion._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseDocumentProcessorServiceRestTransport._BaseTrainProcessorVersion._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseTrainProcessorVersion._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DocumentProcessorServiceRestTransport._TrainProcessorVersion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3238,19 +3293,37 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             resp = self._interceptor.post_train_processor_version(resp)
             return resp
 
-    class _UndeployProcessorVersion(DocumentProcessorServiceRestStub):
+    class _UndeployProcessorVersion(
+        _BaseDocumentProcessorServiceRestTransport._BaseUndeployProcessorVersion,
+        DocumentProcessorServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UndeployProcessorVersion")
+            return hash(
+                "DocumentProcessorServiceRestTransport.UndeployProcessorVersion"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3282,49 +3355,34 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta3/{name=projects/*/locations/*/processors/*/processorVersions/*}:undeploy",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseUndeployProcessorVersion._get_http_options()
+            )
             request, metadata = self._interceptor.pre_undeploy_processor_version(
                 request, metadata
             )
-            pb_request = document_processor_service.UndeployProcessorVersionRequest.pb(
-                request
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseUndeployProcessorVersion._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseDocumentProcessorServiceRestTransport._BaseUndeployProcessorVersion._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseUndeployProcessorVersion._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DocumentProcessorServiceRestTransport._UndeployProcessorVersion._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3587,7 +3645,35 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(DocumentProcessorServiceRestStub):
+    class _GetLocation(
+        _BaseDocumentProcessorServiceRestTransport._BaseGetLocation,
+        DocumentProcessorServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("DocumentProcessorServiceRestTransport.GetLocation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -3611,36 +3697,27 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta3/{name=projects/*/locations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/uiv1beta3/{name=projects/*/locations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseGetLocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseGetLocation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseGetLocation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = DocumentProcessorServiceRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3648,8 +3725,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -3657,7 +3735,35 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(DocumentProcessorServiceRestStub):
+    class _ListLocations(
+        _BaseDocumentProcessorServiceRestTransport._BaseListLocations,
+        DocumentProcessorServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("DocumentProcessorServiceRestTransport.ListLocations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -3681,36 +3787,29 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta3/{name=projects/*}/locations",
-                },
-                {
-                    "method": "get",
-                    "uri": "/uiv1beta3/{name=projects/*}/locations",
-                },
-            ]
-
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseListLocations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseListLocations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseListLocations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = (
+                DocumentProcessorServiceRestTransport._ListLocations._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3718,8 +3817,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 
@@ -3727,7 +3827,35 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(DocumentProcessorServiceRestStub):
+    class _CancelOperation(
+        _BaseDocumentProcessorServiceRestTransport._BaseCancelOperation,
+        DocumentProcessorServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("DocumentProcessorServiceRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -3748,38 +3876,31 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1beta3/{name=projects/*/locations/*/operations/*}:cancel",
-                },
-                {
-                    "method": "post",
-                    "uri": "/uiv1beta3/{name=projects/*/locations/*/operations/*}:cancel",
-                },
-            ]
-
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseCancelOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = (
+                DocumentProcessorServiceRestTransport._CancelOperation._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3793,7 +3914,35 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(DocumentProcessorServiceRestStub):
+    class _GetOperation(
+        _BaseDocumentProcessorServiceRestTransport._BaseGetOperation,
+        DocumentProcessorServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("DocumentProcessorServiceRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -3817,36 +3966,29 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta3/{name=projects/*/locations/*/operations/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/uiv1beta3/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseGetOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseGetOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = (
+                DocumentProcessorServiceRestTransport._GetOperation._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3854,8 +3996,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -3863,7 +4006,35 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(DocumentProcessorServiceRestStub):
+    class _ListOperations(
+        _BaseDocumentProcessorServiceRestTransport._BaseListOperations,
+        DocumentProcessorServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("DocumentProcessorServiceRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -3887,36 +4058,29 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta3/{name=projects/*/locations/*/operations}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/uiv1beta3/{name=projects/*/locations/*/operations}",
-                },
-            ]
-
+            http_options = (
+                _BaseDocumentProcessorServiceRestTransport._BaseListOperations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDocumentProcessorServiceRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseDocumentProcessorServiceRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = (
+                DocumentProcessorServiceRestTransport._ListOperations._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3924,8 +4088,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

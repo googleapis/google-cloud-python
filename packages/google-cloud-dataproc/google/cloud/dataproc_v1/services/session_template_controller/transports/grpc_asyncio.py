@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -231,6 +232,9 @@ class SessionTemplateControllerGrpcAsyncIOTransport(SessionTemplateControllerTra
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -391,35 +395,79 @@ class SessionTemplateControllerGrpcAsyncIOTransport(SessionTemplateControllerTra
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_session_template: gapic_v1.method_async.wrap_method(
+            self.create_session_template: self._wrap_method(
                 self.create_session_template,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_session_template: gapic_v1.method_async.wrap_method(
+            self.update_session_template: self._wrap_method(
                 self.update_session_template,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_session_template: gapic_v1.method_async.wrap_method(
+            self.get_session_template: self._wrap_method(
                 self.get_session_template,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_session_templates: gapic_v1.method_async.wrap_method(
+            self.list_session_templates: self._wrap_method(
                 self.list_session_templates,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_session_template: gapic_v1.method_async.wrap_method(
+            self.delete_session_template: self._wrap_method(
                 self.delete_session_template,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_iam_policy: self._wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: self._wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: self._wrap_method(
+                self.test_iam_permissions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(

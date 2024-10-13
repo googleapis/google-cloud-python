@@ -16,34 +16,18 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.protobuf import json_format
-import grpc  # type: ignore
-from requests import __version__ as requests_version
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import json_format
+from requests import __version__ as requests_version
 
 from google.cloud.oracledatabase_v1.types import (
     autonomous_database,
@@ -53,7 +37,13 @@ from google.cloud.oracledatabase_v1.types import (
 )
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import OracleDatabaseTransport
+from .rest_base import _BaseOracleDatabaseRestTransport
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -935,8 +925,8 @@ class OracleDatabaseRestStub:
     _interceptor: OracleDatabaseRestInterceptor
 
 
-class OracleDatabaseRestTransport(OracleDatabaseTransport):
-    """REST backend transport for OracleDatabase.
+class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
+    """REST backend synchronous transport for OracleDatabase.
 
     Service describing handlers for resources
 
@@ -945,7 +935,6 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -999,21 +988,12 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -1078,21 +1058,35 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateAutonomousDatabase(OracleDatabaseRestStub):
+    class _CreateAutonomousDatabase(
+        _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase,
+        OracleDatabaseRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateAutonomousDatabase")
+            return hash("OracleDatabaseRestTransport.CreateAutonomousDatabase")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "autonomousDatabaseId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1122,47 +1116,36 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/autonomousDatabases",
-                    "body": "autonomous_database",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_autonomous_database(
                 request, metadata
             )
-            pb_request = oracledatabase.CreateAutonomousDatabaseRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                OracleDatabaseRestTransport._CreateAutonomousDatabase._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1176,21 +1159,35 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_create_autonomous_database(resp)
             return resp
 
-    class _CreateCloudExadataInfrastructure(OracleDatabaseRestStub):
+    class _CreateCloudExadataInfrastructure(
+        _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure,
+        OracleDatabaseRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateCloudExadataInfrastructure")
+            return hash("OracleDatabaseRestTransport.CreateCloudExadataInfrastructure")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "cloudExadataInfrastructureId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1220,52 +1217,37 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/cloudExadataInfrastructures",
-                    "body": "cloud_exadata_infrastructure",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_create_cloud_exadata_infrastructure(
                 request, metadata
             )
-            pb_request = oracledatabase.CreateCloudExadataInfrastructureRequest.pb(
-                request
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = OracleDatabaseRestTransport._CreateCloudExadataInfrastructure._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1279,21 +1261,35 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_create_cloud_exadata_infrastructure(resp)
             return resp
 
-    class _CreateCloudVmCluster(OracleDatabaseRestStub):
+    class _CreateCloudVmCluster(
+        _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster,
+        OracleDatabaseRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateCloudVmCluster")
+            return hash("OracleDatabaseRestTransport.CreateCloudVmCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "cloudVmClusterId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1322,47 +1318,34 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/cloudVmClusters",
-                    "body": "cloud_vm_cluster",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_cloud_vm_cluster(
                 request, metadata
             )
-            pb_request = oracledatabase.CreateCloudVmClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = OracleDatabaseRestTransport._CreateCloudVmCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1376,19 +1359,34 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_create_cloud_vm_cluster(resp)
             return resp
 
-    class _DeleteAutonomousDatabase(OracleDatabaseRestStub):
+    class _DeleteAutonomousDatabase(
+        _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase,
+        OracleDatabaseRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteAutonomousDatabase")
+            return hash("OracleDatabaseRestTransport.DeleteAutonomousDatabase")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1418,40 +1416,31 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/autonomousDatabases/*}",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_autonomous_database(
                 request, metadata
             )
-            pb_request = oracledatabase.DeleteAutonomousDatabaseRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                OracleDatabaseRestTransport._DeleteAutonomousDatabase._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1465,19 +1454,34 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_delete_autonomous_database(resp)
             return resp
 
-    class _DeleteCloudExadataInfrastructure(OracleDatabaseRestStub):
+    class _DeleteCloudExadataInfrastructure(
+        _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure,
+        OracleDatabaseRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteCloudExadataInfrastructure")
+            return hash("OracleDatabaseRestTransport.DeleteCloudExadataInfrastructure")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1507,45 +1511,32 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/cloudExadataInfrastructures/*}",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_delete_cloud_exadata_infrastructure(
                 request, metadata
             )
-            pb_request = oracledatabase.DeleteCloudExadataInfrastructureRequest.pb(
-                request
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OracleDatabaseRestTransport._DeleteCloudExadataInfrastructure._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1559,19 +1550,34 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_delete_cloud_exadata_infrastructure(resp)
             return resp
 
-    class _DeleteCloudVmCluster(OracleDatabaseRestStub):
+    class _DeleteCloudVmCluster(
+        _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster,
+        OracleDatabaseRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteCloudVmCluster")
+            return hash("OracleDatabaseRestTransport.DeleteCloudVmCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1600,40 +1606,29 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/cloudVmClusters/*}",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_cloud_vm_cluster(
                 request, metadata
             )
-            pb_request = oracledatabase.DeleteCloudVmClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OracleDatabaseRestTransport._DeleteCloudVmCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1647,19 +1642,35 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_delete_cloud_vm_cluster(resp)
             return resp
 
-    class _GenerateAutonomousDatabaseWallet(OracleDatabaseRestStub):
+    class _GenerateAutonomousDatabaseWallet(
+        _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet,
+        OracleDatabaseRestStub,
+    ):
         def __hash__(self):
-            return hash("GenerateAutonomousDatabaseWallet")
+            return hash("OracleDatabaseRestTransport.GenerateAutonomousDatabaseWallet")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1686,52 +1697,37 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
                         The response for ``AutonomousDatabase.GenerateWallet``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/autonomousDatabases/*}:generateWallet",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_generate_autonomous_database_wallet(
                 request, metadata
             )
-            pb_request = oracledatabase.GenerateAutonomousDatabaseWalletRequest.pb(
-                request
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = OracleDatabaseRestTransport._GenerateAutonomousDatabaseWallet._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1747,19 +1743,34 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_generate_autonomous_database_wallet(resp)
             return resp
 
-    class _GetAutonomousDatabase(OracleDatabaseRestStub):
+    class _GetAutonomousDatabase(
+        _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase,
+        OracleDatabaseRestStub,
+    ):
         def __hash__(self):
-            return hash("GetAutonomousDatabase")
+            return hash("OracleDatabaseRestTransport.GetAutonomousDatabase")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1788,40 +1799,29 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/autonomousDatabases/*}",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_autonomous_database(
                 request, metadata
             )
-            pb_request = oracledatabase.GetAutonomousDatabaseRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OracleDatabaseRestTransport._GetAutonomousDatabase._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1837,19 +1837,34 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_get_autonomous_database(resp)
             return resp
 
-    class _GetCloudExadataInfrastructure(OracleDatabaseRestStub):
+    class _GetCloudExadataInfrastructure(
+        _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure,
+        OracleDatabaseRestStub,
+    ):
         def __hash__(self):
-            return hash("GetCloudExadataInfrastructure")
+            return hash("OracleDatabaseRestTransport.GetCloudExadataInfrastructure")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1879,40 +1894,29 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/cloudExadataInfrastructures/*}",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_cloud_exadata_infrastructure(
                 request, metadata
             )
-            pb_request = oracledatabase.GetCloudExadataInfrastructureRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OracleDatabaseRestTransport._GetCloudExadataInfrastructure._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1928,19 +1932,33 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_get_cloud_exadata_infrastructure(resp)
             return resp
 
-    class _GetCloudVmCluster(OracleDatabaseRestStub):
+    class _GetCloudVmCluster(
+        _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster, OracleDatabaseRestStub
+    ):
         def __hash__(self):
-            return hash("GetCloudVmCluster")
+            return hash("OracleDatabaseRestTransport.GetCloudVmCluster")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1969,40 +1987,29 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/cloudVmClusters/*}",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_cloud_vm_cluster(
                 request, metadata
             )
-            pb_request = oracledatabase.GetCloudVmClusterRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OracleDatabaseRestTransport._GetCloudVmCluster._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2018,19 +2025,34 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_get_cloud_vm_cluster(resp)
             return resp
 
-    class _ListAutonomousDatabaseBackups(OracleDatabaseRestStub):
+    class _ListAutonomousDatabaseBackups(
+        _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups,
+        OracleDatabaseRestStub,
+    ):
         def __hash__(self):
-            return hash("ListAutonomousDatabaseBackups")
+            return hash("OracleDatabaseRestTransport.ListAutonomousDatabaseBackups")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2057,40 +2079,29 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
                         The response for ``AutonomousDatabaseBackup.List``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/autonomousDatabaseBackups",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_autonomous_database_backups(
                 request, metadata
             )
-            pb_request = oracledatabase.ListAutonomousDatabaseBackupsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OracleDatabaseRestTransport._ListAutonomousDatabaseBackups._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2106,19 +2117,36 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_list_autonomous_database_backups(resp)
             return resp
 
-    class _ListAutonomousDatabaseCharacterSets(OracleDatabaseRestStub):
+    class _ListAutonomousDatabaseCharacterSets(
+        _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets,
+        OracleDatabaseRestStub,
+    ):
         def __hash__(self):
-            return hash("ListAutonomousDatabaseCharacterSets")
+            return hash(
+                "OracleDatabaseRestTransport.ListAutonomousDatabaseCharacterSets"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2147,45 +2175,32 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/autonomousDatabaseCharacterSets",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_list_autonomous_database_character_sets(
                 request, metadata
             )
-            pb_request = oracledatabase.ListAutonomousDatabaseCharacterSetsRequest.pb(
-                request
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OracleDatabaseRestTransport._ListAutonomousDatabaseCharacterSets._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2203,19 +2218,34 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_list_autonomous_database_character_sets(resp)
             return resp
 
-    class _ListAutonomousDatabases(OracleDatabaseRestStub):
+    class _ListAutonomousDatabases(
+        _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases,
+        OracleDatabaseRestStub,
+    ):
         def __hash__(self):
-            return hash("ListAutonomousDatabases")
+            return hash("OracleDatabaseRestTransport.ListAutonomousDatabases")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2241,40 +2271,31 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
                     The response for ``AutonomousDatabase.List``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/autonomousDatabases",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_autonomous_databases(
                 request, metadata
             )
-            pb_request = oracledatabase.ListAutonomousDatabasesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                OracleDatabaseRestTransport._ListAutonomousDatabases._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2290,19 +2311,34 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_list_autonomous_databases(resp)
             return resp
 
-    class _ListAutonomousDbVersions(OracleDatabaseRestStub):
+    class _ListAutonomousDbVersions(
+        _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions,
+        OracleDatabaseRestStub,
+    ):
         def __hash__(self):
-            return hash("ListAutonomousDbVersions")
+            return hash("OracleDatabaseRestTransport.ListAutonomousDbVersions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2329,40 +2365,31 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
                         The response for ``AutonomousDbVersion.List``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/autonomousDbVersions",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_autonomous_db_versions(
                 request, metadata
             )
-            pb_request = oracledatabase.ListAutonomousDbVersionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                OracleDatabaseRestTransport._ListAutonomousDbVersions._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2378,19 +2405,34 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_list_autonomous_db_versions(resp)
             return resp
 
-    class _ListCloudExadataInfrastructures(OracleDatabaseRestStub):
+    class _ListCloudExadataInfrastructures(
+        _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures,
+        OracleDatabaseRestStub,
+    ):
         def __hash__(self):
-            return hash("ListCloudExadataInfrastructures")
+            return hash("OracleDatabaseRestTransport.ListCloudExadataInfrastructures")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2417,45 +2459,32 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
                         The response for ``CloudExadataInfrastructures.list``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/cloudExadataInfrastructures",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_list_cloud_exadata_infrastructures(
                 request, metadata
             )
-            pb_request = oracledatabase.ListCloudExadataInfrastructuresRequest.pb(
-                request
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OracleDatabaseRestTransport._ListCloudExadataInfrastructures._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2471,19 +2500,34 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_list_cloud_exadata_infrastructures(resp)
             return resp
 
-    class _ListCloudVmClusters(OracleDatabaseRestStub):
+    class _ListCloudVmClusters(
+        _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters,
+        OracleDatabaseRestStub,
+    ):
         def __hash__(self):
-            return hash("ListCloudVmClusters")
+            return hash("OracleDatabaseRestTransport.ListCloudVmClusters")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2509,40 +2553,29 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
                     The response for ``CloudVmCluster.List``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/cloudVmClusters",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_cloud_vm_clusters(
                 request, metadata
             )
-            pb_request = oracledatabase.ListCloudVmClustersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OracleDatabaseRestTransport._ListCloudVmClusters._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2558,19 +2591,33 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_list_cloud_vm_clusters(resp)
             return resp
 
-    class _ListDbNodes(OracleDatabaseRestStub):
+    class _ListDbNodes(
+        _BaseOracleDatabaseRestTransport._BaseListDbNodes, OracleDatabaseRestStub
+    ):
         def __hash__(self):
-            return hash("ListDbNodes")
+            return hash("OracleDatabaseRestTransport.ListDbNodes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2596,38 +2643,27 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
                     The response for ``DbNode.List``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/cloudVmClusters/*}/dbNodes",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseListDbNodes._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_db_nodes(request, metadata)
-            pb_request = oracledatabase.ListDbNodesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbNodes._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListDbNodes._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OracleDatabaseRestTransport._ListDbNodes._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2643,19 +2679,33 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_list_db_nodes(resp)
             return resp
 
-    class _ListDbServers(OracleDatabaseRestStub):
+    class _ListDbServers(
+        _BaseOracleDatabaseRestTransport._BaseListDbServers, OracleDatabaseRestStub
+    ):
         def __hash__(self):
-            return hash("ListDbServers")
+            return hash("OracleDatabaseRestTransport.ListDbServers")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2681,38 +2731,27 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
                     The response for ``DbServer.List``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/cloudExadataInfrastructures/*}/dbServers",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseListDbServers._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_db_servers(request, metadata)
-            pb_request = oracledatabase.ListDbServersRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbServers._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListDbServers._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OracleDatabaseRestTransport._ListDbServers._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2728,19 +2767,33 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_list_db_servers(resp)
             return resp
 
-    class _ListDbSystemShapes(OracleDatabaseRestStub):
+    class _ListDbSystemShapes(
+        _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes, OracleDatabaseRestStub
+    ):
         def __hash__(self):
-            return hash("ListDbSystemShapes")
+            return hash("OracleDatabaseRestTransport.ListDbSystemShapes")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2766,40 +2819,29 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
                     The response for ``DbSystemShape.List``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/dbSystemShapes",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_db_system_shapes(
                 request, metadata
             )
-            pb_request = oracledatabase.ListDbSystemShapesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OracleDatabaseRestTransport._ListDbSystemShapes._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2815,19 +2857,33 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_list_db_system_shapes(resp)
             return resp
 
-    class _ListEntitlements(OracleDatabaseRestStub):
+    class _ListEntitlements(
+        _BaseOracleDatabaseRestTransport._BaseListEntitlements, OracleDatabaseRestStub
+    ):
         def __hash__(self):
-            return hash("ListEntitlements")
+            return hash("OracleDatabaseRestTransport.ListEntitlements")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2853,40 +2909,29 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
                     The response for ``Entitlement.List``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/entitlements",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseListEntitlements._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_entitlements(
                 request, metadata
             )
-            pb_request = oracledatabase.ListEntitlementsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListEntitlements._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListEntitlements._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OracleDatabaseRestTransport._ListEntitlements._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2902,19 +2947,33 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_list_entitlements(resp)
             return resp
 
-    class _ListGiVersions(OracleDatabaseRestStub):
+    class _ListGiVersions(
+        _BaseOracleDatabaseRestTransport._BaseListGiVersions, OracleDatabaseRestStub
+    ):
         def __hash__(self):
-            return hash("ListGiVersions")
+            return hash("OracleDatabaseRestTransport.ListGiVersions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -2940,40 +2999,29 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
                     The response for ``GiVersion.List``.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*}/giVersions",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseListGiVersions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_gi_versions(
                 request, metadata
             )
-            pb_request = oracledatabase.ListGiVersionsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListGiVersions._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListGiVersions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = OracleDatabaseRestTransport._ListGiVersions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2989,19 +3037,35 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             resp = self._interceptor.post_list_gi_versions(resp)
             return resp
 
-    class _RestoreAutonomousDatabase(OracleDatabaseRestStub):
+    class _RestoreAutonomousDatabase(
+        _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase,
+        OracleDatabaseRestStub,
+    ):
         def __hash__(self):
-            return hash("RestoreAutonomousDatabase")
+            return hash("OracleDatabaseRestTransport.RestoreAutonomousDatabase")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3031,47 +3095,36 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/autonomousDatabases/*}:restore",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_http_options()
+            )
             request, metadata = self._interceptor.pre_restore_autonomous_database(
                 request, metadata
             )
-            pb_request = oracledatabase.RestoreAutonomousDatabaseRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                OracleDatabaseRestTransport._RestoreAutonomousDatabase._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3320,7 +3373,34 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(OracleDatabaseRestStub):
+    class _GetLocation(
+        _BaseOracleDatabaseRestTransport._BaseGetLocation, OracleDatabaseRestStub
+    ):
+        def __hash__(self):
+            return hash("OracleDatabaseRestTransport.GetLocation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.GetLocationRequest,
@@ -3344,32 +3424,27 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseGetLocation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetLocation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseOracleDatabaseRestTransport._BaseGetLocation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = OracleDatabaseRestTransport._GetLocation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3377,8 +3452,9 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.Location()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
             return resp
 
@@ -3386,7 +3462,34 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(OracleDatabaseRestStub):
+    class _ListLocations(
+        _BaseOracleDatabaseRestTransport._BaseListLocations, OracleDatabaseRestStub
+    ):
+        def __hash__(self):
+            return hash("OracleDatabaseRestTransport.ListLocations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: locations_pb2.ListLocationsRequest,
@@ -3410,32 +3513,27 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*}/locations",
-                },
-            ]
-
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseListLocations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListLocations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseOracleDatabaseRestTransport._BaseListLocations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = OracleDatabaseRestTransport._ListLocations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3443,8 +3541,9 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = locations_pb2.ListLocationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
             return resp
 
@@ -3452,7 +3551,35 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(OracleDatabaseRestStub):
+    class _CancelOperation(
+        _BaseOracleDatabaseRestTransport._BaseCancelOperation, OracleDatabaseRestStub
+    ):
+        def __hash__(self):
+            return hash("OracleDatabaseRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -3473,37 +3600,34 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}:cancel",
-                    "body": "*",
-                },
-            ]
-
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
 
-            body = json.dumps(transcoded_request["body"])
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body = _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
-                data=body,
+            response = OracleDatabaseRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3517,7 +3641,34 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(OracleDatabaseRestStub):
+    class _DeleteOperation(
+        _BaseOracleDatabaseRestTransport._BaseDeleteOperation, OracleDatabaseRestStub
+    ):
+        def __hash__(self):
+            return hash("OracleDatabaseRestTransport.DeleteOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.DeleteOperationRequest,
@@ -3538,34 +3689,29 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseDeleteOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = OracleDatabaseRestTransport._DeleteOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3579,7 +3725,34 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(OracleDatabaseRestStub):
+    class _GetOperation(
+        _BaseOracleDatabaseRestTransport._BaseGetOperation, OracleDatabaseRestStub
+    ):
+        def __hash__(self):
+            return hash("OracleDatabaseRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -3603,32 +3776,27 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseGetOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseOracleDatabaseRestTransport._BaseGetOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = OracleDatabaseRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3636,8 +3804,9 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -3645,7 +3814,34 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(OracleDatabaseRestStub):
+    class _ListOperations(
+        _BaseOracleDatabaseRestTransport._BaseListOperations, OracleDatabaseRestStub
+    ):
+        def __hash__(self):
+            return hash("OracleDatabaseRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -3669,32 +3865,27 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*}/operations",
-                },
-            ]
-
+            http_options = (
+                _BaseOracleDatabaseRestTransport._BaseListOperations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseOracleDatabaseRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = OracleDatabaseRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3702,8 +3893,9 @@ class OracleDatabaseRestTransport(OracleDatabaseTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 
