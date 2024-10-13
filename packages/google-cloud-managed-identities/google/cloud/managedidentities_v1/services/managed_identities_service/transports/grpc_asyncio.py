@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -262,6 +263,9 @@ class ManagedIdentitiesServiceGrpcAsyncIOTransport(ManagedIdentitiesServiceTrans
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -584,60 +588,69 @@ class ManagedIdentitiesServiceGrpcAsyncIOTransport(ManagedIdentitiesServiceTrans
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.create_microsoft_ad_domain: gapic_v1.method_async.wrap_method(
+            self.create_microsoft_ad_domain: self._wrap_method(
                 self.create_microsoft_ad_domain,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.reset_admin_password: gapic_v1.method_async.wrap_method(
+            self.reset_admin_password: self._wrap_method(
                 self.reset_admin_password,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_domains: gapic_v1.method_async.wrap_method(
+            self.list_domains: self._wrap_method(
                 self.list_domains,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_domain: gapic_v1.method_async.wrap_method(
+            self.get_domain: self._wrap_method(
                 self.get_domain,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_domain: gapic_v1.method_async.wrap_method(
+            self.update_domain: self._wrap_method(
                 self.update_domain,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_domain: gapic_v1.method_async.wrap_method(
+            self.delete_domain: self._wrap_method(
                 self.delete_domain,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.attach_trust: gapic_v1.method_async.wrap_method(
+            self.attach_trust: self._wrap_method(
                 self.attach_trust,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.reconfigure_trust: gapic_v1.method_async.wrap_method(
+            self.reconfigure_trust: self._wrap_method(
                 self.reconfigure_trust,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.detach_trust: gapic_v1.method_async.wrap_method(
+            self.detach_trust: self._wrap_method(
                 self.detach_trust,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.validate_trust: gapic_v1.method_async.wrap_method(
+            self.validate_trust: self._wrap_method(
                 self.validate_trust,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("ManagedIdentitiesServiceGrpcAsyncIOTransport",)
