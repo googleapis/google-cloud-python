@@ -860,6 +860,7 @@ class AutokeyAsyncClient:
                 **JSON Example**
 
                 ::
+
                     {
                       "bindings": [
                         {

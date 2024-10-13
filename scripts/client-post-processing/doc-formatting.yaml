@@ -15,6 +15,8 @@ description: Fix formatting issues in docs
 url: https://github.com/googleapis/gapic-generator-python/issues/1829
 replacements:
   - paths: [
+      packages/google-cloud-kms/google/cloud/kms_v1/services/autokey/async_client.py,
+      packages/google-cloud-kms/google/cloud/kms_v1/services/autokey_admin/async_client.py,
       packages/google-cloud-kms/google/cloud/kms_v1/services/ekm_service/async_client.py,
       packages/google-cloud-kms/google/cloud/kms_v1/services/key_management_service/async_client.py,
     ]
@@ -22,7 +24,7 @@ replacements:
       \                ::
       \                    {
     after: "                ::\n\n                    {\n"
-    count: 2
+    count: 4
   - paths: [
       packages/google-cloud-compute/google/cloud/compute_v1/types/compute.py,
     ]
