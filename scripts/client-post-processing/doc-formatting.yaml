@@ -379,3 +379,36 @@ replacements:
       \             projects\/\{project\}\/global\/forwardingRules\/\{id\}
     after: "            projects/{project}/global/forwardingRules/{id}\n"
     count: 1
+  - paths: [
+      packages/google-cloud-oracledatabase/google/cloud/oracledatabase_v1/types/exadata_infra.py,
+    ]
+    before: |
+      Optional. The window of hours during the day
+      \            when maintenance should be performed. The window
+      \            is a 4 hour slot. Valid values are:\n
+      \              0 - represents time slot 0:00 - 3:59 UTC
+      \              4 - represents time slot 4:00 - 7:59 UTC
+      \              8 - represents time slot 8:00 - 11:59 UTC
+      \              12 - represents time slot 12:00 - 15:59 UTC
+      \            16 - represents time slot 16:00 - 19:59 UTC   20
+      \            - represents time slot 20:00 - 23:59 UTC
+    after: |
+      Optional. The window of hours during the day
+                  when maintenance should be performed. The window
+                  is a 4 hour slot. Valid values are:\n
+                  0 - represents time slot 0:00 - 3:59 UTC
+                  4 - represents time slot 4:00 - 7:59 UTC
+                  8 - represents time slot 8:00 - 11:59 UTC
+                  12 - represents time slot 12:00 - 15:59 UTC
+                  16 - represents time slot 16:00 - 19:59 UTC
+                  20 - represents time slot 20:00 - 23:59 UTC
+    count: 1
+  - paths: [
+      packages/google-cloud-oracledatabase/google/cloud/oracledatabase_v1/types/exadata_infra.py,
+    ]
+    before: |
+      Optional. Cloud CloudExadataInfrastructure
+      \            node patching method, either "ROLLING"
+      \             or "NONROLLING". Default value is ROLLING.
+    after: "Optional. Cloud CloudExadataInfrastructure\n            node patching method, either \"ROLLING\"\n            or \"NONROLLING\". Default value is ROLLING.\n"
+    count: 1
