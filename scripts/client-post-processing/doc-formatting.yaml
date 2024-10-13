@@ -305,7 +305,6 @@ replacements:
                               -extfile <(printf
                               "\\nsubjectAltName='DNS:www.example.com'")\n
     count: 1
-
   - paths: [
       packages/google-cloud-dms/google/cloud/clouddms_v1/types/conversionworkspace_resources.py,
     ]
@@ -318,4 +317,10 @@ replacements:
 
                   - used only for timestamp based datatypes
                   - if not specified and relevant uses the source
+    count: 1
+  - paths: [
+      packages/google-cloud-edgecontainer/google/cloud/edgecontainer_v1/types/resources.py,
+    ]
+    before: projects\/\\ \*\/locations\/\*\/operations\/\*.
+    after: "`projects/*/locations/*/operations/*.`"
     count: 1
