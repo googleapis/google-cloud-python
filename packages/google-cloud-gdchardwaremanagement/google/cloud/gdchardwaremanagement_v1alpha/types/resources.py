@@ -334,13 +334,14 @@ class Site(proto.Message):
         notes (str):
             Optional. Any additional notes for this Site.
             Please include information about:
+
             - security or access restrictions
             - any regulations affecting the technicians
-            visiting the site
+              visiting the site
             - any special process or approval required to
-            move the equipment
+              move the equipment
             - whether a representative will be available
-            during site visits
+              during site visits
 
         customer_site_id (str):
             Optional. Customer defined identifier for

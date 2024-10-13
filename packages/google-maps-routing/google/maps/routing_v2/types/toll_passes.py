@@ -85,6 +85,7 @@ class TollPass(proto.Enum):
             E-card provided by multiple banks used to pay
             for tolls. All e-cards via banks are charged the
             same so only one enum value is needed. E.g.
+
             - Bank Mandiri
               https://www.bankmandiri.co.id/e-money
             - BCA https://www.bca.co.id/flazz

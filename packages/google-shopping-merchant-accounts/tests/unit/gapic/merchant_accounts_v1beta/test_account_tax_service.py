@@ -22,22 +22,12 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.oauth2 import service_account
-from google.protobuf import field_mask_pb2  # type: ignore
+from google.api_core import api_core_version
 from google.protobuf import json_format
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import interval_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -45,6 +35,25 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import client_options
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+import google.auth
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.oauth2 import service_account
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import interval_pb2  # type: ignore
 
 from google.shopping.merchant_accounts_v1beta.services.account_tax_service import (
     AccountTaxServiceAsyncClient,
@@ -59,8 +68,22 @@ from google.shopping.merchant_accounts_v1beta.types import account_tax
 from google.shopping.merchant_accounts_v1beta.types import tax_rule
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1200,25 +1223,6 @@ def test_get_account_tax(request_type, transport: str = "grpc"):
     assert response.account == 749
 
 
-def test_get_account_tax_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AccountTaxServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_account_tax), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_account_tax()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == account_tax.GetAccountTaxRequest()
-
-
 def test_get_account_tax_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1283,30 +1287,6 @@ def test_get_account_tax_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_account_tax_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AccountTaxServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_account_tax), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            account_tax.AccountTax(
-                name="name_value",
-                account=749,
-            )
-        )
-        response = await client.get_account_tax()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == account_tax.GetAccountTaxRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_account_tax_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1314,7 +1294,7 @@ async def test_get_account_tax_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AccountTaxServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1353,7 +1333,7 @@ async def test_get_account_tax_async(
     transport: str = "grpc_asyncio", request_type=account_tax.GetAccountTaxRequest
 ):
     client = AccountTaxServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1421,7 +1401,7 @@ def test_get_account_tax_field_headers():
 @pytest.mark.asyncio
 async def test_get_account_tax_field_headers_async():
     client = AccountTaxServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1491,7 +1471,7 @@ def test_get_account_tax_flattened_error():
 @pytest.mark.asyncio
 async def test_get_account_tax_flattened_async():
     client = AccountTaxServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1520,7 +1500,7 @@ async def test_get_account_tax_flattened_async():
 @pytest.mark.asyncio
 async def test_get_account_tax_flattened_error_async():
     client = AccountTaxServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1566,25 +1546,6 @@ def test_list_account_tax(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAccountTaxPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_account_tax_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AccountTaxServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_account_tax), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_account_tax()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == account_tax.ListAccountTaxRequest()
 
 
 def test_list_account_tax_non_empty_request_with_auto_populated_field():
@@ -1655,29 +1616,6 @@ def test_list_account_tax_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_account_tax_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AccountTaxServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_account_tax), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            account_tax.ListAccountTaxResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_account_tax()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == account_tax.ListAccountTaxRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_account_tax_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1685,7 +1623,7 @@ async def test_list_account_tax_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AccountTaxServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1724,7 +1662,7 @@ async def test_list_account_tax_async(
     transport: str = "grpc_asyncio", request_type=account_tax.ListAccountTaxRequest
 ):
     client = AccountTaxServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1790,7 +1728,7 @@ def test_list_account_tax_field_headers():
 @pytest.mark.asyncio
 async def test_list_account_tax_field_headers_async():
     client = AccountTaxServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1860,7 +1798,7 @@ def test_list_account_tax_flattened_error():
 @pytest.mark.asyncio
 async def test_list_account_tax_flattened_async():
     client = AccountTaxServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1889,7 +1827,7 @@ async def test_list_account_tax_flattened_async():
 @pytest.mark.asyncio
 async def test_list_account_tax_flattened_error_async():
     client = AccountTaxServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1999,7 +1937,7 @@ def test_list_account_tax_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_account_tax_async_pager():
     client = AccountTaxServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2049,7 +1987,7 @@ async def test_list_account_tax_async_pager():
 @pytest.mark.asyncio
 async def test_list_account_tax_async_pages():
     client = AccountTaxServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2135,27 +2073,6 @@ def test_update_account_tax(request_type, transport: str = "grpc"):
     assert response.account == 749
 
 
-def test_update_account_tax_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AccountTaxServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_account_tax), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_account_tax()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gsma_account_tax.UpdateAccountTaxRequest()
-
-
 def test_update_account_tax_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -2222,32 +2139,6 @@ def test_update_account_tax_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_account_tax_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AccountTaxServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_account_tax), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gsma_account_tax.AccountTax(
-                name="name_value",
-                account=749,
-            )
-        )
-        response = await client.update_account_tax()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == gsma_account_tax.UpdateAccountTaxRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_account_tax_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2255,7 +2146,7 @@ async def test_update_account_tax_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AccountTaxServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2295,7 +2186,7 @@ async def test_update_account_tax_async(
     request_type=gsma_account_tax.UpdateAccountTaxRequest,
 ):
     client = AccountTaxServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2367,7 +2258,7 @@ def test_update_account_tax_field_headers():
 @pytest.mark.asyncio
 async def test_update_account_tax_field_headers_async():
     client = AccountTaxServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2446,7 +2337,7 @@ def test_update_account_tax_flattened_error():
 @pytest.mark.asyncio
 async def test_update_account_tax_flattened_async():
     client = AccountTaxServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2481,7 +2372,7 @@ async def test_update_account_tax_flattened_async():
 @pytest.mark.asyncio
 async def test_update_account_tax_flattened_error_async():
     client = AccountTaxServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2492,48 +2383,6 @@ async def test_update_account_tax_flattened_error_async():
             account_tax=gsma_account_tax.AccountTax(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        account_tax.GetAccountTaxRequest,
-        dict,
-    ],
-)
-def test_get_account_tax_rest(request_type):
-    client = AccountTaxServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "accounts/sample1/accounttax/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = account_tax.AccountTax(
-            name="name_value",
-            account=749,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = account_tax.AccountTax.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_account_tax(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, account_tax.AccountTax)
-    assert response.name == "name_value"
-    assert response.account == 749
 
 
 def test_get_account_tax_rest_use_cached_wrapped_rpc():
@@ -2655,87 +2504,6 @@ def test_get_account_tax_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_account_tax_rest_interceptors(null_interceptor):
-    transport = transports.AccountTaxServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AccountTaxServiceRestInterceptor(),
-    )
-    client = AccountTaxServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AccountTaxServiceRestInterceptor, "post_get_account_tax"
-    ) as post, mock.patch.object(
-        transports.AccountTaxServiceRestInterceptor, "pre_get_account_tax"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = account_tax.GetAccountTaxRequest.pb(
-            account_tax.GetAccountTaxRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = account_tax.AccountTax.to_json(
-            account_tax.AccountTax()
-        )
-
-        request = account_tax.GetAccountTaxRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = account_tax.AccountTax()
-
-        client.get_account_tax(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_account_tax_rest_bad_request(
-    transport: str = "rest", request_type=account_tax.GetAccountTaxRequest
-):
-    client = AccountTaxServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "accounts/sample1/accounttax/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_account_tax(request)
-
-
 def test_get_account_tax_rest_flattened():
     client = AccountTaxServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2791,52 +2559,6 @@ def test_get_account_tax_rest_flattened_error(transport: str = "rest"):
             account_tax.GetAccountTaxRequest(),
             name="name_value",
         )
-
-
-def test_get_account_tax_rest_error():
-    client = AccountTaxServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        account_tax.ListAccountTaxRequest,
-        dict,
-    ],
-)
-def test_list_account_tax_rest(request_type):
-    client = AccountTaxServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = account_tax.ListAccountTaxResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = account_tax.ListAccountTaxResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_account_tax(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAccountTaxPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_account_tax_rest_use_cached_wrapped_rpc():
@@ -2975,87 +2697,6 @@ def test_list_account_tax_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_account_tax_rest_interceptors(null_interceptor):
-    transport = transports.AccountTaxServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AccountTaxServiceRestInterceptor(),
-    )
-    client = AccountTaxServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AccountTaxServiceRestInterceptor, "post_list_account_tax"
-    ) as post, mock.patch.object(
-        transports.AccountTaxServiceRestInterceptor, "pre_list_account_tax"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = account_tax.ListAccountTaxRequest.pb(
-            account_tax.ListAccountTaxRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = account_tax.ListAccountTaxResponse.to_json(
-            account_tax.ListAccountTaxResponse()
-        )
-
-        request = account_tax.ListAccountTaxRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = account_tax.ListAccountTaxResponse()
-
-        client.list_account_tax(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_account_tax_rest_bad_request(
-    transport: str = "rest", request_type=account_tax.ListAccountTaxRequest
-):
-    client = AccountTaxServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_account_tax(request)
-
-
 def test_list_account_tax_rest_flattened():
     client = AccountTaxServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3174,133 +2815,6 @@ def test_list_account_tax_rest_pager(transport: str = "rest"):
         pages = list(client.list_account_tax(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        gsma_account_tax.UpdateAccountTaxRequest,
-        dict,
-    ],
-)
-def test_update_account_tax_rest(request_type):
-    client = AccountTaxServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"account_tax": {"name": "accounts/sample1/accounttax/sample2"}}
-    request_init["account_tax"] = {
-        "name": "accounts/sample1/accounttax/sample2",
-        "account": 749,
-        "tax_rules": [
-            {
-                "location_id": 1157,
-                "post_code_range": {"start": "start_value", "end": "end_value"},
-                "use_google_rate": True,
-                "self_specified_rate_micros": 2732,
-                "region_code": "region_code_value",
-                "shipping_taxed": True,
-                "effective_time_period": {
-                    "start_time": {"seconds": 751, "nanos": 543},
-                    "end_time": {},
-                },
-            }
-        ],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = gsma_account_tax.UpdateAccountTaxRequest.meta.fields["account_tax"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["account_tax"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["account_tax"][field])):
-                    del request_init["account_tax"][field][i][subfield]
-            else:
-                del request_init["account_tax"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = gsma_account_tax.AccountTax(
-            name="name_value",
-            account=749,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = gsma_account_tax.AccountTax.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_account_tax(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gsma_account_tax.AccountTax)
-    assert response.name == "name_value"
-    assert response.account == 749
 
 
 def test_update_account_tax_rest_use_cached_wrapped_rpc():
@@ -3424,87 +2938,6 @@ def test_update_account_tax_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask",)) & set(("accountTax",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_account_tax_rest_interceptors(null_interceptor):
-    transport = transports.AccountTaxServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AccountTaxServiceRestInterceptor(),
-    )
-    client = AccountTaxServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AccountTaxServiceRestInterceptor, "post_update_account_tax"
-    ) as post, mock.patch.object(
-        transports.AccountTaxServiceRestInterceptor, "pre_update_account_tax"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = gsma_account_tax.UpdateAccountTaxRequest.pb(
-            gsma_account_tax.UpdateAccountTaxRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = gsma_account_tax.AccountTax.to_json(
-            gsma_account_tax.AccountTax()
-        )
-
-        request = gsma_account_tax.UpdateAccountTaxRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = gsma_account_tax.AccountTax()
-
-        client.update_account_tax(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_account_tax_rest_bad_request(
-    transport: str = "rest", request_type=gsma_account_tax.UpdateAccountTaxRequest
-):
-    client = AccountTaxServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"account_tax": {"name": "accounts/sample1/accounttax/sample2"}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_account_tax(request)
-
-
 def test_update_account_tax_rest_flattened():
     client = AccountTaxServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3564,12 +2997,6 @@ def test_update_account_tax_rest_flattened_error(transport: str = "rest"):
             account_tax=gsma_account_tax.AccountTax(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_account_tax_rest_error():
-    client = AccountTaxServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
 
 
 def test_credentials_transport_error():
@@ -3664,18 +3091,708 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = AccountTaxServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = AccountTaxServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_account_tax_empty_call_grpc():
+    client = AccountTaxServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_account_tax), "__call__") as call:
+        call.return_value = account_tax.AccountTax()
+        client.get_account_tax(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = account_tax.GetAccountTaxRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_account_tax_empty_call_grpc():
+    client = AccountTaxServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_account_tax), "__call__") as call:
+        call.return_value = account_tax.ListAccountTaxResponse()
+        client.list_account_tax(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = account_tax.ListAccountTaxRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_account_tax_empty_call_grpc():
+    client = AccountTaxServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_account_tax), "__call__"
+    ) as call:
+        call.return_value = gsma_account_tax.AccountTax()
+        client.update_account_tax(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gsma_account_tax.UpdateAccountTaxRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = AccountTaxServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = AccountTaxServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_account_tax_empty_call_grpc_asyncio():
+    client = AccountTaxServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_account_tax), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            account_tax.AccountTax(
+                name="name_value",
+                account=749,
+            )
+        )
+        await client.get_account_tax(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = account_tax.GetAccountTaxRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_account_tax_empty_call_grpc_asyncio():
+    client = AccountTaxServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_account_tax), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            account_tax.ListAccountTaxResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_account_tax(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = account_tax.ListAccountTaxRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_account_tax_empty_call_grpc_asyncio():
+    client = AccountTaxServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_account_tax), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gsma_account_tax.AccountTax(
+                name="name_value",
+                account=749,
+            )
+        )
+        await client.update_account_tax(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gsma_account_tax.UpdateAccountTaxRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = AccountTaxServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_get_account_tax_rest_bad_request(
+    request_type=account_tax.GetAccountTaxRequest,
+):
+    client = AccountTaxServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "accounts/sample1/accounttax/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_account_tax(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        account_tax.GetAccountTaxRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = AccountTaxServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_get_account_tax_rest_call_success(request_type):
+    client = AccountTaxServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "accounts/sample1/accounttax/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = account_tax.AccountTax(
+            name="name_value",
+            account=749,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = account_tax.AccountTax.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_account_tax(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, account_tax.AccountTax)
+    assert response.name == "name_value"
+    assert response.account == 749
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_account_tax_rest_interceptors(null_interceptor):
+    transport = transports.AccountTaxServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AccountTaxServiceRestInterceptor(),
+    )
+    client = AccountTaxServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AccountTaxServiceRestInterceptor, "post_get_account_tax"
+    ) as post, mock.patch.object(
+        transports.AccountTaxServiceRestInterceptor, "pre_get_account_tax"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = account_tax.GetAccountTaxRequest.pb(
+            account_tax.GetAccountTaxRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = account_tax.AccountTax.to_json(account_tax.AccountTax())
+        req.return_value.content = return_value
+
+        request = account_tax.GetAccountTaxRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = account_tax.AccountTax()
+
+        client.get_account_tax(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_account_tax_rest_bad_request(
+    request_type=account_tax.ListAccountTaxRequest,
+):
+    client = AccountTaxServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_account_tax(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        account_tax.ListAccountTaxRequest,
+        dict,
+    ],
+)
+def test_list_account_tax_rest_call_success(request_type):
+    client = AccountTaxServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = account_tax.ListAccountTaxResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = account_tax.ListAccountTaxResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_account_tax(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAccountTaxPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_account_tax_rest_interceptors(null_interceptor):
+    transport = transports.AccountTaxServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AccountTaxServiceRestInterceptor(),
+    )
+    client = AccountTaxServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AccountTaxServiceRestInterceptor, "post_list_account_tax"
+    ) as post, mock.patch.object(
+        transports.AccountTaxServiceRestInterceptor, "pre_list_account_tax"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = account_tax.ListAccountTaxRequest.pb(
+            account_tax.ListAccountTaxRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = account_tax.ListAccountTaxResponse.to_json(
+            account_tax.ListAccountTaxResponse()
+        )
+        req.return_value.content = return_value
+
+        request = account_tax.ListAccountTaxRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = account_tax.ListAccountTaxResponse()
+
+        client.list_account_tax(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_account_tax_rest_bad_request(
+    request_type=gsma_account_tax.UpdateAccountTaxRequest,
+):
+    client = AccountTaxServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"account_tax": {"name": "accounts/sample1/accounttax/sample2"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_account_tax(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gsma_account_tax.UpdateAccountTaxRequest,
+        dict,
+    ],
+)
+def test_update_account_tax_rest_call_success(request_type):
+    client = AccountTaxServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"account_tax": {"name": "accounts/sample1/accounttax/sample2"}}
+    request_init["account_tax"] = {
+        "name": "accounts/sample1/accounttax/sample2",
+        "account": 749,
+        "tax_rules": [
+            {
+                "location_id": 1157,
+                "post_code_range": {"start": "start_value", "end": "end_value"},
+                "use_google_rate": True,
+                "self_specified_rate_micros": 2732,
+                "region_code": "region_code_value",
+                "shipping_taxed": True,
+                "effective_time_period": {
+                    "start_time": {"seconds": 751, "nanos": 543},
+                    "end_time": {},
+                },
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gsma_account_tax.UpdateAccountTaxRequest.meta.fields["account_tax"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["account_tax"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["account_tax"][field])):
+                    del request_init["account_tax"][field][i][subfield]
+            else:
+                del request_init["account_tax"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gsma_account_tax.AccountTax(
+            name="name_value",
+            account=749,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = gsma_account_tax.AccountTax.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_account_tax(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gsma_account_tax.AccountTax)
+    assert response.name == "name_value"
+    assert response.account == 749
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_account_tax_rest_interceptors(null_interceptor):
+    transport = transports.AccountTaxServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AccountTaxServiceRestInterceptor(),
+    )
+    client = AccountTaxServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AccountTaxServiceRestInterceptor, "post_update_account_tax"
+    ) as post, mock.patch.object(
+        transports.AccountTaxServiceRestInterceptor, "pre_update_account_tax"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gsma_account_tax.UpdateAccountTaxRequest.pb(
+            gsma_account_tax.UpdateAccountTaxRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = gsma_account_tax.AccountTax.to_json(
+            gsma_account_tax.AccountTax()
+        )
+        req.return_value.content = return_value
+
+        request = gsma_account_tax.UpdateAccountTaxRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gsma_account_tax.AccountTax()
+
+        client.update_account_tax(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_initialize_client_w_rest():
+    client = AccountTaxServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_account_tax_empty_call_rest():
+    client = AccountTaxServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_account_tax), "__call__") as call:
+        client.get_account_tax(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = account_tax.GetAccountTaxRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_account_tax_empty_call_rest():
+    client = AccountTaxServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_account_tax), "__call__") as call:
+        client.list_account_tax(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = account_tax.ListAccountTaxRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_account_tax_empty_call_rest():
+    client = AccountTaxServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_account_tax), "__call__"
+    ) as call:
+        client.update_account_tax(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = gsma_account_tax.UpdateAccountTaxRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -4260,36 +4377,41 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = AccountTaxServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = AccountTaxServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = AccountTaxServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = AccountTaxServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = AccountTaxServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

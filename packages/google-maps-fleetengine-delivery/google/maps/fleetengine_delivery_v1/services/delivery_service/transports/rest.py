@@ -16,25 +16,16 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.protobuf import json_format
-import grpc  # type: ignore
 from requests import __version__ as requests_version
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
 
 from google.maps.fleetengine_delivery_v1.types import (
     delivery_api,
@@ -44,7 +35,13 @@ from google.maps.fleetengine_delivery_v1.types import (
 )
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import DeliveryServiceTransport
+from .rest_base import _BaseDeliveryServiceRestTransport
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -384,8 +381,8 @@ class DeliveryServiceRestStub:
     _interceptor: DeliveryServiceRestInterceptor
 
 
-class DeliveryServiceRestTransport(DeliveryServiceTransport):
-    """REST backend transport for DeliveryService.
+class DeliveryServiceRestTransport(_BaseDeliveryServiceRestTransport):
+    """REST backend synchronous transport for DeliveryService.
 
     The Last Mile Delivery service.
 
@@ -394,7 +391,6 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -448,21 +444,12 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -473,19 +460,34 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
         self._interceptor = interceptor or DeliveryServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _BatchCreateTasks(DeliveryServiceRestStub):
+    class _BatchCreateTasks(
+        _BaseDeliveryServiceRestTransport._BaseBatchCreateTasks, DeliveryServiceRestStub
+    ):
         def __hash__(self):
-            return hash("BatchCreateTasks")
+            return hash("DeliveryServiceRestTransport.BatchCreateTasks")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -511,47 +513,34 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
                     The ``BatchCreateTask`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=providers/*}/tasks:batchCreate",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseDeliveryServiceRestTransport._BaseBatchCreateTasks._get_http_options()
+            )
             request, metadata = self._interceptor.pre_batch_create_tasks(
                 request, metadata
             )
-            pb_request = delivery_api.BatchCreateTasksRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseBatchCreateTasks._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDeliveryServiceRestTransport._BaseBatchCreateTasks._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDeliveryServiceRestTransport._BaseBatchCreateTasks._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DeliveryServiceRestTransport._BatchCreateTasks._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -567,21 +556,35 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
             resp = self._interceptor.post_batch_create_tasks(resp)
             return resp
 
-    class _CreateDeliveryVehicle(DeliveryServiceRestStub):
+    class _CreateDeliveryVehicle(
+        _BaseDeliveryServiceRestTransport._BaseCreateDeliveryVehicle,
+        DeliveryServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateDeliveryVehicle")
+            return hash("DeliveryServiceRestTransport.CreateDeliveryVehicle")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "deliveryVehicleId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -619,47 +622,36 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=providers/*}/deliveryVehicles",
-                    "body": "delivery_vehicle",
-                },
-            ]
+            http_options = (
+                _BaseDeliveryServiceRestTransport._BaseCreateDeliveryVehicle._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_delivery_vehicle(
                 request, metadata
             )
-            pb_request = delivery_api.CreateDeliveryVehicleRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseCreateDeliveryVehicle._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDeliveryServiceRestTransport._BaseCreateDeliveryVehicle._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDeliveryServiceRestTransport._BaseCreateDeliveryVehicle._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                DeliveryServiceRestTransport._CreateDeliveryVehicle._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -675,21 +667,34 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
             resp = self._interceptor.post_create_delivery_vehicle(resp)
             return resp
 
-    class _CreateTask(DeliveryServiceRestStub):
+    class _CreateTask(
+        _BaseDeliveryServiceRestTransport._BaseCreateTask, DeliveryServiceRestStub
+    ):
         def __hash__(self):
-            return hash("CreateTask")
+            return hash("DeliveryServiceRestTransport.CreateTask")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "taskId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -731,45 +736,32 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=providers/*}/tasks",
-                    "body": "task",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_task(request, metadata)
-            pb_request = delivery_api.CreateTaskRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseDeliveryServiceRestTransport._BaseCreateTask._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_task(request, metadata)
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseCreateTask._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDeliveryServiceRestTransport._BaseCreateTask._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDeliveryServiceRestTransport._BaseCreateTask._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DeliveryServiceRestTransport._CreateTask._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -785,19 +777,34 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
             resp = self._interceptor.post_create_task(resp)
             return resp
 
-    class _GetDeliveryVehicle(DeliveryServiceRestStub):
+    class _GetDeliveryVehicle(
+        _BaseDeliveryServiceRestTransport._BaseGetDeliveryVehicle,
+        DeliveryServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetDeliveryVehicle")
+            return hash("DeliveryServiceRestTransport.GetDeliveryVehicle")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -835,40 +842,29 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=providers/*/deliveryVehicles/*}",
-                },
-            ]
+            http_options = (
+                _BaseDeliveryServiceRestTransport._BaseGetDeliveryVehicle._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_delivery_vehicle(
                 request, metadata
             )
-            pb_request = delivery_api.GetDeliveryVehicleRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseGetDeliveryVehicle._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDeliveryServiceRestTransport._BaseGetDeliveryVehicle._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DeliveryServiceRestTransport._GetDeliveryVehicle._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -884,19 +880,33 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
             resp = self._interceptor.post_get_delivery_vehicle(resp)
             return resp
 
-    class _GetTask(DeliveryServiceRestStub):
+    class _GetTask(
+        _BaseDeliveryServiceRestTransport._BaseGetTask, DeliveryServiceRestStub
+    ):
         def __hash__(self):
-            return hash("GetTask")
+            return hash("DeliveryServiceRestTransport.GetTask")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -938,38 +948,31 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=providers/*/tasks/*}",
-                },
-            ]
+            http_options = (
+                _BaseDeliveryServiceRestTransport._BaseGetTask._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_task(request, metadata)
-            pb_request = delivery_api.GetTaskRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseDeliveryServiceRestTransport._BaseGetTask._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseDeliveryServiceRestTransport._BaseGetTask._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DeliveryServiceRestTransport._GetTask._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -985,19 +988,34 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
             resp = self._interceptor.post_get_task(resp)
             return resp
 
-    class _GetTaskTrackingInfo(DeliveryServiceRestStub):
+    class _GetTaskTrackingInfo(
+        _BaseDeliveryServiceRestTransport._BaseGetTaskTrackingInfo,
+        DeliveryServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("GetTaskTrackingInfo")
+            return hash("DeliveryServiceRestTransport.GetTaskTrackingInfo")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1028,40 +1046,29 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=providers/*/taskTrackingInfo/*}",
-                },
-            ]
+            http_options = (
+                _BaseDeliveryServiceRestTransport._BaseGetTaskTrackingInfo._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_task_tracking_info(
                 request, metadata
             )
-            pb_request = delivery_api.GetTaskTrackingInfoRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseGetTaskTrackingInfo._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDeliveryServiceRestTransport._BaseGetTaskTrackingInfo._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DeliveryServiceRestTransport._GetTaskTrackingInfo._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1077,19 +1084,34 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
             resp = self._interceptor.post_get_task_tracking_info(resp)
             return resp
 
-    class _ListDeliveryVehicles(DeliveryServiceRestStub):
+    class _ListDeliveryVehicles(
+        _BaseDeliveryServiceRestTransport._BaseListDeliveryVehicles,
+        DeliveryServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("ListDeliveryVehicles")
+            return hash("DeliveryServiceRestTransport.ListDeliveryVehicles")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1115,40 +1137,29 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
                     The ``ListDeliveryVehicles`` response message.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=providers/*}/deliveryVehicles",
-                },
-            ]
+            http_options = (
+                _BaseDeliveryServiceRestTransport._BaseListDeliveryVehicles._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_delivery_vehicles(
                 request, metadata
             )
-            pb_request = delivery_api.ListDeliveryVehiclesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseListDeliveryVehicles._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDeliveryServiceRestTransport._BaseListDeliveryVehicles._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DeliveryServiceRestTransport._ListDeliveryVehicles._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1164,19 +1175,33 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
             resp = self._interceptor.post_list_delivery_vehicles(resp)
             return resp
 
-    class _ListTasks(DeliveryServiceRestStub):
+    class _ListTasks(
+        _BaseDeliveryServiceRestTransport._BaseListTasks, DeliveryServiceRestStub
+    ):
         def __hash__(self):
-            return hash("ListTasks")
+            return hash("DeliveryServiceRestTransport.ListTasks")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -1205,38 +1230,29 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=providers/*}/tasks",
-                },
-            ]
+            http_options = (
+                _BaseDeliveryServiceRestTransport._BaseListTasks._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_tasks(request, metadata)
-            pb_request = delivery_api.ListTasksRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseListTasks._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseDeliveryServiceRestTransport._BaseListTasks._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = DeliveryServiceRestTransport._ListTasks._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1252,21 +1268,35 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
             resp = self._interceptor.post_list_tasks(resp)
             return resp
 
-    class _UpdateDeliveryVehicle(DeliveryServiceRestStub):
+    class _UpdateDeliveryVehicle(
+        _BaseDeliveryServiceRestTransport._BaseUpdateDeliveryVehicle,
+        DeliveryServiceRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateDeliveryVehicle")
+            return hash("DeliveryServiceRestTransport.UpdateDeliveryVehicle")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1304,47 +1334,36 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{delivery_vehicle.name=providers/*/deliveryVehicles/*}",
-                    "body": "delivery_vehicle",
-                },
-            ]
+            http_options = (
+                _BaseDeliveryServiceRestTransport._BaseUpdateDeliveryVehicle._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_delivery_vehicle(
                 request, metadata
             )
-            pb_request = delivery_api.UpdateDeliveryVehicleRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseUpdateDeliveryVehicle._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseDeliveryServiceRestTransport._BaseUpdateDeliveryVehicle._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDeliveryServiceRestTransport._BaseUpdateDeliveryVehicle._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                DeliveryServiceRestTransport._UpdateDeliveryVehicle._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1360,21 +1379,34 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
             resp = self._interceptor.post_update_delivery_vehicle(resp)
             return resp
 
-    class _UpdateTask(DeliveryServiceRestStub):
+    class _UpdateTask(
+        _BaseDeliveryServiceRestTransport._BaseUpdateTask, DeliveryServiceRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateTask")
+            return hash("DeliveryServiceRestTransport.UpdateTask")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "updateMask": {},
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -1416,45 +1448,32 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{task.name=providers/*/tasks/*}",
-                    "body": "task",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_task(request, metadata)
-            pb_request = delivery_api.UpdateTaskRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseDeliveryServiceRestTransport._BaseUpdateTask._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_task(request, metadata)
+            transcoded_request = _BaseDeliveryServiceRestTransport._BaseUpdateTask._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDeliveryServiceRestTransport._BaseUpdateTask._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseDeliveryServiceRestTransport._BaseUpdateTask._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = DeliveryServiceRestTransport._UpdateTask._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception

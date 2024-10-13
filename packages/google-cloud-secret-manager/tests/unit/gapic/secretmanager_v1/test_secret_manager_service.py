@@ -22,12 +22,29 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 import google.auth
@@ -40,16 +57,8 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.secretmanager_v1.services.secret_manager_service import (
     SecretManagerServiceAsyncClient,
@@ -60,8 +69,22 @@ from google.cloud.secretmanager_v1.services.secret_manager_service import (
 from google.cloud.secretmanager_v1.types import resources, service
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1231,25 +1254,6 @@ def test_list_secrets(request_type, transport: str = "grpc"):
     assert response.total_size == 1086
 
 
-def test_list_secrets_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_secrets), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_secrets()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListSecretsRequest()
-
-
 def test_list_secrets_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1318,30 +1322,6 @@ def test_list_secrets_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_secrets_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_secrets), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListSecretsResponse(
-                next_page_token="next_page_token_value",
-                total_size=1086,
-            )
-        )
-        response = await client.list_secrets()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListSecretsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_secrets_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1349,7 +1329,7 @@ async def test_list_secrets_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SecretManagerServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1388,7 +1368,7 @@ async def test_list_secrets_async(
     transport: str = "grpc_asyncio", request_type=service.ListSecretsRequest
 ):
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1456,7 +1436,7 @@ def test_list_secrets_field_headers():
 @pytest.mark.asyncio
 async def test_list_secrets_field_headers_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1526,7 +1506,7 @@ def test_list_secrets_flattened_error():
 @pytest.mark.asyncio
 async def test_list_secrets_flattened_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1555,7 +1535,7 @@ async def test_list_secrets_flattened_async():
 @pytest.mark.asyncio
 async def test_list_secrets_flattened_error_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1665,7 +1645,7 @@ def test_list_secrets_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_secrets_async_pager():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1715,7 +1695,7 @@ async def test_list_secrets_async_pager():
 @pytest.mark.asyncio
 async def test_list_secrets_async_pages():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1799,25 +1779,6 @@ def test_create_secret(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
 
 
-def test_create_secret_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_secret), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_secret()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateSecretRequest()
-
-
 def test_create_secret_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1884,30 +1845,6 @@ def test_create_secret_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_secret_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_secret), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.Secret(
-                name="name_value",
-                etag="etag_value",
-            )
-        )
-        response = await client.create_secret()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateSecretRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_secret_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1915,7 +1852,7 @@ async def test_create_secret_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SecretManagerServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1954,7 +1891,7 @@ async def test_create_secret_async(
     transport: str = "grpc_asyncio", request_type=service.CreateSecretRequest
 ):
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2022,7 +1959,7 @@ def test_create_secret_field_headers():
 @pytest.mark.asyncio
 async def test_create_secret_field_headers_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2100,7 +2037,7 @@ def test_create_secret_flattened_error():
 @pytest.mark.asyncio
 async def test_create_secret_flattened_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2135,7 +2072,7 @@ async def test_create_secret_flattened_async():
 @pytest.mark.asyncio
 async def test_create_secret_flattened_error_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2191,27 +2128,6 @@ def test_add_secret_version(request_type, transport: str = "grpc"):
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
     assert response.client_specified_payload_checksum is True
-
-
-def test_add_secret_version_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.add_secret_version), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.add_secret_version()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.AddSecretVersionRequest()
 
 
 def test_add_secret_version_non_empty_request_with_auto_populated_field():
@@ -2284,34 +2200,6 @@ def test_add_secret_version_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_add_secret_version_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.add_secret_version), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.SecretVersion(
-                name="name_value",
-                state=resources.SecretVersion.State.ENABLED,
-                etag="etag_value",
-                client_specified_payload_checksum=True,
-            )
-        )
-        response = await client.add_secret_version()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.AddSecretVersionRequest()
-
-
-@pytest.mark.asyncio
 async def test_add_secret_version_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2319,7 +2207,7 @@ async def test_add_secret_version_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SecretManagerServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2358,7 +2246,7 @@ async def test_add_secret_version_async(
     transport: str = "grpc_asyncio", request_type=service.AddSecretVersionRequest
 ):
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2434,7 +2322,7 @@ def test_add_secret_version_field_headers():
 @pytest.mark.asyncio
 async def test_add_secret_version_field_headers_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2513,7 +2401,7 @@ def test_add_secret_version_flattened_error():
 @pytest.mark.asyncio
 async def test_add_secret_version_flattened_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2548,7 +2436,7 @@ async def test_add_secret_version_flattened_async():
 @pytest.mark.asyncio
 async def test_add_secret_version_flattened_error_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2597,25 +2485,6 @@ def test_get_secret(request_type, transport: str = "grpc"):
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
-
-
-def test_get_secret_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_secret), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_secret()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetSecretRequest()
 
 
 def test_get_secret_non_empty_request_with_auto_populated_field():
@@ -2682,36 +2551,12 @@ def test_get_secret_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_secret_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_secret), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.Secret(
-                name="name_value",
-                etag="etag_value",
-            )
-        )
-        response = await client.get_secret()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetSecretRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_secret_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SecretManagerServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2750,7 +2595,7 @@ async def test_get_secret_async(
     transport: str = "grpc_asyncio", request_type=service.GetSecretRequest
 ):
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2818,7 +2663,7 @@ def test_get_secret_field_headers():
 @pytest.mark.asyncio
 async def test_get_secret_field_headers_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2886,7 +2731,7 @@ def test_get_secret_flattened_error():
 @pytest.mark.asyncio
 async def test_get_secret_flattened_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2913,7 +2758,7 @@ async def test_get_secret_flattened_async():
 @pytest.mark.asyncio
 async def test_get_secret_flattened_error_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2961,25 +2806,6 @@ def test_update_secret(request_type, transport: str = "grpc"):
     assert isinstance(response, resources.Secret)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
-
-
-def test_update_secret_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_secret), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_secret()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateSecretRequest()
 
 
 def test_update_secret_non_empty_request_with_auto_populated_field():
@@ -3042,30 +2868,6 @@ def test_update_secret_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_secret_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_secret), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.Secret(
-                name="name_value",
-                etag="etag_value",
-            )
-        )
-        response = await client.update_secret()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.UpdateSecretRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_secret_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3073,7 +2875,7 @@ async def test_update_secret_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SecretManagerServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3112,7 +2914,7 @@ async def test_update_secret_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateSecretRequest
 ):
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3180,7 +2982,7 @@ def test_update_secret_field_headers():
 @pytest.mark.asyncio
 async def test_update_secret_field_headers_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3253,7 +3055,7 @@ def test_update_secret_flattened_error():
 @pytest.mark.asyncio
 async def test_update_secret_flattened_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3284,7 +3086,7 @@ async def test_update_secret_flattened_async():
 @pytest.mark.asyncio
 async def test_update_secret_flattened_error_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3328,25 +3130,6 @@ def test_delete_secret(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_secret_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_secret), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_secret()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteSecretRequest()
 
 
 def test_delete_secret_non_empty_request_with_auto_populated_field():
@@ -3415,25 +3198,6 @@ def test_delete_secret_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_secret_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_secret), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_secret()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteSecretRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_secret_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3441,7 +3205,7 @@ async def test_delete_secret_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SecretManagerServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3480,7 +3244,7 @@ async def test_delete_secret_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteSecretRequest
 ):
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3541,7 +3305,7 @@ def test_delete_secret_field_headers():
 @pytest.mark.asyncio
 async def test_delete_secret_field_headers_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3609,7 +3373,7 @@ def test_delete_secret_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_secret_flattened_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3636,7 +3400,7 @@ async def test_delete_secret_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_secret_flattened_error_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3686,27 +3450,6 @@ def test_list_secret_versions(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.ListSecretVersionsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
-
-
-def test_list_secret_versions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_secret_versions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_secret_versions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListSecretVersionsRequest()
 
 
 def test_list_secret_versions_non_empty_request_with_auto_populated_field():
@@ -3783,32 +3526,6 @@ def test_list_secret_versions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_secret_versions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_secret_versions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.ListSecretVersionsResponse(
-                next_page_token="next_page_token_value",
-                total_size=1086,
-            )
-        )
-        response = await client.list_secret_versions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListSecretVersionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_secret_versions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3816,7 +3533,7 @@ async def test_list_secret_versions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SecretManagerServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3855,7 +3572,7 @@ async def test_list_secret_versions_async(
     transport: str = "grpc_asyncio", request_type=service.ListSecretVersionsRequest
 ):
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3927,7 +3644,7 @@ def test_list_secret_versions_field_headers():
 @pytest.mark.asyncio
 async def test_list_secret_versions_field_headers_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4001,7 +3718,7 @@ def test_list_secret_versions_flattened_error():
 @pytest.mark.asyncio
 async def test_list_secret_versions_flattened_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4032,7 +3749,7 @@ async def test_list_secret_versions_flattened_async():
 @pytest.mark.asyncio
 async def test_list_secret_versions_flattened_error_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4146,7 +3863,7 @@ def test_list_secret_versions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_secret_versions_async_pager():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4198,7 +3915,7 @@ async def test_list_secret_versions_async_pager():
 @pytest.mark.asyncio
 async def test_list_secret_versions_async_pages():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4290,27 +4007,6 @@ def test_get_secret_version(request_type, transport: str = "grpc"):
     assert response.client_specified_payload_checksum is True
 
 
-def test_get_secret_version_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_secret_version), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_secret_version()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetSecretVersionRequest()
-
-
 def test_get_secret_version_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -4381,34 +4077,6 @@ def test_get_secret_version_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_secret_version_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_secret_version), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.SecretVersion(
-                name="name_value",
-                state=resources.SecretVersion.State.ENABLED,
-                etag="etag_value",
-                client_specified_payload_checksum=True,
-            )
-        )
-        response = await client.get_secret_version()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetSecretVersionRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_secret_version_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4416,7 +4084,7 @@ async def test_get_secret_version_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SecretManagerServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4455,7 +4123,7 @@ async def test_get_secret_version_async(
     transport: str = "grpc_asyncio", request_type=service.GetSecretVersionRequest
 ):
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4531,7 +4199,7 @@ def test_get_secret_version_field_headers():
 @pytest.mark.asyncio
 async def test_get_secret_version_field_headers_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4605,7 +4273,7 @@ def test_get_secret_version_flattened_error():
 @pytest.mark.asyncio
 async def test_get_secret_version_flattened_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4636,7 +4304,7 @@ async def test_get_secret_version_flattened_async():
 @pytest.mark.asyncio
 async def test_get_secret_version_flattened_error_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4684,27 +4352,6 @@ def test_access_secret_version(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.AccessSecretVersionResponse)
     assert response.name == "name_value"
-
-
-def test_access_secret_version_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.access_secret_version), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.access_secret_version()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.AccessSecretVersionRequest()
 
 
 def test_access_secret_version_non_empty_request_with_auto_populated_field():
@@ -4778,31 +4425,6 @@ def test_access_secret_version_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_access_secret_version_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.access_secret_version), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.AccessSecretVersionResponse(
-                name="name_value",
-            )
-        )
-        response = await client.access_secret_version()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.AccessSecretVersionRequest()
-
-
-@pytest.mark.asyncio
 async def test_access_secret_version_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4810,7 +4432,7 @@ async def test_access_secret_version_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SecretManagerServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4849,7 +4471,7 @@ async def test_access_secret_version_async(
     transport: str = "grpc_asyncio", request_type=service.AccessSecretVersionRequest
 ):
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4919,7 +4541,7 @@ def test_access_secret_version_field_headers():
 @pytest.mark.asyncio
 async def test_access_secret_version_field_headers_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4993,7 +4615,7 @@ def test_access_secret_version_flattened_error():
 @pytest.mark.asyncio
 async def test_access_secret_version_flattened_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5024,7 +4646,7 @@ async def test_access_secret_version_flattened_async():
 @pytest.mark.asyncio
 async def test_access_secret_version_flattened_error_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5078,27 +4700,6 @@ def test_disable_secret_version(request_type, transport: str = "grpc"):
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
     assert response.client_specified_payload_checksum is True
-
-
-def test_disable_secret_version_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.disable_secret_version), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.disable_secret_version()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DisableSecretVersionRequest()
 
 
 def test_disable_secret_version_non_empty_request_with_auto_populated_field():
@@ -5174,34 +4775,6 @@ def test_disable_secret_version_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_disable_secret_version_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.disable_secret_version), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.SecretVersion(
-                name="name_value",
-                state=resources.SecretVersion.State.ENABLED,
-                etag="etag_value",
-                client_specified_payload_checksum=True,
-            )
-        )
-        response = await client.disable_secret_version()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DisableSecretVersionRequest()
-
-
-@pytest.mark.asyncio
 async def test_disable_secret_version_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5209,7 +4782,7 @@ async def test_disable_secret_version_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SecretManagerServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5248,7 +4821,7 @@ async def test_disable_secret_version_async(
     transport: str = "grpc_asyncio", request_type=service.DisableSecretVersionRequest
 ):
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5324,7 +4897,7 @@ def test_disable_secret_version_field_headers():
 @pytest.mark.asyncio
 async def test_disable_secret_version_field_headers_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5398,7 +4971,7 @@ def test_disable_secret_version_flattened_error():
 @pytest.mark.asyncio
 async def test_disable_secret_version_flattened_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5429,7 +5002,7 @@ async def test_disable_secret_version_flattened_async():
 @pytest.mark.asyncio
 async def test_disable_secret_version_flattened_error_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5483,27 +5056,6 @@ def test_enable_secret_version(request_type, transport: str = "grpc"):
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
     assert response.client_specified_payload_checksum is True
-
-
-def test_enable_secret_version_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enable_secret_version), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.enable_secret_version()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.EnableSecretVersionRequest()
 
 
 def test_enable_secret_version_non_empty_request_with_auto_populated_field():
@@ -5579,34 +5131,6 @@ def test_enable_secret_version_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_enable_secret_version_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.enable_secret_version), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.SecretVersion(
-                name="name_value",
-                state=resources.SecretVersion.State.ENABLED,
-                etag="etag_value",
-                client_specified_payload_checksum=True,
-            )
-        )
-        response = await client.enable_secret_version()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.EnableSecretVersionRequest()
-
-
-@pytest.mark.asyncio
 async def test_enable_secret_version_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5614,7 +5138,7 @@ async def test_enable_secret_version_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SecretManagerServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5653,7 +5177,7 @@ async def test_enable_secret_version_async(
     transport: str = "grpc_asyncio", request_type=service.EnableSecretVersionRequest
 ):
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5729,7 +5253,7 @@ def test_enable_secret_version_field_headers():
 @pytest.mark.asyncio
 async def test_enable_secret_version_field_headers_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5803,7 +5327,7 @@ def test_enable_secret_version_flattened_error():
 @pytest.mark.asyncio
 async def test_enable_secret_version_flattened_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5834,7 +5358,7 @@ async def test_enable_secret_version_flattened_async():
 @pytest.mark.asyncio
 async def test_enable_secret_version_flattened_error_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5888,27 +5412,6 @@ def test_destroy_secret_version(request_type, transport: str = "grpc"):
     assert response.state == resources.SecretVersion.State.ENABLED
     assert response.etag == "etag_value"
     assert response.client_specified_payload_checksum is True
-
-
-def test_destroy_secret_version_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.destroy_secret_version), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.destroy_secret_version()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DestroySecretVersionRequest()
 
 
 def test_destroy_secret_version_non_empty_request_with_auto_populated_field():
@@ -5984,34 +5487,6 @@ def test_destroy_secret_version_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_destroy_secret_version_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.destroy_secret_version), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.SecretVersion(
-                name="name_value",
-                state=resources.SecretVersion.State.ENABLED,
-                etag="etag_value",
-                client_specified_payload_checksum=True,
-            )
-        )
-        response = await client.destroy_secret_version()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DestroySecretVersionRequest()
-
-
-@pytest.mark.asyncio
 async def test_destroy_secret_version_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6019,7 +5494,7 @@ async def test_destroy_secret_version_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SecretManagerServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6058,7 +5533,7 @@ async def test_destroy_secret_version_async(
     transport: str = "grpc_asyncio", request_type=service.DestroySecretVersionRequest
 ):
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6134,7 +5609,7 @@ def test_destroy_secret_version_field_headers():
 @pytest.mark.asyncio
 async def test_destroy_secret_version_field_headers_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6208,7 +5683,7 @@ def test_destroy_secret_version_flattened_error():
 @pytest.mark.asyncio
 async def test_destroy_secret_version_flattened_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6239,7 +5714,7 @@ async def test_destroy_secret_version_flattened_async():
 @pytest.mark.asyncio
 async def test_destroy_secret_version_flattened_error_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6287,25 +5762,6 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
     assert isinstance(response, policy_pb2.Policy)
     assert response.version == 774
     assert response.etag == b"etag_blob"
-
-
-def test_set_iam_policy_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.set_iam_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
 
 
 def test_set_iam_policy_non_empty_request_with_auto_populated_field():
@@ -6372,30 +5828,6 @@ def test_set_iam_policy_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(
-                version=774,
-                etag=b"etag_blob",
-            )
-        )
-        response = await client.set_iam_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
-
-
-@pytest.mark.asyncio
 async def test_set_iam_policy_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6403,7 +5835,7 @@ async def test_set_iam_policy_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SecretManagerServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6442,7 +5874,7 @@ async def test_set_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
 ):
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6510,7 +5942,7 @@ def test_set_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6593,25 +6025,6 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
     assert response.etag == b"etag_blob"
 
 
-def test_get_iam_policy_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_iam_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
-
-
 def test_get_iam_policy_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -6676,30 +6089,6 @@ def test_get_iam_policy_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(
-                version=774,
-                etag=b"etag_blob",
-            )
-        )
-        response = await client.get_iam_policy()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_iam_policy_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6707,7 +6096,7 @@ async def test_get_iam_policy_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SecretManagerServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6746,7 +6135,7 @@ async def test_get_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
 ):
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6814,7 +6203,7 @@ def test_get_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6896,27 +6285,6 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
     assert response.permissions == ["permissions_value"]
 
 
-def test_test_iam_permissions_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.test_iam_permissions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
-
-
 def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -6987,31 +6355,6 @@ def test_test_iam_permissions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_test_iam_permissions_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam_policy_pb2.TestIamPermissionsResponse(
-                permissions=["permissions_value"],
-            )
-        )
-        response = await client.test_iam_permissions()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
-
-
-@pytest.mark.asyncio
 async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7019,7 +6362,7 @@ async def test_test_iam_permissions_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = SecretManagerServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7059,7 +6402,7 @@ async def test_test_iam_permissions_async(
     request_type=iam_policy_pb2.TestIamPermissionsRequest,
 ):
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7129,7 +6472,7 @@ def test_test_iam_permissions_field_headers():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7177,48 +6520,6 @@ def test_test_iam_permissions_from_dict_foreign():
             }
         )
         call.assert_called()
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.ListSecretsRequest,
-        dict,
-    ],
-)
-def test_list_secrets_rest(request_type):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = service.ListSecretsResponse(
-            next_page_token="next_page_token_value",
-            total_size=1086,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = service.ListSecretsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_secrets(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListSecretsPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.total_size == 1086
 
 
 def test_list_secrets_rest_use_cached_wrapped_rpc():
@@ -7355,85 +6656,6 @@ def test_list_secrets_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_secrets_rest_interceptors(null_interceptor):
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.SecretManagerServiceRestInterceptor(),
-    )
-    client = SecretManagerServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_list_secrets"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_list_secrets"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.ListSecretsRequest.pb(service.ListSecretsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = service.ListSecretsResponse.to_json(
-            service.ListSecretsResponse()
-        )
-
-        request = service.ListSecretsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = service.ListSecretsResponse()
-
-        client.list_secrets(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_secrets_rest_bad_request(
-    transport: str = "rest", request_type=service.ListSecretsRequest
-):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_secrets(request)
-
-
 def test_list_secrets_rest_flattened():
     client = SecretManagerServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7548,139 +6770,6 @@ def test_list_secrets_rest_pager(transport: str = "rest"):
         pages = list(client.list_secrets(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.CreateSecretRequest,
-        dict,
-    ],
-)
-def test_create_secret_rest(request_type):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request_init["secret"] = {
-        "name": "name_value",
-        "replication": {
-            "automatic": {
-                "customer_managed_encryption": {"kms_key_name": "kms_key_name_value"}
-            },
-            "user_managed": {
-                "replicas": [
-                    {"location": "location_value", "customer_managed_encryption": {}}
-                ]
-            },
-        },
-        "create_time": {"seconds": 751, "nanos": 543},
-        "labels": {},
-        "topics": [{"name": "name_value"}],
-        "expire_time": {},
-        "ttl": {"seconds": 751, "nanos": 543},
-        "etag": "etag_value",
-        "rotation": {"next_rotation_time": {}, "rotation_period": {}},
-        "version_aliases": {},
-        "annotations": {},
-        "version_destroy_ttl": {},
-        "customer_managed_encryption": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = service.CreateSecretRequest.meta.fields["secret"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["secret"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["secret"][field])):
-                    del request_init["secret"][field][i][subfield]
-            else:
-                del request_init["secret"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resources.Secret(
-            name="name_value",
-            etag="etag_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resources.Secret.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_secret(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.Secret)
-    assert response.name == "name_value"
-    assert response.etag == "etag_value"
 
 
 def test_create_secret_rest_use_cached_wrapped_rpc():
@@ -7825,83 +6914,6 @@ def test_create_secret_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_secret_rest_interceptors(null_interceptor):
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.SecretManagerServiceRestInterceptor(),
-    )
-    client = SecretManagerServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_create_secret"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_create_secret"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.CreateSecretRequest.pb(service.CreateSecretRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = resources.Secret.to_json(resources.Secret())
-
-        request = service.CreateSecretRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = resources.Secret()
-
-        client.create_secret(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_secret_rest_bad_request(
-    transport: str = "rest", request_type=service.CreateSecretRequest
-):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_secret(request)
-
-
 def test_create_secret_rest_flattened():
     client = SecretManagerServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7959,58 +6971,6 @@ def test_create_secret_rest_flattened_error(transport: str = "rest"):
             secret_id="secret_id_value",
             secret=resources.Secret(name="name_value"),
         )
-
-
-def test_create_secret_rest_error():
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.AddSecretVersionRequest,
-        dict,
-    ],
-)
-def test_add_secret_version_rest(request_type):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/secrets/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resources.SecretVersion(
-            name="name_value",
-            state=resources.SecretVersion.State.ENABLED,
-            etag="etag_value",
-            client_specified_payload_checksum=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resources.SecretVersion.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.add_secret_version(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.SecretVersion)
-    assert response.name == "name_value"
-    assert response.state == resources.SecretVersion.State.ENABLED
-    assert response.etag == "etag_value"
-    assert response.client_specified_payload_checksum is True
 
 
 def test_add_secret_version_rest_use_cached_wrapped_rpc():
@@ -8145,87 +7105,6 @@ def test_add_secret_version_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_add_secret_version_rest_interceptors(null_interceptor):
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.SecretManagerServiceRestInterceptor(),
-    )
-    client = SecretManagerServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_add_secret_version"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_add_secret_version"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.AddSecretVersionRequest.pb(
-            service.AddSecretVersionRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = resources.SecretVersion.to_json(
-            resources.SecretVersion()
-        )
-
-        request = service.AddSecretVersionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = resources.SecretVersion()
-
-        client.add_secret_version(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_add_secret_version_rest_bad_request(
-    transport: str = "rest", request_type=service.AddSecretVersionRequest
-):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/secrets/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.add_secret_version(request)
-
-
 def test_add_secret_version_rest_flattened():
     client = SecretManagerServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8282,54 +7161,6 @@ def test_add_secret_version_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             payload=resources.SecretPayload(data=b"data_blob"),
         )
-
-
-def test_add_secret_version_rest_error():
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.GetSecretRequest,
-        dict,
-    ],
-)
-def test_get_secret_rest(request_type):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/secrets/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resources.Secret(
-            name="name_value",
-            etag="etag_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resources.Secret.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_secret(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.Secret)
-    assert response.name == "name_value"
-    assert response.etag == "etag_value"
 
 
 def test_get_secret_rest_use_cached_wrapped_rpc():
@@ -8449,83 +7280,6 @@ def test_get_secret_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_secret_rest_interceptors(null_interceptor):
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.SecretManagerServiceRestInterceptor(),
-    )
-    client = SecretManagerServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_get_secret"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_get_secret"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.GetSecretRequest.pb(service.GetSecretRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = resources.Secret.to_json(resources.Secret())
-
-        request = service.GetSecretRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = resources.Secret()
-
-        client.get_secret(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_secret_rest_bad_request(
-    transport: str = "rest", request_type=service.GetSecretRequest
-):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/secrets/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_secret(request)
-
-
 def test_get_secret_rest_flattened():
     client = SecretManagerServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8579,145 +7333,6 @@ def test_get_secret_rest_flattened_error(transport: str = "rest"):
             service.GetSecretRequest(),
             name="name_value",
         )
-
-
-def test_get_secret_rest_error():
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.UpdateSecretRequest,
-        dict,
-    ],
-)
-def test_update_secret_rest(request_type):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"secret": {"name": "projects/sample1/secrets/sample2"}}
-    request_init["secret"] = {
-        "name": "projects/sample1/secrets/sample2",
-        "replication": {
-            "automatic": {
-                "customer_managed_encryption": {"kms_key_name": "kms_key_name_value"}
-            },
-            "user_managed": {
-                "replicas": [
-                    {"location": "location_value", "customer_managed_encryption": {}}
-                ]
-            },
-        },
-        "create_time": {"seconds": 751, "nanos": 543},
-        "labels": {},
-        "topics": [{"name": "name_value"}],
-        "expire_time": {},
-        "ttl": {"seconds": 751, "nanos": 543},
-        "etag": "etag_value",
-        "rotation": {"next_rotation_time": {}, "rotation_period": {}},
-        "version_aliases": {},
-        "annotations": {},
-        "version_destroy_ttl": {},
-        "customer_managed_encryption": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = service.UpdateSecretRequest.meta.fields["secret"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["secret"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["secret"][field])):
-                    del request_init["secret"][field][i][subfield]
-            else:
-                del request_init["secret"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resources.Secret(
-            name="name_value",
-            etag="etag_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resources.Secret.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_secret(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.Secret)
-    assert response.name == "name_value"
-    assert response.etag == "etag_value"
 
 
 def test_update_secret_rest_use_cached_wrapped_rpc():
@@ -8843,83 +7458,6 @@ def test_update_secret_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_secret_rest_interceptors(null_interceptor):
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.SecretManagerServiceRestInterceptor(),
-    )
-    client = SecretManagerServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_update_secret"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_update_secret"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.UpdateSecretRequest.pb(service.UpdateSecretRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = resources.Secret.to_json(resources.Secret())
-
-        request = service.UpdateSecretRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = resources.Secret()
-
-        client.update_secret(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_secret_rest_bad_request(
-    transport: str = "rest", request_type=service.UpdateSecretRequest
-):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"secret": {"name": "projects/sample1/secrets/sample2"}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_secret(request)
-
-
 def test_update_secret_rest_flattened():
     client = SecretManagerServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -8975,47 +7513,6 @@ def test_update_secret_rest_flattened_error(transport: str = "rest"):
             secret=resources.Secret(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_secret_rest_error():
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.DeleteSecretRequest,
-        dict,
-    ],
-)
-def test_delete_secret_rest(request_type):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/secrets/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_secret(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_secret_rest_use_cached_wrapped_rpc():
@@ -9134,77 +7631,6 @@ def test_delete_secret_rest_unset_required_fields():
     assert set(unset_fields) == (set(("etag",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_secret_rest_interceptors(null_interceptor):
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.SecretManagerServiceRestInterceptor(),
-    )
-    client = SecretManagerServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_delete_secret"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = service.DeleteSecretRequest.pb(service.DeleteSecretRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = service.DeleteSecretRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_secret(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_secret_rest_bad_request(
-    transport: str = "rest", request_type=service.DeleteSecretRequest
-):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/secrets/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_secret(request)
-
-
 def test_delete_secret_rest_flattened():
     client = SecretManagerServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9256,54 +7682,6 @@ def test_delete_secret_rest_flattened_error(transport: str = "rest"):
             service.DeleteSecretRequest(),
             name="name_value",
         )
-
-
-def test_delete_secret_rest_error():
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.ListSecretVersionsRequest,
-        dict,
-    ],
-)
-def test_list_secret_versions_rest(request_type):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/secrets/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = service.ListSecretVersionsResponse(
-            next_page_token="next_page_token_value",
-            total_size=1086,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = service.ListSecretVersionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_secret_versions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListSecretVersionsPager)
-    assert response.next_page_token == "next_page_token_value"
-    assert response.total_size == 1086
 
 
 def test_list_secret_versions_rest_use_cached_wrapped_rpc():
@@ -9446,87 +7824,6 @@ def test_list_secret_versions_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_secret_versions_rest_interceptors(null_interceptor):
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.SecretManagerServiceRestInterceptor(),
-    )
-    client = SecretManagerServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_list_secret_versions"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_list_secret_versions"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.ListSecretVersionsRequest.pb(
-            service.ListSecretVersionsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = service.ListSecretVersionsResponse.to_json(
-            service.ListSecretVersionsResponse()
-        )
-
-        request = service.ListSecretVersionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = service.ListSecretVersionsResponse()
-
-        client.list_secret_versions(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_secret_versions_rest_bad_request(
-    transport: str = "rest", request_type=service.ListSecretVersionsRequest
-):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/secrets/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_secret_versions(request)
-
-
 def test_list_secret_versions_rest_flattened():
     client = SecretManagerServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9644,52 +7941,6 @@ def test_list_secret_versions_rest_pager(transport: str = "rest"):
         pages = list(client.list_secret_versions(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.GetSecretVersionRequest,
-        dict,
-    ],
-)
-def test_get_secret_version_rest(request_type):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resources.SecretVersion(
-            name="name_value",
-            state=resources.SecretVersion.State.ENABLED,
-            etag="etag_value",
-            client_specified_payload_checksum=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resources.SecretVersion.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_secret_version(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.SecretVersion)
-    assert response.name == "name_value"
-    assert response.state == resources.SecretVersion.State.ENABLED
-    assert response.etag == "etag_value"
-    assert response.client_specified_payload_checksum is True
 
 
 def test_get_secret_version_rest_use_cached_wrapped_rpc():
@@ -9815,87 +8066,6 @@ def test_get_secret_version_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_secret_version_rest_interceptors(null_interceptor):
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.SecretManagerServiceRestInterceptor(),
-    )
-    client = SecretManagerServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_get_secret_version"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_get_secret_version"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.GetSecretVersionRequest.pb(
-            service.GetSecretVersionRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = resources.SecretVersion.to_json(
-            resources.SecretVersion()
-        )
-
-        request = service.GetSecretVersionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = resources.SecretVersion()
-
-        client.get_secret_version(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_secret_version_rest_bad_request(
-    transport: str = "rest", request_type=service.GetSecretVersionRequest
-):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_secret_version(request)
-
-
 def test_get_secret_version_rest_flattened():
     client = SecretManagerServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -9950,52 +8120,6 @@ def test_get_secret_version_rest_flattened_error(transport: str = "rest"):
             service.GetSecretVersionRequest(),
             name="name_value",
         )
-
-
-def test_get_secret_version_rest_error():
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.AccessSecretVersionRequest,
-        dict,
-    ],
-)
-def test_access_secret_version_rest(request_type):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = service.AccessSecretVersionResponse(
-            name="name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = service.AccessSecretVersionResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.access_secret_version(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, service.AccessSecretVersionResponse)
-    assert response.name == "name_value"
 
 
 def test_access_secret_version_rest_use_cached_wrapped_rpc():
@@ -10122,87 +8246,6 @@ def test_access_secret_version_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_access_secret_version_rest_interceptors(null_interceptor):
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.SecretManagerServiceRestInterceptor(),
-    )
-    client = SecretManagerServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_access_secret_version"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_access_secret_version"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.AccessSecretVersionRequest.pb(
-            service.AccessSecretVersionRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = service.AccessSecretVersionResponse.to_json(
-            service.AccessSecretVersionResponse()
-        )
-
-        request = service.AccessSecretVersionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = service.AccessSecretVersionResponse()
-
-        client.access_secret_version(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_access_secret_version_rest_bad_request(
-    transport: str = "rest", request_type=service.AccessSecretVersionRequest
-):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.access_secret_version(request)
-
-
 def test_access_secret_version_rest_flattened():
     client = SecretManagerServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10258,58 +8301,6 @@ def test_access_secret_version_rest_flattened_error(transport: str = "rest"):
             service.AccessSecretVersionRequest(),
             name="name_value",
         )
-
-
-def test_access_secret_version_rest_error():
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.DisableSecretVersionRequest,
-        dict,
-    ],
-)
-def test_disable_secret_version_rest(request_type):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resources.SecretVersion(
-            name="name_value",
-            state=resources.SecretVersion.State.ENABLED,
-            etag="etag_value",
-            client_specified_payload_checksum=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resources.SecretVersion.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.disable_secret_version(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.SecretVersion)
-    assert response.name == "name_value"
-    assert response.state == resources.SecretVersion.State.ENABLED
-    assert response.etag == "etag_value"
-    assert response.client_specified_payload_checksum is True
 
 
 def test_disable_secret_version_rest_use_cached_wrapped_rpc():
@@ -10437,87 +8428,6 @@ def test_disable_secret_version_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_disable_secret_version_rest_interceptors(null_interceptor):
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.SecretManagerServiceRestInterceptor(),
-    )
-    client = SecretManagerServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_disable_secret_version"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_disable_secret_version"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.DisableSecretVersionRequest.pb(
-            service.DisableSecretVersionRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = resources.SecretVersion.to_json(
-            resources.SecretVersion()
-        )
-
-        request = service.DisableSecretVersionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = resources.SecretVersion()
-
-        client.disable_secret_version(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_disable_secret_version_rest_bad_request(
-    transport: str = "rest", request_type=service.DisableSecretVersionRequest
-):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.disable_secret_version(request)
-
-
 def test_disable_secret_version_rest_flattened():
     client = SecretManagerServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10573,58 +8483,6 @@ def test_disable_secret_version_rest_flattened_error(transport: str = "rest"):
             service.DisableSecretVersionRequest(),
             name="name_value",
         )
-
-
-def test_disable_secret_version_rest_error():
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.EnableSecretVersionRequest,
-        dict,
-    ],
-)
-def test_enable_secret_version_rest(request_type):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resources.SecretVersion(
-            name="name_value",
-            state=resources.SecretVersion.State.ENABLED,
-            etag="etag_value",
-            client_specified_payload_checksum=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resources.SecretVersion.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.enable_secret_version(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.SecretVersion)
-    assert response.name == "name_value"
-    assert response.state == resources.SecretVersion.State.ENABLED
-    assert response.etag == "etag_value"
-    assert response.client_specified_payload_checksum is True
 
 
 def test_enable_secret_version_rest_use_cached_wrapped_rpc():
@@ -10752,87 +8610,6 @@ def test_enable_secret_version_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_enable_secret_version_rest_interceptors(null_interceptor):
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.SecretManagerServiceRestInterceptor(),
-    )
-    client = SecretManagerServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_enable_secret_version"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_enable_secret_version"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.EnableSecretVersionRequest.pb(
-            service.EnableSecretVersionRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = resources.SecretVersion.to_json(
-            resources.SecretVersion()
-        )
-
-        request = service.EnableSecretVersionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = resources.SecretVersion()
-
-        client.enable_secret_version(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_enable_secret_version_rest_bad_request(
-    transport: str = "rest", request_type=service.EnableSecretVersionRequest
-):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.enable_secret_version(request)
-
-
 def test_enable_secret_version_rest_flattened():
     client = SecretManagerServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -10888,58 +8665,6 @@ def test_enable_secret_version_rest_flattened_error(transport: str = "rest"):
             service.EnableSecretVersionRequest(),
             name="name_value",
         )
-
-
-def test_enable_secret_version_rest_error():
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        service.DestroySecretVersionRequest,
-        dict,
-    ],
-)
-def test_destroy_secret_version_rest(request_type):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resources.SecretVersion(
-            name="name_value",
-            state=resources.SecretVersion.State.ENABLED,
-            etag="etag_value",
-            client_specified_payload_checksum=True,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resources.SecretVersion.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.destroy_secret_version(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resources.SecretVersion)
-    assert response.name == "name_value"
-    assert response.state == resources.SecretVersion.State.ENABLED
-    assert response.etag == "etag_value"
-    assert response.client_specified_payload_checksum is True
 
 
 def test_destroy_secret_version_rest_use_cached_wrapped_rpc():
@@ -11067,87 +8792,6 @@ def test_destroy_secret_version_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_destroy_secret_version_rest_interceptors(null_interceptor):
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.SecretManagerServiceRestInterceptor(),
-    )
-    client = SecretManagerServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_destroy_secret_version"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_destroy_secret_version"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = service.DestroySecretVersionRequest.pb(
-            service.DestroySecretVersionRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = resources.SecretVersion.to_json(
-            resources.SecretVersion()
-        )
-
-        request = service.DestroySecretVersionRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = resources.SecretVersion()
-
-        client.destroy_secret_version(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_destroy_secret_version_rest_bad_request(
-    transport: str = "rest", request_type=service.DestroySecretVersionRequest
-):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.destroy_secret_version(request)
-
-
 def test_destroy_secret_version_rest_flattened():
     client = SecretManagerServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11203,52 +8847,6 @@ def test_destroy_secret_version_rest_flattened_error(transport: str = "rest"):
             service.DestroySecretVersionRequest(),
             name="name_value",
         )
-
-
-def test_destroy_secret_version_rest_error():
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.SetIamPolicyRequest,
-        dict,
-    ],
-)
-def test_set_iam_policy_rest(request_type):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/secrets/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = policy_pb2.Policy(
-            version=774,
-            etag=b"etag_blob",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.set_iam_policy(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-    assert response.version == 774
-    assert response.etag == b"etag_blob"
 
 
 def test_set_iam_policy_rest_use_cached_wrapped_rpc():
@@ -11377,129 +8975,6 @@ def test_set_iam_policy_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_set_iam_policy_rest_interceptors(null_interceptor):
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.SecretManagerServiceRestInterceptor(),
-    )
-    client = SecretManagerServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_set_iam_policy"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_set_iam_policy"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = iam_policy_pb2.SetIamPolicyRequest()
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(policy_pb2.Policy())
-
-        request = iam_policy_pb2.SetIamPolicyRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = policy_pb2.Policy()
-
-        client.set_iam_policy(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_set_iam_policy_rest_bad_request(
-    transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
-):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/secrets/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.set_iam_policy(request)
-
-
-def test_set_iam_policy_rest_error():
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.GetIamPolicyRequest,
-        dict,
-    ],
-)
-def test_get_iam_policy_rest(request_type):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/secrets/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = policy_pb2.Policy(
-            version=774,
-            etag=b"etag_blob",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_iam_policy(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-    assert response.version == 774
-    assert response.etag == b"etag_blob"
-
-
 def test_get_iam_policy_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -11617,127 +9092,6 @@ def test_get_iam_policy_rest_unset_required_fields():
 
     unset_fields = transport.get_iam_policy._get_unset_required_fields({})
     assert set(unset_fields) == (set(("options",)) & set(("resource",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_iam_policy_rest_interceptors(null_interceptor):
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.SecretManagerServiceRestInterceptor(),
-    )
-    client = SecretManagerServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_get_iam_policy"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_get_iam_policy"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = iam_policy_pb2.GetIamPolicyRequest()
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(policy_pb2.Policy())
-
-        request = iam_policy_pb2.GetIamPolicyRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = policy_pb2.Policy()
-
-        client.get_iam_policy(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_iam_policy_rest_bad_request(
-    transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
-):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/secrets/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_iam_policy(request)
-
-
-def test_get_iam_policy_rest_error():
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        iam_policy_pb2.TestIamPermissionsRequest,
-        dict,
-    ],
-)
-def test_test_iam_permissions_rest(request_type):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/secrets/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = iam_policy_pb2.TestIamPermissionsResponse(
-            permissions=["permissions_value"],
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.test_iam_permissions(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
-    assert response.permissions == ["permissions_value"]
 
 
 def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
@@ -11874,91 +9228,6 @@ def test_test_iam_permissions_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_test_iam_permissions_rest_interceptors(null_interceptor):
-    transport = transports.SecretManagerServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.SecretManagerServiceRestInterceptor(),
-    )
-    client = SecretManagerServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_test_iam_permissions"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_test_iam_permissions"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = iam_policy_pb2.TestIamPermissionsRequest()
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            iam_policy_pb2.TestIamPermissionsResponse()
-        )
-
-        request = iam_policy_pb2.TestIamPermissionsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
-
-        client.test_iam_permissions(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_test_iam_permissions_rest_bad_request(
-    transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
-):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"resource": "projects/sample1/secrets/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.test_iam_permissions(request)
-
-
-def test_test_iam_permissions_rest_error():
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.SecretManagerServiceGrpcTransport(
@@ -12051,18 +9320,3219 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = SecretManagerServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_secrets_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_secrets), "__call__") as call:
+        call.return_value = service.ListSecretsResponse()
+        client.list_secrets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListSecretsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_secret_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_secret), "__call__") as call:
+        call.return_value = resources.Secret()
+        client.create_secret(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateSecretRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_add_secret_version_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.add_secret_version), "__call__"
+    ) as call:
+        call.return_value = resources.SecretVersion()
+        client.add_secret_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.AddSecretVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_secret_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_secret), "__call__") as call:
+        call.return_value = resources.Secret()
+        client.get_secret(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetSecretRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_secret_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_secret), "__call__") as call:
+        call.return_value = resources.Secret()
+        client.update_secret(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateSecretRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_secret_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_secret), "__call__") as call:
+        call.return_value = None
+        client.delete_secret(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteSecretRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_secret_versions_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_secret_versions), "__call__"
+    ) as call:
+        call.return_value = service.ListSecretVersionsResponse()
+        client.list_secret_versions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListSecretVersionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_secret_version_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_secret_version), "__call__"
+    ) as call:
+        call.return_value = resources.SecretVersion()
+        client.get_secret_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetSecretVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_access_secret_version_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.access_secret_version), "__call__"
+    ) as call:
+        call.return_value = service.AccessSecretVersionResponse()
+        client.access_secret_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.AccessSecretVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_disable_secret_version_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_secret_version), "__call__"
+    ) as call:
+        call.return_value = resources.SecretVersion()
+        client.disable_secret_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DisableSecretVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_enable_secret_version_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_secret_version), "__call__"
+    ) as call:
+        call.return_value = resources.SecretVersion()
+        client.enable_secret_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.EnableSecretVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_destroy_secret_version_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.destroy_secret_version), "__call__"
+    ) as call:
+        call.return_value = resources.SecretVersion()
+        client.destroy_secret_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DestroySecretVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_set_iam_policy_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        call.return_value = policy_pb2.Policy()
+        client.set_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.SetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_iam_policy_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        call.return_value = policy_pb2.Policy()
+        client.get_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.GetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_test_iam_permissions_empty_call_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+        client.test_iam_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = SecretManagerServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_secrets_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_secrets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListSecretsResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        await client.list_secrets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListSecretsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_secret_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_secret), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.Secret(
+                name="name_value",
+                etag="etag_value",
+            )
+        )
+        await client.create_secret(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateSecretRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_add_secret_version_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.add_secret_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion(
+                name="name_value",
+                state=resources.SecretVersion.State.ENABLED,
+                etag="etag_value",
+                client_specified_payload_checksum=True,
+            )
+        )
+        await client.add_secret_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.AddSecretVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_secret_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_secret), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.Secret(
+                name="name_value",
+                etag="etag_value",
+            )
+        )
+        await client.get_secret(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetSecretRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_secret_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_secret), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.Secret(
+                name="name_value",
+                etag="etag_value",
+            )
+        )
+        await client.update_secret(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateSecretRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_secret_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_secret), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_secret(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteSecretRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_secret_versions_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_secret_versions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListSecretVersionsResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        await client.list_secret_versions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListSecretVersionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_secret_version_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_secret_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion(
+                name="name_value",
+                state=resources.SecretVersion.State.ENABLED,
+                etag="etag_value",
+                client_specified_payload_checksum=True,
+            )
+        )
+        await client.get_secret_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetSecretVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_access_secret_version_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.access_secret_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.AccessSecretVersionResponse(
+                name="name_value",
+            )
+        )
+        await client.access_secret_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.AccessSecretVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_disable_secret_version_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_secret_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion(
+                name="name_value",
+                state=resources.SecretVersion.State.ENABLED,
+                etag="etag_value",
+                client_specified_payload_checksum=True,
+            )
+        )
+        await client.disable_secret_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DisableSecretVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_enable_secret_version_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_secret_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion(
+                name="name_value",
+                state=resources.SecretVersion.State.ENABLED,
+                etag="etag_value",
+                client_specified_payload_checksum=True,
+            )
+        )
+        await client.enable_secret_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.EnableSecretVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_destroy_secret_version_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.destroy_secret_version), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SecretVersion(
+                name="name_value",
+                state=resources.SecretVersion.State.ENABLED,
+                etag="etag_value",
+                client_specified_payload_checksum=True,
+            )
+        )
+        await client.destroy_secret_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DestroySecretVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_set_iam_policy_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+        await client.set_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.SetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_iam_policy_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+        await client.get_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.GetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_test_iam_permissions_empty_call_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse(
+                permissions=["permissions_value"],
+            )
+        )
+        await client.test_iam_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = SecretManagerServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_list_secrets_rest_bad_request(request_type=service.ListSecretsRequest):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_secrets(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        service.ListSecretsRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = SecretManagerServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_list_secrets_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListSecretsResponse(
+            next_page_token="next_page_token_value",
+            total_size=1086,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = service.ListSecretsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_secrets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSecretsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_secrets_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "post_list_secrets"
+    ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "pre_list_secrets"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListSecretsRequest.pb(service.ListSecretsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = service.ListSecretsResponse.to_json(
+            service.ListSecretsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = service.ListSecretsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListSecretsResponse()
+
+        client.list_secrets(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_secret_rest_bad_request(request_type=service.CreateSecretRequest):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_secret(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateSecretRequest,
+        dict,
+    ],
+)
+def test_create_secret_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1"}
+    request_init["secret"] = {
+        "name": "name_value",
+        "replication": {
+            "automatic": {
+                "customer_managed_encryption": {"kms_key_name": "kms_key_name_value"}
+            },
+            "user_managed": {
+                "replicas": [
+                    {"location": "location_value", "customer_managed_encryption": {}}
+                ]
+            },
+        },
+        "create_time": {"seconds": 751, "nanos": 543},
+        "labels": {},
+        "topics": [{"name": "name_value"}],
+        "expire_time": {},
+        "ttl": {"seconds": 751, "nanos": 543},
+        "etag": "etag_value",
+        "rotation": {"next_rotation_time": {}, "rotation_period": {}},
+        "version_aliases": {},
+        "annotations": {},
+        "version_destroy_ttl": {},
+        "customer_managed_encryption": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.CreateSecretRequest.meta.fields["secret"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["secret"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["secret"][field])):
+                    del request_init["secret"][field][i][subfield]
+            else:
+                del request_init["secret"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Secret(
+            name="name_value",
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.Secret.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_secret(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Secret)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_secret_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "post_create_secret"
+    ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "pre_create_secret"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.CreateSecretRequest.pb(service.CreateSecretRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.Secret.to_json(resources.Secret())
+        req.return_value.content = return_value
+
+        request = service.CreateSecretRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Secret()
+
+        client.create_secret(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_add_secret_version_rest_bad_request(
+    request_type=service.AddSecretVersionRequest,
+):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.add_secret_version(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.AddSecretVersionRequest,
+        dict,
+    ],
+)
+def test_add_secret_version_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SecretVersion(
+            name="name_value",
+            state=resources.SecretVersion.State.ENABLED,
+            etag="etag_value",
+            client_specified_payload_checksum=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.SecretVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.add_secret_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SecretVersion)
+    assert response.name == "name_value"
+    assert response.state == resources.SecretVersion.State.ENABLED
+    assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_add_secret_version_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "post_add_secret_version"
+    ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "pre_add_secret_version"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.AddSecretVersionRequest.pb(
+            service.AddSecretVersionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.SecretVersion.to_json(resources.SecretVersion())
+        req.return_value.content = return_value
+
+        request = service.AddSecretVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.SecretVersion()
+
+        client.add_secret_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_secret_rest_bad_request(request_type=service.GetSecretRequest):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_secret(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetSecretRequest,
+        dict,
+    ],
+)
+def test_get_secret_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Secret(
+            name="name_value",
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.Secret.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_secret(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Secret)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_secret_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "post_get_secret"
+    ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "pre_get_secret"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetSecretRequest.pb(service.GetSecretRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.Secret.to_json(resources.Secret())
+        req.return_value.content = return_value
+
+        request = service.GetSecretRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Secret()
+
+        client.get_secret(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_secret_rest_bad_request(request_type=service.UpdateSecretRequest):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"secret": {"name": "projects/sample1/secrets/sample2"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_secret(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateSecretRequest,
+        dict,
+    ],
+)
+def test_update_secret_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"secret": {"name": "projects/sample1/secrets/sample2"}}
+    request_init["secret"] = {
+        "name": "projects/sample1/secrets/sample2",
+        "replication": {
+            "automatic": {
+                "customer_managed_encryption": {"kms_key_name": "kms_key_name_value"}
+            },
+            "user_managed": {
+                "replicas": [
+                    {"location": "location_value", "customer_managed_encryption": {}}
+                ]
+            },
+        },
+        "create_time": {"seconds": 751, "nanos": 543},
+        "labels": {},
+        "topics": [{"name": "name_value"}],
+        "expire_time": {},
+        "ttl": {"seconds": 751, "nanos": 543},
+        "etag": "etag_value",
+        "rotation": {"next_rotation_time": {}, "rotation_period": {}},
+        "version_aliases": {},
+        "annotations": {},
+        "version_destroy_ttl": {},
+        "customer_managed_encryption": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.UpdateSecretRequest.meta.fields["secret"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["secret"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["secret"][field])):
+                    del request_init["secret"][field][i][subfield]
+            else:
+                del request_init["secret"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.Secret(
+            name="name_value",
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.Secret.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_secret(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.Secret)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_secret_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "post_update_secret"
+    ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "pre_update_secret"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.UpdateSecretRequest.pb(service.UpdateSecretRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.Secret.to_json(resources.Secret())
+        req.return_value.content = return_value
+
+        request = service.UpdateSecretRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.Secret()
+
+        client.update_secret(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_secret_rest_bad_request(request_type=service.DeleteSecretRequest):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_secret(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteSecretRequest,
+        dict,
+    ],
+)
+def test_delete_secret_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_secret(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_secret_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "pre_delete_secret"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = service.DeleteSecretRequest.pb(service.DeleteSecretRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = service.DeleteSecretRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_secret(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_list_secret_versions_rest_bad_request(
+    request_type=service.ListSecretVersionsRequest,
+):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_secret_versions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListSecretVersionsRequest,
+        dict,
+    ],
+)
+def test_list_secret_versions_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.ListSecretVersionsResponse(
+            next_page_token="next_page_token_value",
+            total_size=1086,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = service.ListSecretVersionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_secret_versions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSecretVersionsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_secret_versions_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "post_list_secret_versions"
+    ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "pre_list_secret_versions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.ListSecretVersionsRequest.pb(
+            service.ListSecretVersionsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = service.ListSecretVersionsResponse.to_json(
+            service.ListSecretVersionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = service.ListSecretVersionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.ListSecretVersionsResponse()
+
+        client.list_secret_versions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_secret_version_rest_bad_request(
+    request_type=service.GetSecretVersionRequest,
+):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_secret_version(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetSecretVersionRequest,
+        dict,
+    ],
+)
+def test_get_secret_version_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SecretVersion(
+            name="name_value",
+            state=resources.SecretVersion.State.ENABLED,
+            etag="etag_value",
+            client_specified_payload_checksum=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.SecretVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_secret_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SecretVersion)
+    assert response.name == "name_value"
+    assert response.state == resources.SecretVersion.State.ENABLED
+    assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_secret_version_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "post_get_secret_version"
+    ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "pre_get_secret_version"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetSecretVersionRequest.pb(
+            service.GetSecretVersionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.SecretVersion.to_json(resources.SecretVersion())
+        req.return_value.content = return_value
+
+        request = service.GetSecretVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.SecretVersion()
+
+        client.get_secret_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_access_secret_version_rest_bad_request(
+    request_type=service.AccessSecretVersionRequest,
+):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.access_secret_version(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.AccessSecretVersionRequest,
+        dict,
+    ],
+)
+def test_access_secret_version_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.AccessSecretVersionResponse(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = service.AccessSecretVersionResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.access_secret_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.AccessSecretVersionResponse)
+    assert response.name == "name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_access_secret_version_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "post_access_secret_version"
+    ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "pre_access_secret_version"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.AccessSecretVersionRequest.pb(
+            service.AccessSecretVersionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = service.AccessSecretVersionResponse.to_json(
+            service.AccessSecretVersionResponse()
+        )
+        req.return_value.content = return_value
+
+        request = service.AccessSecretVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.AccessSecretVersionResponse()
+
+        client.access_secret_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_disable_secret_version_rest_bad_request(
+    request_type=service.DisableSecretVersionRequest,
+):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.disable_secret_version(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DisableSecretVersionRequest,
+        dict,
+    ],
+)
+def test_disable_secret_version_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SecretVersion(
+            name="name_value",
+            state=resources.SecretVersion.State.ENABLED,
+            etag="etag_value",
+            client_specified_payload_checksum=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.SecretVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.disable_secret_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SecretVersion)
+    assert response.name == "name_value"
+    assert response.state == resources.SecretVersion.State.ENABLED
+    assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_disable_secret_version_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "post_disable_secret_version"
+    ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "pre_disable_secret_version"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.DisableSecretVersionRequest.pb(
+            service.DisableSecretVersionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.SecretVersion.to_json(resources.SecretVersion())
+        req.return_value.content = return_value
+
+        request = service.DisableSecretVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.SecretVersion()
+
+        client.disable_secret_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_enable_secret_version_rest_bad_request(
+    request_type=service.EnableSecretVersionRequest,
+):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.enable_secret_version(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.EnableSecretVersionRequest,
+        dict,
+    ],
+)
+def test_enable_secret_version_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SecretVersion(
+            name="name_value",
+            state=resources.SecretVersion.State.ENABLED,
+            etag="etag_value",
+            client_specified_payload_checksum=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.SecretVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.enable_secret_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SecretVersion)
+    assert response.name == "name_value"
+    assert response.state == resources.SecretVersion.State.ENABLED
+    assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_enable_secret_version_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "post_enable_secret_version"
+    ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "pre_enable_secret_version"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.EnableSecretVersionRequest.pb(
+            service.EnableSecretVersionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.SecretVersion.to_json(resources.SecretVersion())
+        req.return_value.content = return_value
+
+        request = service.EnableSecretVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.SecretVersion()
+
+        client.enable_secret_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_destroy_secret_version_rest_bad_request(
+    request_type=service.DestroySecretVersionRequest,
+):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.destroy_secret_version(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DestroySecretVersionRequest,
+        dict,
+    ],
+)
+def test_destroy_secret_version_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/secrets/sample2/versions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SecretVersion(
+            name="name_value",
+            state=resources.SecretVersion.State.ENABLED,
+            etag="etag_value",
+            client_specified_payload_checksum=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resources.SecretVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.destroy_secret_version(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SecretVersion)
+    assert response.name == "name_value"
+    assert response.state == resources.SecretVersion.State.ENABLED
+    assert response.etag == "etag_value"
+    assert response.client_specified_payload_checksum is True
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_destroy_secret_version_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "post_destroy_secret_version"
+    ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "pre_destroy_secret_version"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.DestroySecretVersionRequest.pb(
+            service.DestroySecretVersionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resources.SecretVersion.to_json(resources.SecretVersion())
+        req.return_value.content = return_value
+
+        request = service.DestroySecretVersionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.SecretVersion()
+
+        client.destroy_secret_version(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_set_iam_policy_rest_bad_request(
+    request_type=iam_policy_pb2.SetIamPolicyRequest,
+):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.set_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_set_iam_policy_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.set_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+    assert response.version == 774
+    assert response.etag == b"etag_blob"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_set_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "post_set_iam_policy"
+    ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "pre_set_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = iam_policy_pb2.SetIamPolicyRequest()
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(policy_pb2.Policy())
+        req.return_value.content = return_value
+
+        request = iam_policy_pb2.SetIamPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = policy_pb2.Policy()
+
+        client.set_iam_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_iam_policy_rest_bad_request(
+    request_type=iam_policy_pb2.GetIamPolicyRequest,
+):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_iam_policy(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
+def test_get_iam_policy_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_iam_policy(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, policy_pb2.Policy)
+    assert response.version == 774
+    assert response.etag == b"etag_blob"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_iam_policy_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "post_get_iam_policy"
+    ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "pre_get_iam_policy"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = iam_policy_pb2.GetIamPolicyRequest()
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(policy_pb2.Policy())
+        req.return_value.content = return_value
+
+        request = iam_policy_pb2.GetIamPolicyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = policy_pb2.Policy()
+
+        client.get_iam_policy(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_test_iam_permissions_rest_bad_request(
+    request_type=iam_policy_pb2.TestIamPermissionsRequest,
+):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.test_iam_permissions(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
+)
+def test_test_iam_permissions_rest_call_success(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"resource": "projects/sample1/secrets/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = iam_policy_pb2.TestIamPermissionsResponse(
+            permissions=["permissions_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.test_iam_permissions(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
+    assert response.permissions == ["permissions_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_test_iam_permissions_rest_interceptors(null_interceptor):
+    transport = transports.SecretManagerServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecretManagerServiceRestInterceptor(),
+    )
+    client = SecretManagerServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "post_test_iam_permissions"
+    ) as post, mock.patch.object(
+        transports.SecretManagerServiceRestInterceptor, "pre_test_iam_permissions"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = iam_policy_pb2.TestIamPermissionsRequest()
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(
+            iam_policy_pb2.TestIamPermissionsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = iam_policy_pb2.TestIamPermissionsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = iam_policy_pb2.TestIamPermissionsResponse()
+
+        client.test_iam_permissions(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    request_type=locations_pb2.ListLocationsRequest,
+):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_initialize_client_w_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_secrets_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_secrets), "__call__") as call:
+        client.list_secrets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListSecretsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_secret_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_secret), "__call__") as call:
+        client.create_secret(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.CreateSecretRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_add_secret_version_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.add_secret_version), "__call__"
+    ) as call:
+        client.add_secret_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.AddSecretVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_secret_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_secret), "__call__") as call:
+        client.get_secret(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetSecretRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_secret_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_secret), "__call__") as call:
+        client.update_secret(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.UpdateSecretRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_secret_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_secret), "__call__") as call:
+        client.delete_secret(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DeleteSecretRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_secret_versions_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_secret_versions), "__call__"
+    ) as call:
+        client.list_secret_versions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.ListSecretVersionsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_secret_version_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_secret_version), "__call__"
+    ) as call:
+        client.get_secret_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.GetSecretVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_access_secret_version_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.access_secret_version), "__call__"
+    ) as call:
+        client.access_secret_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.AccessSecretVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_disable_secret_version_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_secret_version), "__call__"
+    ) as call:
+        client.disable_secret_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DisableSecretVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_enable_secret_version_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_secret_version), "__call__"
+    ) as call:
+        client.enable_secret_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.EnableSecretVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_destroy_secret_version_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.destroy_secret_version), "__call__"
+    ) as call:
+        client.destroy_secret_version(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.DestroySecretVersionRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_set_iam_policy_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        client.set_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.SetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_iam_policy_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        client.get_iam_policy(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.GetIamPolicyRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_test_iam_permissions_empty_call_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        client.test_iam_permissions(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = iam_policy_pb2.TestIamPermissionsRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -12748,134 +13218,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
-def test_get_location_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
-):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_location(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.GetLocationRequest,
-        dict,
-    ],
-)
-def test_get_location_rest(request_type):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.Location()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_location(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.Location)
-
-
-def test_list_locations_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
-):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({"name": "projects/sample1"}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_locations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.ListLocationsRequest,
-        dict,
-    ],
-)
-def test_list_locations_rest(request_type):
-    client = SecretManagerServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.ListLocationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_locations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.ListLocationsResponse)
-
-
 def test_list_locations(transport: str = "grpc"):
     client = SecretManagerServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -12903,7 +13245,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -12958,7 +13300,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13005,7 +13347,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -13048,7 +13390,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -13102,9 +13444,7 @@ def test_get_location_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
-    client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    client = SecretManagerServiceAsyncClient(credentials=async_anonymous_credentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -13150,7 +13490,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = SecretManagerServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -13166,22 +13506,41 @@ async def test_get_location_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = SecretManagerServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = SecretManagerServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+    client = SecretManagerServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

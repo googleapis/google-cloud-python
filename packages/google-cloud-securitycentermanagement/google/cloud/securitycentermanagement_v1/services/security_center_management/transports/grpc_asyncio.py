@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -228,6 +229,9 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1002,7 +1006,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_effective_security_health_analytics_custom_modules: gapic_v1.method_async.wrap_method(
+            self.list_effective_security_health_analytics_custom_modules: self._wrap_method(
                 self.list_effective_security_health_analytics_custom_modules,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1017,7 +1021,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_effective_security_health_analytics_custom_module: gapic_v1.method_async.wrap_method(
+            self.get_effective_security_health_analytics_custom_module: self._wrap_method(
                 self.get_effective_security_health_analytics_custom_module,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1032,7 +1036,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_security_health_analytics_custom_modules: gapic_v1.method_async.wrap_method(
+            self.list_security_health_analytics_custom_modules: self._wrap_method(
                 self.list_security_health_analytics_custom_modules,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1047,7 +1051,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_descendant_security_health_analytics_custom_modules: gapic_v1.method_async.wrap_method(
+            self.list_descendant_security_health_analytics_custom_modules: self._wrap_method(
                 self.list_descendant_security_health_analytics_custom_modules,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1062,7 +1066,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_security_health_analytics_custom_module: gapic_v1.method_async.wrap_method(
+            self.get_security_health_analytics_custom_module: self._wrap_method(
                 self.get_security_health_analytics_custom_module,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1077,22 +1081,22 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_security_health_analytics_custom_module: gapic_v1.method_async.wrap_method(
+            self.create_security_health_analytics_custom_module: self._wrap_method(
                 self.create_security_health_analytics_custom_module,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_security_health_analytics_custom_module: gapic_v1.method_async.wrap_method(
+            self.update_security_health_analytics_custom_module: self._wrap_method(
                 self.update_security_health_analytics_custom_module,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_security_health_analytics_custom_module: gapic_v1.method_async.wrap_method(
+            self.delete_security_health_analytics_custom_module: self._wrap_method(
                 self.delete_security_health_analytics_custom_module,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.simulate_security_health_analytics_custom_module: gapic_v1.method_async.wrap_method(
+            self.simulate_security_health_analytics_custom_module: self._wrap_method(
                 self.simulate_security_health_analytics_custom_module,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1107,7 +1111,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_effective_event_threat_detection_custom_modules: gapic_v1.method_async.wrap_method(
+            self.list_effective_event_threat_detection_custom_modules: self._wrap_method(
                 self.list_effective_event_threat_detection_custom_modules,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1122,7 +1126,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_effective_event_threat_detection_custom_module: gapic_v1.method_async.wrap_method(
+            self.get_effective_event_threat_detection_custom_module: self._wrap_method(
                 self.get_effective_event_threat_detection_custom_module,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1137,7 +1141,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_event_threat_detection_custom_modules: gapic_v1.method_async.wrap_method(
+            self.list_event_threat_detection_custom_modules: self._wrap_method(
                 self.list_event_threat_detection_custom_modules,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1152,7 +1156,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_descendant_event_threat_detection_custom_modules: gapic_v1.method_async.wrap_method(
+            self.list_descendant_event_threat_detection_custom_modules: self._wrap_method(
                 self.list_descendant_event_threat_detection_custom_modules,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1167,7 +1171,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_event_threat_detection_custom_module: gapic_v1.method_async.wrap_method(
+            self.get_event_threat_detection_custom_module: self._wrap_method(
                 self.get_event_threat_detection_custom_module,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1182,22 +1186,22 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.create_event_threat_detection_custom_module: gapic_v1.method_async.wrap_method(
+            self.create_event_threat_detection_custom_module: self._wrap_method(
                 self.create_event_threat_detection_custom_module,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.update_event_threat_detection_custom_module: gapic_v1.method_async.wrap_method(
+            self.update_event_threat_detection_custom_module: self._wrap_method(
                 self.update_event_threat_detection_custom_module,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.delete_event_threat_detection_custom_module: gapic_v1.method_async.wrap_method(
+            self.delete_event_threat_detection_custom_module: self._wrap_method(
                 self.delete_event_threat_detection_custom_module,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.validate_event_threat_detection_custom_module: gapic_v1.method_async.wrap_method(
+            self.validate_event_threat_detection_custom_module: self._wrap_method(
                 self.validate_event_threat_detection_custom_module,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1212,25 +1216,44 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.get_security_center_service: gapic_v1.method_async.wrap_method(
+            self.get_security_center_service: self._wrap_method(
                 self.get_security_center_service,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_security_center_services: gapic_v1.method_async.wrap_method(
+            self.list_security_center_services: self._wrap_method(
                 self.list_security_center_services,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_security_center_service: gapic_v1.method_async.wrap_method(
+            self.update_security_center_service: self._wrap_method(
                 self.update_security_center_service,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def list_locations(

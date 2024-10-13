@@ -22,18 +22,11 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.oauth2 import service_account
+from google.api_core import api_core_version
 from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
@@ -42,6 +35,22 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import client_options
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+import google.auth
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.oauth2 import service_account
 
 from google.cloud.resourcesettings_v1.services.resource_settings_service import (
     ResourceSettingsServiceAsyncClient,
@@ -52,8 +61,22 @@ from google.cloud.resourcesettings_v1.services.resource_settings_service import 
 from google.cloud.resourcesettings_v1.types import resource_settings
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1225,25 +1248,6 @@ def test_list_settings(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_settings_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ResourceSettingsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_settings), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_settings()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == resource_settings.ListSettingsRequest()
-
-
 def test_list_settings_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1310,29 +1314,6 @@ def test_list_settings_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_settings_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ResourceSettingsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_settings), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resource_settings.ListSettingsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_settings()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == resource_settings.ListSettingsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_settings_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1340,7 +1321,7 @@ async def test_list_settings_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ResourceSettingsServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1379,7 +1360,7 @@ async def test_list_settings_async(
     transport: str = "grpc_asyncio", request_type=resource_settings.ListSettingsRequest
 ):
     client = ResourceSettingsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1445,7 +1426,7 @@ def test_list_settings_field_headers():
 @pytest.mark.asyncio
 async def test_list_settings_field_headers_async():
     client = ResourceSettingsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1515,7 +1496,7 @@ def test_list_settings_flattened_error():
 @pytest.mark.asyncio
 async def test_list_settings_flattened_async():
     client = ResourceSettingsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1544,7 +1525,7 @@ async def test_list_settings_flattened_async():
 @pytest.mark.asyncio
 async def test_list_settings_flattened_error_async():
     client = ResourceSettingsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1654,7 +1635,7 @@ def test_list_settings_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_settings_async_pager():
     client = ResourceSettingsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1704,7 +1685,7 @@ async def test_list_settings_async_pager():
 @pytest.mark.asyncio
 async def test_list_settings_async_pages():
     client = ResourceSettingsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1788,25 +1769,6 @@ def test_get_setting(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
 
 
-def test_get_setting_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ResourceSettingsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_setting), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_setting()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == resource_settings.GetSettingRequest()
-
-
 def test_get_setting_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1871,30 +1833,6 @@ def test_get_setting_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_setting_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ResourceSettingsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_setting), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resource_settings.Setting(
-                name="name_value",
-                etag="etag_value",
-            )
-        )
-        response = await client.get_setting()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == resource_settings.GetSettingRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_setting_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1902,7 +1840,7 @@ async def test_get_setting_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ResourceSettingsServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1941,7 +1879,7 @@ async def test_get_setting_async(
     transport: str = "grpc_asyncio", request_type=resource_settings.GetSettingRequest
 ):
     client = ResourceSettingsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2009,7 +1947,7 @@ def test_get_setting_field_headers():
 @pytest.mark.asyncio
 async def test_get_setting_field_headers_async():
     client = ResourceSettingsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2079,7 +2017,7 @@ def test_get_setting_flattened_error():
 @pytest.mark.asyncio
 async def test_get_setting_flattened_async():
     client = ResourceSettingsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2108,7 +2046,7 @@ async def test_get_setting_flattened_async():
 @pytest.mark.asyncio
 async def test_get_setting_flattened_error_async():
     client = ResourceSettingsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2156,25 +2094,6 @@ def test_update_setting(request_type, transport: str = "grpc"):
     assert isinstance(response, resource_settings.Setting)
     assert response.name == "name_value"
     assert response.etag == "etag_value"
-
-
-def test_update_setting_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ResourceSettingsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_setting), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_setting()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == resource_settings.UpdateSettingRequest()
 
 
 def test_update_setting_non_empty_request_with_auto_populated_field():
@@ -2237,30 +2156,6 @@ def test_update_setting_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_setting_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ResourceSettingsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_setting), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resource_settings.Setting(
-                name="name_value",
-                etag="etag_value",
-            )
-        )
-        response = await client.update_setting()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == resource_settings.UpdateSettingRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_setting_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2268,7 +2163,7 @@ async def test_update_setting_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = ResourceSettingsServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2307,7 +2202,7 @@ async def test_update_setting_async(
     transport: str = "grpc_asyncio", request_type=resource_settings.UpdateSettingRequest
 ):
     client = ResourceSettingsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2375,7 +2270,7 @@ def test_update_setting_field_headers():
 @pytest.mark.asyncio
 async def test_update_setting_field_headers_async():
     client = ResourceSettingsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2402,46 +2297,6 @@ async def test_update_setting_field_headers_async():
         "x-goog-request-params",
         "setting.name=name_value",
     ) in kw["metadata"]
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        resource_settings.ListSettingsRequest,
-        dict,
-    ],
-)
-def test_list_settings_rest(request_type):
-    client = ResourceSettingsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resource_settings.ListSettingsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resource_settings.ListSettingsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_settings(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListSettingsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_settings_rest_use_cached_wrapped_rpc():
@@ -2580,87 +2435,6 @@ def test_list_settings_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_settings_rest_interceptors(null_interceptor):
-    transport = transports.ResourceSettingsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ResourceSettingsServiceRestInterceptor(),
-    )
-    client = ResourceSettingsServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ResourceSettingsServiceRestInterceptor, "post_list_settings"
-    ) as post, mock.patch.object(
-        transports.ResourceSettingsServiceRestInterceptor, "pre_list_settings"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = resource_settings.ListSettingsRequest.pb(
-            resource_settings.ListSettingsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = resource_settings.ListSettingsResponse.to_json(
-            resource_settings.ListSettingsResponse()
-        )
-
-        request = resource_settings.ListSettingsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = resource_settings.ListSettingsResponse()
-
-        client.list_settings(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_settings_rest_bad_request(
-    transport: str = "rest", request_type=resource_settings.ListSettingsRequest
-):
-    client = ResourceSettingsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "organizations/sample1"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_settings(request)
-
-
 def test_list_settings_rest_flattened():
     client = ResourceSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2777,48 +2551,6 @@ def test_list_settings_rest_pager(transport: str = "rest"):
         pages = list(client.list_settings(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        resource_settings.GetSettingRequest,
-        dict,
-    ],
-)
-def test_get_setting_rest(request_type):
-    client = ResourceSettingsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/settings/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resource_settings.Setting(
-            name="name_value",
-            etag="etag_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resource_settings.Setting.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_setting(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resource_settings.Setting)
-    assert response.name == "name_value"
-    assert response.etag == "etag_value"
 
 
 def test_get_setting_rest_use_cached_wrapped_rpc():
@@ -2942,87 +2674,6 @@ def test_get_setting_rest_unset_required_fields():
     assert set(unset_fields) == (set(("view",)) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_setting_rest_interceptors(null_interceptor):
-    transport = transports.ResourceSettingsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ResourceSettingsServiceRestInterceptor(),
-    )
-    client = ResourceSettingsServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ResourceSettingsServiceRestInterceptor, "post_get_setting"
-    ) as post, mock.patch.object(
-        transports.ResourceSettingsServiceRestInterceptor, "pre_get_setting"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = resource_settings.GetSettingRequest.pb(
-            resource_settings.GetSettingRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = resource_settings.Setting.to_json(
-            resource_settings.Setting()
-        )
-
-        request = resource_settings.GetSettingRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = resource_settings.Setting()
-
-        client.get_setting(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_setting_rest_bad_request(
-    transport: str = "rest", request_type=resource_settings.GetSettingRequest
-):
-    client = ResourceSettingsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "organizations/sample1/settings/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_setting(request)
-
-
 def test_get_setting_rest_flattened():
     client = ResourceSettingsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3076,139 +2727,6 @@ def test_get_setting_rest_flattened_error(transport: str = "rest"):
             resource_settings.GetSettingRequest(),
             name="name_value",
         )
-
-
-def test_get_setting_rest_error():
-    client = ResourceSettingsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        resource_settings.UpdateSettingRequest,
-        dict,
-    ],
-)
-def test_update_setting_rest(request_type):
-    client = ResourceSettingsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"setting": {"name": "organizations/sample1/settings/sample2"}}
-    request_init["setting"] = {
-        "name": "organizations/sample1/settings/sample2",
-        "metadata": {
-            "display_name": "display_name_value",
-            "description": "description_value",
-            "read_only": True,
-            "data_type": 1,
-            "default_value": {
-                "boolean_value": True,
-                "string_value": "string_value_value",
-                "string_set_value": {"values": ["values_value1", "values_value2"]},
-                "enum_value": {"value": "value_value"},
-            },
-        },
-        "local_value": {},
-        "effective_value": {},
-        "etag": "etag_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = resource_settings.UpdateSettingRequest.meta.fields["setting"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["setting"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["setting"][field])):
-                    del request_init["setting"][field][i][subfield]
-            else:
-                del request_init["setting"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = resource_settings.Setting(
-            name="name_value",
-            etag="etag_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = resource_settings.Setting.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_setting(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, resource_settings.Setting)
-    assert response.name == "name_value"
-    assert response.etag == "etag_value"
 
 
 def test_update_setting_rest_use_cached_wrapped_rpc():
@@ -3326,93 +2844,6 @@ def test_update_setting_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("setting",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_setting_rest_interceptors(null_interceptor):
-    transport = transports.ResourceSettingsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.ResourceSettingsServiceRestInterceptor(),
-    )
-    client = ResourceSettingsServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ResourceSettingsServiceRestInterceptor, "post_update_setting"
-    ) as post, mock.patch.object(
-        transports.ResourceSettingsServiceRestInterceptor, "pre_update_setting"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = resource_settings.UpdateSettingRequest.pb(
-            resource_settings.UpdateSettingRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = resource_settings.Setting.to_json(
-            resource_settings.Setting()
-        )
-
-        request = resource_settings.UpdateSettingRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = resource_settings.Setting()
-
-        client.update_setting(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_setting_rest_bad_request(
-    transport: str = "rest", request_type=resource_settings.UpdateSettingRequest
-):
-    client = ResourceSettingsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"setting": {"name": "organizations/sample1/settings/sample2"}}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_setting(request)
-
-
-def test_update_setting_rest_error():
-    client = ResourceSettingsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ResourceSettingsServiceGrpcTransport(
@@ -3505,18 +2936,698 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = ResourceSettingsServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = ResourceSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_settings_empty_call_grpc():
+    client = ResourceSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_settings), "__call__") as call:
+        call.return_value = resource_settings.ListSettingsResponse()
+        client.list_settings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = resource_settings.ListSettingsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_setting_empty_call_grpc():
+    client = ResourceSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_setting), "__call__") as call:
+        call.return_value = resource_settings.Setting()
+        client.get_setting(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = resource_settings.GetSettingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_setting_empty_call_grpc():
+    client = ResourceSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_setting), "__call__") as call:
+        call.return_value = resource_settings.Setting()
+        client.update_setting(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = resource_settings.UpdateSettingRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = ResourceSettingsServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = ResourceSettingsServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_settings_empty_call_grpc_asyncio():
+    client = ResourceSettingsServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resource_settings.ListSettingsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_settings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = resource_settings.ListSettingsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_setting_empty_call_grpc_asyncio():
+    client = ResourceSettingsServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_setting), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resource_settings.Setting(
+                name="name_value",
+                etag="etag_value",
+            )
+        )
+        await client.get_setting(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = resource_settings.GetSettingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_setting_empty_call_grpc_asyncio():
+    client = ResourceSettingsServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_setting), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resource_settings.Setting(
+                name="name_value",
+                etag="etag_value",
+            )
+        )
+        await client.update_setting(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = resource_settings.UpdateSettingRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = ResourceSettingsServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_list_settings_rest_bad_request(
+    request_type=resource_settings.ListSettingsRequest,
+):
+    client = ResourceSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_settings(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        resource_settings.ListSettingsRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = ResourceSettingsServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_list_settings_rest_call_success(request_type):
+    client = ResourceSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "organizations/sample1"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resource_settings.ListSettingsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resource_settings.ListSettingsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSettingsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_settings_rest_interceptors(null_interceptor):
+    transport = transports.ResourceSettingsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ResourceSettingsServiceRestInterceptor(),
+    )
+    client = ResourceSettingsServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ResourceSettingsServiceRestInterceptor, "post_list_settings"
+    ) as post, mock.patch.object(
+        transports.ResourceSettingsServiceRestInterceptor, "pre_list_settings"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = resource_settings.ListSettingsRequest.pb(
+            resource_settings.ListSettingsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resource_settings.ListSettingsResponse.to_json(
+            resource_settings.ListSettingsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = resource_settings.ListSettingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resource_settings.ListSettingsResponse()
+
+        client.list_settings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_setting_rest_bad_request(request_type=resource_settings.GetSettingRequest):
+    client = ResourceSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/settings/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_setting(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        resource_settings.GetSettingRequest,
+        dict,
+    ],
+)
+def test_get_setting_rest_call_success(request_type):
+    client = ResourceSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/settings/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resource_settings.Setting(
+            name="name_value",
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resource_settings.Setting.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_setting(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resource_settings.Setting)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_setting_rest_interceptors(null_interceptor):
+    transport = transports.ResourceSettingsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ResourceSettingsServiceRestInterceptor(),
+    )
+    client = ResourceSettingsServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ResourceSettingsServiceRestInterceptor, "post_get_setting"
+    ) as post, mock.patch.object(
+        transports.ResourceSettingsServiceRestInterceptor, "pre_get_setting"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = resource_settings.GetSettingRequest.pb(
+            resource_settings.GetSettingRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resource_settings.Setting.to_json(resource_settings.Setting())
+        req.return_value.content = return_value
+
+        request = resource_settings.GetSettingRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resource_settings.Setting()
+
+        client.get_setting(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_setting_rest_bad_request(
+    request_type=resource_settings.UpdateSettingRequest,
+):
+    client = ResourceSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"setting": {"name": "organizations/sample1/settings/sample2"}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_setting(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        resource_settings.UpdateSettingRequest,
+        dict,
+    ],
+)
+def test_update_setting_rest_call_success(request_type):
+    client = ResourceSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"setting": {"name": "organizations/sample1/settings/sample2"}}
+    request_init["setting"] = {
+        "name": "organizations/sample1/settings/sample2",
+        "metadata": {
+            "display_name": "display_name_value",
+            "description": "description_value",
+            "read_only": True,
+            "data_type": 1,
+            "default_value": {
+                "boolean_value": True,
+                "string_value": "string_value_value",
+                "string_set_value": {"values": ["values_value1", "values_value2"]},
+                "enum_value": {"value": "value_value"},
+            },
+        },
+        "local_value": {},
+        "effective_value": {},
+        "etag": "etag_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = resource_settings.UpdateSettingRequest.meta.fields["setting"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["setting"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["setting"][field])):
+                    del request_init["setting"][field][i][subfield]
+            else:
+                del request_init["setting"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resource_settings.Setting(
+            name="name_value",
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = resource_settings.Setting.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_setting(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resource_settings.Setting)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_setting_rest_interceptors(null_interceptor):
+    transport = transports.ResourceSettingsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.ResourceSettingsServiceRestInterceptor(),
+    )
+    client = ResourceSettingsServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ResourceSettingsServiceRestInterceptor, "post_update_setting"
+    ) as post, mock.patch.object(
+        transports.ResourceSettingsServiceRestInterceptor, "pre_update_setting"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = resource_settings.UpdateSettingRequest.pb(
+            resource_settings.UpdateSettingRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = resource_settings.Setting.to_json(resource_settings.Setting())
+        req.return_value.content = return_value
+
+        request = resource_settings.UpdateSettingRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resource_settings.Setting()
+
+        client.update_setting(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_initialize_client_w_rest():
+    client = ResourceSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_settings_empty_call_rest():
+    client = ResourceSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_settings), "__call__") as call:
+        client.list_settings(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = resource_settings.ListSettingsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_setting_empty_call_rest():
+    client = ResourceSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_setting), "__call__") as call:
+        client.get_setting(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = resource_settings.GetSettingRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_setting_empty_call_rest():
+    client = ResourceSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_setting), "__call__") as call:
+        client.update_setting(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = resource_settings.UpdateSettingRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -4103,36 +4214,41 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = ResourceSettingsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = ResourceSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = ResourceSettingsServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = ResourceSettingsServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = ResourceSettingsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -231,6 +232,9 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -613,7 +617,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_notification_channel_descriptors: gapic_v1.method_async.wrap_method(
+            self.list_notification_channel_descriptors: self._wrap_method(
                 self.list_notification_channel_descriptors,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -627,7 +631,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_notification_channel_descriptor: gapic_v1.method_async.wrap_method(
+            self.get_notification_channel_descriptor: self._wrap_method(
                 self.get_notification_channel_descriptor,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -641,7 +645,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.list_notification_channels: gapic_v1.method_async.wrap_method(
+            self.list_notification_channels: self._wrap_method(
                 self.list_notification_channels,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -655,7 +659,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_notification_channel: gapic_v1.method_async.wrap_method(
+            self.get_notification_channel: self._wrap_method(
                 self.get_notification_channel,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -669,17 +673,17 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.create_notification_channel: gapic_v1.method_async.wrap_method(
+            self.create_notification_channel: self._wrap_method(
                 self.create_notification_channel,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.update_notification_channel: gapic_v1.method_async.wrap_method(
+            self.update_notification_channel: self._wrap_method(
                 self.update_notification_channel,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.delete_notification_channel: gapic_v1.method_async.wrap_method(
+            self.delete_notification_channel: self._wrap_method(
                 self.delete_notification_channel,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -693,12 +697,12 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.send_notification_channel_verification_code: gapic_v1.method_async.wrap_method(
+            self.send_notification_channel_verification_code: self._wrap_method(
                 self.send_notification_channel_verification_code,
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.get_notification_channel_verification_code: gapic_v1.method_async.wrap_method(
+            self.get_notification_channel_verification_code: self._wrap_method(
                 self.get_notification_channel_verification_code,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -712,7 +716,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
                 default_timeout=30.0,
                 client_info=client_info,
             ),
-            self.verify_notification_channel: gapic_v1.method_async.wrap_method(
+            self.verify_notification_channel: self._wrap_method(
                 self.verify_notification_channel,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -728,8 +732,17 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
 
 __all__ = ("NotificationChannelServiceGrpcAsyncIOTransport",)

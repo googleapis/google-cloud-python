@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -237,6 +238,9 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1386,22 +1390,22 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.translate_text: gapic_v1.method_async.wrap_method(
+            self.translate_text: self._wrap_method(
                 self.translate_text,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.romanize_text: gapic_v1.method_async.wrap_method(
+            self.romanize_text: self._wrap_method(
                 self.romanize_text,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.detect_language: gapic_v1.method_async.wrap_method(
+            self.detect_language: self._wrap_method(
                 self.detect_language,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.get_supported_languages: gapic_v1.method_async.wrap_method(
+            self.get_supported_languages: self._wrap_method(
                 self.get_supported_languages,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1416,32 +1420,32 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.translate_document: gapic_v1.method_async.wrap_method(
+            self.translate_document: self._wrap_method(
                 self.translate_document,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.batch_translate_text: gapic_v1.method_async.wrap_method(
+            self.batch_translate_text: self._wrap_method(
                 self.batch_translate_text,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.batch_translate_document: gapic_v1.method_async.wrap_method(
+            self.batch_translate_document: self._wrap_method(
                 self.batch_translate_document,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.create_glossary: gapic_v1.method_async.wrap_method(
+            self.create_glossary: self._wrap_method(
                 self.create_glossary,
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.update_glossary: gapic_v1.method_async.wrap_method(
+            self.update_glossary: self._wrap_method(
                 self.update_glossary,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_glossaries: gapic_v1.method_async.wrap_method(
+            self.list_glossaries: self._wrap_method(
                 self.list_glossaries,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1456,7 +1460,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.get_glossary: gapic_v1.method_async.wrap_method(
+            self.get_glossary: self._wrap_method(
                 self.get_glossary,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1471,7 +1475,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.delete_glossary: gapic_v1.method_async.wrap_method(
+            self.delete_glossary: self._wrap_method(
                 self.delete_glossary,
                 default_retry=retries.AsyncRetry(
                     initial=0.1,
@@ -1486,140 +1490,184 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-            self.get_glossary_entry: gapic_v1.method_async.wrap_method(
+            self.get_glossary_entry: self._wrap_method(
                 self.get_glossary_entry,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_glossary_entries: gapic_v1.method_async.wrap_method(
+            self.list_glossary_entries: self._wrap_method(
                 self.list_glossary_entries,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_glossary_entry: gapic_v1.method_async.wrap_method(
+            self.create_glossary_entry: self._wrap_method(
                 self.create_glossary_entry,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_glossary_entry: gapic_v1.method_async.wrap_method(
+            self.update_glossary_entry: self._wrap_method(
                 self.update_glossary_entry,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_glossary_entry: gapic_v1.method_async.wrap_method(
+            self.delete_glossary_entry: self._wrap_method(
                 self.delete_glossary_entry,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_dataset: gapic_v1.method_async.wrap_method(
+            self.create_dataset: self._wrap_method(
                 self.create_dataset,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_dataset: gapic_v1.method_async.wrap_method(
+            self.get_dataset: self._wrap_method(
                 self.get_dataset,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_datasets: gapic_v1.method_async.wrap_method(
+            self.list_datasets: self._wrap_method(
                 self.list_datasets,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_dataset: gapic_v1.method_async.wrap_method(
+            self.delete_dataset: self._wrap_method(
                 self.delete_dataset,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_adaptive_mt_dataset: gapic_v1.method_async.wrap_method(
+            self.create_adaptive_mt_dataset: self._wrap_method(
                 self.create_adaptive_mt_dataset,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_adaptive_mt_dataset: gapic_v1.method_async.wrap_method(
+            self.delete_adaptive_mt_dataset: self._wrap_method(
                 self.delete_adaptive_mt_dataset,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_adaptive_mt_dataset: gapic_v1.method_async.wrap_method(
+            self.get_adaptive_mt_dataset: self._wrap_method(
                 self.get_adaptive_mt_dataset,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_adaptive_mt_datasets: gapic_v1.method_async.wrap_method(
+            self.list_adaptive_mt_datasets: self._wrap_method(
                 self.list_adaptive_mt_datasets,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.adaptive_mt_translate: gapic_v1.method_async.wrap_method(
+            self.adaptive_mt_translate: self._wrap_method(
                 self.adaptive_mt_translate,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_adaptive_mt_file: gapic_v1.method_async.wrap_method(
+            self.get_adaptive_mt_file: self._wrap_method(
                 self.get_adaptive_mt_file,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_adaptive_mt_file: gapic_v1.method_async.wrap_method(
+            self.delete_adaptive_mt_file: self._wrap_method(
                 self.delete_adaptive_mt_file,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.import_adaptive_mt_file: gapic_v1.method_async.wrap_method(
+            self.import_adaptive_mt_file: self._wrap_method(
                 self.import_adaptive_mt_file,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_adaptive_mt_files: gapic_v1.method_async.wrap_method(
+            self.list_adaptive_mt_files: self._wrap_method(
                 self.list_adaptive_mt_files,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_adaptive_mt_sentences: gapic_v1.method_async.wrap_method(
+            self.list_adaptive_mt_sentences: self._wrap_method(
                 self.list_adaptive_mt_sentences,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.import_data: gapic_v1.method_async.wrap_method(
+            self.import_data: self._wrap_method(
                 self.import_data,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.export_data: gapic_v1.method_async.wrap_method(
+            self.export_data: self._wrap_method(
                 self.export_data,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_examples: gapic_v1.method_async.wrap_method(
+            self.list_examples: self._wrap_method(
                 self.list_examples,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_model: gapic_v1.method_async.wrap_method(
+            self.create_model: self._wrap_method(
                 self.create_model,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_models: gapic_v1.method_async.wrap_method(
+            self.list_models: self._wrap_method(
                 self.list_models,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_model: gapic_v1.method_async.wrap_method(
+            self.get_model: self._wrap_method(
                 self.get_model,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_model: gapic_v1.method_async.wrap_method(
+            self.delete_model: self._wrap_method(
                 self.delete_model,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: self._wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.wait_operation: self._wrap_method(
+                self.wait_operation,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(
@@ -1664,7 +1712,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_operation" not in self._stubs:
+        if "wait_operation" not in self._stubs:
             self._stubs["wait_operation"] = self.grpc_channel.unary_unary(
                 "/google.longrunning.Operations/WaitOperation",
                 request_serializer=operations_pb2.WaitOperationRequest.SerializeToString,

@@ -318,11 +318,17 @@ class TripServiceAsyncClient:
             self._client._transport.create_trip
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        header_params = {}
+
+        routing_param_regex = re.compile("^(?P<provider_id>providers/[^/]+)$")
+        regex_match = routing_param_regex.match(request.parent)
+        if regex_match and regex_match.group("provider_id"):
+            header_params["provider_id"] = regex_match.group("provider_id")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -397,11 +403,17 @@ class TripServiceAsyncClient:
         # and friendly error handling.
         rpc = self._client._transport._wrapped_methods[self._client._transport.get_trip]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        header_params = {}
+
+        routing_param_regex = re.compile("^(?P<provider_id>providers/[^/]+)$")
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("provider_id"):
+            header_params["provider_id"] = regex_match.group("provider_id")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -472,11 +484,17 @@ class TripServiceAsyncClient:
             self._client._transport.report_billable_trip
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        header_params = {}
+
+        routing_param_regex = re.compile("^(?P<provider_id>providers/[^/]+)$")
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("provider_id"):
+            header_params["provider_id"] = regex_match.group("provider_id")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -556,11 +574,17 @@ class TripServiceAsyncClient:
             self._client._transport.search_trips
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        header_params = {}
+
+        routing_param_regex = re.compile("^(?P<provider_id>providers/[^/]+)$")
+        regex_match = routing_param_regex.match(request.parent)
+        if regex_match and regex_match.group("provider_id"):
+            header_params["provider_id"] = regex_match.group("provider_id")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -648,11 +672,17 @@ class TripServiceAsyncClient:
             self._client._transport.update_trip
         ]
 
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        header_params = {}
+
+        routing_param_regex = re.compile("^(?P<provider_id>providers/[^/]+)$")
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("provider_id"):
+            header_params["provider_id"] = regex_match.group("provider_id")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()

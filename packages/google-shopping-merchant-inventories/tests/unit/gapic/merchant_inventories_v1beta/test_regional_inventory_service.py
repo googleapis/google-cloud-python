@@ -22,22 +22,12 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.oauth2 import service_account
+from google.api_core import api_core_version
 from google.protobuf import json_format
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.shopping.type.types import types
-from google.type import interval_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -45,6 +35,25 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import client_options
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+import google.auth
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.oauth2 import service_account
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.shopping.type.types import types
+from google.type import interval_pb2  # type: ignore
 
 from google.shopping.merchant_inventories_v1beta.services.regional_inventory_service import (
     RegionalInventoryServiceAsyncClient,
@@ -55,8 +64,22 @@ from google.shopping.merchant_inventories_v1beta.services.regional_inventory_ser
 from google.shopping.merchant_inventories_v1beta.types import regionalinventory
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1236,27 +1259,6 @@ def test_list_regional_inventories(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_regional_inventories_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = RegionalInventoryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_regional_inventories), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_regional_inventories()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == regionalinventory.ListRegionalInventoriesRequest()
-
-
 def test_list_regional_inventories_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1330,31 +1332,6 @@ def test_list_regional_inventories_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_regional_inventories_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = RegionalInventoryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_regional_inventories), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            regionalinventory.ListRegionalInventoriesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_regional_inventories()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == regionalinventory.ListRegionalInventoriesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_regional_inventories_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1362,7 +1339,7 @@ async def test_list_regional_inventories_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = RegionalInventoryServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1402,7 +1379,7 @@ async def test_list_regional_inventories_async(
     request_type=regionalinventory.ListRegionalInventoriesRequest,
 ):
     client = RegionalInventoryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1472,7 +1449,7 @@ def test_list_regional_inventories_field_headers():
 @pytest.mark.asyncio
 async def test_list_regional_inventories_field_headers_async():
     client = RegionalInventoryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1546,7 +1523,7 @@ def test_list_regional_inventories_flattened_error():
 @pytest.mark.asyncio
 async def test_list_regional_inventories_flattened_async():
     client = RegionalInventoryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1577,7 +1554,7 @@ async def test_list_regional_inventories_flattened_async():
 @pytest.mark.asyncio
 async def test_list_regional_inventories_flattened_error_async():
     client = RegionalInventoryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1693,7 +1670,7 @@ def test_list_regional_inventories_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_regional_inventories_async_pager():
     client = RegionalInventoryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1747,7 +1724,7 @@ async def test_list_regional_inventories_async_pager():
 @pytest.mark.asyncio
 async def test_list_regional_inventories_async_pages():
     client = RegionalInventoryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1839,27 +1816,6 @@ def test_insert_regional_inventory(request_type, transport: str = "grpc"):
     assert response.availability == "availability_value"
 
 
-def test_insert_regional_inventory_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = RegionalInventoryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.insert_regional_inventory), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.insert_regional_inventory()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == regionalinventory.InsertRegionalInventoryRequest()
-
-
 def test_insert_regional_inventory_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1931,34 +1887,6 @@ def test_insert_regional_inventory_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_insert_regional_inventory_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = RegionalInventoryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.insert_regional_inventory), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            regionalinventory.RegionalInventory(
-                name="name_value",
-                account=749,
-                region="region_value",
-                availability="availability_value",
-            )
-        )
-        response = await client.insert_regional_inventory()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == regionalinventory.InsertRegionalInventoryRequest()
-
-
-@pytest.mark.asyncio
 async def test_insert_regional_inventory_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1966,7 +1894,7 @@ async def test_insert_regional_inventory_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = RegionalInventoryServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2006,7 +1934,7 @@ async def test_insert_regional_inventory_async(
     request_type=regionalinventory.InsertRegionalInventoryRequest,
 ):
     client = RegionalInventoryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2082,7 +2010,7 @@ def test_insert_regional_inventory_field_headers():
 @pytest.mark.asyncio
 async def test_insert_regional_inventory_field_headers_async():
     client = RegionalInventoryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2146,27 +2074,6 @@ def test_delete_regional_inventory(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_regional_inventory_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = RegionalInventoryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_regional_inventory), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_regional_inventory()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == regionalinventory.DeleteRegionalInventoryRequest()
 
 
 def test_delete_regional_inventory_non_empty_request_with_auto_populated_field():
@@ -2240,27 +2147,6 @@ def test_delete_regional_inventory_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_regional_inventory_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = RegionalInventoryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_regional_inventory), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_regional_inventory()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == regionalinventory.DeleteRegionalInventoryRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_regional_inventory_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2268,7 +2154,7 @@ async def test_delete_regional_inventory_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = RegionalInventoryServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2308,7 +2194,7 @@ async def test_delete_regional_inventory_async(
     request_type=regionalinventory.DeleteRegionalInventoryRequest,
 ):
     client = RegionalInventoryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2373,7 +2259,7 @@ def test_delete_regional_inventory_field_headers():
 @pytest.mark.asyncio
 async def test_delete_regional_inventory_field_headers_async():
     client = RegionalInventoryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2445,7 +2331,7 @@ def test_delete_regional_inventory_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_regional_inventory_flattened_async():
     client = RegionalInventoryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2474,7 +2360,7 @@ async def test_delete_regional_inventory_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_regional_inventory_flattened_error_async():
     client = RegionalInventoryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2484,48 +2370,6 @@ async def test_delete_regional_inventory_flattened_error_async():
             regionalinventory.DeleteRegionalInventoryRequest(),
             name="name_value",
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        regionalinventory.ListRegionalInventoriesRequest,
-        dict,
-    ],
-)
-def test_list_regional_inventories_rest(request_type):
-    client = RegionalInventoryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1/products/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = regionalinventory.ListRegionalInventoriesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = regionalinventory.ListRegionalInventoriesResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_regional_inventories(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListRegionalInventoriesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_regional_inventories_rest_use_cached_wrapped_rpc():
@@ -2669,92 +2513,6 @@ def test_list_regional_inventories_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_regional_inventories_rest_interceptors(null_interceptor):
-    transport = transports.RegionalInventoryServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionalInventoryServiceRestInterceptor(),
-    )
-    client = RegionalInventoryServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionalInventoryServiceRestInterceptor,
-        "post_list_regional_inventories",
-    ) as post, mock.patch.object(
-        transports.RegionalInventoryServiceRestInterceptor,
-        "pre_list_regional_inventories",
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = regionalinventory.ListRegionalInventoriesRequest.pb(
-            regionalinventory.ListRegionalInventoriesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            regionalinventory.ListRegionalInventoriesResponse.to_json(
-                regionalinventory.ListRegionalInventoriesResponse()
-            )
-        )
-
-        request = regionalinventory.ListRegionalInventoriesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = regionalinventory.ListRegionalInventoriesResponse()
-
-        client.list_regional_inventories(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_regional_inventories_rest_bad_request(
-    transport: str = "rest",
-    request_type=regionalinventory.ListRegionalInventoriesRequest,
-):
-    client = RegionalInventoryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1/products/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_regional_inventories(request)
-
-
 def test_list_regional_inventories_rest_flattened():
     client = RegionalInventoryServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2876,136 +2634,6 @@ def test_list_regional_inventories_rest_pager(transport: str = "rest"):
         pages = list(client.list_regional_inventories(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        regionalinventory.InsertRegionalInventoryRequest,
-        dict,
-    ],
-)
-def test_insert_regional_inventory_rest(request_type):
-    client = RegionalInventoryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1/products/sample2"}
-    request_init["regional_inventory"] = {
-        "name": "name_value",
-        "account": 749,
-        "region": "region_value",
-        "price": {"amount_micros": 1408, "currency_code": "currency_code_value"},
-        "sale_price": {},
-        "sale_price_effective_date": {
-            "start_time": {"seconds": 751, "nanos": 543},
-            "end_time": {},
-        },
-        "availability": "availability_value",
-        "custom_attributes": [
-            {"name": "name_value", "value": "value_value", "group_values": {}}
-        ],
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = regionalinventory.InsertRegionalInventoryRequest.meta.fields[
-        "regional_inventory"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["regional_inventory"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["regional_inventory"][field])):
-                    del request_init["regional_inventory"][field][i][subfield]
-            else:
-                del request_init["regional_inventory"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = regionalinventory.RegionalInventory(
-            name="name_value",
-            account=749,
-            region="region_value",
-            availability="availability_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = regionalinventory.RegionalInventory.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.insert_regional_inventory(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, regionalinventory.RegionalInventory)
-    assert response.name == "name_value"
-    assert response.account == 749
-    assert response.region == "region_value"
-    assert response.availability == "availability_value"
 
 
 def test_insert_regional_inventory_rest_use_cached_wrapped_rpc():
@@ -3141,133 +2769,6 @@ def test_insert_regional_inventory_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_insert_regional_inventory_rest_interceptors(null_interceptor):
-    transport = transports.RegionalInventoryServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionalInventoryServiceRestInterceptor(),
-    )
-    client = RegionalInventoryServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionalInventoryServiceRestInterceptor,
-        "post_insert_regional_inventory",
-    ) as post, mock.patch.object(
-        transports.RegionalInventoryServiceRestInterceptor,
-        "pre_insert_regional_inventory",
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = regionalinventory.InsertRegionalInventoryRequest.pb(
-            regionalinventory.InsertRegionalInventoryRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = regionalinventory.RegionalInventory.to_json(
-            regionalinventory.RegionalInventory()
-        )
-
-        request = regionalinventory.InsertRegionalInventoryRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = regionalinventory.RegionalInventory()
-
-        client.insert_regional_inventory(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_insert_regional_inventory_rest_bad_request(
-    transport: str = "rest",
-    request_type=regionalinventory.InsertRegionalInventoryRequest,
-):
-    client = RegionalInventoryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "accounts/sample1/products/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.insert_regional_inventory(request)
-
-
-def test_insert_regional_inventory_rest_error():
-    client = RegionalInventoryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        regionalinventory.DeleteRegionalInventoryRequest,
-        dict,
-    ],
-)
-def test_delete_regional_inventory_rest(request_type):
-    client = RegionalInventoryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "accounts/sample1/products/sample2/regionalInventories/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_regional_inventory(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
 def test_delete_regional_inventory_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -3389,83 +2890,6 @@ def test_delete_regional_inventory_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_regional_inventory_rest_interceptors(null_interceptor):
-    transport = transports.RegionalInventoryServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.RegionalInventoryServiceRestInterceptor(),
-    )
-    client = RegionalInventoryServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegionalInventoryServiceRestInterceptor,
-        "pre_delete_regional_inventory",
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = regionalinventory.DeleteRegionalInventoryRequest.pb(
-            regionalinventory.DeleteRegionalInventoryRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = regionalinventory.DeleteRegionalInventoryRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_regional_inventory(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_regional_inventory_rest_bad_request(
-    transport: str = "rest",
-    request_type=regionalinventory.DeleteRegionalInventoryRequest,
-):
-    client = RegionalInventoryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "accounts/sample1/products/sample2/regionalInventories/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_regional_inventory(request)
-
-
 def test_delete_regional_inventory_rest_flattened():
     client = RegionalInventoryServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3521,12 +2945,6 @@ def test_delete_regional_inventory_rest_flattened_error(transport: str = "rest")
             regionalinventory.DeleteRegionalInventoryRequest(),
             name="name_value",
         )
-
-
-def test_delete_regional_inventory_rest_error():
-    client = RegionalInventoryServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
 
 
 def test_credentials_transport_error():
@@ -3621,18 +3039,716 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = RegionalInventoryServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = RegionalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_regional_inventories_empty_call_grpc():
+    client = RegionalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_regional_inventories), "__call__"
+    ) as call:
+        call.return_value = regionalinventory.ListRegionalInventoriesResponse()
+        client.list_regional_inventories(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = regionalinventory.ListRegionalInventoriesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_insert_regional_inventory_empty_call_grpc():
+    client = RegionalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.insert_regional_inventory), "__call__"
+    ) as call:
+        call.return_value = regionalinventory.RegionalInventory()
+        client.insert_regional_inventory(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = regionalinventory.InsertRegionalInventoryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_regional_inventory_empty_call_grpc():
+    client = RegionalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_regional_inventory), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_regional_inventory(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = regionalinventory.DeleteRegionalInventoryRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = RegionalInventoryServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = RegionalInventoryServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_regional_inventories_empty_call_grpc_asyncio():
+    client = RegionalInventoryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_regional_inventories), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            regionalinventory.ListRegionalInventoriesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_regional_inventories(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = regionalinventory.ListRegionalInventoriesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_insert_regional_inventory_empty_call_grpc_asyncio():
+    client = RegionalInventoryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.insert_regional_inventory), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            regionalinventory.RegionalInventory(
+                name="name_value",
+                account=749,
+                region="region_value",
+                availability="availability_value",
+            )
+        )
+        await client.insert_regional_inventory(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = regionalinventory.InsertRegionalInventoryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_regional_inventory_empty_call_grpc_asyncio():
+    client = RegionalInventoryServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_regional_inventory), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_regional_inventory(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = regionalinventory.DeleteRegionalInventoryRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = RegionalInventoryServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_list_regional_inventories_rest_bad_request(
+    request_type=regionalinventory.ListRegionalInventoriesRequest,
+):
+    client = RegionalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1/products/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_regional_inventories(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        regionalinventory.ListRegionalInventoriesRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = RegionalInventoryServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_list_regional_inventories_rest_call_success(request_type):
+    client = RegionalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1/products/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = regionalinventory.ListRegionalInventoriesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = regionalinventory.ListRegionalInventoriesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_regional_inventories(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListRegionalInventoriesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_regional_inventories_rest_interceptors(null_interceptor):
+    transport = transports.RegionalInventoryServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionalInventoryServiceRestInterceptor(),
+    )
+    client = RegionalInventoryServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionalInventoryServiceRestInterceptor,
+        "post_list_regional_inventories",
+    ) as post, mock.patch.object(
+        transports.RegionalInventoryServiceRestInterceptor,
+        "pre_list_regional_inventories",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = regionalinventory.ListRegionalInventoriesRequest.pb(
+            regionalinventory.ListRegionalInventoriesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = regionalinventory.ListRegionalInventoriesResponse.to_json(
+            regionalinventory.ListRegionalInventoriesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = regionalinventory.ListRegionalInventoriesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = regionalinventory.ListRegionalInventoriesResponse()
+
+        client.list_regional_inventories(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_insert_regional_inventory_rest_bad_request(
+    request_type=regionalinventory.InsertRegionalInventoryRequest,
+):
+    client = RegionalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1/products/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.insert_regional_inventory(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        regionalinventory.InsertRegionalInventoryRequest,
+        dict,
+    ],
+)
+def test_insert_regional_inventory_rest_call_success(request_type):
+    client = RegionalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "accounts/sample1/products/sample2"}
+    request_init["regional_inventory"] = {
+        "name": "name_value",
+        "account": 749,
+        "region": "region_value",
+        "price": {"amount_micros": 1408, "currency_code": "currency_code_value"},
+        "sale_price": {},
+        "sale_price_effective_date": {
+            "start_time": {"seconds": 751, "nanos": 543},
+            "end_time": {},
+        },
+        "availability": "availability_value",
+        "custom_attributes": [
+            {"name": "name_value", "value": "value_value", "group_values": {}}
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = regionalinventory.InsertRegionalInventoryRequest.meta.fields[
+        "regional_inventory"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["regional_inventory"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["regional_inventory"][field])):
+                    del request_init["regional_inventory"][field][i][subfield]
+            else:
+                del request_init["regional_inventory"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = regionalinventory.RegionalInventory(
+            name="name_value",
+            account=749,
+            region="region_value",
+            availability="availability_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = regionalinventory.RegionalInventory.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.insert_regional_inventory(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, regionalinventory.RegionalInventory)
+    assert response.name == "name_value"
+    assert response.account == 749
+    assert response.region == "region_value"
+    assert response.availability == "availability_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_insert_regional_inventory_rest_interceptors(null_interceptor):
+    transport = transports.RegionalInventoryServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionalInventoryServiceRestInterceptor(),
+    )
+    client = RegionalInventoryServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionalInventoryServiceRestInterceptor,
+        "post_insert_regional_inventory",
+    ) as post, mock.patch.object(
+        transports.RegionalInventoryServiceRestInterceptor,
+        "pre_insert_regional_inventory",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = regionalinventory.InsertRegionalInventoryRequest.pb(
+            regionalinventory.InsertRegionalInventoryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = regionalinventory.RegionalInventory.to_json(
+            regionalinventory.RegionalInventory()
+        )
+        req.return_value.content = return_value
+
+        request = regionalinventory.InsertRegionalInventoryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = regionalinventory.RegionalInventory()
+
+        client.insert_regional_inventory(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_regional_inventory_rest_bad_request(
+    request_type=regionalinventory.DeleteRegionalInventoryRequest,
+):
+    client = RegionalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "accounts/sample1/products/sample2/regionalInventories/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_regional_inventory(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        regionalinventory.DeleteRegionalInventoryRequest,
+        dict,
+    ],
+)
+def test_delete_regional_inventory_rest_call_success(request_type):
+    client = RegionalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "accounts/sample1/products/sample2/regionalInventories/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_regional_inventory(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_regional_inventory_rest_interceptors(null_interceptor):
+    transport = transports.RegionalInventoryServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RegionalInventoryServiceRestInterceptor(),
+    )
+    client = RegionalInventoryServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RegionalInventoryServiceRestInterceptor,
+        "pre_delete_regional_inventory",
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = regionalinventory.DeleteRegionalInventoryRequest.pb(
+            regionalinventory.DeleteRegionalInventoryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = regionalinventory.DeleteRegionalInventoryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_regional_inventory(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_initialize_client_w_rest():
+    client = RegionalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_regional_inventories_empty_call_rest():
+    client = RegionalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_regional_inventories), "__call__"
+    ) as call:
+        client.list_regional_inventories(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = regionalinventory.ListRegionalInventoriesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_insert_regional_inventory_empty_call_rest():
+    client = RegionalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.insert_regional_inventory), "__call__"
+    ) as call:
+        client.insert_regional_inventory(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = regionalinventory.InsertRegionalInventoryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_regional_inventory_empty_call_rest():
+    client = RegionalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_regional_inventory), "__call__"
+    ) as call:
+        client.delete_regional_inventory(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = regionalinventory.DeleteRegionalInventoryRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -4226,36 +4342,41 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = RegionalInventoryServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = RegionalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = RegionalInventoryServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = RegionalInventoryServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = RegionalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

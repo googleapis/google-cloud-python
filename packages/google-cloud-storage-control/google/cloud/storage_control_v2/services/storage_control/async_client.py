@@ -388,6 +388,18 @@ class StorageControlAsyncClient:
             self._client._transport.create_folder
         ]
 
+        header_params = {}
+
+        routing_param_regex = re.compile("^(?P<bucket>.*)$")
+        regex_match = routing_param_regex.match(request.parent)
+        if regex_match and regex_match.group("bucket"):
+            header_params["bucket"] = regex_match.group("bucket")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
+
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
 
@@ -484,6 +496,20 @@ class StorageControlAsyncClient:
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.delete_folder
         ]
+
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
+        )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("bucket"):
+            header_params["bucket"] = regex_match.group("bucket")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -588,6 +614,20 @@ class StorageControlAsyncClient:
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.get_folder
         ]
+
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
+        )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("bucket"):
+            header_params["bucket"] = regex_match.group("bucket")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -698,6 +738,18 @@ class StorageControlAsyncClient:
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.list_folders
         ]
+
+        header_params = {}
+
+        routing_param_regex = re.compile("^(?P<bucket>.*)$")
+        regex_match = routing_param_regex.match(request.parent)
+        if regex_match and regex_match.group("bucket"):
+            header_params["bucket"] = regex_match.group("bucket")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -831,6 +883,20 @@ class StorageControlAsyncClient:
             self._client._transport.rename_folder
         ]
 
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
+        )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("bucket"):
+            header_params["bucket"] = regex_match.group("bucket")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
+
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
 
@@ -942,6 +1008,20 @@ class StorageControlAsyncClient:
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.get_storage_layout
         ]
+
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
+        )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("bucket"):
+            header_params["bucket"] = regex_match.group("bucket")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -1071,6 +1151,18 @@ class StorageControlAsyncClient:
             self._client._transport.create_managed_folder
         ]
 
+        header_params = {}
+
+        routing_param_regex = re.compile("^(?P<bucket>.*)$")
+        regex_match = routing_param_regex.match(request.parent)
+        if regex_match and regex_match.group("bucket"):
+            header_params["bucket"] = regex_match.group("bucket")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
+
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
 
@@ -1166,6 +1258,20 @@ class StorageControlAsyncClient:
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.delete_managed_folder
         ]
+
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
+        )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("bucket"):
+            header_params["bucket"] = regex_match.group("bucket")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -1263,6 +1369,20 @@ class StorageControlAsyncClient:
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.get_managed_folder
         ]
+
+        header_params = {}
+
+        routing_param_regex = re.compile(
+            "^(?P<bucket>projects/[^/]+/buckets/[^/]+)(?:/.*)?$"
+        )
+        regex_match = routing_param_regex.match(request.name)
+        if regex_match and regex_match.group("bucket"):
+            header_params["bucket"] = regex_match.group("bucket")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())
@@ -1373,6 +1493,18 @@ class StorageControlAsyncClient:
         rpc = self._client._transport._wrapped_methods[
             self._client._transport.list_managed_folders
         ]
+
+        header_params = {}
+
+        routing_param_regex = re.compile("^(?P<bucket>.*)$")
+        regex_match = routing_param_regex.match(request.parent)
+        if regex_match and regex_match.group("bucket"):
+            header_params["bucket"] = regex_match.group("bucket")
+
+        if header_params:
+            metadata = tuple(metadata) + (
+                gapic_v1.routing_header.to_grpc_metadata(header_params),
+            )
 
         if not request.request_id:
             request.request_id = str(uuid.uuid4())

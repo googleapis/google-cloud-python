@@ -22,9 +22,26 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
+
+from google.api_core import api_core_version
+from google.protobuf import json_format
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import (
     future,
@@ -35,7 +52,7 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import api_core_version, client_options
+from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
@@ -50,15 +67,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
-import grpc
-from grpc.experimental import aio
-from proto.marshal.rules import wrappers
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
-from requests import PreparedRequest, Request, Response
-from requests.sessions import Session
 
 from google.cloud.translate_v3.services.translation_service import (
     TranslationServiceAsyncClient,
@@ -74,8 +83,22 @@ from google.cloud.translate_v3.types import (
 )
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1217,25 +1240,6 @@ def test_translate_text(request_type, transport: str = "grpc"):
     assert isinstance(response, translation_service.TranslateTextResponse)
 
 
-def test_translate_text_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.translate_text), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.translate_text()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.TranslateTextRequest()
-
-
 def test_translate_text_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1308,27 +1312,6 @@ def test_translate_text_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_translate_text_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.translate_text), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            translation_service.TranslateTextResponse()
-        )
-        response = await client.translate_text()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.TranslateTextRequest()
-
-
-@pytest.mark.asyncio
 async def test_translate_text_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1336,7 +1319,7 @@ async def test_translate_text_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1376,7 +1359,7 @@ async def test_translate_text_async(
     request_type=translation_service.TranslateTextRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1439,7 +1422,7 @@ def test_translate_text_field_headers():
 @pytest.mark.asyncio
 async def test_translate_text_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1534,7 +1517,7 @@ def test_translate_text_flattened_error():
 @pytest.mark.asyncio
 async def test_translate_text_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1583,7 +1566,7 @@ async def test_translate_text_flattened_async():
 @pytest.mark.asyncio
 async def test_translate_text_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1631,25 +1614,6 @@ def test_romanize_text(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, translation_service.RomanizeTextResponse)
-
-
-def test_romanize_text_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.romanize_text), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.romanize_text()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.RomanizeTextRequest()
 
 
 def test_romanize_text_non_empty_request_with_auto_populated_field():
@@ -1718,27 +1682,6 @@ def test_romanize_text_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_romanize_text_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.romanize_text), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            translation_service.RomanizeTextResponse()
-        )
-        response = await client.romanize_text()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.RomanizeTextRequest()
-
-
-@pytest.mark.asyncio
 async def test_romanize_text_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1746,7 +1689,7 @@ async def test_romanize_text_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1786,7 +1729,7 @@ async def test_romanize_text_async(
     request_type=translation_service.RomanizeTextRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1849,7 +1792,7 @@ def test_romanize_text_field_headers():
 @pytest.mark.asyncio
 async def test_romanize_text_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1924,7 +1867,7 @@ def test_romanize_text_flattened_error():
 @pytest.mark.asyncio
 async def test_romanize_text_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1957,7 +1900,7 @@ async def test_romanize_text_flattened_async():
 @pytest.mark.asyncio
 async def test_romanize_text_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2001,25 +1944,6 @@ def test_detect_language(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, translation_service.DetectLanguageResponse)
-
-
-def test_detect_language_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.detect_language), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.detect_language()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.DetectLanguageRequest()
 
 
 def test_detect_language_non_empty_request_with_auto_populated_field():
@@ -2092,27 +2016,6 @@ def test_detect_language_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_detect_language_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.detect_language), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            translation_service.DetectLanguageResponse()
-        )
-        response = await client.detect_language()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.DetectLanguageRequest()
-
-
-@pytest.mark.asyncio
 async def test_detect_language_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2120,7 +2023,7 @@ async def test_detect_language_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2160,7 +2063,7 @@ async def test_detect_language_async(
     request_type=translation_service.DetectLanguageRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2223,7 +2126,7 @@ def test_detect_language_field_headers():
 @pytest.mark.asyncio
 async def test_detect_language_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2306,7 +2209,7 @@ def test_detect_language_flattened_error():
 @pytest.mark.asyncio
 async def test_detect_language_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2345,7 +2248,7 @@ async def test_detect_language_flattened_async():
 @pytest.mark.asyncio
 async def test_detect_language_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2393,27 +2296,6 @@ def test_get_supported_languages(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, translation_service.SupportedLanguages)
-
-
-def test_get_supported_languages_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_supported_languages), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_supported_languages()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.GetSupportedLanguagesRequest()
 
 
 def test_get_supported_languages_non_empty_request_with_auto_populated_field():
@@ -2491,29 +2373,6 @@ def test_get_supported_languages_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_supported_languages_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_supported_languages), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            translation_service.SupportedLanguages()
-        )
-        response = await client.get_supported_languages()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.GetSupportedLanguagesRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_supported_languages_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2521,7 +2380,7 @@ async def test_get_supported_languages_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2561,7 +2420,7 @@ async def test_get_supported_languages_async(
     request_type=translation_service.GetSupportedLanguagesRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -2628,7 +2487,7 @@ def test_get_supported_languages_field_headers():
 @pytest.mark.asyncio
 async def test_get_supported_languages_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2712,7 +2571,7 @@ def test_get_supported_languages_flattened_error():
 @pytest.mark.asyncio
 async def test_get_supported_languages_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2751,7 +2610,7 @@ async def test_get_supported_languages_flattened_async():
 @pytest.mark.asyncio
 async def test_get_supported_languages_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2801,27 +2660,6 @@ def test_translate_document(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, translation_service.TranslateDocumentResponse)
     assert response.model == "model_value"
-
-
-def test_translate_document_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.translate_document), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.translate_document()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.TranslateDocumentRequest()
 
 
 def test_translate_document_non_empty_request_with_auto_populated_field():
@@ -2902,31 +2740,6 @@ def test_translate_document_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_translate_document_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.translate_document), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            translation_service.TranslateDocumentResponse(
-                model="model_value",
-            )
-        )
-        response = await client.translate_document()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.TranslateDocumentRequest()
-
-
-@pytest.mark.asyncio
 async def test_translate_document_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -2934,7 +2747,7 @@ async def test_translate_document_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -2974,7 +2787,7 @@ async def test_translate_document_async(
     request_type=translation_service.TranslateDocumentRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3044,7 +2857,7 @@ def test_translate_document_field_headers():
 @pytest.mark.asyncio
 async def test_translate_document_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3108,27 +2921,6 @@ def test_batch_translate_text(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_batch_translate_text_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_translate_text), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.batch_translate_text()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.BatchTranslateTextRequest()
 
 
 def test_batch_translate_text_non_empty_request_with_auto_populated_field():
@@ -3208,29 +3000,6 @@ def test_batch_translate_text_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_batch_translate_text_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_translate_text), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.batch_translate_text()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.BatchTranslateTextRequest()
-
-
-@pytest.mark.asyncio
 async def test_batch_translate_text_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3238,7 +3007,7 @@ async def test_batch_translate_text_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3283,7 +3052,7 @@ async def test_batch_translate_text_async(
     request_type=translation_service.BatchTranslateTextRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3350,7 +3119,7 @@ def test_batch_translate_text_field_headers():
 @pytest.mark.asyncio
 async def test_batch_translate_text_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3414,27 +3183,6 @@ def test_batch_translate_document(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_batch_translate_document_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_translate_document), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.batch_translate_document()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.BatchTranslateDocumentRequest()
 
 
 def test_batch_translate_document_non_empty_request_with_auto_populated_field():
@@ -3517,29 +3265,6 @@ def test_batch_translate_document_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_batch_translate_document_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.batch_translate_document), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.batch_translate_document()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.BatchTranslateDocumentRequest()
-
-
-@pytest.mark.asyncio
 async def test_batch_translate_document_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -3547,7 +3272,7 @@ async def test_batch_translate_document_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -3592,7 +3317,7 @@ async def test_batch_translate_document_async(
     request_type=translation_service.BatchTranslateDocumentRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -3659,7 +3384,7 @@ def test_batch_translate_document_field_headers():
 @pytest.mark.asyncio
 async def test_batch_translate_document_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3781,7 +3506,7 @@ def test_batch_translate_document_flattened_error():
 @pytest.mark.asyncio
 async def test_batch_translate_document_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3846,7 +3571,7 @@ async def test_batch_translate_document_flattened_async():
 @pytest.mark.asyncio
 async def test_batch_translate_document_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3903,25 +3628,6 @@ def test_create_glossary(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_glossary_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_glossary), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_glossary()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.CreateGlossaryRequest()
 
 
 def test_create_glossary_non_empty_request_with_auto_populated_field():
@@ -3993,27 +3699,6 @@ def test_create_glossary_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_glossary_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_glossary), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_glossary()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.CreateGlossaryRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_glossary_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4021,7 +3706,7 @@ async def test_create_glossary_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4066,7 +3751,7 @@ async def test_create_glossary_async(
     request_type=translation_service.CreateGlossaryRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4129,7 +3814,7 @@ def test_create_glossary_field_headers():
 @pytest.mark.asyncio
 async def test_create_glossary_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4204,7 +3889,7 @@ def test_create_glossary_flattened_error():
 @pytest.mark.asyncio
 async def test_create_glossary_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4237,7 +3922,7 @@ async def test_create_glossary_flattened_async():
 @pytest.mark.asyncio
 async def test_create_glossary_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4281,25 +3966,6 @@ def test_update_glossary(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_update_glossary_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_glossary), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_glossary()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.UpdateGlossaryRequest()
 
 
 def test_update_glossary_non_empty_request_with_auto_populated_field():
@@ -4367,27 +4033,6 @@ def test_update_glossary_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_glossary_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_glossary), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.update_glossary()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.UpdateGlossaryRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_glossary_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4395,7 +4040,7 @@ async def test_update_glossary_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4440,7 +4085,7 @@ async def test_update_glossary_async(
     request_type=translation_service.UpdateGlossaryRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4503,7 +4148,7 @@ def test_update_glossary_field_headers():
 @pytest.mark.asyncio
 async def test_update_glossary_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4578,7 +4223,7 @@ def test_update_glossary_flattened_error():
 @pytest.mark.asyncio
 async def test_update_glossary_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4611,7 +4256,7 @@ async def test_update_glossary_flattened_async():
 @pytest.mark.asyncio
 async def test_update_glossary_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4658,25 +4303,6 @@ def test_list_glossaries(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGlossariesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_glossaries_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_glossaries), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_glossaries()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.ListGlossariesRequest()
 
 
 def test_list_glossaries_non_empty_request_with_auto_populated_field():
@@ -4747,29 +4373,6 @@ def test_list_glossaries_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_glossaries_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_glossaries), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            translation_service.ListGlossariesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_glossaries()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.ListGlossariesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_glossaries_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -4777,7 +4380,7 @@ async def test_list_glossaries_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -4817,7 +4420,7 @@ async def test_list_glossaries_async(
     request_type=translation_service.ListGlossariesRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -4883,7 +4486,7 @@ def test_list_glossaries_field_headers():
 @pytest.mark.asyncio
 async def test_list_glossaries_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4953,7 +4556,7 @@ def test_list_glossaries_flattened_error():
 @pytest.mark.asyncio
 async def test_list_glossaries_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4982,7 +4585,7 @@ async def test_list_glossaries_flattened_async():
 @pytest.mark.asyncio
 async def test_list_glossaries_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5092,7 +4695,7 @@ def test_list_glossaries_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_glossaries_async_pager():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5142,7 +4745,7 @@ async def test_list_glossaries_async_pager():
 @pytest.mark.asyncio
 async def test_list_glossaries_async_pages():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5228,25 +4831,6 @@ def test_get_glossary(request_type, transport: str = "grpc"):
     assert response.display_name == "display_name_value"
 
 
-def test_get_glossary_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_glossary), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_glossary()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.GetGlossaryRequest()
-
-
 def test_get_glossary_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -5311,31 +4895,6 @@ def test_get_glossary_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_glossary_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_glossary), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            translation_service.Glossary(
-                name="name_value",
-                entry_count=1210,
-                display_name="display_name_value",
-            )
-        )
-        response = await client.get_glossary()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.GetGlossaryRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_glossary_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5343,7 +4902,7 @@ async def test_get_glossary_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5382,7 +4941,7 @@ async def test_get_glossary_async(
     transport: str = "grpc_asyncio", request_type=translation_service.GetGlossaryRequest
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5452,7 +5011,7 @@ def test_get_glossary_field_headers():
 @pytest.mark.asyncio
 async def test_get_glossary_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5522,7 +5081,7 @@ def test_get_glossary_flattened_error():
 @pytest.mark.asyncio
 async def test_get_glossary_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5551,7 +5110,7 @@ async def test_get_glossary_flattened_async():
 @pytest.mark.asyncio
 async def test_get_glossary_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5594,25 +5153,6 @@ def test_delete_glossary(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_glossary_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_glossary), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_glossary()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.DeleteGlossaryRequest()
 
 
 def test_delete_glossary_non_empty_request_with_auto_populated_field():
@@ -5684,27 +5224,6 @@ def test_delete_glossary_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_glossary_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_glossary), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_glossary()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.DeleteGlossaryRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_glossary_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -5712,7 +5231,7 @@ async def test_delete_glossary_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -5757,7 +5276,7 @@ async def test_delete_glossary_async(
     request_type=translation_service.DeleteGlossaryRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -5820,7 +5339,7 @@ def test_delete_glossary_field_headers():
 @pytest.mark.asyncio
 async def test_delete_glossary_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5890,7 +5409,7 @@ def test_delete_glossary_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_glossary_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5919,7 +5438,7 @@ async def test_delete_glossary_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_glossary_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5969,27 +5488,6 @@ def test_get_glossary_entry(request_type, transport: str = "grpc"):
     assert isinstance(response, common.GlossaryEntry)
     assert response.name == "name_value"
     assert response.description == "description_value"
-
-
-def test_get_glossary_entry_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_glossary_entry), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_glossary_entry()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.GetGlossaryEntryRequest()
 
 
 def test_get_glossary_entry_non_empty_request_with_auto_populated_field():
@@ -6062,32 +5560,6 @@ def test_get_glossary_entry_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_glossary_entry_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_glossary_entry), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            common.GlossaryEntry(
-                name="name_value",
-                description="description_value",
-            )
-        )
-        response = await client.get_glossary_entry()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.GetGlossaryEntryRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_glossary_entry_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6095,7 +5567,7 @@ async def test_get_glossary_entry_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6135,7 +5607,7 @@ async def test_get_glossary_entry_async(
     request_type=translation_service.GetGlossaryEntryRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6207,7 +5679,7 @@ def test_get_glossary_entry_field_headers():
 @pytest.mark.asyncio
 async def test_get_glossary_entry_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6281,7 +5753,7 @@ def test_get_glossary_entry_flattened_error():
 @pytest.mark.asyncio
 async def test_get_glossary_entry_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6312,7 +5784,7 @@ async def test_get_glossary_entry_flattened_async():
 @pytest.mark.asyncio
 async def test_get_glossary_entry_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6360,27 +5832,6 @@ def test_list_glossary_entries(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGlossaryEntriesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_glossary_entries_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_glossary_entries), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_glossary_entries()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.ListGlossaryEntriesRequest()
 
 
 def test_list_glossary_entries_non_empty_request_with_auto_populated_field():
@@ -6456,31 +5907,6 @@ def test_list_glossary_entries_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_glossary_entries_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_glossary_entries), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            translation_service.ListGlossaryEntriesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_glossary_entries()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.ListGlossaryEntriesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_glossary_entries_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -6488,7 +5914,7 @@ async def test_list_glossary_entries_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -6528,7 +5954,7 @@ async def test_list_glossary_entries_async(
     request_type=translation_service.ListGlossaryEntriesRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -6598,7 +6024,7 @@ def test_list_glossary_entries_field_headers():
 @pytest.mark.asyncio
 async def test_list_glossary_entries_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6672,7 +6098,7 @@ def test_list_glossary_entries_flattened_error():
 @pytest.mark.asyncio
 async def test_list_glossary_entries_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6703,7 +6129,7 @@ async def test_list_glossary_entries_flattened_async():
 @pytest.mark.asyncio
 async def test_list_glossary_entries_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6817,7 +6243,7 @@ def test_list_glossary_entries_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_glossary_entries_async_pager():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6869,7 +6295,7 @@ async def test_list_glossary_entries_async_pager():
 @pytest.mark.asyncio
 async def test_list_glossary_entries_async_pages():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6957,27 +6383,6 @@ def test_create_glossary_entry(request_type, transport: str = "grpc"):
     assert response.description == "description_value"
 
 
-def test_create_glossary_entry_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_glossary_entry), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_glossary_entry()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.CreateGlossaryEntryRequest()
-
-
 def test_create_glossary_entry_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -7049,32 +6454,6 @@ def test_create_glossary_entry_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_glossary_entry_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_glossary_entry), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            common.GlossaryEntry(
-                name="name_value",
-                description="description_value",
-            )
-        )
-        response = await client.create_glossary_entry()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.CreateGlossaryEntryRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_glossary_entry_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7082,7 +6461,7 @@ async def test_create_glossary_entry_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7122,7 +6501,7 @@ async def test_create_glossary_entry_async(
     request_type=translation_service.CreateGlossaryEntryRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7194,7 +6573,7 @@ def test_create_glossary_entry_field_headers():
 @pytest.mark.asyncio
 async def test_create_glossary_entry_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7273,7 +6652,7 @@ def test_create_glossary_entry_flattened_error():
 @pytest.mark.asyncio
 async def test_create_glossary_entry_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7308,7 +6687,7 @@ async def test_create_glossary_entry_flattened_async():
 @pytest.mark.asyncio
 async def test_create_glossary_entry_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7359,27 +6738,6 @@ def test_update_glossary_entry(request_type, transport: str = "grpc"):
     assert isinstance(response, common.GlossaryEntry)
     assert response.name == "name_value"
     assert response.description == "description_value"
-
-
-def test_update_glossary_entry_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_glossary_entry), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.update_glossary_entry()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.UpdateGlossaryEntryRequest()
 
 
 def test_update_glossary_entry_non_empty_request_with_auto_populated_field():
@@ -7449,32 +6807,6 @@ def test_update_glossary_entry_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_glossary_entry_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_glossary_entry), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            common.GlossaryEntry(
-                name="name_value",
-                description="description_value",
-            )
-        )
-        response = await client.update_glossary_entry()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.UpdateGlossaryEntryRequest()
-
-
-@pytest.mark.asyncio
 async def test_update_glossary_entry_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7482,7 +6814,7 @@ async def test_update_glossary_entry_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7522,7 +6854,7 @@ async def test_update_glossary_entry_async(
     request_type=translation_service.UpdateGlossaryEntryRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7594,7 +6926,7 @@ def test_update_glossary_entry_field_headers():
 @pytest.mark.asyncio
 async def test_update_glossary_entry_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7668,7 +7000,7 @@ def test_update_glossary_entry_flattened_error():
 @pytest.mark.asyncio
 async def test_update_glossary_entry_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7699,7 +7031,7 @@ async def test_update_glossary_entry_flattened_async():
 @pytest.mark.asyncio
 async def test_update_glossary_entry_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7744,27 +7076,6 @@ def test_delete_glossary_entry(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_glossary_entry_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_glossary_entry), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_glossary_entry()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.DeleteGlossaryEntryRequest()
 
 
 def test_delete_glossary_entry_non_empty_request_with_auto_populated_field():
@@ -7838,27 +7149,6 @@ def test_delete_glossary_entry_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_glossary_entry_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_glossary_entry), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_glossary_entry()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == translation_service.DeleteGlossaryEntryRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_glossary_entry_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -7866,7 +7156,7 @@ async def test_delete_glossary_entry_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -7906,7 +7196,7 @@ async def test_delete_glossary_entry_async(
     request_type=translation_service.DeleteGlossaryEntryRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -7971,7 +7261,7 @@ def test_delete_glossary_entry_field_headers():
 @pytest.mark.asyncio
 async def test_delete_glossary_entry_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8043,7 +7333,7 @@ def test_delete_glossary_entry_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_glossary_entry_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8072,7 +7362,7 @@ async def test_delete_glossary_entry_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_glossary_entry_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8115,25 +7405,6 @@ def test_create_dataset(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_create_dataset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.CreateDatasetRequest()
 
 
 def test_create_dataset_non_empty_request_with_auto_populated_field():
@@ -8205,27 +7476,6 @@ def test_create_dataset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_dataset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.CreateDatasetRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_dataset_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8233,7 +7483,7 @@ async def test_create_dataset_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8278,7 +7528,7 @@ async def test_create_dataset_async(
     request_type=automl_translation.CreateDatasetRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8341,7 +7591,7 @@ def test_create_dataset_field_headers():
 @pytest.mark.asyncio
 async def test_create_dataset_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8416,7 +7666,7 @@ def test_create_dataset_flattened_error():
 @pytest.mark.asyncio
 async def test_create_dataset_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8449,7 +7699,7 @@ async def test_create_dataset_flattened_async():
 @pytest.mark.asyncio
 async def test_create_dataset_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8510,25 +7760,6 @@ def test_get_dataset(request_type, transport: str = "grpc"):
     assert response.train_example_count == 2033
     assert response.validate_example_count == 2333
     assert response.test_example_count == 1939
-
-
-def test_get_dataset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.GetDatasetRequest()
 
 
 def test_get_dataset_non_empty_request_with_auto_populated_field():
@@ -8595,36 +7826,6 @@ def test_get_dataset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_dataset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            automl_translation.Dataset(
-                name="name_value",
-                display_name="display_name_value",
-                source_language_code="source_language_code_value",
-                target_language_code="target_language_code_value",
-                example_count=1396,
-                train_example_count=2033,
-                validate_example_count=2333,
-                test_example_count=1939,
-            )
-        )
-        response = await client.get_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.GetDatasetRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_dataset_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -8632,7 +7833,7 @@ async def test_get_dataset_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -8671,7 +7872,7 @@ async def test_get_dataset_async(
     transport: str = "grpc_asyncio", request_type=automl_translation.GetDatasetRequest
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -8751,7 +7952,7 @@ def test_get_dataset_field_headers():
 @pytest.mark.asyncio
 async def test_get_dataset_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8821,7 +8022,7 @@ def test_get_dataset_flattened_error():
 @pytest.mark.asyncio
 async def test_get_dataset_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8850,7 +8051,7 @@ async def test_get_dataset_flattened_async():
 @pytest.mark.asyncio
 async def test_get_dataset_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8896,25 +8097,6 @@ def test_list_datasets(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDatasetsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_datasets_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_datasets()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.ListDatasetsRequest()
 
 
 def test_list_datasets_non_empty_request_with_auto_populated_field():
@@ -8983,29 +8165,6 @@ def test_list_datasets_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_datasets_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            automl_translation.ListDatasetsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_datasets()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.ListDatasetsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_datasets_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9013,7 +8172,7 @@ async def test_list_datasets_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9052,7 +8211,7 @@ async def test_list_datasets_async(
     transport: str = "grpc_asyncio", request_type=automl_translation.ListDatasetsRequest
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9118,7 +8277,7 @@ def test_list_datasets_field_headers():
 @pytest.mark.asyncio
 async def test_list_datasets_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9188,7 +8347,7 @@ def test_list_datasets_flattened_error():
 @pytest.mark.asyncio
 async def test_list_datasets_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9217,7 +8376,7 @@ async def test_list_datasets_flattened_async():
 @pytest.mark.asyncio
 async def test_list_datasets_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9327,7 +8486,7 @@ def test_list_datasets_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_datasets_async_pager():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9377,7 +8536,7 @@ async def test_list_datasets_async_pager():
 @pytest.mark.asyncio
 async def test_list_datasets_async_pages():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9456,25 +8615,6 @@ def test_delete_dataset(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_delete_dataset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.DeleteDatasetRequest()
-
-
 def test_delete_dataset_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -9544,27 +8684,6 @@ def test_delete_dataset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_dataset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.DeleteDatasetRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_dataset_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9572,7 +8691,7 @@ async def test_delete_dataset_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -9617,7 +8736,7 @@ async def test_delete_dataset_async(
     request_type=automl_translation.DeleteDatasetRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -9680,7 +8799,7 @@ def test_delete_dataset_field_headers():
 @pytest.mark.asyncio
 async def test_delete_dataset_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9750,7 +8869,7 @@ def test_delete_dataset_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_dataset_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9779,7 +8898,7 @@ async def test_delete_dataset_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_dataset_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9835,27 +8954,6 @@ def test_create_adaptive_mt_dataset(request_type, transport: str = "grpc"):
     assert response.source_language_code == "source_language_code_value"
     assert response.target_language_code == "target_language_code_value"
     assert response.example_count == 1396
-
-
-def test_create_adaptive_mt_dataset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_adaptive_mt_dataset), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_adaptive_mt_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.CreateAdaptiveMtDatasetRequest()
 
 
 def test_create_adaptive_mt_dataset_non_empty_request_with_auto_populated_field():
@@ -9929,35 +9027,6 @@ def test_create_adaptive_mt_dataset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_adaptive_mt_dataset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_adaptive_mt_dataset), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            adaptive_mt.AdaptiveMtDataset(
-                name="name_value",
-                display_name="display_name_value",
-                source_language_code="source_language_code_value",
-                target_language_code="target_language_code_value",
-                example_count=1396,
-            )
-        )
-        response = await client.create_adaptive_mt_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.CreateAdaptiveMtDatasetRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_adaptive_mt_dataset_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -9965,7 +9034,7 @@ async def test_create_adaptive_mt_dataset_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10005,7 +9074,7 @@ async def test_create_adaptive_mt_dataset_async(
     request_type=adaptive_mt.CreateAdaptiveMtDatasetRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10083,7 +9152,7 @@ def test_create_adaptive_mt_dataset_field_headers():
 @pytest.mark.asyncio
 async def test_create_adaptive_mt_dataset_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10162,7 +9231,7 @@ def test_create_adaptive_mt_dataset_flattened_error():
 @pytest.mark.asyncio
 async def test_create_adaptive_mt_dataset_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10197,7 +9266,7 @@ async def test_create_adaptive_mt_dataset_flattened_async():
 @pytest.mark.asyncio
 async def test_create_adaptive_mt_dataset_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10243,27 +9312,6 @@ def test_delete_adaptive_mt_dataset(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_adaptive_mt_dataset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_adaptive_mt_dataset), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_adaptive_mt_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.DeleteAdaptiveMtDatasetRequest()
 
 
 def test_delete_adaptive_mt_dataset_non_empty_request_with_auto_populated_field():
@@ -10337,27 +9385,6 @@ def test_delete_adaptive_mt_dataset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_adaptive_mt_dataset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_adaptive_mt_dataset), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_adaptive_mt_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.DeleteAdaptiveMtDatasetRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_adaptive_mt_dataset_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -10365,7 +9392,7 @@ async def test_delete_adaptive_mt_dataset_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10405,7 +9432,7 @@ async def test_delete_adaptive_mt_dataset_async(
     request_type=adaptive_mt.DeleteAdaptiveMtDatasetRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10470,7 +9497,7 @@ def test_delete_adaptive_mt_dataset_field_headers():
 @pytest.mark.asyncio
 async def test_delete_adaptive_mt_dataset_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10542,7 +9569,7 @@ def test_delete_adaptive_mt_dataset_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_adaptive_mt_dataset_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10571,7 +9598,7 @@ async def test_delete_adaptive_mt_dataset_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_adaptive_mt_dataset_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10627,27 +9654,6 @@ def test_get_adaptive_mt_dataset(request_type, transport: str = "grpc"):
     assert response.source_language_code == "source_language_code_value"
     assert response.target_language_code == "target_language_code_value"
     assert response.example_count == 1396
-
-
-def test_get_adaptive_mt_dataset_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_adaptive_mt_dataset), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_adaptive_mt_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.GetAdaptiveMtDatasetRequest()
 
 
 def test_get_adaptive_mt_dataset_non_empty_request_with_auto_populated_field():
@@ -10721,35 +9727,6 @@ def test_get_adaptive_mt_dataset_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_adaptive_mt_dataset_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_adaptive_mt_dataset), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            adaptive_mt.AdaptiveMtDataset(
-                name="name_value",
-                display_name="display_name_value",
-                source_language_code="source_language_code_value",
-                target_language_code="target_language_code_value",
-                example_count=1396,
-            )
-        )
-        response = await client.get_adaptive_mt_dataset()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.GetAdaptiveMtDatasetRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_adaptive_mt_dataset_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -10757,7 +9734,7 @@ async def test_get_adaptive_mt_dataset_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -10797,7 +9774,7 @@ async def test_get_adaptive_mt_dataset_async(
     request_type=adaptive_mt.GetAdaptiveMtDatasetRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -10875,7 +9852,7 @@ def test_get_adaptive_mt_dataset_field_headers():
 @pytest.mark.asyncio
 async def test_get_adaptive_mt_dataset_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10949,7 +9926,7 @@ def test_get_adaptive_mt_dataset_flattened_error():
 @pytest.mark.asyncio
 async def test_get_adaptive_mt_dataset_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10980,7 +9957,7 @@ async def test_get_adaptive_mt_dataset_flattened_async():
 @pytest.mark.asyncio
 async def test_get_adaptive_mt_dataset_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11028,27 +10005,6 @@ def test_list_adaptive_mt_datasets(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAdaptiveMtDatasetsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_adaptive_mt_datasets_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_adaptive_mt_datasets), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_adaptive_mt_datasets()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.ListAdaptiveMtDatasetsRequest()
 
 
 def test_list_adaptive_mt_datasets_non_empty_request_with_auto_populated_field():
@@ -11126,31 +10082,6 @@ def test_list_adaptive_mt_datasets_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_adaptive_mt_datasets_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_adaptive_mt_datasets), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            adaptive_mt.ListAdaptiveMtDatasetsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_adaptive_mt_datasets()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.ListAdaptiveMtDatasetsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_adaptive_mt_datasets_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -11158,7 +10089,7 @@ async def test_list_adaptive_mt_datasets_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11198,7 +10129,7 @@ async def test_list_adaptive_mt_datasets_async(
     request_type=adaptive_mt.ListAdaptiveMtDatasetsRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11268,7 +10199,7 @@ def test_list_adaptive_mt_datasets_field_headers():
 @pytest.mark.asyncio
 async def test_list_adaptive_mt_datasets_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11342,7 +10273,7 @@ def test_list_adaptive_mt_datasets_flattened_error():
 @pytest.mark.asyncio
 async def test_list_adaptive_mt_datasets_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11373,7 +10304,7 @@ async def test_list_adaptive_mt_datasets_flattened_async():
 @pytest.mark.asyncio
 async def test_list_adaptive_mt_datasets_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11489,7 +10420,7 @@ def test_list_adaptive_mt_datasets_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_adaptive_mt_datasets_async_pager():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11541,7 +10472,7 @@ async def test_list_adaptive_mt_datasets_async_pager():
 @pytest.mark.asyncio
 async def test_list_adaptive_mt_datasets_async_pages():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11627,27 +10558,6 @@ def test_adaptive_mt_translate(request_type, transport: str = "grpc"):
     assert response.language_code == "language_code_value"
 
 
-def test_adaptive_mt_translate_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.adaptive_mt_translate), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.adaptive_mt_translate()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.AdaptiveMtTranslateRequest()
-
-
 def test_adaptive_mt_translate_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -11721,31 +10631,6 @@ def test_adaptive_mt_translate_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_adaptive_mt_translate_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.adaptive_mt_translate), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            adaptive_mt.AdaptiveMtTranslateResponse(
-                language_code="language_code_value",
-            )
-        )
-        response = await client.adaptive_mt_translate()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.AdaptiveMtTranslateRequest()
-
-
-@pytest.mark.asyncio
 async def test_adaptive_mt_translate_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -11753,7 +10638,7 @@ async def test_adaptive_mt_translate_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -11792,7 +10677,7 @@ async def test_adaptive_mt_translate_async(
     transport: str = "grpc_asyncio", request_type=adaptive_mt.AdaptiveMtTranslateRequest
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -11862,7 +10747,7 @@ def test_adaptive_mt_translate_field_headers():
 @pytest.mark.asyncio
 async def test_adaptive_mt_translate_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11941,7 +10826,7 @@ def test_adaptive_mt_translate_flattened_error():
 @pytest.mark.asyncio
 async def test_adaptive_mt_translate_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11976,7 +10861,7 @@ async def test_adaptive_mt_translate_flattened_async():
 @pytest.mark.asyncio
 async def test_adaptive_mt_translate_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12029,27 +10914,6 @@ def test_get_adaptive_mt_file(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.entry_count == 1210
-
-
-def test_get_adaptive_mt_file_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_adaptive_mt_file), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_adaptive_mt_file()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.GetAdaptiveMtFileRequest()
 
 
 def test_get_adaptive_mt_file_non_empty_request_with_auto_populated_field():
@@ -12122,33 +10986,6 @@ def test_get_adaptive_mt_file_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_adaptive_mt_file_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_adaptive_mt_file), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            adaptive_mt.AdaptiveMtFile(
-                name="name_value",
-                display_name="display_name_value",
-                entry_count=1210,
-            )
-        )
-        response = await client.get_adaptive_mt_file()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.GetAdaptiveMtFileRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_adaptive_mt_file_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -12156,7 +10993,7 @@ async def test_get_adaptive_mt_file_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -12195,7 +11032,7 @@ async def test_get_adaptive_mt_file_async(
     transport: str = "grpc_asyncio", request_type=adaptive_mt.GetAdaptiveMtFileRequest
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -12269,7 +11106,7 @@ def test_get_adaptive_mt_file_field_headers():
 @pytest.mark.asyncio
 async def test_get_adaptive_mt_file_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12343,7 +11180,7 @@ def test_get_adaptive_mt_file_flattened_error():
 @pytest.mark.asyncio
 async def test_get_adaptive_mt_file_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12374,7 +11211,7 @@ async def test_get_adaptive_mt_file_flattened_async():
 @pytest.mark.asyncio
 async def test_get_adaptive_mt_file_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12419,27 +11256,6 @@ def test_delete_adaptive_mt_file(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert response is None
-
-
-def test_delete_adaptive_mt_file_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_adaptive_mt_file), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_adaptive_mt_file()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.DeleteAdaptiveMtFileRequest()
 
 
 def test_delete_adaptive_mt_file_non_empty_request_with_auto_populated_field():
@@ -12513,27 +11329,6 @@ def test_delete_adaptive_mt_file_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_adaptive_mt_file_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_adaptive_mt_file), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_adaptive_mt_file()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.DeleteAdaptiveMtFileRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_adaptive_mt_file_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -12541,7 +11336,7 @@ async def test_delete_adaptive_mt_file_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -12581,7 +11376,7 @@ async def test_delete_adaptive_mt_file_async(
     request_type=adaptive_mt.DeleteAdaptiveMtFileRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -12646,7 +11441,7 @@ def test_delete_adaptive_mt_file_field_headers():
 @pytest.mark.asyncio
 async def test_delete_adaptive_mt_file_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12718,7 +11513,7 @@ def test_delete_adaptive_mt_file_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_adaptive_mt_file_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12747,7 +11542,7 @@ async def test_delete_adaptive_mt_file_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_adaptive_mt_file_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12792,27 +11587,6 @@ def test_import_adaptive_mt_file(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, adaptive_mt.ImportAdaptiveMtFileResponse)
-
-
-def test_import_adaptive_mt_file_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.import_adaptive_mt_file), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.import_adaptive_mt_file()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.ImportAdaptiveMtFileRequest()
 
 
 def test_import_adaptive_mt_file_non_empty_request_with_auto_populated_field():
@@ -12886,29 +11660,6 @@ def test_import_adaptive_mt_file_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_import_adaptive_mt_file_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.import_adaptive_mt_file), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            adaptive_mt.ImportAdaptiveMtFileResponse()
-        )
-        response = await client.import_adaptive_mt_file()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.ImportAdaptiveMtFileRequest()
-
-
-@pytest.mark.asyncio
 async def test_import_adaptive_mt_file_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -12916,7 +11667,7 @@ async def test_import_adaptive_mt_file_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -12956,7 +11707,7 @@ async def test_import_adaptive_mt_file_async(
     request_type=adaptive_mt.ImportAdaptiveMtFileRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -13023,7 +11774,7 @@ def test_import_adaptive_mt_file_field_headers():
 @pytest.mark.asyncio
 async def test_import_adaptive_mt_file_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13097,7 +11848,7 @@ def test_import_adaptive_mt_file_flattened_error():
 @pytest.mark.asyncio
 async def test_import_adaptive_mt_file_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13128,7 +11879,7 @@ async def test_import_adaptive_mt_file_flattened_async():
 @pytest.mark.asyncio
 async def test_import_adaptive_mt_file_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -13176,27 +11927,6 @@ def test_list_adaptive_mt_files(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAdaptiveMtFilesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_adaptive_mt_files_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_adaptive_mt_files), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_adaptive_mt_files()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.ListAdaptiveMtFilesRequest()
 
 
 def test_list_adaptive_mt_files_non_empty_request_with_auto_populated_field():
@@ -13272,31 +12002,6 @@ def test_list_adaptive_mt_files_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_adaptive_mt_files_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_adaptive_mt_files), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            adaptive_mt.ListAdaptiveMtFilesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_adaptive_mt_files()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.ListAdaptiveMtFilesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_adaptive_mt_files_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -13304,7 +12009,7 @@ async def test_list_adaptive_mt_files_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -13343,7 +12048,7 @@ async def test_list_adaptive_mt_files_async(
     transport: str = "grpc_asyncio", request_type=adaptive_mt.ListAdaptiveMtFilesRequest
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -13413,7 +12118,7 @@ def test_list_adaptive_mt_files_field_headers():
 @pytest.mark.asyncio
 async def test_list_adaptive_mt_files_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13487,7 +12192,7 @@ def test_list_adaptive_mt_files_flattened_error():
 @pytest.mark.asyncio
 async def test_list_adaptive_mt_files_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13518,7 +12223,7 @@ async def test_list_adaptive_mt_files_flattened_async():
 @pytest.mark.asyncio
 async def test_list_adaptive_mt_files_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -13632,7 +12337,7 @@ def test_list_adaptive_mt_files_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_adaptive_mt_files_async_pager():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13684,7 +12389,7 @@ async def test_list_adaptive_mt_files_async_pager():
 @pytest.mark.asyncio
 async def test_list_adaptive_mt_files_async_pages():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13770,27 +12475,6 @@ def test_list_adaptive_mt_sentences(request_type, transport: str = "grpc"):
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_adaptive_mt_sentences_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_adaptive_mt_sentences), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_adaptive_mt_sentences()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.ListAdaptiveMtSentencesRequest()
-
-
 def test_list_adaptive_mt_sentences_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -13864,31 +12548,6 @@ def test_list_adaptive_mt_sentences_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_adaptive_mt_sentences_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_adaptive_mt_sentences), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            adaptive_mt.ListAdaptiveMtSentencesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_adaptive_mt_sentences()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == adaptive_mt.ListAdaptiveMtSentencesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_adaptive_mt_sentences_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -13896,7 +12555,7 @@ async def test_list_adaptive_mt_sentences_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -13936,7 +12595,7 @@ async def test_list_adaptive_mt_sentences_async(
     request_type=adaptive_mt.ListAdaptiveMtSentencesRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -14006,7 +12665,7 @@ def test_list_adaptive_mt_sentences_field_headers():
 @pytest.mark.asyncio
 async def test_list_adaptive_mt_sentences_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -14080,7 +12739,7 @@ def test_list_adaptive_mt_sentences_flattened_error():
 @pytest.mark.asyncio
 async def test_list_adaptive_mt_sentences_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14111,7 +12770,7 @@ async def test_list_adaptive_mt_sentences_flattened_async():
 @pytest.mark.asyncio
 async def test_list_adaptive_mt_sentences_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -14227,7 +12886,7 @@ def test_list_adaptive_mt_sentences_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_adaptive_mt_sentences_async_pager():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14279,7 +12938,7 @@ async def test_list_adaptive_mt_sentences_async_pager():
 @pytest.mark.asyncio
 async def test_list_adaptive_mt_sentences_async_pages():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14360,25 +13019,6 @@ def test_import_data(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_import_data_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.import_data), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.import_data()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.ImportDataRequest()
-
-
 def test_import_data_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -14448,27 +13088,6 @@ def test_import_data_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_import_data_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.import_data), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.import_data()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.ImportDataRequest()
-
-
-@pytest.mark.asyncio
 async def test_import_data_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -14476,7 +13095,7 @@ async def test_import_data_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -14520,7 +13139,7 @@ async def test_import_data_async(
     transport: str = "grpc_asyncio", request_type=automl_translation.ImportDataRequest
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -14583,7 +13202,7 @@ def test_import_data_field_headers():
 @pytest.mark.asyncio
 async def test_import_data_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -14670,7 +13289,7 @@ def test_import_data_flattened_error():
 @pytest.mark.asyncio
 async def test_import_data_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -14711,7 +13330,7 @@ async def test_import_data_flattened_async():
 @pytest.mark.asyncio
 async def test_import_data_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -14759,25 +13378,6 @@ def test_export_data(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_export_data_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.export_data), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.export_data()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.ExportDataRequest()
 
 
 def test_export_data_non_empty_request_with_auto_populated_field():
@@ -14849,27 +13449,6 @@ def test_export_data_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_export_data_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.export_data), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.export_data()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.ExportDataRequest()
-
-
-@pytest.mark.asyncio
 async def test_export_data_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -14877,7 +13456,7 @@ async def test_export_data_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -14921,7 +13500,7 @@ async def test_export_data_async(
     transport: str = "grpc_asyncio", request_type=automl_translation.ExportDataRequest
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -14984,7 +13563,7 @@ def test_export_data_field_headers():
 @pytest.mark.asyncio
 async def test_export_data_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15071,7 +13650,7 @@ def test_export_data_flattened_error():
 @pytest.mark.asyncio
 async def test_export_data_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -15112,7 +13691,7 @@ async def test_export_data_flattened_async():
 @pytest.mark.asyncio
 async def test_export_data_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -15163,25 +13742,6 @@ def test_list_examples(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExamplesPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_examples_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_examples), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_examples()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.ListExamplesRequest()
 
 
 def test_list_examples_non_empty_request_with_auto_populated_field():
@@ -15252,29 +13812,6 @@ def test_list_examples_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_examples_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_examples), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            automl_translation.ListExamplesResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_examples()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.ListExamplesRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_examples_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -15282,7 +13819,7 @@ async def test_list_examples_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -15321,7 +13858,7 @@ async def test_list_examples_async(
     transport: str = "grpc_asyncio", request_type=automl_translation.ListExamplesRequest
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -15387,7 +13924,7 @@ def test_list_examples_field_headers():
 @pytest.mark.asyncio
 async def test_list_examples_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15457,7 +13994,7 @@ def test_list_examples_flattened_error():
 @pytest.mark.asyncio
 async def test_list_examples_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -15486,7 +14023,7 @@ async def test_list_examples_flattened_async():
 @pytest.mark.asyncio
 async def test_list_examples_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -15596,7 +14133,7 @@ def test_list_examples_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_examples_async_pager():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -15646,7 +14183,7 @@ async def test_list_examples_async_pager():
 @pytest.mark.asyncio
 async def test_list_examples_async_pages():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -15725,25 +14262,6 @@ def test_create_model(request_type, transport: str = "grpc"):
     assert isinstance(response, future.Future)
 
 
-def test_create_model_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_model), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.create_model()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.CreateModelRequest()
-
-
 def test_create_model_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -15813,27 +14331,6 @@ def test_create_model_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_model_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_model), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.create_model()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.CreateModelRequest()
-
-
-@pytest.mark.asyncio
 async def test_create_model_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -15841,7 +14338,7 @@ async def test_create_model_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -15885,7 +14382,7 @@ async def test_create_model_async(
     transport: str = "grpc_asyncio", request_type=automl_translation.CreateModelRequest
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -15948,7 +14445,7 @@ def test_create_model_field_headers():
 @pytest.mark.asyncio
 async def test_create_model_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -16023,7 +14520,7 @@ def test_create_model_flattened_error():
 @pytest.mark.asyncio
 async def test_create_model_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16056,7 +14553,7 @@ async def test_create_model_flattened_async():
 @pytest.mark.asyncio
 async def test_create_model_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -16103,25 +14600,6 @@ def test_list_models(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListModelsPager)
     assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_models_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_models), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.list_models()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.ListModelsRequest()
 
 
 def test_list_models_non_empty_request_with_auto_populated_field():
@@ -16192,29 +14670,6 @@ def test_list_models_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_models_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_models), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            automl_translation.ListModelsResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-        response = await client.list_models()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.ListModelsRequest()
-
-
-@pytest.mark.asyncio
 async def test_list_models_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -16222,7 +14677,7 @@ async def test_list_models_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -16261,7 +14716,7 @@ async def test_list_models_async(
     transport: str = "grpc_asyncio", request_type=automl_translation.ListModelsRequest
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -16327,7 +14782,7 @@ def test_list_models_field_headers():
 @pytest.mark.asyncio
 async def test_list_models_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -16397,7 +14852,7 @@ def test_list_models_flattened_error():
 @pytest.mark.asyncio
 async def test_list_models_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16426,7 +14881,7 @@ async def test_list_models_flattened_async():
 @pytest.mark.asyncio
 async def test_list_models_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -16536,7 +14991,7 @@ def test_list_models_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_models_async_pager():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16586,7 +15041,7 @@ async def test_list_models_async_pager():
 @pytest.mark.asyncio
 async def test_list_models_async_pages():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -16682,25 +15137,6 @@ def test_get_model(request_type, transport: str = "grpc"):
     assert response.test_example_count == 1939
 
 
-def test_get_model_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_model), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.get_model()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.GetModelRequest()
-
-
 def test_get_model_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -16765,42 +15201,12 @@ def test_get_model_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_model_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_model), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            automl_translation.Model(
-                name="name_value",
-                display_name="display_name_value",
-                dataset="dataset_value",
-                source_language_code="source_language_code_value",
-                target_language_code="target_language_code_value",
-                train_example_count=2033,
-                validate_example_count=2333,
-                test_example_count=1939,
-            )
-        )
-        response = await client.get_model()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.GetModelRequest()
-
-
-@pytest.mark.asyncio
 async def test_get_model_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -16839,7 +15245,7 @@ async def test_get_model_async(
     transport: str = "grpc_asyncio", request_type=automl_translation.GetModelRequest
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -16919,7 +15325,7 @@ def test_get_model_field_headers():
 @pytest.mark.asyncio
 async def test_get_model_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -16989,7 +15395,7 @@ def test_get_model_flattened_error():
 @pytest.mark.asyncio
 async def test_get_model_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -17018,7 +15424,7 @@ async def test_get_model_flattened_async():
 @pytest.mark.asyncio
 async def test_get_model_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -17061,25 +15467,6 @@ def test_delete_model(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
-
-
-def test_delete_model_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_model), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.delete_model()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.DeleteModelRequest()
 
 
 def test_delete_model_non_empty_request_with_auto_populated_field():
@@ -17151,27 +15538,6 @@ def test_delete_model_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_model_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_model), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
-        response = await client.delete_model()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == automl_translation.DeleteModelRequest()
-
-
-@pytest.mark.asyncio
 async def test_delete_model_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -17179,7 +15545,7 @@ async def test_delete_model_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = TranslationServiceAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -17223,7 +15589,7 @@ async def test_delete_model_async(
     transport: str = "grpc_asyncio", request_type=automl_translation.DeleteModelRequest
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -17286,7 +15652,7 @@ def test_delete_model_field_headers():
 @pytest.mark.asyncio
 async def test_delete_model_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -17356,7 +15722,7 @@ def test_delete_model_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_model_flattened_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -17385,7 +15751,7 @@ async def test_delete_model_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_model_flattened_error_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -17395,43 +15761,6 @@ async def test_delete_model_flattened_error_async():
             automl_translation.DeleteModelRequest(),
             name="name_value",
         )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        translation_service.TranslateTextRequest,
-        dict,
-    ],
-)
-def test_translate_text_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = translation_service.TranslateTextResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = translation_service.TranslateTextResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.translate_text(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, translation_service.TranslateTextResponse)
 
 
 def test_translate_text_rest_use_cached_wrapped_rpc():
@@ -17571,87 +15900,6 @@ def test_translate_text_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_translate_text_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_translate_text"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_translate_text"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = translation_service.TranslateTextRequest.pb(
-            translation_service.TranslateTextRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = translation_service.TranslateTextResponse.to_json(
-            translation_service.TranslateTextResponse()
-        )
-
-        request = translation_service.TranslateTextRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = translation_service.TranslateTextResponse()
-
-        client.translate_text(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_translate_text_rest_bad_request(
-    transport: str = "rest", request_type=translation_service.TranslateTextRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.translate_text(request)
-
-
 def test_translate_text_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17717,49 +15965,6 @@ def test_translate_text_rest_flattened_error(transport: str = "rest"):
             mime_type="mime_type_value",
             source_language_code="source_language_code_value",
         )
-
-
-def test_translate_text_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        translation_service.RomanizeTextRequest,
-        dict,
-    ],
-)
-def test_romanize_text_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = translation_service.RomanizeTextResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = translation_service.RomanizeTextResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.romanize_text(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, translation_service.RomanizeTextResponse)
 
 
 def test_romanize_text_rest_use_cached_wrapped_rpc():
@@ -17894,87 +16099,6 @@ def test_romanize_text_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_romanize_text_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_romanize_text"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_romanize_text"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = translation_service.RomanizeTextRequest.pb(
-            translation_service.RomanizeTextRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = translation_service.RomanizeTextResponse.to_json(
-            translation_service.RomanizeTextResponse()
-        )
-
-        request = translation_service.RomanizeTextRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = translation_service.RomanizeTextResponse()
-
-        client.romanize_text(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_romanize_text_rest_bad_request(
-    transport: str = "rest", request_type=translation_service.RomanizeTextRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.romanize_text(request)
-
-
 def test_romanize_text_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18032,49 +16156,6 @@ def test_romanize_text_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             contents=["contents_value"],
         )
-
-
-def test_romanize_text_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        translation_service.DetectLanguageRequest,
-        dict,
-    ],
-)
-def test_detect_language_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = translation_service.DetectLanguageResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = translation_service.DetectLanguageResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.detect_language(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, translation_service.DetectLanguageResponse)
 
 
 def test_detect_language_rest_use_cached_wrapped_rpc():
@@ -18197,87 +16278,6 @@ def test_detect_language_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("parent",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_detect_language_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_detect_language"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_detect_language"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = translation_service.DetectLanguageRequest.pb(
-            translation_service.DetectLanguageRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = translation_service.DetectLanguageResponse.to_json(
-            translation_service.DetectLanguageResponse()
-        )
-
-        request = translation_service.DetectLanguageRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = translation_service.DetectLanguageResponse()
-
-        client.detect_language(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_detect_language_rest_bad_request(
-    transport: str = "rest", request_type=translation_service.DetectLanguageRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.detect_language(request)
-
-
 def test_detect_language_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18338,49 +16338,6 @@ def test_detect_language_rest_flattened_error(transport: str = "rest"):
             mime_type="mime_type_value",
             content="content_value",
         )
-
-
-def test_detect_language_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        translation_service.GetSupportedLanguagesRequest,
-        dict,
-    ],
-)
-def test_get_supported_languages_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = translation_service.SupportedLanguages()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = translation_service.SupportedLanguages.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_supported_languages(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, translation_service.SupportedLanguages)
 
 
 def test_get_supported_languages_rest_use_cached_wrapped_rpc():
@@ -18522,88 +16479,6 @@ def test_get_supported_languages_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_supported_languages_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_get_supported_languages"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_get_supported_languages"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = translation_service.GetSupportedLanguagesRequest.pb(
-            translation_service.GetSupportedLanguagesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = translation_service.SupportedLanguages.to_json(
-            translation_service.SupportedLanguages()
-        )
-
-        request = translation_service.GetSupportedLanguagesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = translation_service.SupportedLanguages()
-
-        client.get_supported_languages(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_supported_languages_rest_bad_request(
-    transport: str = "rest",
-    request_type=translation_service.GetSupportedLanguagesRequest,
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_supported_languages(request)
-
-
 def test_get_supported_languages_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -18663,52 +16538,6 @@ def test_get_supported_languages_rest_flattened_error(transport: str = "rest"):
             model="model_value",
             display_language_code="display_language_code_value",
         )
-
-
-def test_get_supported_languages_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        translation_service.TranslateDocumentRequest,
-        dict,
-    ],
-)
-def test_translate_document_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = translation_service.TranslateDocumentResponse(
-            model="model_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = translation_service.TranslateDocumentResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.translate_document(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, translation_service.TranslateDocumentResponse)
-    assert response.model == "model_value"
 
 
 def test_translate_document_rest_use_cached_wrapped_rpc():
@@ -18848,130 +16677,6 @@ def test_translate_document_rest_unset_required_fields():
             )
         )
     )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_translate_document_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_translate_document"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_translate_document"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = translation_service.TranslateDocumentRequest.pb(
-            translation_service.TranslateDocumentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            translation_service.TranslateDocumentResponse.to_json(
-                translation_service.TranslateDocumentResponse()
-            )
-        )
-
-        request = translation_service.TranslateDocumentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = translation_service.TranslateDocumentResponse()
-
-        client.translate_document(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_translate_document_rest_bad_request(
-    transport: str = "rest", request_type=translation_service.TranslateDocumentRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.translate_document(request)
-
-
-def test_translate_document_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        translation_service.BatchTranslateTextRequest,
-        dict,
-    ],
-)
-def test_batch_translate_text_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.batch_translate_text(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_batch_translate_text_rest_use_cached_wrapped_rpc():
@@ -19116,130 +16821,6 @@ def test_batch_translate_text_rest_unset_required_fields():
             )
         )
     )
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_translate_text_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_batch_translate_text"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_batch_translate_text"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = translation_service.BatchTranslateTextRequest.pb(
-            translation_service.BatchTranslateTextRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = translation_service.BatchTranslateTextRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.batch_translate_text(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_translate_text_rest_bad_request(
-    transport: str = "rest", request_type=translation_service.BatchTranslateTextRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_translate_text(request)
-
-
-def test_batch_translate_text_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        translation_service.BatchTranslateDocumentRequest,
-        dict,
-    ],
-)
-def test_batch_translate_document_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.batch_translate_document(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_batch_translate_document_rest_use_cached_wrapped_rpc():
@@ -19387,90 +16968,6 @@ def test_batch_translate_document_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_batch_translate_document_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_batch_translate_document"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_batch_translate_document"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = translation_service.BatchTranslateDocumentRequest.pb(
-            translation_service.BatchTranslateDocumentRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = translation_service.BatchTranslateDocumentRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.batch_translate_document(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_batch_translate_document_rest_bad_request(
-    transport: str = "rest",
-    request_type=translation_service.BatchTranslateDocumentRequest,
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.batch_translate_document(request)
-
-
 def test_batch_translate_document_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -19552,129 +17049,6 @@ def test_batch_translate_document_rest_flattened_error(transport: str = "rest"):
                 )
             ),
         )
-
-
-def test_batch_translate_document_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        translation_service.CreateGlossaryRequest,
-        dict,
-    ],
-)
-def test_create_glossary_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["glossary"] = {
-        "name": "name_value",
-        "language_pair": {
-            "source_language_code": "source_language_code_value",
-            "target_language_code": "target_language_code_value",
-        },
-        "language_codes_set": {
-            "language_codes": ["language_codes_value1", "language_codes_value2"]
-        },
-        "input_config": {"gcs_source": {"input_uri": "input_uri_value"}},
-        "entry_count": 1210,
-        "submit_time": {"seconds": 751, "nanos": 543},
-        "end_time": {},
-        "display_name": "display_name_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = translation_service.CreateGlossaryRequest.meta.fields["glossary"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["glossary"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["glossary"][field])):
-                    del request_init["glossary"][field][i][subfield]
-            else:
-                del request_init["glossary"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_glossary(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_glossary_rest_use_cached_wrapped_rpc():
@@ -19806,89 +17180,6 @@ def test_create_glossary_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_glossary_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_create_glossary"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_create_glossary"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = translation_service.CreateGlossaryRequest.pb(
-            translation_service.CreateGlossaryRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = translation_service.CreateGlossaryRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_glossary(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_glossary_rest_bad_request(
-    transport: str = "rest", request_type=translation_service.CreateGlossaryRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_glossary(request)
-
-
 def test_create_glossary_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -19943,131 +17234,6 @@ def test_create_glossary_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             glossary=translation_service.Glossary(name="name_value"),
         )
-
-
-def test_create_glossary_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        translation_service.UpdateGlossaryRequest,
-        dict,
-    ],
-)
-def test_update_glossary_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "glossary": {"name": "projects/sample1/locations/sample2/glossaries/sample3"}
-    }
-    request_init["glossary"] = {
-        "name": "projects/sample1/locations/sample2/glossaries/sample3",
-        "language_pair": {
-            "source_language_code": "source_language_code_value",
-            "target_language_code": "target_language_code_value",
-        },
-        "language_codes_set": {
-            "language_codes": ["language_codes_value1", "language_codes_value2"]
-        },
-        "input_config": {"gcs_source": {"input_uri": "input_uri_value"}},
-        "entry_count": 1210,
-        "submit_time": {"seconds": 751, "nanos": 543},
-        "end_time": {},
-        "display_name": "display_name_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = translation_service.UpdateGlossaryRequest.meta.fields["glossary"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["glossary"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["glossary"][field])):
-                    del request_init["glossary"][field][i][subfield]
-            else:
-                del request_init["glossary"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_glossary(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_update_glossary_rest_use_cached_wrapped_rpc():
@@ -20188,91 +17354,6 @@ def test_update_glossary_rest_unset_required_fields():
     assert set(unset_fields) == (set(("updateMask",)) & set(("glossary",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_glossary_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_update_glossary"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_update_glossary"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = translation_service.UpdateGlossaryRequest.pb(
-            translation_service.UpdateGlossaryRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = translation_service.UpdateGlossaryRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.update_glossary(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_glossary_rest_bad_request(
-    transport: str = "rest", request_type=translation_service.UpdateGlossaryRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "glossary": {"name": "projects/sample1/locations/sample2/glossaries/sample3"}
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_glossary(request)
-
-
 def test_update_glossary_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -20332,52 +17413,6 @@ def test_update_glossary_rest_flattened_error(transport: str = "rest"):
             glossary=translation_service.Glossary(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
-
-
-def test_update_glossary_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        translation_service.ListGlossariesRequest,
-        dict,
-    ],
-)
-def test_list_glossaries_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = translation_service.ListGlossariesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = translation_service.ListGlossariesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_glossaries(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListGlossariesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_glossaries_rest_use_cached_wrapped_rpc():
@@ -20516,87 +17551,6 @@ def test_list_glossaries_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_glossaries_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_list_glossaries"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_list_glossaries"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = translation_service.ListGlossariesRequest.pb(
-            translation_service.ListGlossariesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = translation_service.ListGlossariesResponse.to_json(
-            translation_service.ListGlossariesResponse()
-        )
-
-        request = translation_service.ListGlossariesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = translation_service.ListGlossariesResponse()
-
-        client.list_glossaries(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_glossaries_rest_bad_request(
-    transport: str = "rest", request_type=translation_service.ListGlossariesRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_glossaries(request)
-
-
 def test_list_glossaries_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -20714,50 +17668,6 @@ def test_list_glossaries_rest_pager(transport: str = "rest"):
         pages = list(client.list_glossaries(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        translation_service.GetGlossaryRequest,
-        dict,
-    ],
-)
-def test_get_glossary_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/glossaries/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = translation_service.Glossary(
-            name="name_value",
-            entry_count=1210,
-            display_name="display_name_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = translation_service.Glossary.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_glossary(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, translation_service.Glossary)
-    assert response.name == "name_value"
-    assert response.entry_count == 1210
-    assert response.display_name == "display_name_value"
 
 
 def test_get_glossary_rest_use_cached_wrapped_rpc():
@@ -20879,87 +17789,6 @@ def test_get_glossary_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_glossary_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_get_glossary"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_get_glossary"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = translation_service.GetGlossaryRequest.pb(
-            translation_service.GetGlossaryRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = translation_service.Glossary.to_json(
-            translation_service.Glossary()
-        )
-
-        request = translation_service.GetGlossaryRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = translation_service.Glossary()
-
-        client.get_glossary(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_glossary_rest_bad_request(
-    transport: str = "rest", request_type=translation_service.GetGlossaryRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/glossaries/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_glossary(request)
-
-
 def test_get_glossary_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -21016,47 +17845,6 @@ def test_get_glossary_rest_flattened_error(transport: str = "rest"):
             translation_service.GetGlossaryRequest(),
             name="name_value",
         )
-
-
-def test_get_glossary_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        translation_service.DeleteGlossaryRequest,
-        dict,
-    ],
-)
-def test_delete_glossary_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/glossaries/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_glossary(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_delete_glossary_rest_use_cached_wrapped_rpc():
@@ -21179,89 +17967,6 @@ def test_delete_glossary_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_glossary_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_delete_glossary"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_delete_glossary"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = translation_service.DeleteGlossaryRequest.pb(
-            translation_service.DeleteGlossaryRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = translation_service.DeleteGlossaryRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_glossary(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_glossary_rest_bad_request(
-    transport: str = "rest", request_type=translation_service.DeleteGlossaryRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/glossaries/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_glossary(request)
-
-
 def test_delete_glossary_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -21316,56 +18021,6 @@ def test_delete_glossary_rest_flattened_error(transport: str = "rest"):
             translation_service.DeleteGlossaryRequest(),
             name="name_value",
         )
-
-
-def test_delete_glossary_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        translation_service.GetGlossaryEntryRequest,
-        dict,
-    ],
-)
-def test_get_glossary_entry_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/glossaries/sample3/glossaryEntries/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common.GlossaryEntry(
-            name="name_value",
-            description="description_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common.GlossaryEntry.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_glossary_entry(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common.GlossaryEntry)
-    assert response.name == "name_value"
-    assert response.description == "description_value"
 
 
 def test_get_glossary_entry_rest_use_cached_wrapped_rpc():
@@ -21491,87 +18146,6 @@ def test_get_glossary_entry_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_glossary_entry_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_get_glossary_entry"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_get_glossary_entry"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = translation_service.GetGlossaryEntryRequest.pb(
-            translation_service.GetGlossaryEntryRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common.GlossaryEntry.to_json(common.GlossaryEntry())
-
-        request = translation_service.GetGlossaryEntryRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common.GlossaryEntry()
-
-        client.get_glossary_entry(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_glossary_entry_rest_bad_request(
-    transport: str = "rest", request_type=translation_service.GetGlossaryEntryRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/glossaries/sample3/glossaryEntries/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_glossary_entry(request)
-
-
 def test_get_glossary_entry_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -21629,52 +18203,6 @@ def test_get_glossary_entry_rest_flattened_error(transport: str = "rest"):
             translation_service.GetGlossaryEntryRequest(),
             name="name_value",
         )
-
-
-def test_get_glossary_entry_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        translation_service.ListGlossaryEntriesRequest,
-        dict,
-    ],
-)
-def test_list_glossary_entries_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/glossaries/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = translation_service.ListGlossaryEntriesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = translation_service.ListGlossaryEntriesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_glossary_entries(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListGlossaryEntriesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_glossary_entries_rest_use_cached_wrapped_rpc():
@@ -21818,89 +18346,6 @@ def test_list_glossary_entries_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_glossary_entries_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_list_glossary_entries"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_list_glossary_entries"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = translation_service.ListGlossaryEntriesRequest.pb(
-            translation_service.ListGlossaryEntriesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            translation_service.ListGlossaryEntriesResponse.to_json(
-                translation_service.ListGlossaryEntriesResponse()
-            )
-        )
-
-        request = translation_service.ListGlossaryEntriesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = translation_service.ListGlossaryEntriesResponse()
-
-        client.list_glossary_entries(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_glossary_entries_rest_bad_request(
-    transport: str = "rest", request_type=translation_service.ListGlossaryEntriesRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/glossaries/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_glossary_entries(request)
-
-
 def test_list_glossary_entries_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -22023,129 +18468,6 @@ def test_list_glossary_entries_rest_pager(transport: str = "rest"):
         pages = list(client.list_glossary_entries(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        translation_service.CreateGlossaryEntryRequest,
-        dict,
-    ],
-)
-def test_create_glossary_entry_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/glossaries/sample3"}
-    request_init["glossary_entry"] = {
-        "name": "name_value",
-        "terms_pair": {
-            "source_term": {
-                "language_code": "language_code_value",
-                "text": "text_value",
-            },
-            "target_term": {},
-        },
-        "terms_set": {"terms": {}},
-        "description": "description_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = translation_service.CreateGlossaryEntryRequest.meta.fields[
-        "glossary_entry"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["glossary_entry"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["glossary_entry"][field])):
-                    del request_init["glossary_entry"][field][i][subfield]
-            else:
-                del request_init["glossary_entry"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common.GlossaryEntry(
-            name="name_value",
-            description="description_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common.GlossaryEntry.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_glossary_entry(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common.GlossaryEntry)
-    assert response.name == "name_value"
-    assert response.description == "description_value"
 
 
 def test_create_glossary_entry_rest_use_cached_wrapped_rpc():
@@ -22281,85 +18603,6 @@ def test_create_glossary_entry_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_glossary_entry_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_create_glossary_entry"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_create_glossary_entry"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = translation_service.CreateGlossaryEntryRequest.pb(
-            translation_service.CreateGlossaryEntryRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common.GlossaryEntry.to_json(common.GlossaryEntry())
-
-        request = translation_service.CreateGlossaryEntryRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common.GlossaryEntry()
-
-        client.create_glossary_entry(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_glossary_entry_rest_bad_request(
-    transport: str = "rest", request_type=translation_service.CreateGlossaryEntryRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/glossaries/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_glossary_entry(request)
-
-
 def test_create_glossary_entry_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -22419,139 +18662,6 @@ def test_create_glossary_entry_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             glossary_entry=common.GlossaryEntry(name="name_value"),
         )
-
-
-def test_create_glossary_entry_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        translation_service.UpdateGlossaryEntryRequest,
-        dict,
-    ],
-)
-def test_update_glossary_entry_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "glossary_entry": {
-            "name": "projects/sample1/locations/sample2/glossaries/sample3/glossaryEntries/sample4"
-        }
-    }
-    request_init["glossary_entry"] = {
-        "name": "projects/sample1/locations/sample2/glossaries/sample3/glossaryEntries/sample4",
-        "terms_pair": {
-            "source_term": {
-                "language_code": "language_code_value",
-                "text": "text_value",
-            },
-            "target_term": {},
-        },
-        "terms_set": {"terms": {}},
-        "description": "description_value",
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = translation_service.UpdateGlossaryEntryRequest.meta.fields[
-        "glossary_entry"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["glossary_entry"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["glossary_entry"][field])):
-                    del request_init["glossary_entry"][field][i][subfield]
-            else:
-                del request_init["glossary_entry"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = common.GlossaryEntry(
-            name="name_value",
-            description="description_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = common.GlossaryEntry.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.update_glossary_entry(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, common.GlossaryEntry)
-    assert response.name == "name_value"
-    assert response.description == "description_value"
 
 
 def test_update_glossary_entry_rest_use_cached_wrapped_rpc():
@@ -22674,89 +18784,6 @@ def test_update_glossary_entry_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("glossaryEntry",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_glossary_entry_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_update_glossary_entry"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_update_glossary_entry"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = translation_service.UpdateGlossaryEntryRequest.pb(
-            translation_service.UpdateGlossaryEntryRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = common.GlossaryEntry.to_json(common.GlossaryEntry())
-
-        request = translation_service.UpdateGlossaryEntryRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = common.GlossaryEntry()
-
-        client.update_glossary_entry(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_glossary_entry_rest_bad_request(
-    transport: str = "rest", request_type=translation_service.UpdateGlossaryEntryRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "glossary_entry": {
-            "name": "projects/sample1/locations/sample2/glossaries/sample3/glossaryEntries/sample4"
-        }
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_glossary_entry(request)
-
-
 def test_update_glossary_entry_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -22816,49 +18843,6 @@ def test_update_glossary_entry_rest_flattened_error(transport: str = "rest"):
             translation_service.UpdateGlossaryEntryRequest(),
             glossary_entry=common.GlossaryEntry(name="name_value"),
         )
-
-
-def test_update_glossary_entry_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        translation_service.DeleteGlossaryEntryRequest,
-        dict,
-    ],
-)
-def test_delete_glossary_entry_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/glossaries/sample3/glossaryEntries/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_glossary_entry(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_glossary_entry_rest_use_cached_wrapped_rpc():
@@ -22982,81 +18966,6 @@ def test_delete_glossary_entry_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_glossary_entry_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_delete_glossary_entry"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = translation_service.DeleteGlossaryEntryRequest.pb(
-            translation_service.DeleteGlossaryEntryRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = translation_service.DeleteGlossaryEntryRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_glossary_entry(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_glossary_entry_rest_bad_request(
-    transport: str = "rest", request_type=translation_service.DeleteGlossaryEntryRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/glossaries/sample3/glossaryEntries/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_glossary_entry(request)
-
-
 def test_delete_glossary_entry_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -23112,126 +19021,6 @@ def test_delete_glossary_entry_rest_flattened_error(transport: str = "rest"):
             translation_service.DeleteGlossaryEntryRequest(),
             name="name_value",
         )
-
-
-def test_delete_glossary_entry_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        automl_translation.CreateDatasetRequest,
-        dict,
-    ],
-)
-def test_create_dataset_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["dataset"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "source_language_code": "source_language_code_value",
-        "target_language_code": "target_language_code_value",
-        "example_count": 1396,
-        "train_example_count": 2033,
-        "validate_example_count": 2333,
-        "test_example_count": 1939,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = automl_translation.CreateDatasetRequest.meta.fields["dataset"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["dataset"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["dataset"][field])):
-                    del request_init["dataset"][field][i][subfield]
-            else:
-                del request_init["dataset"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_dataset(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_dataset_rest_use_cached_wrapped_rpc():
@@ -23363,89 +19152,6 @@ def test_create_dataset_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_dataset_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_create_dataset"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_create_dataset"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = automl_translation.CreateDatasetRequest.pb(
-            automl_translation.CreateDatasetRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = automl_translation.CreateDatasetRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_dataset(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_dataset_rest_bad_request(
-    transport: str = "rest", request_type=automl_translation.CreateDatasetRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_dataset(request)
-
-
 def test_create_dataset_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -23500,66 +19206,6 @@ def test_create_dataset_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             dataset=automl_translation.Dataset(name="name_value"),
         )
-
-
-def test_create_dataset_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        automl_translation.GetDatasetRequest,
-        dict,
-    ],
-)
-def test_get_dataset_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = automl_translation.Dataset(
-            name="name_value",
-            display_name="display_name_value",
-            source_language_code="source_language_code_value",
-            target_language_code="target_language_code_value",
-            example_count=1396,
-            train_example_count=2033,
-            validate_example_count=2333,
-            test_example_count=1939,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = automl_translation.Dataset.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_dataset(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, automl_translation.Dataset)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.source_language_code == "source_language_code_value"
-    assert response.target_language_code == "target_language_code_value"
-    assert response.example_count == 1396
-    assert response.train_example_count == 2033
-    assert response.validate_example_count == 2333
-    assert response.test_example_count == 1939
 
 
 def test_get_dataset_rest_use_cached_wrapped_rpc():
@@ -23681,87 +19327,6 @@ def test_get_dataset_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_dataset_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_get_dataset"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_get_dataset"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = automl_translation.GetDatasetRequest.pb(
-            automl_translation.GetDatasetRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = automl_translation.Dataset.to_json(
-            automl_translation.Dataset()
-        )
-
-        request = automl_translation.GetDatasetRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = automl_translation.Dataset()
-
-        client.get_dataset(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_dataset_rest_bad_request(
-    transport: str = "rest", request_type=automl_translation.GetDatasetRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_dataset(request)
-
-
 def test_get_dataset_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -23816,52 +19381,6 @@ def test_get_dataset_rest_flattened_error(transport: str = "rest"):
             automl_translation.GetDatasetRequest(),
             name="name_value",
         )
-
-
-def test_get_dataset_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        automl_translation.ListDatasetsRequest,
-        dict,
-    ],
-)
-def test_list_datasets_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = automl_translation.ListDatasetsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = automl_translation.ListDatasetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_datasets(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListDatasetsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_datasets_rest_use_cached_wrapped_rpc():
@@ -23998,87 +19517,6 @@ def test_list_datasets_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_datasets_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_list_datasets"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_list_datasets"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = automl_translation.ListDatasetsRequest.pb(
-            automl_translation.ListDatasetsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = automl_translation.ListDatasetsResponse.to_json(
-            automl_translation.ListDatasetsResponse()
-        )
-
-        request = automl_translation.ListDatasetsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = automl_translation.ListDatasetsResponse()
-
-        client.list_datasets(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_datasets_rest_bad_request(
-    transport: str = "rest", request_type=automl_translation.ListDatasetsRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_datasets(request)
-
-
 def test_list_datasets_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -24196,41 +19634,6 @@ def test_list_datasets_rest_pager(transport: str = "rest"):
         pages = list(client.list_datasets(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        automl_translation.DeleteDatasetRequest,
-        dict,
-    ],
-)
-def test_delete_dataset_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_dataset(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_delete_dataset_rest_use_cached_wrapped_rpc():
@@ -24353,89 +19756,6 @@ def test_delete_dataset_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_dataset_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_delete_dataset"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_delete_dataset"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = automl_translation.DeleteDatasetRequest.pb(
-            automl_translation.DeleteDatasetRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = automl_translation.DeleteDatasetRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_dataset(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_dataset_rest_bad_request(
-    transport: str = "rest", request_type=automl_translation.DeleteDatasetRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_dataset(request)
-
-
 def test_delete_dataset_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -24488,138 +19808,6 @@ def test_delete_dataset_rest_flattened_error(transport: str = "rest"):
             automl_translation.DeleteDatasetRequest(),
             name="name_value",
         )
-
-
-def test_delete_dataset_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        adaptive_mt.CreateAdaptiveMtDatasetRequest,
-        dict,
-    ],
-)
-def test_create_adaptive_mt_dataset_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["adaptive_mt_dataset"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "source_language_code": "source_language_code_value",
-        "target_language_code": "target_language_code_value",
-        "example_count": 1396,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = adaptive_mt.CreateAdaptiveMtDatasetRequest.meta.fields[
-        "adaptive_mt_dataset"
-    ]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["adaptive_mt_dataset"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["adaptive_mt_dataset"][field])):
-                    del request_init["adaptive_mt_dataset"][field][i][subfield]
-            else:
-                del request_init["adaptive_mt_dataset"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = adaptive_mt.AdaptiveMtDataset(
-            name="name_value",
-            display_name="display_name_value",
-            source_language_code="source_language_code_value",
-            target_language_code="target_language_code_value",
-            example_count=1396,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = adaptive_mt.AdaptiveMtDataset.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_adaptive_mt_dataset(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, adaptive_mt.AdaptiveMtDataset)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.source_language_code == "source_language_code_value"
-    assert response.target_language_code == "target_language_code_value"
-    assert response.example_count == 1396
 
 
 def test_create_adaptive_mt_dataset_rest_use_cached_wrapped_rpc():
@@ -24755,87 +19943,6 @@ def test_create_adaptive_mt_dataset_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_adaptive_mt_dataset_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_create_adaptive_mt_dataset"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_create_adaptive_mt_dataset"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = adaptive_mt.CreateAdaptiveMtDatasetRequest.pb(
-            adaptive_mt.CreateAdaptiveMtDatasetRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = adaptive_mt.AdaptiveMtDataset.to_json(
-            adaptive_mt.AdaptiveMtDataset()
-        )
-
-        request = adaptive_mt.CreateAdaptiveMtDatasetRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = adaptive_mt.AdaptiveMtDataset()
-
-        client.create_adaptive_mt_dataset(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_adaptive_mt_dataset_rest_bad_request(
-    transport: str = "rest", request_type=adaptive_mt.CreateAdaptiveMtDatasetRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_adaptive_mt_dataset(request)
-
-
 def test_create_adaptive_mt_dataset_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -24893,49 +20000,6 @@ def test_create_adaptive_mt_dataset_rest_flattened_error(transport: str = "rest"
             parent="parent_value",
             adaptive_mt_dataset=adaptive_mt.AdaptiveMtDataset(name="name_value"),
         )
-
-
-def test_create_adaptive_mt_dataset_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        adaptive_mt.DeleteAdaptiveMtDatasetRequest,
-        dict,
-    ],
-)
-def test_delete_adaptive_mt_dataset_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_adaptive_mt_dataset(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_adaptive_mt_dataset_rest_use_cached_wrapped_rpc():
@@ -25059,81 +20123,6 @@ def test_delete_adaptive_mt_dataset_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_adaptive_mt_dataset_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_delete_adaptive_mt_dataset"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = adaptive_mt.DeleteAdaptiveMtDatasetRequest.pb(
-            adaptive_mt.DeleteAdaptiveMtDatasetRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = adaptive_mt.DeleteAdaptiveMtDatasetRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_adaptive_mt_dataset(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_adaptive_mt_dataset_rest_bad_request(
-    transport: str = "rest", request_type=adaptive_mt.DeleteAdaptiveMtDatasetRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_adaptive_mt_dataset(request)
-
-
 def test_delete_adaptive_mt_dataset_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -25189,62 +20178,6 @@ def test_delete_adaptive_mt_dataset_rest_flattened_error(transport: str = "rest"
             adaptive_mt.DeleteAdaptiveMtDatasetRequest(),
             name="name_value",
         )
-
-
-def test_delete_adaptive_mt_dataset_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        adaptive_mt.GetAdaptiveMtDatasetRequest,
-        dict,
-    ],
-)
-def test_get_adaptive_mt_dataset_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = adaptive_mt.AdaptiveMtDataset(
-            name="name_value",
-            display_name="display_name_value",
-            source_language_code="source_language_code_value",
-            target_language_code="target_language_code_value",
-            example_count=1396,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = adaptive_mt.AdaptiveMtDataset.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_adaptive_mt_dataset(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, adaptive_mt.AdaptiveMtDataset)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.source_language_code == "source_language_code_value"
-    assert response.target_language_code == "target_language_code_value"
-    assert response.example_count == 1396
 
 
 def test_get_adaptive_mt_dataset_rest_use_cached_wrapped_rpc():
@@ -25371,89 +20304,6 @@ def test_get_adaptive_mt_dataset_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_adaptive_mt_dataset_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_get_adaptive_mt_dataset"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_get_adaptive_mt_dataset"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = adaptive_mt.GetAdaptiveMtDatasetRequest.pb(
-            adaptive_mt.GetAdaptiveMtDatasetRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = adaptive_mt.AdaptiveMtDataset.to_json(
-            adaptive_mt.AdaptiveMtDataset()
-        )
-
-        request = adaptive_mt.GetAdaptiveMtDatasetRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = adaptive_mt.AdaptiveMtDataset()
-
-        client.get_adaptive_mt_dataset(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_adaptive_mt_dataset_rest_bad_request(
-    transport: str = "rest", request_type=adaptive_mt.GetAdaptiveMtDatasetRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_adaptive_mt_dataset(request)
-
-
 def test_get_adaptive_mt_dataset_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -25511,52 +20361,6 @@ def test_get_adaptive_mt_dataset_rest_flattened_error(transport: str = "rest"):
             adaptive_mt.GetAdaptiveMtDatasetRequest(),
             name="name_value",
         )
-
-
-def test_get_adaptive_mt_dataset_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        adaptive_mt.ListAdaptiveMtDatasetsRequest,
-        dict,
-    ],
-)
-def test_list_adaptive_mt_datasets_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = adaptive_mt.ListAdaptiveMtDatasetsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = adaptive_mt.ListAdaptiveMtDatasetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_adaptive_mt_datasets(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAdaptiveMtDatasetsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_adaptive_mt_datasets_rest_use_cached_wrapped_rpc():
@@ -25700,87 +20504,6 @@ def test_list_adaptive_mt_datasets_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_adaptive_mt_datasets_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_list_adaptive_mt_datasets"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_list_adaptive_mt_datasets"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = adaptive_mt.ListAdaptiveMtDatasetsRequest.pb(
-            adaptive_mt.ListAdaptiveMtDatasetsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = adaptive_mt.ListAdaptiveMtDatasetsResponse.to_json(
-            adaptive_mt.ListAdaptiveMtDatasetsResponse()
-        )
-
-        request = adaptive_mt.ListAdaptiveMtDatasetsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = adaptive_mt.ListAdaptiveMtDatasetsResponse()
-
-        client.list_adaptive_mt_datasets(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_adaptive_mt_datasets_rest_bad_request(
-    transport: str = "rest", request_type=adaptive_mt.ListAdaptiveMtDatasetsRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_adaptive_mt_datasets(request)
-
-
 def test_list_adaptive_mt_datasets_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -25899,46 +20622,6 @@ def test_list_adaptive_mt_datasets_rest_pager(transport: str = "rest"):
         pages = list(client.list_adaptive_mt_datasets(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        adaptive_mt.AdaptiveMtTranslateRequest,
-        dict,
-    ],
-)
-def test_adaptive_mt_translate_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = adaptive_mt.AdaptiveMtTranslateResponse(
-            language_code="language_code_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = adaptive_mt.AdaptiveMtTranslateResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.adaptive_mt_translate(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, adaptive_mt.AdaptiveMtTranslateResponse)
-    assert response.language_code == "language_code_value"
 
 
 def test_adaptive_mt_translate_rest_use_cached_wrapped_rpc():
@@ -26083,87 +20766,6 @@ def test_adaptive_mt_translate_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_adaptive_mt_translate_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_adaptive_mt_translate"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_adaptive_mt_translate"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = adaptive_mt.AdaptiveMtTranslateRequest.pb(
-            adaptive_mt.AdaptiveMtTranslateRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = adaptive_mt.AdaptiveMtTranslateResponse.to_json(
-            adaptive_mt.AdaptiveMtTranslateResponse()
-        )
-
-        request = adaptive_mt.AdaptiveMtTranslateRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = adaptive_mt.AdaptiveMtTranslateResponse()
-
-        client.adaptive_mt_translate(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_adaptive_mt_translate_rest_bad_request(
-    transport: str = "rest", request_type=adaptive_mt.AdaptiveMtTranslateRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.adaptive_mt_translate(request)
-
-
 def test_adaptive_mt_translate_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -26221,58 +20823,6 @@ def test_adaptive_mt_translate_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             content=["content_value"],
         )
-
-
-def test_adaptive_mt_translate_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        adaptive_mt.GetAdaptiveMtFileRequest,
-        dict,
-    ],
-)
-def test_get_adaptive_mt_file_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3/adaptiveMtFiles/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = adaptive_mt.AdaptiveMtFile(
-            name="name_value",
-            display_name="display_name_value",
-            entry_count=1210,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = adaptive_mt.AdaptiveMtFile.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_adaptive_mt_file(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, adaptive_mt.AdaptiveMtFile)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.entry_count == 1210
 
 
 def test_get_adaptive_mt_file_rest_use_cached_wrapped_rpc():
@@ -26398,89 +20948,6 @@ def test_get_adaptive_mt_file_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_adaptive_mt_file_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_get_adaptive_mt_file"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_get_adaptive_mt_file"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = adaptive_mt.GetAdaptiveMtFileRequest.pb(
-            adaptive_mt.GetAdaptiveMtFileRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = adaptive_mt.AdaptiveMtFile.to_json(
-            adaptive_mt.AdaptiveMtFile()
-        )
-
-        request = adaptive_mt.GetAdaptiveMtFileRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = adaptive_mt.AdaptiveMtFile()
-
-        client.get_adaptive_mt_file(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_adaptive_mt_file_rest_bad_request(
-    transport: str = "rest", request_type=adaptive_mt.GetAdaptiveMtFileRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3/adaptiveMtFiles/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_adaptive_mt_file(request)
-
-
 def test_get_adaptive_mt_file_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -26538,49 +21005,6 @@ def test_get_adaptive_mt_file_rest_flattened_error(transport: str = "rest"):
             adaptive_mt.GetAdaptiveMtFileRequest(),
             name="name_value",
         )
-
-
-def test_get_adaptive_mt_file_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        adaptive_mt.DeleteAdaptiveMtFileRequest,
-        dict,
-    ],
-)
-def test_delete_adaptive_mt_file_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3/adaptiveMtFiles/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ""
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_adaptive_mt_file(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
 
 
 def test_delete_adaptive_mt_file_rest_use_cached_wrapped_rpc():
@@ -26704,81 +21128,6 @@ def test_delete_adaptive_mt_file_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_adaptive_mt_file_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_delete_adaptive_mt_file"
-    ) as pre:
-        pre.assert_not_called()
-        pb_message = adaptive_mt.DeleteAdaptiveMtFileRequest.pb(
-            adaptive_mt.DeleteAdaptiveMtFileRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = adaptive_mt.DeleteAdaptiveMtFileRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_adaptive_mt_file(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-
-
-def test_delete_adaptive_mt_file_rest_bad_request(
-    transport: str = "rest", request_type=adaptive_mt.DeleteAdaptiveMtFileRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3/adaptiveMtFiles/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_adaptive_mt_file(request)
-
-
 def test_delete_adaptive_mt_file_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -26834,51 +21183,6 @@ def test_delete_adaptive_mt_file_rest_flattened_error(transport: str = "rest"):
             adaptive_mt.DeleteAdaptiveMtFileRequest(),
             name="name_value",
         )
-
-
-def test_delete_adaptive_mt_file_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        adaptive_mt.ImportAdaptiveMtFileRequest,
-        dict,
-    ],
-)
-def test_import_adaptive_mt_file_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = adaptive_mt.ImportAdaptiveMtFileResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = adaptive_mt.ImportAdaptiveMtFileResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.import_adaptive_mt_file(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, adaptive_mt.ImportAdaptiveMtFileResponse)
 
 
 def test_import_adaptive_mt_file_rest_use_cached_wrapped_rpc():
@@ -27006,89 +21310,6 @@ def test_import_adaptive_mt_file_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("parent",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_import_adaptive_mt_file_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_import_adaptive_mt_file"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_import_adaptive_mt_file"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = adaptive_mt.ImportAdaptiveMtFileRequest.pb(
-            adaptive_mt.ImportAdaptiveMtFileRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = adaptive_mt.ImportAdaptiveMtFileResponse.to_json(
-            adaptive_mt.ImportAdaptiveMtFileResponse()
-        )
-
-        request = adaptive_mt.ImportAdaptiveMtFileRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = adaptive_mt.ImportAdaptiveMtFileResponse()
-
-        client.import_adaptive_mt_file(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_import_adaptive_mt_file_rest_bad_request(
-    transport: str = "rest", request_type=adaptive_mt.ImportAdaptiveMtFileRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.import_adaptive_mt_file(request)
-
-
 def test_import_adaptive_mt_file_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -27146,54 +21367,6 @@ def test_import_adaptive_mt_file_rest_flattened_error(transport: str = "rest"):
             adaptive_mt.ImportAdaptiveMtFileRequest(),
             parent="parent_value",
         )
-
-
-def test_import_adaptive_mt_file_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        adaptive_mt.ListAdaptiveMtFilesRequest,
-        dict,
-    ],
-)
-def test_list_adaptive_mt_files_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = adaptive_mt.ListAdaptiveMtFilesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = adaptive_mt.ListAdaptiveMtFilesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_adaptive_mt_files(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAdaptiveMtFilesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_adaptive_mt_files_rest_use_cached_wrapped_rpc():
@@ -27335,89 +21508,6 @@ def test_list_adaptive_mt_files_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_adaptive_mt_files_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_list_adaptive_mt_files"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_list_adaptive_mt_files"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = adaptive_mt.ListAdaptiveMtFilesRequest.pb(
-            adaptive_mt.ListAdaptiveMtFilesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = adaptive_mt.ListAdaptiveMtFilesResponse.to_json(
-            adaptive_mt.ListAdaptiveMtFilesResponse()
-        )
-
-        request = adaptive_mt.ListAdaptiveMtFilesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = adaptive_mt.ListAdaptiveMtFilesResponse()
-
-        client.list_adaptive_mt_files(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_adaptive_mt_files_rest_bad_request(
-    transport: str = "rest", request_type=adaptive_mt.ListAdaptiveMtFilesRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_adaptive_mt_files(request)
-
-
 def test_list_adaptive_mt_files_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -27540,48 +21630,6 @@ def test_list_adaptive_mt_files_rest_pager(transport: str = "rest"):
         pages = list(client.list_adaptive_mt_files(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        adaptive_mt.ListAdaptiveMtSentencesRequest,
-        dict,
-    ],
-)
-def test_list_adaptive_mt_sentences_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3/adaptiveMtFiles/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = adaptive_mt.ListAdaptiveMtSentencesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = adaptive_mt.ListAdaptiveMtSentencesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_adaptive_mt_sentences(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListAdaptiveMtSentencesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_adaptive_mt_sentences_rest_use_cached_wrapped_rpc():
@@ -27723,89 +21771,6 @@ def test_list_adaptive_mt_sentences_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_adaptive_mt_sentences_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_list_adaptive_mt_sentences"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_list_adaptive_mt_sentences"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = adaptive_mt.ListAdaptiveMtSentencesRequest.pb(
-            adaptive_mt.ListAdaptiveMtSentencesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = adaptive_mt.ListAdaptiveMtSentencesResponse.to_json(
-            adaptive_mt.ListAdaptiveMtSentencesResponse()
-        )
-
-        request = adaptive_mt.ListAdaptiveMtSentencesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = adaptive_mt.ListAdaptiveMtSentencesResponse()
-
-        client.list_adaptive_mt_sentences(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_adaptive_mt_sentences_rest_bad_request(
-    transport: str = "rest", request_type=adaptive_mt.ListAdaptiveMtSentencesRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3/adaptiveMtFiles/sample4"
-    }
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_adaptive_mt_sentences(request)
-
-
 def test_list_adaptive_mt_sentences_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -27928,41 +21893,6 @@ def test_list_adaptive_mt_sentences_rest_pager(transport: str = "rest"):
         pages = list(client.list_adaptive_mt_sentences(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        automl_translation.ImportDataRequest,
-        dict,
-    ],
-)
-def test_import_data_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"dataset": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.import_data(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_import_data_rest_use_cached_wrapped_rpc():
@@ -28094,89 +22024,6 @@ def test_import_data_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_import_data_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_import_data"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_import_data"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = automl_translation.ImportDataRequest.pb(
-            automl_translation.ImportDataRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = automl_translation.ImportDataRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.import_data(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_import_data_rest_bad_request(
-    transport: str = "rest", request_type=automl_translation.ImportDataRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"dataset": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.import_data(request)
-
-
 def test_import_data_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -28242,47 +22089,6 @@ def test_import_data_rest_flattened_error(transport: str = "rest"):
                 ]
             ),
         )
-
-
-def test_import_data_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        automl_translation.ExportDataRequest,
-        dict,
-    ],
-)
-def test_export_data_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"dataset": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.export_data(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_export_data_rest_use_cached_wrapped_rpc():
@@ -28414,89 +22220,6 @@ def test_export_data_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_export_data_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_export_data"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_export_data"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = automl_translation.ExportDataRequest.pb(
-            automl_translation.ExportDataRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = automl_translation.ExportDataRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.export_data(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_export_data_rest_bad_request(
-    transport: str = "rest", request_type=automl_translation.ExportDataRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"dataset": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.export_data(request)
-
-
 def test_export_data_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -28562,52 +22285,6 @@ def test_export_data_rest_flattened_error(transport: str = "rest"):
                 )
             ),
         )
-
-
-def test_export_data_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        automl_translation.ListExamplesRequest,
-        dict,
-    ],
-)
-def test_list_examples_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = automl_translation.ListExamplesResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = automl_translation.ListExamplesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_examples(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListExamplesPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_examples_rest_use_cached_wrapped_rpc():
@@ -28746,87 +22423,6 @@ def test_list_examples_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_examples_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_list_examples"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_list_examples"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = automl_translation.ListExamplesRequest.pb(
-            automl_translation.ListExamplesRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = automl_translation.ListExamplesResponse.to_json(
-            automl_translation.ListExamplesResponse()
-        )
-
-        request = automl_translation.ListExamplesRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = automl_translation.ListExamplesResponse()
-
-        client.list_examples(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_examples_rest_bad_request(
-    transport: str = "rest", request_type=automl_translation.ListExamplesRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2/datasets/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_examples(request)
-
-
 def test_list_examples_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -28949,120 +22545,6 @@ def test_list_examples_rest_pager(transport: str = "rest"):
         pages = list(client.list_examples(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        automl_translation.CreateModelRequest,
-        dict,
-    ],
-)
-def test_create_model_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["model"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "dataset": "dataset_value",
-        "source_language_code": "source_language_code_value",
-        "target_language_code": "target_language_code_value",
-        "train_example_count": 2033,
-        "validate_example_count": 2333,
-        "test_example_count": 1939,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-    }
-    # The version of a generated dependency at test runtime may differ from the version used during generation.
-    # Delete any fields which are not present in the current runtime dependency
-    # See https://github.com/googleapis/gapic-generator-python/issues/1748
-
-    # Determine if the message type is proto-plus or protobuf
-    test_field = automl_translation.CreateModelRequest.meta.fields["model"]
-
-    def get_message_fields(field):
-        # Given a field which is a message (composite type), return a list with
-        # all the fields of the message.
-        # If the field is not a composite type, return an empty list.
-        message_fields = []
-
-        if hasattr(field, "message") and field.message:
-            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
-
-            if is_field_type_proto_plus_type:
-                message_fields = field.message.meta.fields.values()
-            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
-            else:  # pragma: NO COVER
-                message_fields = field.message.DESCRIPTOR.fields
-        return message_fields
-
-    runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
-    ]
-
-    subfields_not_in_runtime = []
-
-    # For each item in the sample request, create a list of sub fields which are not present at runtime
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["model"].items():  # pragma: NO COVER
-        result = None
-        is_repeated = False
-        # For repeated fields
-        if isinstance(value, list) and len(value):
-            is_repeated = True
-            result = value[0]
-        # For fields where the type is another message
-        if isinstance(value, dict):
-            result = value
-
-        if result and hasattr(result, "keys"):
-            for subfield in result.keys():
-                if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
-
-    # Remove fields from the sample request which are not present in the runtime version of the dependency
-    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
-        field = subfield_to_delete.get("field")
-        field_repeated = subfield_to_delete.get("is_repeated")
-        subfield = subfield_to_delete.get("subfield")
-        if subfield:
-            if field_repeated:
-                for i in range(0, len(request_init["model"][field])):
-                    del request_init["model"][field][i][subfield]
-            else:
-                del request_init["model"][field][subfield]
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.create_model(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_create_model_rest_use_cached_wrapped_rpc():
@@ -29194,89 +22676,6 @@ def test_create_model_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_model_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_create_model"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_create_model"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = automl_translation.CreateModelRequest.pb(
-            automl_translation.CreateModelRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = automl_translation.CreateModelRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.create_model(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_model_rest_bad_request(
-    transport: str = "rest", request_type=automl_translation.CreateModelRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_model(request)
-
-
 def test_create_model_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -29331,52 +22730,6 @@ def test_create_model_rest_flattened_error(transport: str = "rest"):
             parent="parent_value",
             model=automl_translation.Model(name="name_value"),
         )
-
-
-def test_create_model_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        automl_translation.ListModelsRequest,
-        dict,
-    ],
-)
-def test_list_models_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = automl_translation.ListModelsResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = automl_translation.ListModelsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.list_models(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListModelsPager)
-    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_models_rest_use_cached_wrapped_rpc():
@@ -29515,87 +22868,6 @@ def test_list_models_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_models_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_list_models"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_list_models"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = automl_translation.ListModelsRequest.pb(
-            automl_translation.ListModelsRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = automl_translation.ListModelsResponse.to_json(
-            automl_translation.ListModelsResponse()
-        )
-
-        request = automl_translation.ListModelsRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = automl_translation.ListModelsResponse()
-
-        client.list_models(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_models_rest_bad_request(
-    transport: str = "rest", request_type=automl_translation.ListModelsRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"parent": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_models(request)
-
-
 def test_list_models_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -29713,60 +22985,6 @@ def test_list_models_rest_pager(transport: str = "rest"):
         pages = list(client.list_models(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        automl_translation.GetModelRequest,
-        dict,
-    ],
-)
-def test_get_model_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = automl_translation.Model(
-            name="name_value",
-            display_name="display_name_value",
-            dataset="dataset_value",
-            source_language_code="source_language_code_value",
-            target_language_code="target_language_code_value",
-            train_example_count=2033,
-            validate_example_count=2333,
-            test_example_count=1939,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = automl_translation.Model.pb(return_value)
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.get_model(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, automl_translation.Model)
-    assert response.name == "name_value"
-    assert response.display_name == "display_name_value"
-    assert response.dataset == "dataset_value"
-    assert response.source_language_code == "source_language_code_value"
-    assert response.target_language_code == "target_language_code_value"
-    assert response.train_example_count == 2033
-    assert response.validate_example_count == 2333
-    assert response.test_example_count == 1939
 
 
 def test_get_model_rest_use_cached_wrapped_rpc():
@@ -29888,87 +23106,6 @@ def test_get_model_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_model_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_get_model"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_get_model"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = automl_translation.GetModelRequest.pb(
-            automl_translation.GetModelRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = automl_translation.Model.to_json(
-            automl_translation.Model()
-        )
-
-        request = automl_translation.GetModelRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = automl_translation.Model()
-
-        client.get_model(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_model_rest_bad_request(
-    transport: str = "rest", request_type=automl_translation.GetModelRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_model(request)
-
-
 def test_get_model_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -30023,47 +23160,6 @@ def test_get_model_rest_flattened_error(transport: str = "rest"):
             automl_translation.GetModelRequest(),
             name="name_value",
         )
-
-
-def test_get_model_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        automl_translation.DeleteModelRequest,
-        dict,
-    ],
-)
-def test_delete_model_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation(name="operations/spam")
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.delete_model(request)
-
-    # Establish that the response is the type that we expect.
-    assert response.operation.name == "operations/spam"
 
 
 def test_delete_model_rest_use_cached_wrapped_rpc():
@@ -30186,89 +23282,6 @@ def test_delete_model_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_model_rest_interceptors(null_interceptor):
-    transport = transports.TranslationServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TranslationServiceRestInterceptor(),
-    )
-    client = TranslationServiceClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "post_delete_model"
-    ) as post, mock.patch.object(
-        transports.TranslationServiceRestInterceptor, "pre_delete_model"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = automl_translation.DeleteModelRequest.pb(
-            automl_translation.DeleteModelRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = json_format.MessageToJson(
-            operations_pb2.Operation()
-        )
-
-        request = automl_translation.DeleteModelRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = operations_pb2.Operation()
-
-        client.delete_model(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_delete_model_rest_bad_request(
-    transport: str = "rest", request_type=automl_translation.DeleteModelRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_model(request)
-
-
 def test_delete_model_rest_flattened():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -30321,12 +23334,6 @@ def test_delete_model_rest_flattened_error(transport: str = "rest"):
             automl_translation.DeleteModelRequest(),
             name="name_value",
         )
-
-
-def test_delete_model_rest_error():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
 
 
 def test_credentials_transport_error():
@@ -30421,18 +23428,8288 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = TranslationServiceClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_translate_text_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.translate_text), "__call__") as call:
+        call.return_value = translation_service.TranslateTextResponse()
+        client.translate_text(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.TranslateTextRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_romanize_text_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.romanize_text), "__call__") as call:
+        call.return_value = translation_service.RomanizeTextResponse()
+        client.romanize_text(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.RomanizeTextRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_detect_language_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.detect_language), "__call__") as call:
+        call.return_value = translation_service.DetectLanguageResponse()
+        client.detect_language(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.DetectLanguageRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_supported_languages_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_supported_languages), "__call__"
+    ) as call:
+        call.return_value = translation_service.SupportedLanguages()
+        client.get_supported_languages(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.GetSupportedLanguagesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_translate_document_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.translate_document), "__call__"
+    ) as call:
+        call.return_value = translation_service.TranslateDocumentResponse()
+        client.translate_document(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.TranslateDocumentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_translate_text_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_translate_text), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.batch_translate_text(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.BatchTranslateTextRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_translate_document_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_translate_document), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.batch_translate_document(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.BatchTranslateDocumentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_glossary_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_glossary), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_glossary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.CreateGlossaryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_glossary_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_glossary), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_glossary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.UpdateGlossaryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_glossaries_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_glossaries), "__call__") as call:
+        call.return_value = translation_service.ListGlossariesResponse()
+        client.list_glossaries(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.ListGlossariesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_glossary_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_glossary), "__call__") as call:
+        call.return_value = translation_service.Glossary()
+        client.get_glossary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.GetGlossaryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_glossary_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_glossary), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_glossary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.DeleteGlossaryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_glossary_entry_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_glossary_entry), "__call__"
+    ) as call:
+        call.return_value = common.GlossaryEntry()
+        client.get_glossary_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.GetGlossaryEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_glossary_entries_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_glossary_entries), "__call__"
+    ) as call:
+        call.return_value = translation_service.ListGlossaryEntriesResponse()
+        client.list_glossary_entries(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.ListGlossaryEntriesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_glossary_entry_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_glossary_entry), "__call__"
+    ) as call:
+        call.return_value = common.GlossaryEntry()
+        client.create_glossary_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.CreateGlossaryEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_glossary_entry_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_glossary_entry), "__call__"
+    ) as call:
+        call.return_value = common.GlossaryEntry()
+        client.update_glossary_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.UpdateGlossaryEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_glossary_entry_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_glossary_entry), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_glossary_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.DeleteGlossaryEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_dataset_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.CreateDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_dataset_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
+        call.return_value = automl_translation.Dataset()
+        client.get_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.GetDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_datasets_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
+        call.return_value = automl_translation.ListDatasetsResponse()
+        client.list_datasets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.ListDatasetsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_dataset_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.DeleteDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_adaptive_mt_dataset_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_adaptive_mt_dataset), "__call__"
+    ) as call:
+        call.return_value = adaptive_mt.AdaptiveMtDataset()
+        client.create_adaptive_mt_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.CreateAdaptiveMtDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_adaptive_mt_dataset_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_adaptive_mt_dataset), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_adaptive_mt_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.DeleteAdaptiveMtDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_adaptive_mt_dataset_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_adaptive_mt_dataset), "__call__"
+    ) as call:
+        call.return_value = adaptive_mt.AdaptiveMtDataset()
+        client.get_adaptive_mt_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.GetAdaptiveMtDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_adaptive_mt_datasets_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_adaptive_mt_datasets), "__call__"
+    ) as call:
+        call.return_value = adaptive_mt.ListAdaptiveMtDatasetsResponse()
+        client.list_adaptive_mt_datasets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.ListAdaptiveMtDatasetsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_adaptive_mt_translate_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.adaptive_mt_translate), "__call__"
+    ) as call:
+        call.return_value = adaptive_mt.AdaptiveMtTranslateResponse()
+        client.adaptive_mt_translate(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.AdaptiveMtTranslateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_adaptive_mt_file_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_adaptive_mt_file), "__call__"
+    ) as call:
+        call.return_value = adaptive_mt.AdaptiveMtFile()
+        client.get_adaptive_mt_file(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.GetAdaptiveMtFileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_adaptive_mt_file_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_adaptive_mt_file), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_adaptive_mt_file(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.DeleteAdaptiveMtFileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_import_adaptive_mt_file_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_adaptive_mt_file), "__call__"
+    ) as call:
+        call.return_value = adaptive_mt.ImportAdaptiveMtFileResponse()
+        client.import_adaptive_mt_file(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.ImportAdaptiveMtFileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_adaptive_mt_files_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_adaptive_mt_files), "__call__"
+    ) as call:
+        call.return_value = adaptive_mt.ListAdaptiveMtFilesResponse()
+        client.list_adaptive_mt_files(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.ListAdaptiveMtFilesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_adaptive_mt_sentences_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_adaptive_mt_sentences), "__call__"
+    ) as call:
+        call.return_value = adaptive_mt.ListAdaptiveMtSentencesResponse()
+        client.list_adaptive_mt_sentences(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.ListAdaptiveMtSentencesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_import_data_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.import_data), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.import_data(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.ImportDataRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_data_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.export_data), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.export_data(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.ExportDataRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_examples_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_examples), "__call__") as call:
+        call.return_value = automl_translation.ListExamplesResponse()
+        client.list_examples(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.ListExamplesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_model_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_model), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.CreateModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_models_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_models), "__call__") as call:
+        call.return_value = automl_translation.ListModelsResponse()
+        client.list_models(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.ListModelsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_model_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_model), "__call__") as call:
+        call.return_value = automl_translation.Model()
+        client.get_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.GetModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_model_empty_call_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_model), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.DeleteModelRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = TranslationServiceAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_translate_text_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.translate_text), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            translation_service.TranslateTextResponse()
+        )
+        await client.translate_text(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.TranslateTextRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_romanize_text_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.romanize_text), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            translation_service.RomanizeTextResponse()
+        )
+        await client.romanize_text(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.RomanizeTextRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_detect_language_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.detect_language), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            translation_service.DetectLanguageResponse()
+        )
+        await client.detect_language(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.DetectLanguageRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_supported_languages_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_supported_languages), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            translation_service.SupportedLanguages()
+        )
+        await client.get_supported_languages(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.GetSupportedLanguagesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_translate_document_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.translate_document), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            translation_service.TranslateDocumentResponse(
+                model="model_value",
+            )
+        )
+        await client.translate_document(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.TranslateDocumentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_batch_translate_text_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_translate_text), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.batch_translate_text(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.BatchTranslateTextRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_batch_translate_document_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_translate_document), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.batch_translate_document(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.BatchTranslateDocumentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_glossary_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_glossary), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_glossary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.CreateGlossaryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_glossary_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_glossary), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.update_glossary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.UpdateGlossaryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_glossaries_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_glossaries), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            translation_service.ListGlossariesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_glossaries(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.ListGlossariesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_glossary_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_glossary), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            translation_service.Glossary(
+                name="name_value",
+                entry_count=1210,
+                display_name="display_name_value",
+            )
+        )
+        await client.get_glossary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.GetGlossaryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_glossary_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_glossary), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_glossary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.DeleteGlossaryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_glossary_entry_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_glossary_entry), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            common.GlossaryEntry(
+                name="name_value",
+                description="description_value",
+            )
+        )
+        await client.get_glossary_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.GetGlossaryEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_glossary_entries_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_glossary_entries), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            translation_service.ListGlossaryEntriesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_glossary_entries(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.ListGlossaryEntriesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_glossary_entry_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_glossary_entry), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            common.GlossaryEntry(
+                name="name_value",
+                description="description_value",
+            )
+        )
+        await client.create_glossary_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.CreateGlossaryEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_update_glossary_entry_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_glossary_entry), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            common.GlossaryEntry(
+                name="name_value",
+                description="description_value",
+            )
+        )
+        await client.update_glossary_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.UpdateGlossaryEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_glossary_entry_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_glossary_entry), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_glossary_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.DeleteGlossaryEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_dataset_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.CreateDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_dataset_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            automl_translation.Dataset(
+                name="name_value",
+                display_name="display_name_value",
+                source_language_code="source_language_code_value",
+                target_language_code="target_language_code_value",
+                example_count=1396,
+                train_example_count=2033,
+                validate_example_count=2333,
+                test_example_count=1939,
+            )
+        )
+        await client.get_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.GetDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_datasets_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            automl_translation.ListDatasetsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_datasets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.ListDatasetsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_dataset_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.DeleteDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_adaptive_mt_dataset_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_adaptive_mt_dataset), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            adaptive_mt.AdaptiveMtDataset(
+                name="name_value",
+                display_name="display_name_value",
+                source_language_code="source_language_code_value",
+                target_language_code="target_language_code_value",
+                example_count=1396,
+            )
+        )
+        await client.create_adaptive_mt_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.CreateAdaptiveMtDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_adaptive_mt_dataset_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_adaptive_mt_dataset), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_adaptive_mt_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.DeleteAdaptiveMtDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_adaptive_mt_dataset_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_adaptive_mt_dataset), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            adaptive_mt.AdaptiveMtDataset(
+                name="name_value",
+                display_name="display_name_value",
+                source_language_code="source_language_code_value",
+                target_language_code="target_language_code_value",
+                example_count=1396,
+            )
+        )
+        await client.get_adaptive_mt_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.GetAdaptiveMtDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_adaptive_mt_datasets_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_adaptive_mt_datasets), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            adaptive_mt.ListAdaptiveMtDatasetsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_adaptive_mt_datasets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.ListAdaptiveMtDatasetsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_adaptive_mt_translate_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.adaptive_mt_translate), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            adaptive_mt.AdaptiveMtTranslateResponse(
+                language_code="language_code_value",
+            )
+        )
+        await client.adaptive_mt_translate(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.AdaptiveMtTranslateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_adaptive_mt_file_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_adaptive_mt_file), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            adaptive_mt.AdaptiveMtFile(
+                name="name_value",
+                display_name="display_name_value",
+                entry_count=1210,
+            )
+        )
+        await client.get_adaptive_mt_file(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.GetAdaptiveMtFileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_adaptive_mt_file_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_adaptive_mt_file), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_adaptive_mt_file(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.DeleteAdaptiveMtFileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_import_adaptive_mt_file_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_adaptive_mt_file), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            adaptive_mt.ImportAdaptiveMtFileResponse()
+        )
+        await client.import_adaptive_mt_file(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.ImportAdaptiveMtFileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_adaptive_mt_files_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_adaptive_mt_files), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            adaptive_mt.ListAdaptiveMtFilesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_adaptive_mt_files(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.ListAdaptiveMtFilesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_adaptive_mt_sentences_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_adaptive_mt_sentences), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            adaptive_mt.ListAdaptiveMtSentencesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_adaptive_mt_sentences(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.ListAdaptiveMtSentencesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_import_data_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.import_data), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.import_data(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.ImportDataRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_export_data_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.export_data), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.export_data(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.ExportDataRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_examples_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_examples), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            automl_translation.ListExamplesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_examples(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.ListExamplesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_create_model_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_model), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.create_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.CreateModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_list_models_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_models), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            automl_translation.ListModelsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        await client.list_models(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.ListModelsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_get_model_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_model), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            automl_translation.Model(
+                name="name_value",
+                display_name="display_name_value",
+                dataset="dataset_value",
+                source_language_code="source_language_code_value",
+                target_language_code="target_language_code_value",
+                train_example_count=2033,
+                validate_example_count=2333,
+                test_example_count=1939,
+            )
+        )
+        await client.get_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.GetModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_model_empty_call_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_model), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.DeleteModelRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = TranslationServiceClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_translate_text_rest_bad_request(
+    request_type=translation_service.TranslateTextRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.translate_text(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        translation_service.TranslateTextRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = TranslationServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_translate_text_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = translation_service.TranslateTextResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = translation_service.TranslateTextResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.translate_text(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, translation_service.TranslateTextResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_translate_text_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_translate_text"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_translate_text"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = translation_service.TranslateTextRequest.pb(
+            translation_service.TranslateTextRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = translation_service.TranslateTextResponse.to_json(
+            translation_service.TranslateTextResponse()
+        )
+        req.return_value.content = return_value
+
+        request = translation_service.TranslateTextRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = translation_service.TranslateTextResponse()
+
+        client.translate_text(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_romanize_text_rest_bad_request(
+    request_type=translation_service.RomanizeTextRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.romanize_text(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        translation_service.RomanizeTextRequest,
+        dict,
+    ],
+)
+def test_romanize_text_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = translation_service.RomanizeTextResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = translation_service.RomanizeTextResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.romanize_text(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, translation_service.RomanizeTextResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_romanize_text_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_romanize_text"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_romanize_text"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = translation_service.RomanizeTextRequest.pb(
+            translation_service.RomanizeTextRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = translation_service.RomanizeTextResponse.to_json(
+            translation_service.RomanizeTextResponse()
+        )
+        req.return_value.content = return_value
+
+        request = translation_service.RomanizeTextRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = translation_service.RomanizeTextResponse()
+
+        client.romanize_text(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_detect_language_rest_bad_request(
+    request_type=translation_service.DetectLanguageRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.detect_language(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        translation_service.DetectLanguageRequest,
+        dict,
+    ],
+)
+def test_detect_language_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = translation_service.DetectLanguageResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = translation_service.DetectLanguageResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.detect_language(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, translation_service.DetectLanguageResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_detect_language_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_detect_language"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_detect_language"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = translation_service.DetectLanguageRequest.pb(
+            translation_service.DetectLanguageRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = translation_service.DetectLanguageResponse.to_json(
+            translation_service.DetectLanguageResponse()
+        )
+        req.return_value.content = return_value
+
+        request = translation_service.DetectLanguageRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = translation_service.DetectLanguageResponse()
+
+        client.detect_language(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_supported_languages_rest_bad_request(
+    request_type=translation_service.GetSupportedLanguagesRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_supported_languages(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        translation_service.GetSupportedLanguagesRequest,
+        dict,
+    ],
+)
+def test_get_supported_languages_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = translation_service.SupportedLanguages()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = translation_service.SupportedLanguages.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_supported_languages(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, translation_service.SupportedLanguages)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_supported_languages_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_get_supported_languages"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_get_supported_languages"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = translation_service.GetSupportedLanguagesRequest.pb(
+            translation_service.GetSupportedLanguagesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = translation_service.SupportedLanguages.to_json(
+            translation_service.SupportedLanguages()
+        )
+        req.return_value.content = return_value
+
+        request = translation_service.GetSupportedLanguagesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = translation_service.SupportedLanguages()
+
+        client.get_supported_languages(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_translate_document_rest_bad_request(
+    request_type=translation_service.TranslateDocumentRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.translate_document(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        translation_service.TranslateDocumentRequest,
+        dict,
+    ],
+)
+def test_translate_document_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = translation_service.TranslateDocumentResponse(
+            model="model_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = translation_service.TranslateDocumentResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.translate_document(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, translation_service.TranslateDocumentResponse)
+    assert response.model == "model_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_translate_document_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_translate_document"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_translate_document"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = translation_service.TranslateDocumentRequest.pb(
+            translation_service.TranslateDocumentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = translation_service.TranslateDocumentResponse.to_json(
+            translation_service.TranslateDocumentResponse()
+        )
+        req.return_value.content = return_value
+
+        request = translation_service.TranslateDocumentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = translation_service.TranslateDocumentResponse()
+
+        client.translate_document(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_translate_text_rest_bad_request(
+    request_type=translation_service.BatchTranslateTextRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.batch_translate_text(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        translation_service.BatchTranslateTextRequest,
+        dict,
+    ],
+)
+def test_batch_translate_text_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_translate_text(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_translate_text_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_batch_translate_text"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_batch_translate_text"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = translation_service.BatchTranslateTextRequest.pb(
+            translation_service.BatchTranslateTextRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = translation_service.BatchTranslateTextRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.batch_translate_text(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_translate_document_rest_bad_request(
+    request_type=translation_service.BatchTranslateDocumentRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.batch_translate_document(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        translation_service.BatchTranslateDocumentRequest,
+        dict,
+    ],
+)
+def test_batch_translate_document_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.batch_translate_document(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_translate_document_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_batch_translate_document"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_batch_translate_document"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = translation_service.BatchTranslateDocumentRequest.pb(
+            translation_service.BatchTranslateDocumentRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = translation_service.BatchTranslateDocumentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.batch_translate_document(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_glossary_rest_bad_request(
+    request_type=translation_service.CreateGlossaryRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_glossary(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        translation_service.CreateGlossaryRequest,
+        dict,
+    ],
+)
+def test_create_glossary_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["glossary"] = {
+        "name": "name_value",
+        "language_pair": {
+            "source_language_code": "source_language_code_value",
+            "target_language_code": "target_language_code_value",
+        },
+        "language_codes_set": {
+            "language_codes": ["language_codes_value1", "language_codes_value2"]
+        },
+        "input_config": {"gcs_source": {"input_uri": "input_uri_value"}},
+        "entry_count": 1210,
+        "submit_time": {"seconds": 751, "nanos": 543},
+        "end_time": {},
+        "display_name": "display_name_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = translation_service.CreateGlossaryRequest.meta.fields["glossary"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["glossary"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["glossary"][field])):
+                    del request_init["glossary"][field][i][subfield]
+            else:
+                del request_init["glossary"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_glossary(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_glossary_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_create_glossary"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_create_glossary"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = translation_service.CreateGlossaryRequest.pb(
+            translation_service.CreateGlossaryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = translation_service.CreateGlossaryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_glossary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_glossary_rest_bad_request(
+    request_type=translation_service.UpdateGlossaryRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "glossary": {"name": "projects/sample1/locations/sample2/glossaries/sample3"}
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_glossary(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        translation_service.UpdateGlossaryRequest,
+        dict,
+    ],
+)
+def test_update_glossary_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "glossary": {"name": "projects/sample1/locations/sample2/glossaries/sample3"}
+    }
+    request_init["glossary"] = {
+        "name": "projects/sample1/locations/sample2/glossaries/sample3",
+        "language_pair": {
+            "source_language_code": "source_language_code_value",
+            "target_language_code": "target_language_code_value",
+        },
+        "language_codes_set": {
+            "language_codes": ["language_codes_value1", "language_codes_value2"]
+        },
+        "input_config": {"gcs_source": {"input_uri": "input_uri_value"}},
+        "entry_count": 1210,
+        "submit_time": {"seconds": 751, "nanos": 543},
+        "end_time": {},
+        "display_name": "display_name_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = translation_service.UpdateGlossaryRequest.meta.fields["glossary"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["glossary"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["glossary"][field])):
+                    del request_init["glossary"][field][i][subfield]
+            else:
+                del request_init["glossary"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_glossary(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_glossary_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_update_glossary"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_update_glossary"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = translation_service.UpdateGlossaryRequest.pb(
+            translation_service.UpdateGlossaryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = translation_service.UpdateGlossaryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_glossary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_glossaries_rest_bad_request(
+    request_type=translation_service.ListGlossariesRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_glossaries(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        translation_service.ListGlossariesRequest,
+        dict,
+    ],
+)
+def test_list_glossaries_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = translation_service.ListGlossariesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = translation_service.ListGlossariesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_glossaries(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListGlossariesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_glossaries_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_list_glossaries"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_list_glossaries"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = translation_service.ListGlossariesRequest.pb(
+            translation_service.ListGlossariesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = translation_service.ListGlossariesResponse.to_json(
+            translation_service.ListGlossariesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = translation_service.ListGlossariesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = translation_service.ListGlossariesResponse()
+
+        client.list_glossaries(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_glossary_rest_bad_request(
+    request_type=translation_service.GetGlossaryRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/glossaries/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_glossary(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        translation_service.GetGlossaryRequest,
+        dict,
+    ],
+)
+def test_get_glossary_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/glossaries/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = translation_service.Glossary(
+            name="name_value",
+            entry_count=1210,
+            display_name="display_name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = translation_service.Glossary.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_glossary(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, translation_service.Glossary)
+    assert response.name == "name_value"
+    assert response.entry_count == 1210
+    assert response.display_name == "display_name_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_glossary_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_get_glossary"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_get_glossary"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = translation_service.GetGlossaryRequest.pb(
+            translation_service.GetGlossaryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = translation_service.Glossary.to_json(
+            translation_service.Glossary()
+        )
+        req.return_value.content = return_value
+
+        request = translation_service.GetGlossaryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = translation_service.Glossary()
+
+        client.get_glossary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_glossary_rest_bad_request(
+    request_type=translation_service.DeleteGlossaryRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/glossaries/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_glossary(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        translation_service.DeleteGlossaryRequest,
+        dict,
+    ],
+)
+def test_delete_glossary_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/glossaries/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_glossary(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_glossary_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_delete_glossary"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_delete_glossary"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = translation_service.DeleteGlossaryRequest.pb(
+            translation_service.DeleteGlossaryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = translation_service.DeleteGlossaryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_glossary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_glossary_entry_rest_bad_request(
+    request_type=translation_service.GetGlossaryEntryRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/glossaries/sample3/glossaryEntries/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_glossary_entry(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        translation_service.GetGlossaryEntryRequest,
+        dict,
+    ],
+)
+def test_get_glossary_entry_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/glossaries/sample3/glossaryEntries/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common.GlossaryEntry(
+            name="name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common.GlossaryEntry.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_glossary_entry(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common.GlossaryEntry)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_glossary_entry_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_get_glossary_entry"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_get_glossary_entry"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = translation_service.GetGlossaryEntryRequest.pb(
+            translation_service.GetGlossaryEntryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common.GlossaryEntry.to_json(common.GlossaryEntry())
+        req.return_value.content = return_value
+
+        request = translation_service.GetGlossaryEntryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common.GlossaryEntry()
+
+        client.get_glossary_entry(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_glossary_entries_rest_bad_request(
+    request_type=translation_service.ListGlossaryEntriesRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/glossaries/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_glossary_entries(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        translation_service.ListGlossaryEntriesRequest,
+        dict,
+    ],
+)
+def test_list_glossary_entries_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/glossaries/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = translation_service.ListGlossaryEntriesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = translation_service.ListGlossaryEntriesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_glossary_entries(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListGlossaryEntriesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_glossary_entries_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_list_glossary_entries"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_list_glossary_entries"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = translation_service.ListGlossaryEntriesRequest.pb(
+            translation_service.ListGlossaryEntriesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = translation_service.ListGlossaryEntriesResponse.to_json(
+            translation_service.ListGlossaryEntriesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = translation_service.ListGlossaryEntriesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = translation_service.ListGlossaryEntriesResponse()
+
+        client.list_glossary_entries(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_glossary_entry_rest_bad_request(
+    request_type=translation_service.CreateGlossaryEntryRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/glossaries/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_glossary_entry(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        translation_service.CreateGlossaryEntryRequest,
+        dict,
+    ],
+)
+def test_create_glossary_entry_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/glossaries/sample3"}
+    request_init["glossary_entry"] = {
+        "name": "name_value",
+        "terms_pair": {
+            "source_term": {
+                "language_code": "language_code_value",
+                "text": "text_value",
+            },
+            "target_term": {},
+        },
+        "terms_set": {"terms": {}},
+        "description": "description_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = translation_service.CreateGlossaryEntryRequest.meta.fields[
+        "glossary_entry"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["glossary_entry"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["glossary_entry"][field])):
+                    del request_init["glossary_entry"][field][i][subfield]
+            else:
+                del request_init["glossary_entry"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common.GlossaryEntry(
+            name="name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common.GlossaryEntry.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_glossary_entry(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common.GlossaryEntry)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_glossary_entry_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_create_glossary_entry"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_create_glossary_entry"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = translation_service.CreateGlossaryEntryRequest.pb(
+            translation_service.CreateGlossaryEntryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common.GlossaryEntry.to_json(common.GlossaryEntry())
+        req.return_value.content = return_value
+
+        request = translation_service.CreateGlossaryEntryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common.GlossaryEntry()
+
+        client.create_glossary_entry(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_glossary_entry_rest_bad_request(
+    request_type=translation_service.UpdateGlossaryEntryRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "glossary_entry": {
+            "name": "projects/sample1/locations/sample2/glossaries/sample3/glossaryEntries/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.update_glossary_entry(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        translation_service.UpdateGlossaryEntryRequest,
+        dict,
+    ],
+)
+def test_update_glossary_entry_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "glossary_entry": {
+            "name": "projects/sample1/locations/sample2/glossaries/sample3/glossaryEntries/sample4"
+        }
+    }
+    request_init["glossary_entry"] = {
+        "name": "projects/sample1/locations/sample2/glossaries/sample3/glossaryEntries/sample4",
+        "terms_pair": {
+            "source_term": {
+                "language_code": "language_code_value",
+                "text": "text_value",
+            },
+            "target_term": {},
+        },
+        "terms_set": {"terms": {}},
+        "description": "description_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = translation_service.UpdateGlossaryEntryRequest.meta.fields[
+        "glossary_entry"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["glossary_entry"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["glossary_entry"][field])):
+                    del request_init["glossary_entry"][field][i][subfield]
+            else:
+                del request_init["glossary_entry"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = common.GlossaryEntry(
+            name="name_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = common.GlossaryEntry.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_glossary_entry(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, common.GlossaryEntry)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_glossary_entry_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_update_glossary_entry"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_update_glossary_entry"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = translation_service.UpdateGlossaryEntryRequest.pb(
+            translation_service.UpdateGlossaryEntryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = common.GlossaryEntry.to_json(common.GlossaryEntry())
+        req.return_value.content = return_value
+
+        request = translation_service.UpdateGlossaryEntryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = common.GlossaryEntry()
+
+        client.update_glossary_entry(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_glossary_entry_rest_bad_request(
+    request_type=translation_service.DeleteGlossaryEntryRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/glossaries/sample3/glossaryEntries/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_glossary_entry(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        translation_service.DeleteGlossaryEntryRequest,
+        dict,
+    ],
+)
+def test_delete_glossary_entry_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/glossaries/sample3/glossaryEntries/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_glossary_entry(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_glossary_entry_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_delete_glossary_entry"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = translation_service.DeleteGlossaryEntryRequest.pb(
+            translation_service.DeleteGlossaryEntryRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = translation_service.DeleteGlossaryEntryRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_glossary_entry(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_create_dataset_rest_bad_request(
+    request_type=automl_translation.CreateDatasetRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_dataset(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        automl_translation.CreateDatasetRequest,
+        dict,
+    ],
+)
+def test_create_dataset_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["dataset"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "source_language_code": "source_language_code_value",
+        "target_language_code": "target_language_code_value",
+        "example_count": 1396,
+        "train_example_count": 2033,
+        "validate_example_count": 2333,
+        "test_example_count": 1939,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = automl_translation.CreateDatasetRequest.meta.fields["dataset"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["dataset"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["dataset"][field])):
+                    del request_init["dataset"][field][i][subfield]
+            else:
+                del request_init["dataset"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_dataset(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_dataset_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_create_dataset"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_create_dataset"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = automl_translation.CreateDatasetRequest.pb(
+            automl_translation.CreateDatasetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = automl_translation.CreateDatasetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_dataset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_dataset_rest_bad_request(
+    request_type=automl_translation.GetDatasetRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_dataset(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        automl_translation.GetDatasetRequest,
+        dict,
+    ],
+)
+def test_get_dataset_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = automl_translation.Dataset(
+            name="name_value",
+            display_name="display_name_value",
+            source_language_code="source_language_code_value",
+            target_language_code="target_language_code_value",
+            example_count=1396,
+            train_example_count=2033,
+            validate_example_count=2333,
+            test_example_count=1939,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = automl_translation.Dataset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_dataset(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, automl_translation.Dataset)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.source_language_code == "source_language_code_value"
+    assert response.target_language_code == "target_language_code_value"
+    assert response.example_count == 1396
+    assert response.train_example_count == 2033
+    assert response.validate_example_count == 2333
+    assert response.test_example_count == 1939
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_dataset_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_get_dataset"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_get_dataset"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = automl_translation.GetDatasetRequest.pb(
+            automl_translation.GetDatasetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = automl_translation.Dataset.to_json(automl_translation.Dataset())
+        req.return_value.content = return_value
+
+        request = automl_translation.GetDatasetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = automl_translation.Dataset()
+
+        client.get_dataset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_datasets_rest_bad_request(
+    request_type=automl_translation.ListDatasetsRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_datasets(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        automl_translation.ListDatasetsRequest,
+        dict,
+    ],
+)
+def test_list_datasets_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = automl_translation.ListDatasetsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = automl_translation.ListDatasetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_datasets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDatasetsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_datasets_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_list_datasets"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_list_datasets"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = automl_translation.ListDatasetsRequest.pb(
+            automl_translation.ListDatasetsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = automl_translation.ListDatasetsResponse.to_json(
+            automl_translation.ListDatasetsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = automl_translation.ListDatasetsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = automl_translation.ListDatasetsResponse()
+
+        client.list_datasets(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_dataset_rest_bad_request(
+    request_type=automl_translation.DeleteDatasetRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_dataset(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        automl_translation.DeleteDatasetRequest,
+        dict,
+    ],
+)
+def test_delete_dataset_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_dataset(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_dataset_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_delete_dataset"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_delete_dataset"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = automl_translation.DeleteDatasetRequest.pb(
+            automl_translation.DeleteDatasetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = automl_translation.DeleteDatasetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_dataset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_adaptive_mt_dataset_rest_bad_request(
+    request_type=adaptive_mt.CreateAdaptiveMtDatasetRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_adaptive_mt_dataset(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        adaptive_mt.CreateAdaptiveMtDatasetRequest,
+        dict,
+    ],
+)
+def test_create_adaptive_mt_dataset_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["adaptive_mt_dataset"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "source_language_code": "source_language_code_value",
+        "target_language_code": "target_language_code_value",
+        "example_count": 1396,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = adaptive_mt.CreateAdaptiveMtDatasetRequest.meta.fields[
+        "adaptive_mt_dataset"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["adaptive_mt_dataset"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["adaptive_mt_dataset"][field])):
+                    del request_init["adaptive_mt_dataset"][field][i][subfield]
+            else:
+                del request_init["adaptive_mt_dataset"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = adaptive_mt.AdaptiveMtDataset(
+            name="name_value",
+            display_name="display_name_value",
+            source_language_code="source_language_code_value",
+            target_language_code="target_language_code_value",
+            example_count=1396,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = adaptive_mt.AdaptiveMtDataset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_adaptive_mt_dataset(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, adaptive_mt.AdaptiveMtDataset)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.source_language_code == "source_language_code_value"
+    assert response.target_language_code == "target_language_code_value"
+    assert response.example_count == 1396
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_adaptive_mt_dataset_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_create_adaptive_mt_dataset"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_create_adaptive_mt_dataset"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = adaptive_mt.CreateAdaptiveMtDatasetRequest.pb(
+            adaptive_mt.CreateAdaptiveMtDatasetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = adaptive_mt.AdaptiveMtDataset.to_json(
+            adaptive_mt.AdaptiveMtDataset()
+        )
+        req.return_value.content = return_value
+
+        request = adaptive_mt.CreateAdaptiveMtDatasetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = adaptive_mt.AdaptiveMtDataset()
+
+        client.create_adaptive_mt_dataset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_adaptive_mt_dataset_rest_bad_request(
+    request_type=adaptive_mt.DeleteAdaptiveMtDatasetRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_adaptive_mt_dataset(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        adaptive_mt.DeleteAdaptiveMtDatasetRequest,
+        dict,
+    ],
+)
+def test_delete_adaptive_mt_dataset_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_adaptive_mt_dataset(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_adaptive_mt_dataset_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_delete_adaptive_mt_dataset"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = adaptive_mt.DeleteAdaptiveMtDatasetRequest.pb(
+            adaptive_mt.DeleteAdaptiveMtDatasetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = adaptive_mt.DeleteAdaptiveMtDatasetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_adaptive_mt_dataset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_get_adaptive_mt_dataset_rest_bad_request(
+    request_type=adaptive_mt.GetAdaptiveMtDatasetRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_adaptive_mt_dataset(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        adaptive_mt.GetAdaptiveMtDatasetRequest,
+        dict,
+    ],
+)
+def test_get_adaptive_mt_dataset_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = adaptive_mt.AdaptiveMtDataset(
+            name="name_value",
+            display_name="display_name_value",
+            source_language_code="source_language_code_value",
+            target_language_code="target_language_code_value",
+            example_count=1396,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = adaptive_mt.AdaptiveMtDataset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_adaptive_mt_dataset(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, adaptive_mt.AdaptiveMtDataset)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.source_language_code == "source_language_code_value"
+    assert response.target_language_code == "target_language_code_value"
+    assert response.example_count == 1396
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_adaptive_mt_dataset_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_get_adaptive_mt_dataset"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_get_adaptive_mt_dataset"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = adaptive_mt.GetAdaptiveMtDatasetRequest.pb(
+            adaptive_mt.GetAdaptiveMtDatasetRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = adaptive_mt.AdaptiveMtDataset.to_json(
+            adaptive_mt.AdaptiveMtDataset()
+        )
+        req.return_value.content = return_value
+
+        request = adaptive_mt.GetAdaptiveMtDatasetRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = adaptive_mt.AdaptiveMtDataset()
+
+        client.get_adaptive_mt_dataset(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_adaptive_mt_datasets_rest_bad_request(
+    request_type=adaptive_mt.ListAdaptiveMtDatasetsRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_adaptive_mt_datasets(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        adaptive_mt.ListAdaptiveMtDatasetsRequest,
+        dict,
+    ],
+)
+def test_list_adaptive_mt_datasets_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = adaptive_mt.ListAdaptiveMtDatasetsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = adaptive_mt.ListAdaptiveMtDatasetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_adaptive_mt_datasets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAdaptiveMtDatasetsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_adaptive_mt_datasets_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_list_adaptive_mt_datasets"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_list_adaptive_mt_datasets"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = adaptive_mt.ListAdaptiveMtDatasetsRequest.pb(
+            adaptive_mt.ListAdaptiveMtDatasetsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = adaptive_mt.ListAdaptiveMtDatasetsResponse.to_json(
+            adaptive_mt.ListAdaptiveMtDatasetsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = adaptive_mt.ListAdaptiveMtDatasetsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = adaptive_mt.ListAdaptiveMtDatasetsResponse()
+
+        client.list_adaptive_mt_datasets(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_adaptive_mt_translate_rest_bad_request(
+    request_type=adaptive_mt.AdaptiveMtTranslateRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.adaptive_mt_translate(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        adaptive_mt.AdaptiveMtTranslateRequest,
+        dict,
+    ],
+)
+def test_adaptive_mt_translate_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = adaptive_mt.AdaptiveMtTranslateResponse(
+            language_code="language_code_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = adaptive_mt.AdaptiveMtTranslateResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.adaptive_mt_translate(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, adaptive_mt.AdaptiveMtTranslateResponse)
+    assert response.language_code == "language_code_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_adaptive_mt_translate_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_adaptive_mt_translate"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_adaptive_mt_translate"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = adaptive_mt.AdaptiveMtTranslateRequest.pb(
+            adaptive_mt.AdaptiveMtTranslateRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = adaptive_mt.AdaptiveMtTranslateResponse.to_json(
+            adaptive_mt.AdaptiveMtTranslateResponse()
+        )
+        req.return_value.content = return_value
+
+        request = adaptive_mt.AdaptiveMtTranslateRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = adaptive_mt.AdaptiveMtTranslateResponse()
+
+        client.adaptive_mt_translate(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_adaptive_mt_file_rest_bad_request(
+    request_type=adaptive_mt.GetAdaptiveMtFileRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3/adaptiveMtFiles/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_adaptive_mt_file(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        adaptive_mt.GetAdaptiveMtFileRequest,
+        dict,
+    ],
+)
+def test_get_adaptive_mt_file_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3/adaptiveMtFiles/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = adaptive_mt.AdaptiveMtFile(
+            name="name_value",
+            display_name="display_name_value",
+            entry_count=1210,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = adaptive_mt.AdaptiveMtFile.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_adaptive_mt_file(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, adaptive_mt.AdaptiveMtFile)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.entry_count == 1210
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_adaptive_mt_file_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_get_adaptive_mt_file"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_get_adaptive_mt_file"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = adaptive_mt.GetAdaptiveMtFileRequest.pb(
+            adaptive_mt.GetAdaptiveMtFileRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = adaptive_mt.AdaptiveMtFile.to_json(adaptive_mt.AdaptiveMtFile())
+        req.return_value.content = return_value
+
+        request = adaptive_mt.GetAdaptiveMtFileRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = adaptive_mt.AdaptiveMtFile()
+
+        client.get_adaptive_mt_file(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_adaptive_mt_file_rest_bad_request(
+    request_type=adaptive_mt.DeleteAdaptiveMtFileRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3/adaptiveMtFiles/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_adaptive_mt_file(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        adaptive_mt.DeleteAdaptiveMtFileRequest,
+        dict,
+    ],
+)
+def test_delete_adaptive_mt_file_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3/adaptiveMtFiles/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_adaptive_mt_file(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_adaptive_mt_file_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_delete_adaptive_mt_file"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = adaptive_mt.DeleteAdaptiveMtFileRequest.pb(
+            adaptive_mt.DeleteAdaptiveMtFileRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+
+        request = adaptive_mt.DeleteAdaptiveMtFileRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_adaptive_mt_file(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_import_adaptive_mt_file_rest_bad_request(
+    request_type=adaptive_mt.ImportAdaptiveMtFileRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.import_adaptive_mt_file(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        adaptive_mt.ImportAdaptiveMtFileRequest,
+        dict,
+    ],
+)
+def test_import_adaptive_mt_file_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = adaptive_mt.ImportAdaptiveMtFileResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = adaptive_mt.ImportAdaptiveMtFileResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.import_adaptive_mt_file(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, adaptive_mt.ImportAdaptiveMtFileResponse)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_import_adaptive_mt_file_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_import_adaptive_mt_file"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_import_adaptive_mt_file"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = adaptive_mt.ImportAdaptiveMtFileRequest.pb(
+            adaptive_mt.ImportAdaptiveMtFileRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = adaptive_mt.ImportAdaptiveMtFileResponse.to_json(
+            adaptive_mt.ImportAdaptiveMtFileResponse()
+        )
+        req.return_value.content = return_value
+
+        request = adaptive_mt.ImportAdaptiveMtFileRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = adaptive_mt.ImportAdaptiveMtFileResponse()
+
+        client.import_adaptive_mt_file(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_adaptive_mt_files_rest_bad_request(
+    request_type=adaptive_mt.ListAdaptiveMtFilesRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_adaptive_mt_files(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        adaptive_mt.ListAdaptiveMtFilesRequest,
+        dict,
+    ],
+)
+def test_list_adaptive_mt_files_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = adaptive_mt.ListAdaptiveMtFilesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = adaptive_mt.ListAdaptiveMtFilesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_adaptive_mt_files(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAdaptiveMtFilesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_adaptive_mt_files_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_list_adaptive_mt_files"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_list_adaptive_mt_files"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = adaptive_mt.ListAdaptiveMtFilesRequest.pb(
+            adaptive_mt.ListAdaptiveMtFilesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = adaptive_mt.ListAdaptiveMtFilesResponse.to_json(
+            adaptive_mt.ListAdaptiveMtFilesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = adaptive_mt.ListAdaptiveMtFilesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = adaptive_mt.ListAdaptiveMtFilesResponse()
+
+        client.list_adaptive_mt_files(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_adaptive_mt_sentences_rest_bad_request(
+    request_type=adaptive_mt.ListAdaptiveMtSentencesRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3/adaptiveMtFiles/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_adaptive_mt_sentences(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        adaptive_mt.ListAdaptiveMtSentencesRequest,
+        dict,
+    ],
+)
+def test_list_adaptive_mt_sentences_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/adaptiveMtDatasets/sample3/adaptiveMtFiles/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = adaptive_mt.ListAdaptiveMtSentencesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = adaptive_mt.ListAdaptiveMtSentencesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_adaptive_mt_sentences(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAdaptiveMtSentencesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_adaptive_mt_sentences_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_list_adaptive_mt_sentences"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_list_adaptive_mt_sentences"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = adaptive_mt.ListAdaptiveMtSentencesRequest.pb(
+            adaptive_mt.ListAdaptiveMtSentencesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = adaptive_mt.ListAdaptiveMtSentencesResponse.to_json(
+            adaptive_mt.ListAdaptiveMtSentencesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = adaptive_mt.ListAdaptiveMtSentencesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = adaptive_mt.ListAdaptiveMtSentencesResponse()
+
+        client.list_adaptive_mt_sentences(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_import_data_rest_bad_request(
+    request_type=automl_translation.ImportDataRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"dataset": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.import_data(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        automl_translation.ImportDataRequest,
+        dict,
+    ],
+)
+def test_import_data_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"dataset": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.import_data(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_import_data_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_import_data"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_import_data"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = automl_translation.ImportDataRequest.pb(
+            automl_translation.ImportDataRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = automl_translation.ImportDataRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.import_data(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_export_data_rest_bad_request(
+    request_type=automl_translation.ExportDataRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"dataset": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.export_data(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        automl_translation.ExportDataRequest,
+        dict,
+    ],
+)
+def test_export_data_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"dataset": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.export_data(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_export_data_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_export_data"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_export_data"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = automl_translation.ExportDataRequest.pb(
+            automl_translation.ExportDataRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = automl_translation.ExportDataRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.export_data(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_examples_rest_bad_request(
+    request_type=automl_translation.ListExamplesRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_examples(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        automl_translation.ListExamplesRequest,
+        dict,
+    ],
+)
+def test_list_examples_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/datasets/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = automl_translation.ListExamplesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = automl_translation.ListExamplesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_examples(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListExamplesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_examples_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_list_examples"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_list_examples"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = automl_translation.ListExamplesRequest.pb(
+            automl_translation.ListExamplesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = automl_translation.ListExamplesResponse.to_json(
+            automl_translation.ListExamplesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = automl_translation.ListExamplesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = automl_translation.ListExamplesResponse()
+
+        client.list_examples(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_model_rest_bad_request(
+    request_type=automl_translation.CreateModelRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.create_model(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        automl_translation.CreateModelRequest,
+        dict,
+    ],
+)
+def test_create_model_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["model"] = {
+        "name": "name_value",
+        "display_name": "display_name_value",
+        "dataset": "dataset_value",
+        "source_language_code": "source_language_code_value",
+        "target_language_code": "target_language_code_value",
+        "train_example_count": 2033,
+        "validate_example_count": 2333,
+        "test_example_count": 1939,
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = automl_translation.CreateModelRequest.meta.fields["model"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["model"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["model"][field])):
+                    del request_init["model"][field][i][subfield]
+            else:
+                del request_init["model"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_model(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_model_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_create_model"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_create_model"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = automl_translation.CreateModelRequest.pb(
+            automl_translation.CreateModelRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = automl_translation.CreateModelRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_model(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_models_rest_bad_request(
+    request_type=automl_translation.ListModelsRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.list_models(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        automl_translation.ListModelsRequest,
+        dict,
+    ],
+)
+def test_list_models_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = automl_translation.ListModelsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = automl_translation.ListModelsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_models(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListModelsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_models_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_list_models"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_list_models"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = automl_translation.ListModelsRequest.pb(
+            automl_translation.ListModelsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = automl_translation.ListModelsResponse.to_json(
+            automl_translation.ListModelsResponse()
+        )
+        req.return_value.content = return_value
+
+        request = automl_translation.ListModelsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = automl_translation.ListModelsResponse()
+
+        client.list_models(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_model_rest_bad_request(request_type=automl_translation.GetModelRequest):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.get_model(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        automl_translation.GetModelRequest,
+        dict,
+    ],
+)
+def test_get_model_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = automl_translation.Model(
+            name="name_value",
+            display_name="display_name_value",
+            dataset="dataset_value",
+            source_language_code="source_language_code_value",
+            target_language_code="target_language_code_value",
+            train_example_count=2033,
+            validate_example_count=2333,
+            test_example_count=1939,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = automl_translation.Model.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_model(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, automl_translation.Model)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.dataset == "dataset_value"
+    assert response.source_language_code == "source_language_code_value"
+    assert response.target_language_code == "target_language_code_value"
+    assert response.train_example_count == 2033
+    assert response.validate_example_count == 2333
+    assert response.test_example_count == 1939
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_model_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_get_model"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_get_model"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = automl_translation.GetModelRequest.pb(
+            automl_translation.GetModelRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = automl_translation.Model.to_json(automl_translation.Model())
+        req.return_value.content = return_value
+
+        request = automl_translation.GetModelRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = automl_translation.Model()
+
+        client.get_model(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_model_rest_bad_request(
+    request_type=automl_translation.DeleteModelRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.delete_model(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        automl_translation.DeleteModelRequest,
+        dict,
+    ],
+)
+def test_delete_model_rest_call_success(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/models/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_model(request)
+
+    # Establish that the response is the type that we expect.
+    json_return_value = json_format.MessageToJson(return_value)
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_model_rest_interceptors(null_interceptor):
+    transport = transports.TranslationServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.TranslationServiceRestInterceptor(),
+    )
+    client = TranslationServiceClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "post_delete_model"
+    ) as post, mock.patch.object(
+        transports.TranslationServiceRestInterceptor, "pre_delete_model"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = automl_translation.DeleteModelRequest.pb(
+            automl_translation.DeleteModelRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = json_format.MessageToJson(operations_pb2.Operation())
+        req.return_value.content = return_value
+
+        request = automl_translation.DeleteModelRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_model(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationRequest):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    request_type=locations_pb2.ListLocationsRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_cancel_operation_rest_bad_request(
+    request_type=operations_pb2.CancelOperationRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.cancel_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.CancelOperationRequest,
+        dict,
+    ],
+)
+def test_cancel_operation_rest(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.cancel_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_operation_rest_bad_request(
+    request_type=operations_pb2.DeleteOperationRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.DeleteOperationRequest,
+        dict,
+    ],
+)
+def test_delete_operation_rest(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = "{}"
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.delete_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_get_operation_rest_bad_request(
+    request_type=operations_pb2.GetOperationRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.GetOperationRequest,
+        dict,
+    ],
+)
+def test_get_operation_rest(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.get_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_list_operations_rest_bad_request(
+    request_type=operations_pb2.ListOperationsRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_operations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.ListOperationsRequest,
+        dict,
+    ],
+)
+def test_list_operations_rest(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.ListOperationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.list_operations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.ListOperationsResponse)
+
+
+def test_wait_operation_rest_bad_request(
+    request_type=operations_pb2.WaitOperationRequest,
+):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.wait_operation(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        operations_pb2.WaitOperationRequest,
+        dict,
+    ],
+)
+def test_wait_operation_rest(request_type):
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+
+        req.return_value = response_value
+
+        response = client.wait_operation(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, operations_pb2.Operation)
+
+
+def test_initialize_client_w_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_translate_text_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.translate_text), "__call__") as call:
+        client.translate_text(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.TranslateTextRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_romanize_text_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.romanize_text), "__call__") as call:
+        client.romanize_text(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.RomanizeTextRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_detect_language_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.detect_language), "__call__") as call:
+        client.detect_language(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.DetectLanguageRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_supported_languages_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_supported_languages), "__call__"
+    ) as call:
+        client.get_supported_languages(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.GetSupportedLanguagesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_translate_document_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.translate_document), "__call__"
+    ) as call:
+        client.translate_document(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.TranslateDocumentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_translate_text_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_translate_text), "__call__"
+    ) as call:
+        client.batch_translate_text(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.BatchTranslateTextRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_batch_translate_document_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_translate_document), "__call__"
+    ) as call:
+        client.batch_translate_document(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.BatchTranslateDocumentRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_glossary_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_glossary), "__call__") as call:
+        client.create_glossary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.CreateGlossaryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_glossary_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.update_glossary), "__call__") as call:
+        client.update_glossary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.UpdateGlossaryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_glossaries_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_glossaries), "__call__") as call:
+        client.list_glossaries(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.ListGlossariesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_glossary_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_glossary), "__call__") as call:
+        client.get_glossary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.GetGlossaryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_glossary_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_glossary), "__call__") as call:
+        client.delete_glossary(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.DeleteGlossaryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_glossary_entry_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_glossary_entry), "__call__"
+    ) as call:
+        client.get_glossary_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.GetGlossaryEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_glossary_entries_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_glossary_entries), "__call__"
+    ) as call:
+        client.list_glossary_entries(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.ListGlossaryEntriesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_glossary_entry_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_glossary_entry), "__call__"
+    ) as call:
+        client.create_glossary_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.CreateGlossaryEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_update_glossary_entry_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_glossary_entry), "__call__"
+    ) as call:
+        client.update_glossary_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.UpdateGlossaryEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_glossary_entry_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_glossary_entry), "__call__"
+    ) as call:
+        client.delete_glossary_entry(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = translation_service.DeleteGlossaryEntryRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_dataset_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
+        client.create_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.CreateDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_dataset_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
+        client.get_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.GetDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_datasets_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
+        client.list_datasets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.ListDatasetsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_dataset_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
+        client.delete_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.DeleteDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_adaptive_mt_dataset_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_adaptive_mt_dataset), "__call__"
+    ) as call:
+        client.create_adaptive_mt_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.CreateAdaptiveMtDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_adaptive_mt_dataset_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_adaptive_mt_dataset), "__call__"
+    ) as call:
+        client.delete_adaptive_mt_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.DeleteAdaptiveMtDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_adaptive_mt_dataset_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_adaptive_mt_dataset), "__call__"
+    ) as call:
+        client.get_adaptive_mt_dataset(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.GetAdaptiveMtDatasetRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_adaptive_mt_datasets_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_adaptive_mt_datasets), "__call__"
+    ) as call:
+        client.list_adaptive_mt_datasets(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.ListAdaptiveMtDatasetsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_adaptive_mt_translate_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.adaptive_mt_translate), "__call__"
+    ) as call:
+        client.adaptive_mt_translate(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.AdaptiveMtTranslateRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_adaptive_mt_file_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_adaptive_mt_file), "__call__"
+    ) as call:
+        client.get_adaptive_mt_file(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.GetAdaptiveMtFileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_adaptive_mt_file_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_adaptive_mt_file), "__call__"
+    ) as call:
+        client.delete_adaptive_mt_file(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.DeleteAdaptiveMtFileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_import_adaptive_mt_file_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_adaptive_mt_file), "__call__"
+    ) as call:
+        client.import_adaptive_mt_file(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.ImportAdaptiveMtFileRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_adaptive_mt_files_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_adaptive_mt_files), "__call__"
+    ) as call:
+        client.list_adaptive_mt_files(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.ListAdaptiveMtFilesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_adaptive_mt_sentences_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_adaptive_mt_sentences), "__call__"
+    ) as call:
+        client.list_adaptive_mt_sentences(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = adaptive_mt.ListAdaptiveMtSentencesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_import_data_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.import_data), "__call__") as call:
+        client.import_data(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.ImportDataRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_export_data_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.export_data), "__call__") as call:
+        client.export_data(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.ExportDataRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_examples_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_examples), "__call__") as call:
+        client.list_examples(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.ListExamplesRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_create_model_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.create_model), "__call__") as call:
+        client.create_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.CreateModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_list_models_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.list_models), "__call__") as call:
+        client.list_models(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.ListModelsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_get_model_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.get_model), "__call__") as call:
+        client.get_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.GetModelRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_model_empty_call_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.delete_model), "__call__") as call:
+        client.delete_model(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = automl_translation.DeleteModelRequest()
+
+        assert args[0] == request_msg
+
+
+def test_translation_service_rest_lro_client():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    transport = client.transport
+
+    # Ensure that we have an api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.AbstractOperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
 
 
 def test_transport_grpc_default():
@@ -30725,23 +32002,6 @@ def test_translation_service_http_transport_client_cert_source_for_mtls():
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
-
-def test_translation_service_rest_lro_client():
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    transport = client.transport
-
-    # Ensure that we have a api-core operations client.
-    assert isinstance(
-        transport.operations_client,
-        operations_v1.AbstractOperationsClient,
-    )
-
-    # Ensure that subsequent calls to the property send the exact same object.
-    assert transport.operations_client is transport.operations_client
 
 
 @pytest.mark.parametrize(
@@ -31442,424 +32702,6 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
-    ) as close:
-        async with client:
-            close.assert_not_called()
-        close.assert_called_once()
-
-
-def test_get_location_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_location(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.GetLocationRequest,
-        dict,
-    ],
-)
-def test_get_location_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.Location()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_location(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.Location)
-
-
-def test_list_locations_rest_bad_request(
-    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict({"name": "projects/sample1"}, request)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_locations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        locations_pb2.ListLocationsRequest,
-        dict,
-    ],
-)
-def test_list_locations_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = locations_pb2.ListLocationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_locations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, locations_pb2.ListLocationsResponse)
-
-
-def test_cancel_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.cancel_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.CancelOperationRequest,
-        dict,
-    ],
-)
-def test_cancel_operation_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.cancel_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.DeleteOperationRequest,
-        dict,
-    ],
-)
-def test_delete_operation_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = "{}"
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.delete_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_get_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.GetOperationRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.GetOperationRequest,
-        dict,
-    ],
-)
-def test_get_operation_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.get_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
-def test_list_operations_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_operations(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.ListOperationsRequest,
-        dict,
-    ],
-)
-def test_list_operations_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.ListOperationsResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.list_operations(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.ListOperationsResponse)
-
-
-def test_wait_operation_rest_bad_request(
-    transport: str = "rest", request_type=operations_pb2.WaitOperationRequest
-):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.wait_operation(request)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        operations_pb2.WaitOperationRequest,
-        dict,
-    ],
-)
-def test_wait_operation_rest(request_type):
-    client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-    request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
-    request = request_type(**request_init)
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = operations_pb2.Operation()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-
-        response = client.wait_operation(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, operations_pb2.Operation)
-
-
 def test_delete_operation(transport: str = "grpc"):
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -31887,7 +32729,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -31940,7 +32782,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -31985,7 +32827,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -32026,7 +32868,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -32079,7 +32921,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -32124,7 +32966,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -32165,7 +33007,7 @@ def test_wait_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_wait_operation(transport: str = "grpc_asyncio"):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -32220,7 +33062,7 @@ def test_wait_operation_field_headers():
 @pytest.mark.asyncio
 async def test_wait_operation_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -32267,7 +33109,7 @@ def test_wait_operation_from_dict():
 @pytest.mark.asyncio
 async def test_wait_operation_from_dict_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.wait_operation), "__call__") as call:
@@ -32310,7 +33152,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -32365,7 +33207,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -32412,7 +33254,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -32455,7 +33297,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -32510,7 +33352,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -32557,7 +33399,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -32600,7 +33442,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -32655,7 +33497,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -32702,7 +33544,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -32745,7 +33587,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -32797,9 +33639,7 @@ def test_get_location_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
-    client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    client = TranslationServiceAsyncClient(credentials=async_anonymous_credentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -32845,7 +33685,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -32861,22 +33701,41 @@ async def test_get_location_from_dict_async():
         call.assert_called()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
+def test_transport_close_grpc():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
-    for transport, close_name in transports.items():
-        client = TranslationServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = TranslationServiceAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        async with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+def test_transport_close_rest():
+    client = TranslationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():

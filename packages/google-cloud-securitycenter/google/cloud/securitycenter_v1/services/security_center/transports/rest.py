@@ -16,36 +16,20 @@
 
 import dataclasses
 import json  # type: ignore
-import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.protobuf import json_format
-import grpc  # type: ignore
-from requests import __version__ as requests_version
-
-try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
-
-
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import json_format
+from requests import __version__ as requests_version
 
 from google.cloud.securitycenter_v1.types import (
     bigquery_export,
@@ -84,7 +68,13 @@ from google.cloud.securitycenter_v1.types import source as gcs_source
 from google.cloud.securitycenter_v1.types import valued_resource
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import SecurityCenterTransport
+from .rest_base import _BaseSecurityCenterRestTransport
+
+try:
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
+
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -2203,8 +2193,8 @@ class SecurityCenterRestStub:
     _interceptor: SecurityCenterRestInterceptor
 
 
-class SecurityCenterRestTransport(SecurityCenterTransport):
-    """REST backend transport for SecurityCenter.
+class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
+    """REST backend synchronous transport for SecurityCenter.
 
     V1 APIs for Security Center service.
 
@@ -2213,7 +2203,6 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
     and call it.
 
     It sends JSON representations of protocol buffers over HTTP/1.1
-
     """
 
     def __init__(
@@ -2267,21 +2256,12 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
         # credentials object
-        maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
-        if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
-
-        url_match_items = maybe_url_match.groupdict()
-
-        host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
-
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
+            url_scheme=url_scheme,
             api_audience=api_audience,
         )
         self._session = AuthorizedSession(
@@ -2345,19 +2325,35 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
         # Return the client from cache.
         return self._operations_client
 
-    class _BatchCreateResourceValueConfigs(SecurityCenterRestStub):
+    class _BatchCreateResourceValueConfigs(
+        _BaseSecurityCenterRestTransport._BaseBatchCreateResourceValueConfigs,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("BatchCreateResourceValueConfigs")
+            return hash("SecurityCenterRestTransport.BatchCreateResourceValueConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2387,54 +2383,37 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=organizations/*}/resourceValueConfigs:batchCreate",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseBatchCreateResourceValueConfigs._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_batch_create_resource_value_configs(
                 request, metadata
             )
-            pb_request = (
-                securitycenter_service.BatchCreateResourceValueConfigsRequest.pb(
-                    request
-                )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseBatchCreateResourceValueConfigs._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseSecurityCenterRestTransport._BaseBatchCreateResourceValueConfigs._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseBatchCreateResourceValueConfigs._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._BatchCreateResourceValueConfigs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2452,19 +2431,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_batch_create_resource_value_configs(resp)
             return resp
 
-    class _BulkMuteFindings(SecurityCenterRestStub):
+    class _BulkMuteFindings(
+        _BaseSecurityCenterRestTransport._BaseBulkMuteFindings, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("BulkMuteFindings")
+            return hash("SecurityCenterRestTransport.BulkMuteFindings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2502,57 +2496,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=organizations/*}/findings:bulkMute",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=folders/*}/findings:bulkMute",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*}/findings:bulkMute",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseBulkMuteFindings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_bulk_mute_findings(
                 request, metadata
             )
-            pb_request = securitycenter_service.BulkMuteFindingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseBulkMuteFindings._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseSecurityCenterRestTransport._BaseBulkMuteFindings._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseBulkMuteFindings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._BulkMuteFindings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2566,21 +2537,35 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_bulk_mute_findings(resp)
             return resp
 
-    class _CreateBigQueryExport(SecurityCenterRestStub):
+    class _CreateBigQueryExport(
+        _BaseSecurityCenterRestTransport._BaseCreateBigQueryExport,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateBigQueryExport")
+            return hash("SecurityCenterRestTransport.CreateBigQueryExport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "bigQueryExportId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2609,57 +2594,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=organizations/*}/bigQueryExports",
-                    "body": "big_query_export",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=folders/*}/bigQueryExports",
-                    "body": "big_query_export",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*}/bigQueryExports",
-                    "body": "big_query_export",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseCreateBigQueryExport._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_big_query_export(
                 request, metadata
             )
-            pb_request = securitycenter_service.CreateBigQueryExportRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseCreateBigQueryExport._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseSecurityCenterRestTransport._BaseCreateBigQueryExport._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseCreateBigQueryExport._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._CreateBigQueryExport._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2675,19 +2637,37 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_create_big_query_export(resp)
             return resp
 
-    class _CreateEventThreatDetectionCustomModule(SecurityCenterRestStub):
+    class _CreateEventThreatDetectionCustomModule(
+        _BaseSecurityCenterRestTransport._BaseCreateEventThreatDetectionCustomModule,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateEventThreatDetectionCustomModule")
+            return hash(
+                "SecurityCenterRestTransport.CreateEventThreatDetectionCustomModule"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2724,64 +2704,37 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=organizations/*/eventThreatDetectionSettings}/customModules",
-                    "body": "event_threat_detection_custom_module",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=folders/*/eventThreatDetectionSettings}/customModules",
-                    "body": "event_threat_detection_custom_module",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/eventThreatDetectionSettings}/customModules",
-                    "body": "event_threat_detection_custom_module",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseCreateEventThreatDetectionCustomModule._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_create_event_threat_detection_custom_module(
                 request, metadata
             )
-            pb_request = (
-                securitycenter_service.CreateEventThreatDetectionCustomModuleRequest.pb(
-                    request
-                )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseCreateEventThreatDetectionCustomModule._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseSecurityCenterRestTransport._BaseCreateEventThreatDetectionCustomModule._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseCreateEventThreatDetectionCustomModule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._CreateEventThreatDetectionCustomModule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2803,21 +2756,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             )
             return resp
 
-    class _CreateFinding(SecurityCenterRestStub):
+    class _CreateFinding(
+        _BaseSecurityCenterRestTransport._BaseCreateFinding, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("CreateFinding")
+            return hash("SecurityCenterRestTransport.CreateFinding")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "findingId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2854,45 +2820,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=organizations/*/sources/*}/findings",
-                    "body": "finding",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_finding(request, metadata)
-            pb_request = securitycenter_service.CreateFindingRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseCreateFinding._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_finding(request, metadata)
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseCreateFinding._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecurityCenterRestTransport._BaseCreateFinding._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseCreateFinding._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._CreateFinding._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2908,21 +2861,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_create_finding(resp)
             return resp
 
-    class _CreateMuteConfig(SecurityCenterRestStub):
+    class _CreateMuteConfig(
+        _BaseSecurityCenterRestTransport._BaseCreateMuteConfig, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("CreateMuteConfig")
+            return hash("SecurityCenterRestTransport.CreateMuteConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "muteConfigId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -2952,72 +2918,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=organizations/*}/muteConfigs",
-                    "body": "mute_config",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=organizations/*/locations/*}/muteConfigs",
-                    "body": "mute_config",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=folders/*}/muteConfigs",
-                    "body": "mute_config",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=folders/*/locations/*}/muteConfigs",
-                    "body": "mute_config",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*}/muteConfigs",
-                    "body": "mute_config",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*}/muteConfigs",
-                    "body": "mute_config",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseCreateMuteConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_mute_config(
                 request, metadata
             )
-            pb_request = securitycenter_service.CreateMuteConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseCreateMuteConfig._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseSecurityCenterRestTransport._BaseCreateMuteConfig._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseCreateMuteConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._CreateMuteConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3033,21 +2961,35 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_create_mute_config(resp)
             return resp
 
-    class _CreateNotificationConfig(SecurityCenterRestStub):
+    class _CreateNotificationConfig(
+        _BaseSecurityCenterRestTransport._BaseCreateNotificationConfig,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateNotificationConfig")
+            return hash("SecurityCenterRestTransport.CreateNotificationConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "configId": "",
-        }
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3081,59 +3023,36 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=organizations/*}/notificationConfigs",
-                    "body": "notification_config",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=folders/*}/notificationConfigs",
-                    "body": "notification_config",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*}/notificationConfigs",
-                    "body": "notification_config",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseCreateNotificationConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_create_notification_config(
                 request, metadata
             )
-            pb_request = securitycenter_service.CreateNotificationConfigRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseCreateNotificationConfig._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseSecurityCenterRestTransport._BaseCreateNotificationConfig._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseCreateNotificationConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                SecurityCenterRestTransport._CreateNotificationConfig._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3149,19 +3068,37 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_create_notification_config(resp)
             return resp
 
-    class _CreateSecurityHealthAnalyticsCustomModule(SecurityCenterRestStub):
+    class _CreateSecurityHealthAnalyticsCustomModule(
+        _BaseSecurityCenterRestTransport._BaseCreateSecurityHealthAnalyticsCustomModule,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("CreateSecurityHealthAnalyticsCustomModule")
+            return hash(
+                "SecurityCenterRestTransport.CreateSecurityHealthAnalyticsCustomModule"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3201,62 +3138,37 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/customModules",
-                    "body": "security_health_analytics_custom_module",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=folders/*/securityHealthAnalyticsSettings}/customModules",
-                    "body": "security_health_analytics_custom_module",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/securityHealthAnalyticsSettings}/customModules",
-                    "body": "security_health_analytics_custom_module",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseCreateSecurityHealthAnalyticsCustomModule._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_create_security_health_analytics_custom_module(
                 request, metadata
             )
-            pb_request = securitycenter_service.CreateSecurityHealthAnalyticsCustomModuleRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseCreateSecurityHealthAnalyticsCustomModule._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseSecurityCenterRestTransport._BaseCreateSecurityHealthAnalyticsCustomModule._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseCreateSecurityHealthAnalyticsCustomModule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._CreateSecurityHealthAnalyticsCustomModule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3280,19 +3192,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             )
             return resp
 
-    class _CreateSource(SecurityCenterRestStub):
+    class _CreateSource(
+        _BaseSecurityCenterRestTransport._BaseCreateSource, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("CreateSource")
+            return hash("SecurityCenterRestTransport.CreateSource")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -3325,45 +3252,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=organizations/*}/sources",
-                    "body": "source",
-                },
-            ]
-            request, metadata = self._interceptor.pre_create_source(request, metadata)
-            pb_request = securitycenter_service.CreateSourceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseCreateSource._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_create_source(request, metadata)
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseCreateSource._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecurityCenterRestTransport._BaseCreateSource._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseCreateSource._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._CreateSource._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3379,19 +3293,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_create_source(resp)
             return resp
 
-    class _DeleteBigQueryExport(SecurityCenterRestStub):
+    class _DeleteBigQueryExport(
+        _BaseSecurityCenterRestTransport._BaseDeleteBigQueryExport,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteBigQueryExport")
+            return hash("SecurityCenterRestTransport.DeleteBigQueryExport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3414,48 +3343,29 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=organizations/*/bigQueryExports/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=folders/*/bigQueryExports/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/bigQueryExports/*}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseDeleteBigQueryExport._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_big_query_export(
                 request, metadata
             )
-            pb_request = securitycenter_service.DeleteBigQueryExportRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseDeleteBigQueryExport._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseDeleteBigQueryExport._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._DeleteBigQueryExport._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3463,19 +3373,36 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteEventThreatDetectionCustomModule(SecurityCenterRestStub):
+    class _DeleteEventThreatDetectionCustomModule(
+        _BaseSecurityCenterRestTransport._BaseDeleteEventThreatDetectionCustomModule,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteEventThreatDetectionCustomModule")
+            return hash(
+                "SecurityCenterRestTransport.DeleteEventThreatDetectionCustomModule"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3499,55 +3426,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=organizations/*/eventThreatDetectionSettings/customModules/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=folders/*/eventThreatDetectionSettings/customModules/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/eventThreatDetectionSettings/customModules/*}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseDeleteEventThreatDetectionCustomModule._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_delete_event_threat_detection_custom_module(
                 request, metadata
             )
-            pb_request = (
-                securitycenter_service.DeleteEventThreatDetectionCustomModuleRequest.pb(
-                    request
-                )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseDeleteEventThreatDetectionCustomModule._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseDeleteEventThreatDetectionCustomModule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._DeleteEventThreatDetectionCustomModule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3555,19 +3459,33 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteMuteConfig(SecurityCenterRestStub):
+    class _DeleteMuteConfig(
+        _BaseSecurityCenterRestTransport._BaseDeleteMuteConfig, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("DeleteMuteConfig")
+            return hash("SecurityCenterRestTransport.DeleteMuteConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3590,60 +3508,29 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=organizations/*/muteConfigs/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=folders/*/muteConfigs/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/muteConfigs/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=organizations/*/locations/*/muteConfigs/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=folders/*/locations/*/muteConfigs/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/muteConfigs/*}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseDeleteMuteConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_mute_config(
                 request, metadata
             )
-            pb_request = securitycenter_service.DeleteMuteConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseDeleteMuteConfig._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseDeleteMuteConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._DeleteMuteConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3651,19 +3538,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteNotificationConfig(SecurityCenterRestStub):
+    class _DeleteNotificationConfig(
+        _BaseSecurityCenterRestTransport._BaseDeleteNotificationConfig,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteNotificationConfig")
+            return hash("SecurityCenterRestTransport.DeleteNotificationConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3687,50 +3589,31 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=organizations/*/notificationConfigs/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=folders/*/notificationConfigs/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/notificationConfigs/*}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseDeleteNotificationConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_notification_config(
                 request, metadata
             )
-            pb_request = securitycenter_service.DeleteNotificationConfigRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseDeleteNotificationConfig._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseDeleteNotificationConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                SecurityCenterRestTransport._DeleteNotificationConfig._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3738,19 +3621,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteResourceValueConfig(SecurityCenterRestStub):
+    class _DeleteResourceValueConfig(
+        _BaseSecurityCenterRestTransport._BaseDeleteResourceValueConfig,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteResourceValueConfig")
+            return hash("SecurityCenterRestTransport.DeleteResourceValueConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3774,42 +3672,31 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=organizations/*/resourceValueConfigs/*}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseDeleteResourceValueConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_resource_value_config(
                 request, metadata
             )
-            pb_request = securitycenter_service.DeleteResourceValueConfigRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseDeleteResourceValueConfig._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseDeleteResourceValueConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                SecurityCenterRestTransport._DeleteResourceValueConfig._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3817,19 +3704,36 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteSecurityHealthAnalyticsCustomModule(SecurityCenterRestStub):
+    class _DeleteSecurityHealthAnalyticsCustomModule(
+        _BaseSecurityCenterRestTransport._BaseDeleteSecurityHealthAnalyticsCustomModule,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("DeleteSecurityHealthAnalyticsCustomModule")
+            return hash(
+                "SecurityCenterRestTransport.DeleteSecurityHealthAnalyticsCustomModule"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3853,53 +3757,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                         sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=organizations/*/securityHealthAnalyticsSettings/customModules/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=folders/*/securityHealthAnalyticsSettings/customModules/*}",
-                },
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=projects/*/securityHealthAnalyticsSettings/customModules/*}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseDeleteSecurityHealthAnalyticsCustomModule._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_delete_security_health_analytics_custom_module(
                 request, metadata
             )
-            pb_request = securitycenter_service.DeleteSecurityHealthAnalyticsCustomModuleRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseDeleteSecurityHealthAnalyticsCustomModule._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseDeleteSecurityHealthAnalyticsCustomModule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._DeleteSecurityHealthAnalyticsCustomModule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3907,19 +3790,33 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetBigQueryExport(SecurityCenterRestStub):
+    class _GetBigQueryExport(
+        _BaseSecurityCenterRestTransport._BaseGetBigQueryExport, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("GetBigQueryExport")
+            return hash("SecurityCenterRestTransport.GetBigQueryExport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -3948,48 +3845,29 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/bigQueryExports/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=folders/*/bigQueryExports/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/bigQueryExports/*}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseGetBigQueryExport._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_big_query_export(
                 request, metadata
             )
-            pb_request = securitycenter_service.GetBigQueryExportRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGetBigQueryExport._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseGetBigQueryExport._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._GetBigQueryExport._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4005,19 +3883,36 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_get_big_query_export(resp)
             return resp
 
-    class _GetEffectiveEventThreatDetectionCustomModule(SecurityCenterRestStub):
+    class _GetEffectiveEventThreatDetectionCustomModule(
+        _BaseSecurityCenterRestTransport._BaseGetEffectiveEventThreatDetectionCustomModule,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("GetEffectiveEventThreatDetectionCustomModule")
+            return hash(
+                "SecurityCenterRestTransport.GetEffectiveEventThreatDetectionCustomModule"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4060,53 +3955,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/eventThreatDetectionSettings/effectiveCustomModules/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=folders/*/eventThreatDetectionSettings/effectiveCustomModules/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/eventThreatDetectionSettings/effectiveCustomModules/*}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseGetEffectiveEventThreatDetectionCustomModule._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_get_effective_event_threat_detection_custom_module(
                 request, metadata
             )
-            pb_request = securitycenter_service.GetEffectiveEventThreatDetectionCustomModuleRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGetEffectiveEventThreatDetectionCustomModule._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseGetEffectiveEventThreatDetectionCustomModule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._GetEffectiveEventThreatDetectionCustomModule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4128,19 +4002,36 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             )
             return resp
 
-    class _GetEffectiveSecurityHealthAnalyticsCustomModule(SecurityCenterRestStub):
+    class _GetEffectiveSecurityHealthAnalyticsCustomModule(
+        _BaseSecurityCenterRestTransport._BaseGetEffectiveSecurityHealthAnalyticsCustomModule,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("GetEffectiveSecurityHealthAnalyticsCustomModule")
+            return hash(
+                "SecurityCenterRestTransport.GetEffectiveSecurityHealthAnalyticsCustomModule"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4185,53 +4076,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/securityHealthAnalyticsSettings/effectiveCustomModules/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=folders/*/securityHealthAnalyticsSettings/effectiveCustomModules/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/securityHealthAnalyticsSettings/effectiveCustomModules/*}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseGetEffectiveSecurityHealthAnalyticsCustomModule._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_get_effective_security_health_analytics_custom_module(
                 request, metadata
             )
-            pb_request = securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGetEffectiveSecurityHealthAnalyticsCustomModule._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseGetEffectiveSecurityHealthAnalyticsCustomModule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._GetEffectiveSecurityHealthAnalyticsCustomModule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4253,19 +4123,36 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             )
             return resp
 
-    class _GetEventThreatDetectionCustomModule(SecurityCenterRestStub):
+    class _GetEventThreatDetectionCustomModule(
+        _BaseSecurityCenterRestTransport._BaseGetEventThreatDetectionCustomModule,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("GetEventThreatDetectionCustomModule")
+            return hash(
+                "SecurityCenterRestTransport.GetEventThreatDetectionCustomModule"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4302,55 +4189,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/eventThreatDetectionSettings/customModules/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=folders/*/eventThreatDetectionSettings/customModules/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/eventThreatDetectionSettings/customModules/*}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseGetEventThreatDetectionCustomModule._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_get_event_threat_detection_custom_module(
                 request, metadata
             )
-            pb_request = (
-                securitycenter_service.GetEventThreatDetectionCustomModuleRequest.pb(
-                    request
-                )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGetEventThreatDetectionCustomModule._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseGetEventThreatDetectionCustomModule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._GetEventThreatDetectionCustomModule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4370,19 +4234,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_get_event_threat_detection_custom_module(resp)
             return resp
 
-    class _GetIamPolicy(SecurityCenterRestStub):
+    class _GetIamPolicy(
+        _BaseSecurityCenterRestTransport._BaseGetIamPolicy, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("GetIamPolicy")
+            return hash("SecurityCenterRestTransport.GetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -4483,45 +4362,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=organizations/*/sources/*}:getIamPolicy",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            pb_request = request
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseGetIamPolicy._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecurityCenterRestTransport._BaseGetIamPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseGetIamPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._GetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4537,19 +4403,33 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_get_iam_policy(resp)
             return resp
 
-    class _GetMuteConfig(SecurityCenterRestStub):
+    class _GetMuteConfig(
+        _BaseSecurityCenterRestTransport._BaseGetMuteConfig, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("GetMuteConfig")
+            return hash("SecurityCenterRestTransport.GetMuteConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4579,58 +4459,27 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/muteConfigs/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=folders/*/muteConfigs/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/muteConfigs/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/locations/*/muteConfigs/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=folders/*/locations/*/muteConfigs/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/muteConfigs/*}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseGetMuteConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_mute_config(request, metadata)
-            pb_request = securitycenter_service.GetMuteConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGetMuteConfig._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseGetMuteConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._GetMuteConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4646,19 +4495,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_get_mute_config(resp)
             return resp
 
-    class _GetNotificationConfig(SecurityCenterRestStub):
+    class _GetNotificationConfig(
+        _BaseSecurityCenterRestTransport._BaseGetNotificationConfig,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("GetNotificationConfig")
+            return hash("SecurityCenterRestTransport.GetNotificationConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4691,48 +4555,29 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/notificationConfigs/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=folders/*/notificationConfigs/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/notificationConfigs/*}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseGetNotificationConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_notification_config(
                 request, metadata
             )
-            pb_request = securitycenter_service.GetNotificationConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGetNotificationConfig._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseGetNotificationConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._GetNotificationConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4748,19 +4593,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_get_notification_config(resp)
             return resp
 
-    class _GetOrganizationSettings(SecurityCenterRestStub):
+    class _GetOrganizationSettings(
+        _BaseSecurityCenterRestTransport._BaseGetOrganizationSettings,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("GetOrganizationSettings")
+            return hash("SecurityCenterRestTransport.GetOrganizationSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4790,42 +4650,31 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/organizationSettings}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseGetOrganizationSettings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_organization_settings(
                 request, metadata
             )
-            pb_request = securitycenter_service.GetOrganizationSettingsRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGetOrganizationSettings._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseGetOrganizationSettings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                SecurityCenterRestTransport._GetOrganizationSettings._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4841,19 +4690,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_get_organization_settings(resp)
             return resp
 
-    class _GetResourceValueConfig(SecurityCenterRestStub):
+    class _GetResourceValueConfig(
+        _BaseSecurityCenterRestTransport._BaseGetResourceValueConfig,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("GetResourceValueConfig")
+            return hash("SecurityCenterRestTransport.GetResourceValueConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4884,42 +4748,31 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/resourceValueConfigs/*}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseGetResourceValueConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_resource_value_config(
                 request, metadata
             )
-            pb_request = securitycenter_service.GetResourceValueConfigRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGetResourceValueConfig._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseGetResourceValueConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                SecurityCenterRestTransport._GetResourceValueConfig._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4935,19 +4788,36 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_get_resource_value_config(resp)
             return resp
 
-    class _GetSecurityHealthAnalyticsCustomModule(SecurityCenterRestStub):
+    class _GetSecurityHealthAnalyticsCustomModule(
+        _BaseSecurityCenterRestTransport._BaseGetSecurityHealthAnalyticsCustomModule,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("GetSecurityHealthAnalyticsCustomModule")
+            return hash(
+                "SecurityCenterRestTransport.GetSecurityHealthAnalyticsCustomModule"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -4987,55 +4857,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/securityHealthAnalyticsSettings/customModules/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=folders/*/securityHealthAnalyticsSettings/customModules/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/securityHealthAnalyticsSettings/customModules/*}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseGetSecurityHealthAnalyticsCustomModule._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_get_security_health_analytics_custom_module(
                 request, metadata
             )
-            pb_request = (
-                securitycenter_service.GetSecurityHealthAnalyticsCustomModuleRequest.pb(
-                    request
-                )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGetSecurityHealthAnalyticsCustomModule._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseGetSecurityHealthAnalyticsCustomModule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._GetSecurityHealthAnalyticsCustomModule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5057,19 +4904,33 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             )
             return resp
 
-    class _GetSimulation(SecurityCenterRestStub):
+    class _GetSimulation(
+        _BaseSecurityCenterRestTransport._BaseGetSimulation, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("GetSimulation")
+            return hash("SecurityCenterRestTransport.GetSimulation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5099,38 +4960,27 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     Attack path simulation
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/simulations/*}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseGetSimulation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_simulation(request, metadata)
-            pb_request = securitycenter_service.GetSimulationRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGetSimulation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseGetSimulation._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._GetSimulation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5146,19 +4996,33 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_get_simulation(resp)
             return resp
 
-    class _GetSource(SecurityCenterRestStub):
+    class _GetSource(
+        _BaseSecurityCenterRestTransport._BaseGetSource, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("GetSource")
+            return hash("SecurityCenterRestTransport.GetSource")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5190,38 +5054,31 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/sources/*}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseGetSource._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_source(request, metadata)
-            pb_request = securitycenter_service.GetSourceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            transcoded_request = (
+                _BaseSecurityCenterRestTransport._BaseGetSource._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            # Jsonify the query params
+            query_params = (
+                _BaseSecurityCenterRestTransport._BaseGetSource._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._GetSource._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5237,19 +5094,33 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_get_source(resp)
             return resp
 
-    class _GetValuedResource(SecurityCenterRestStub):
+    class _GetValuedResource(
+        _BaseSecurityCenterRestTransport._BaseGetValuedResource, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("GetValuedResource")
+            return hash("SecurityCenterRestTransport.GetValuedResource")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5278,40 +5149,29 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/simulations/*/valuedResources/*}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseGetValuedResource._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_valued_resource(
                 request, metadata
             )
-            pb_request = securitycenter_service.GetValuedResourceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGetValuedResource._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseGetValuedResource._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._GetValuedResource._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5327,19 +5187,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_get_valued_resource(resp)
             return resp
 
-    class _GroupAssets(SecurityCenterRestStub):
+    class _GroupAssets(
+        _BaseSecurityCenterRestTransport._BaseGroupAssets, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("GroupAssets")
+            return hash("SecurityCenterRestTransport.GroupAssets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5368,55 +5243,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=organizations/*}/assets:group",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=folders/*}/assets:group",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*}/assets:group",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_group_assets(request, metadata)
-            pb_request = securitycenter_service.GroupAssetsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseGroupAssets._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_group_assets(request, metadata)
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGroupAssets._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecurityCenterRestTransport._BaseGroupAssets._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseGroupAssets._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._GroupAssets._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5432,19 +5284,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_group_assets(resp)
             return resp
 
-    class _GroupFindings(SecurityCenterRestStub):
+    class _GroupFindings(
+        _BaseSecurityCenterRestTransport._BaseGroupFindings, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("GroupFindings")
+            return hash("SecurityCenterRestTransport.GroupFindings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -5473,55 +5340,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=organizations/*/sources/*}/findings:group",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=folders/*/sources/*}/findings:group",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/sources/*}/findings:group",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_group_findings(request, metadata)
-            pb_request = securitycenter_service.GroupFindingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseGroupFindings._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_group_findings(request, metadata)
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGroupFindings._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecurityCenterRestTransport._BaseGroupFindings._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseGroupFindings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._GroupFindings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5537,19 +5381,33 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_group_findings(resp)
             return resp
 
-    class _ListAssets(SecurityCenterRestStub):
+    class _ListAssets(
+        _BaseSecurityCenterRestTransport._BaseListAssets, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("ListAssets")
+            return hash("SecurityCenterRestTransport.ListAssets")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5575,46 +5433,29 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     Response message for listing assets.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*}/assets",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=folders/*}/assets",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*}/assets",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseListAssets._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_assets(request, metadata)
-            pb_request = securitycenter_service.ListAssetsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListAssets._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            query_params = (
+                _BaseSecurityCenterRestTransport._BaseListAssets._get_query_params_json(
+                    transcoded_request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._ListAssets._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5630,19 +5471,33 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_list_assets(resp)
             return resp
 
-    class _ListAttackPaths(SecurityCenterRestStub):
+    class _ListAttackPaths(
+        _BaseSecurityCenterRestTransport._BaseListAttackPaths, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("ListAttackPaths")
+            return hash("SecurityCenterRestTransport.ListAttackPaths")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5673,48 +5528,29 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*/simulations/*}/attackPaths",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*/simulations/*/valuedResources/*}/attackPaths",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*/simulations/*/attackExposureResults/*}/attackPaths",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseListAttackPaths._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_attack_paths(
                 request, metadata
             )
-            pb_request = securitycenter_service.ListAttackPathsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListAttackPaths._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseListAttackPaths._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._ListAttackPaths._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5730,19 +5566,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_list_attack_paths(resp)
             return resp
 
-    class _ListBigQueryExports(SecurityCenterRestStub):
+    class _ListBigQueryExports(
+        _BaseSecurityCenterRestTransport._BaseListBigQueryExports,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("ListBigQueryExports")
+            return hash("SecurityCenterRestTransport.ListBigQueryExports")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5772,48 +5623,29 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*}/bigQueryExports",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=folders/*}/bigQueryExports",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*}/bigQueryExports",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseListBigQueryExports._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_big_query_exports(
                 request, metadata
             )
-            pb_request = securitycenter_service.ListBigQueryExportsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListBigQueryExports._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseListBigQueryExports._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._ListBigQueryExports._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5829,19 +5661,36 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_list_big_query_exports(resp)
             return resp
 
-    class _ListDescendantEventThreatDetectionCustomModules(SecurityCenterRestStub):
+    class _ListDescendantEventThreatDetectionCustomModules(
+        _BaseSecurityCenterRestTransport._BaseListDescendantEventThreatDetectionCustomModules,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("ListDescendantEventThreatDetectionCustomModules")
+            return hash(
+                "SecurityCenterRestTransport.ListDescendantEventThreatDetectionCustomModules"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5875,53 +5724,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*/eventThreatDetectionSettings}/customModules:listDescendant",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=folders/*/eventThreatDetectionSettings}/customModules:listDescendant",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/eventThreatDetectionSettings}/customModules:listDescendant",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseListDescendantEventThreatDetectionCustomModules._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_list_descendant_event_threat_detection_custom_modules(
                 request, metadata
             )
-            pb_request = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListDescendantEventThreatDetectionCustomModules._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseListDescendantEventThreatDetectionCustomModules._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._ListDescendantEventThreatDetectionCustomModules._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5943,19 +5771,36 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             )
             return resp
 
-    class _ListDescendantSecurityHealthAnalyticsCustomModules(SecurityCenterRestStub):
+    class _ListDescendantSecurityHealthAnalyticsCustomModules(
+        _BaseSecurityCenterRestTransport._BaseListDescendantSecurityHealthAnalyticsCustomModules,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("ListDescendantSecurityHealthAnalyticsCustomModules")
+            return hash(
+                "SecurityCenterRestTransport.ListDescendantSecurityHealthAnalyticsCustomModules"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -5989,53 +5834,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/customModules:listDescendant",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=folders/*/securityHealthAnalyticsSettings}/customModules:listDescendant",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/securityHealthAnalyticsSettings}/customModules:listDescendant",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseListDescendantSecurityHealthAnalyticsCustomModules._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_list_descendant_security_health_analytics_custom_modules(
                 request, metadata
             )
-            pb_request = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListDescendantSecurityHealthAnalyticsCustomModules._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseListDescendantSecurityHealthAnalyticsCustomModules._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._ListDescendantSecurityHealthAnalyticsCustomModules._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6057,19 +5881,36 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             )
             return resp
 
-    class _ListEffectiveEventThreatDetectionCustomModules(SecurityCenterRestStub):
+    class _ListEffectiveEventThreatDetectionCustomModules(
+        _BaseSecurityCenterRestTransport._BaseListEffectiveEventThreatDetectionCustomModules,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("ListEffectiveEventThreatDetectionCustomModules")
+            return hash(
+                "SecurityCenterRestTransport.ListEffectiveEventThreatDetectionCustomModules"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6101,53 +5942,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*/eventThreatDetectionSettings}/effectiveCustomModules",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=folders/*/eventThreatDetectionSettings}/effectiveCustomModules",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/eventThreatDetectionSettings}/effectiveCustomModules",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseListEffectiveEventThreatDetectionCustomModules._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_list_effective_event_threat_detection_custom_modules(
                 request, metadata
             )
-            pb_request = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListEffectiveEventThreatDetectionCustomModules._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseListEffectiveEventThreatDetectionCustomModules._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._ListEffectiveEventThreatDetectionCustomModules._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6169,19 +5989,36 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             )
             return resp
 
-    class _ListEffectiveSecurityHealthAnalyticsCustomModules(SecurityCenterRestStub):
+    class _ListEffectiveSecurityHealthAnalyticsCustomModules(
+        _BaseSecurityCenterRestTransport._BaseListEffectiveSecurityHealthAnalyticsCustomModules,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("ListEffectiveSecurityHealthAnalyticsCustomModules")
+            return hash(
+                "SecurityCenterRestTransport.ListEffectiveSecurityHealthAnalyticsCustomModules"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6215,53 +6052,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/effectiveCustomModules",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=folders/*/securityHealthAnalyticsSettings}/effectiveCustomModules",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/securityHealthAnalyticsSettings}/effectiveCustomModules",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseListEffectiveSecurityHealthAnalyticsCustomModules._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_list_effective_security_health_analytics_custom_modules(
                 request, metadata
             )
-            pb_request = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListEffectiveSecurityHealthAnalyticsCustomModules._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseListEffectiveSecurityHealthAnalyticsCustomModules._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._ListEffectiveSecurityHealthAnalyticsCustomModules._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6283,19 +6099,36 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             )
             return resp
 
-    class _ListEventThreatDetectionCustomModules(SecurityCenterRestStub):
+    class _ListEventThreatDetectionCustomModules(
+        _BaseSecurityCenterRestTransport._BaseListEventThreatDetectionCustomModules,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("ListEventThreatDetectionCustomModules")
+            return hash(
+                "SecurityCenterRestTransport.ListEventThreatDetectionCustomModules"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6325,55 +6158,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*/eventThreatDetectionSettings}/customModules",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=folders/*/eventThreatDetectionSettings}/customModules",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/eventThreatDetectionSettings}/customModules",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseListEventThreatDetectionCustomModules._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_list_event_threat_detection_custom_modules(
                 request, metadata
             )
-            pb_request = (
-                securitycenter_service.ListEventThreatDetectionCustomModulesRequest.pb(
-                    request
-                )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListEventThreatDetectionCustomModules._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseListEventThreatDetectionCustomModules._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._ListEventThreatDetectionCustomModules._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6397,19 +6207,33 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             )
             return resp
 
-    class _ListFindings(SecurityCenterRestStub):
+    class _ListFindings(
+        _BaseSecurityCenterRestTransport._BaseListFindings, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("ListFindings")
+            return hash("SecurityCenterRestTransport.ListFindings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6437,46 +6261,27 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*/sources/*}/findings",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=folders/*/sources/*}/findings",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/sources/*}/findings",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseListFindings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_findings(request, metadata)
-            pb_request = securitycenter_service.ListFindingsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListFindings._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseListFindings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._ListFindings._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6492,19 +6297,33 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_list_findings(resp)
             return resp
 
-    class _ListMuteConfigs(SecurityCenterRestStub):
+    class _ListMuteConfigs(
+        _BaseSecurityCenterRestTransport._BaseListMuteConfigs, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("ListMuteConfigs")
+            return hash("SecurityCenterRestTransport.ListMuteConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6534,60 +6353,29 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*}/muteConfigs",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=folders/*}/muteConfigs",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*}/muteConfigs",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*/locations/*/muteConfigs}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=folders/*/locations/*/muteConfigs}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/muteConfigs}",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseListMuteConfigs._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_mute_configs(
                 request, metadata
             )
-            pb_request = securitycenter_service.ListMuteConfigsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListMuteConfigs._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseListMuteConfigs._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._ListMuteConfigs._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6603,19 +6391,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_list_mute_configs(resp)
             return resp
 
-    class _ListNotificationConfigs(SecurityCenterRestStub):
+    class _ListNotificationConfigs(
+        _BaseSecurityCenterRestTransport._BaseListNotificationConfigs,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("ListNotificationConfigs")
+            return hash("SecurityCenterRestTransport.ListNotificationConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6644,50 +6447,31 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*}/notificationConfigs",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=folders/*}/notificationConfigs",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*}/notificationConfigs",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseListNotificationConfigs._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_notification_configs(
                 request, metadata
             )
-            pb_request = securitycenter_service.ListNotificationConfigsRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListNotificationConfigs._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseListNotificationConfigs._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                SecurityCenterRestTransport._ListNotificationConfigs._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6703,19 +6487,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_list_notification_configs(resp)
             return resp
 
-    class _ListResourceValueConfigs(SecurityCenterRestStub):
+    class _ListResourceValueConfigs(
+        _BaseSecurityCenterRestTransport._BaseListResourceValueConfigs,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("ListResourceValueConfigs")
+            return hash("SecurityCenterRestTransport.ListResourceValueConfigs")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6745,42 +6544,31 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*}/resourceValueConfigs",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseListResourceValueConfigs._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_resource_value_configs(
                 request, metadata
             )
-            pb_request = securitycenter_service.ListResourceValueConfigsRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListResourceValueConfigs._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseListResourceValueConfigs._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = (
+                SecurityCenterRestTransport._ListResourceValueConfigs._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6796,19 +6584,36 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_list_resource_value_configs(resp)
             return resp
 
-    class _ListSecurityHealthAnalyticsCustomModules(SecurityCenterRestStub):
+    class _ListSecurityHealthAnalyticsCustomModules(
+        _BaseSecurityCenterRestTransport._BaseListSecurityHealthAnalyticsCustomModules,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("ListSecurityHealthAnalyticsCustomModules")
+            return hash(
+                "SecurityCenterRestTransport.ListSecurityHealthAnalyticsCustomModules"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6838,53 +6643,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/customModules",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=folders/*/securityHealthAnalyticsSettings}/customModules",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*/securityHealthAnalyticsSettings}/customModules",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseListSecurityHealthAnalyticsCustomModules._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_list_security_health_analytics_custom_modules(
                 request, metadata
             )
-            pb_request = securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListSecurityHealthAnalyticsCustomModules._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseListSecurityHealthAnalyticsCustomModules._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._ListSecurityHealthAnalyticsCustomModules._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6906,19 +6690,33 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             )
             return resp
 
-    class _ListSources(SecurityCenterRestStub):
+    class _ListSources(
+        _BaseSecurityCenterRestTransport._BaseListSources, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("ListSources")
+            return hash("SecurityCenterRestTransport.ListSources")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -6944,46 +6742,27 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     Response message for listing sources.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*}/sources",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=folders/*}/sources",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=projects/*}/sources",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseListSources._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_sources(request, metadata)
-            pb_request = securitycenter_service.ListSourcesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListSources._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseListSources._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._ListSources._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6999,19 +6778,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_list_sources(resp)
             return resp
 
-    class _ListValuedResources(SecurityCenterRestStub):
+    class _ListValuedResources(
+        _BaseSecurityCenterRestTransport._BaseListValuedResources,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("ListValuedResources")
+            return hash("SecurityCenterRestTransport.ListValuedResources")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
 
         def __call__(
             self,
@@ -7040,44 +6834,29 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*/simulations/*}/valuedResources",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{parent=organizations/*/simulations/*/attackExposureResults/*}/valuedResources",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseListValuedResources._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_valued_resources(
                 request, metadata
             )
-            pb_request = securitycenter_service.ListValuedResourcesRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListValuedResources._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseListValuedResources._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            response = SecurityCenterRestTransport._ListValuedResources._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7093,19 +6872,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_list_valued_resources(resp)
             return resp
 
-    class _RunAssetDiscovery(SecurityCenterRestStub):
+    class _RunAssetDiscovery(
+        _BaseSecurityCenterRestTransport._BaseRunAssetDiscovery, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("RunAssetDiscovery")
+            return hash("SecurityCenterRestTransport.RunAssetDiscovery")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7135,47 +6929,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=organizations/*}/assets:runDiscovery",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseRunAssetDiscovery._get_http_options()
+            )
             request, metadata = self._interceptor.pre_run_asset_discovery(
                 request, metadata
             )
-            pb_request = securitycenter_service.RunAssetDiscoveryRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseRunAssetDiscovery._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseSecurityCenterRestTransport._BaseRunAssetDiscovery._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseRunAssetDiscovery._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._RunAssetDiscovery._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7189,19 +6970,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_run_asset_discovery(resp)
             return resp
 
-    class _SetFindingState(SecurityCenterRestStub):
+    class _SetFindingState(
+        _BaseSecurityCenterRestTransport._BaseSetFindingState, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("SetFindingState")
+            return hash("SecurityCenterRestTransport.SetFindingState")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7238,57 +7034,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=organizations/*/sources/*/findings/*}:setState",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=folders/*/sources/*/findings/*}:setState",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/sources/*/findings/*}:setState",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseSetFindingState._get_http_options()
+            )
             request, metadata = self._interceptor.pre_set_finding_state(
                 request, metadata
             )
-            pb_request = securitycenter_service.SetFindingStateRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseSetFindingState._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseSecurityCenterRestTransport._BaseSetFindingState._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseSetFindingState._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._SetFindingState._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7304,19 +7077,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_set_finding_state(resp)
             return resp
 
-    class _SetIamPolicy(SecurityCenterRestStub):
+    class _SetIamPolicy(
+        _BaseSecurityCenterRestTransport._BaseSetIamPolicy, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("SetIamPolicy")
+            return hash("SecurityCenterRestTransport.SetIamPolicy")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7417,45 +7205,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=organizations/*/sources/*}:setIamPolicy",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            pb_request = request
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseSetIamPolicy._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseSetIamPolicy._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecurityCenterRestTransport._BaseSetIamPolicy._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseSetIamPolicy._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._SetIamPolicy._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7471,19 +7246,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_set_iam_policy(resp)
             return resp
 
-    class _SetMute(SecurityCenterRestStub):
+    class _SetMute(
+        _BaseSecurityCenterRestTransport._BaseSetMute, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("SetMute")
+            return hash("SecurityCenterRestTransport.SetMute")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7520,55 +7310,36 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=organizations/*/sources/*/findings/*}:setMute",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=folders/*/sources/*/findings/*}:setMute",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=projects/*/sources/*/findings/*}:setMute",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_set_mute(request, metadata)
-            pb_request = securitycenter_service.SetMuteRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseSetMute._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
+            request, metadata = self._interceptor.pre_set_mute(request, metadata)
+            transcoded_request = (
+                _BaseSecurityCenterRestTransport._BaseSetMute._get_transcoded_request(
+                    http_options, request
                 )
             )
-            query_params.update(self._get_unset_required_fields(query_params))
 
-            query_params["$alt"] = "json;enum-encoding=int"
+            body = _BaseSecurityCenterRestTransport._BaseSetMute._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseSecurityCenterRestTransport._BaseSetMute._get_query_params_json(
+                    transcoded_request
+                )
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._SetMute._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7584,19 +7355,37 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_set_mute(resp)
             return resp
 
-    class _SimulateSecurityHealthAnalyticsCustomModule(SecurityCenterRestStub):
+    class _SimulateSecurityHealthAnalyticsCustomModule(
+        _BaseSecurityCenterRestTransport._BaseSimulateSecurityHealthAnalyticsCustomModule,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("SimulateSecurityHealthAnalyticsCustomModule")
+            return hash(
+                "SecurityCenterRestTransport.SimulateSecurityHealthAnalyticsCustomModule"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7629,62 +7418,37 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=organizations/*/securityHealthAnalyticsSettings}/customModules:simulate",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=folders/*/securityHealthAnalyticsSettings}/customModules:simulate",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/securityHealthAnalyticsSettings}/customModules:simulate",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseSimulateSecurityHealthAnalyticsCustomModule._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_simulate_security_health_analytics_custom_module(
                 request, metadata
             )
-            pb_request = securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseSimulateSecurityHealthAnalyticsCustomModule._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseSecurityCenterRestTransport._BaseSimulateSecurityHealthAnalyticsCustomModule._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseSimulateSecurityHealthAnalyticsCustomModule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._SimulateSecurityHealthAnalyticsCustomModule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7708,19 +7472,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             )
             return resp
 
-    class _TestIamPermissions(SecurityCenterRestStub):
+    class _TestIamPermissions(
+        _BaseSecurityCenterRestTransport._BaseTestIamPermissions, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("TestIamPermissions")
+            return hash("SecurityCenterRestTransport.TestIamPermissions")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7746,47 +7525,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{resource=organizations/*/sources/*}:testIamPermissions",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseTestIamPermissions._get_http_options()
+            )
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            pb_request = request
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseTestIamPermissions._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseSecurityCenterRestTransport._BaseTestIamPermissions._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseTestIamPermissions._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._TestIamPermissions._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7802,19 +7568,35 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_test_iam_permissions(resp)
             return resp
 
-    class _UpdateBigQueryExport(SecurityCenterRestStub):
+    class _UpdateBigQueryExport(
+        _BaseSecurityCenterRestTransport._BaseUpdateBigQueryExport,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateBigQueryExport")
+            return hash("SecurityCenterRestTransport.UpdateBigQueryExport")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7843,57 +7625,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{big_query_export.name=organizations/*/bigQueryExports/*}",
-                    "body": "big_query_export",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{big_query_export.name=folders/*/bigQueryExports/*}",
-                    "body": "big_query_export",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{big_query_export.name=projects/*/bigQueryExports/*}",
-                    "body": "big_query_export",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseUpdateBigQueryExport._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_big_query_export(
                 request, metadata
             )
-            pb_request = securitycenter_service.UpdateBigQueryExportRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateBigQueryExport._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseSecurityCenterRestTransport._BaseUpdateBigQueryExport._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseUpdateBigQueryExport._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._UpdateBigQueryExport._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7909,19 +7668,37 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_update_big_query_export(resp)
             return resp
 
-    class _UpdateEventThreatDetectionCustomModule(SecurityCenterRestStub):
+    class _UpdateEventThreatDetectionCustomModule(
+        _BaseSecurityCenterRestTransport._BaseUpdateEventThreatDetectionCustomModule,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateEventThreatDetectionCustomModule")
+            return hash(
+                "SecurityCenterRestTransport.UpdateEventThreatDetectionCustomModule"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -7958,64 +7735,37 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{event_threat_detection_custom_module.name=organizations/*/eventThreatDetectionSettings/customModules/*}",
-                    "body": "event_threat_detection_custom_module",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{event_threat_detection_custom_module.name=folders/*/eventThreatDetectionSettings/customModules/*}",
-                    "body": "event_threat_detection_custom_module",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{event_threat_detection_custom_module.name=projects/*/eventThreatDetectionSettings/customModules/*}",
-                    "body": "event_threat_detection_custom_module",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseUpdateEventThreatDetectionCustomModule._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_update_event_threat_detection_custom_module(
                 request, metadata
             )
-            pb_request = (
-                securitycenter_service.UpdateEventThreatDetectionCustomModuleRequest.pb(
-                    request
-                )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateEventThreatDetectionCustomModule._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseSecurityCenterRestTransport._BaseUpdateEventThreatDetectionCustomModule._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseUpdateEventThreatDetectionCustomModule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._UpdateEventThreatDetectionCustomModule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8037,19 +7787,35 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             )
             return resp
 
-    class _UpdateExternalSystem(SecurityCenterRestStub):
+    class _UpdateExternalSystem(
+        _BaseSecurityCenterRestTransport._BaseUpdateExternalSystem,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateExternalSystem")
+            return hash("SecurityCenterRestTransport.UpdateExternalSystem")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8078,57 +7844,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{external_system.name=organizations/*/sources/*/findings/*/externalSystems/*}",
-                    "body": "external_system",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{external_system.name=folders/*/sources/*/findings/*/externalSystems/*}",
-                    "body": "external_system",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{external_system.name=projects/*/sources/*/findings/*/externalSystems/*}",
-                    "body": "external_system",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseUpdateExternalSystem._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_external_system(
                 request, metadata
             )
-            pb_request = securitycenter_service.UpdateExternalSystemRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateExternalSystem._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseSecurityCenterRestTransport._BaseUpdateExternalSystem._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseUpdateExternalSystem._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._UpdateExternalSystem._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8144,19 +7887,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_update_external_system(resp)
             return resp
 
-    class _UpdateFinding(SecurityCenterRestStub):
+    class _UpdateFinding(
+        _BaseSecurityCenterRestTransport._BaseUpdateFinding, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateFinding")
+            return hash("SecurityCenterRestTransport.UpdateFinding")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8193,55 +7951,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{finding.name=organizations/*/sources/*/findings/*}",
-                    "body": "finding",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{finding.name=folders/*/sources/*/findings/*}",
-                    "body": "finding",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{finding.name=projects/*/sources/*/findings/*}",
-                    "body": "finding",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_finding(request, metadata)
-            pb_request = securitycenter_service.UpdateFindingRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseUpdateFinding._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_finding(request, metadata)
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateFinding._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecurityCenterRestTransport._BaseUpdateFinding._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseUpdateFinding._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._UpdateFinding._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8257,19 +7992,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_update_finding(resp)
             return resp
 
-    class _UpdateMuteConfig(SecurityCenterRestStub):
+    class _UpdateMuteConfig(
+        _BaseSecurityCenterRestTransport._BaseUpdateMuteConfig, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateMuteConfig")
+            return hash("SecurityCenterRestTransport.UpdateMuteConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8299,72 +8049,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{mute_config.name=organizations/*/muteConfigs/*}",
-                    "body": "mute_config",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{mute_config.name=folders/*/muteConfigs/*}",
-                    "body": "mute_config",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{mute_config.name=projects/*/muteConfigs/*}",
-                    "body": "mute_config",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{mute_config.name=organizations/*/locations/*/muteConfigs/*}",
-                    "body": "mute_config",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{mute_config.name=folders/*/locations/*/muteConfigs/*}",
-                    "body": "mute_config",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{mute_config.name=projects/*/locations/*/muteConfigs/*}",
-                    "body": "mute_config",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseUpdateMuteConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_mute_config(
                 request, metadata
             )
-            pb_request = securitycenter_service.UpdateMuteConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateMuteConfig._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseSecurityCenterRestTransport._BaseUpdateMuteConfig._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseUpdateMuteConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._UpdateMuteConfig._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8380,19 +8092,35 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_update_mute_config(resp)
             return resp
 
-    class _UpdateNotificationConfig(SecurityCenterRestStub):
+    class _UpdateNotificationConfig(
+        _BaseSecurityCenterRestTransport._BaseUpdateNotificationConfig,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateNotificationConfig")
+            return hash("SecurityCenterRestTransport.UpdateNotificationConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8426,59 +8154,36 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{notification_config.name=organizations/*/notificationConfigs/*}",
-                    "body": "notification_config",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{notification_config.name=folders/*/notificationConfigs/*}",
-                    "body": "notification_config",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{notification_config.name=projects/*/notificationConfigs/*}",
-                    "body": "notification_config",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseUpdateNotificationConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_notification_config(
                 request, metadata
             )
-            pb_request = securitycenter_service.UpdateNotificationConfigRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateNotificationConfig._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseSecurityCenterRestTransport._BaseUpdateNotificationConfig._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseUpdateNotificationConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                SecurityCenterRestTransport._UpdateNotificationConfig._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8494,19 +8199,35 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_update_notification_config(resp)
             return resp
 
-    class _UpdateOrganizationSettings(SecurityCenterRestStub):
+    class _UpdateOrganizationSettings(
+        _BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateOrganizationSettings")
+            return hash("SecurityCenterRestTransport.UpdateOrganizationSettings")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8537,49 +8258,36 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{organization_settings.name=organizations/*/organizationSettings}",
-                    "body": "organization_settings",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_organization_settings(
                 request, metadata
             )
-            pb_request = securitycenter_service.UpdateOrganizationSettingsRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                SecurityCenterRestTransport._UpdateOrganizationSettings._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8595,19 +8303,35 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_update_organization_settings(resp)
             return resp
 
-    class _UpdateResourceValueConfig(SecurityCenterRestStub):
+    class _UpdateResourceValueConfig(
+        _BaseSecurityCenterRestTransport._BaseUpdateResourceValueConfig,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateResourceValueConfig")
+            return hash("SecurityCenterRestTransport.UpdateResourceValueConfig")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8639,49 +8363,36 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{resource_value_config.name=organizations/*/resourceValueConfigs/*}",
-                    "body": "resource_value_config",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseUpdateResourceValueConfig._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_resource_value_config(
                 request, metadata
             )
-            pb_request = securitycenter_service.UpdateResourceValueConfigRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateResourceValueConfig._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseSecurityCenterRestTransport._BaseUpdateResourceValueConfig._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseUpdateResourceValueConfig._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = (
+                SecurityCenterRestTransport._UpdateResourceValueConfig._get_response(
+                    self._host,
+                    metadata,
+                    query_params,
+                    self._session,
+                    timeout,
+                    transcoded_request,
+                    body,
+                )
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8697,19 +8408,37 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_update_resource_value_config(resp)
             return resp
 
-    class _UpdateSecurityHealthAnalyticsCustomModule(SecurityCenterRestStub):
+    class _UpdateSecurityHealthAnalyticsCustomModule(
+        _BaseSecurityCenterRestTransport._BaseUpdateSecurityHealthAnalyticsCustomModule,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateSecurityHealthAnalyticsCustomModule")
+            return hash(
+                "SecurityCenterRestTransport.UpdateSecurityHealthAnalyticsCustomModule"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8749,62 +8478,37 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{security_health_analytics_custom_module.name=organizations/*/securityHealthAnalyticsSettings/customModules/*}",
-                    "body": "security_health_analytics_custom_module",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{security_health_analytics_custom_module.name=folders/*/securityHealthAnalyticsSettings/customModules/*}",
-                    "body": "security_health_analytics_custom_module",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{security_health_analytics_custom_module.name=projects/*/securityHealthAnalyticsSettings/customModules/*}",
-                    "body": "security_health_analytics_custom_module",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseUpdateSecurityHealthAnalyticsCustomModule._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_update_security_health_analytics_custom_module(
                 request, metadata
             )
-            pb_request = securitycenter_service.UpdateSecurityHealthAnalyticsCustomModuleRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateSecurityHealthAnalyticsCustomModule._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseSecurityCenterRestTransport._BaseUpdateSecurityHealthAnalyticsCustomModule._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseUpdateSecurityHealthAnalyticsCustomModule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._UpdateSecurityHealthAnalyticsCustomModule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8828,19 +8532,35 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             )
             return resp
 
-    class _UpdateSecurityMarks(SecurityCenterRestStub):
+    class _UpdateSecurityMarks(
+        _BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("UpdateSecurityMarks")
+            return hash("SecurityCenterRestTransport.UpdateSecurityMarks")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -8875,72 +8595,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{security_marks.name=organizations/*/assets/*/securityMarks}",
-                    "body": "security_marks",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{security_marks.name=folders/*/assets/*/securityMarks}",
-                    "body": "security_marks",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{security_marks.name=projects/*/assets/*/securityMarks}",
-                    "body": "security_marks",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{security_marks.name=organizations/*/sources/*/findings/*/securityMarks}",
-                    "body": "security_marks",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{security_marks.name=folders/*/sources/*/findings/*/securityMarks}",
-                    "body": "security_marks",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{security_marks.name=projects/*/sources/*/findings/*/securityMarks}",
-                    "body": "security_marks",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks._get_http_options()
+            )
             request, metadata = self._interceptor.pre_update_security_marks(
                 request, metadata
             )
-            pb_request = securitycenter_service.UpdateSecurityMarksRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks._get_transcoded_request(
+                http_options, request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+
+            body = _BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._UpdateSecurityMarks._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8956,19 +8638,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_update_security_marks(resp)
             return resp
 
-    class _UpdateSource(SecurityCenterRestStub):
+    class _UpdateSource(
+        _BaseSecurityCenterRestTransport._BaseUpdateSource, SecurityCenterRestStub
+    ):
         def __hash__(self):
-            return hash("UpdateSource")
+            return hash("SecurityCenterRestTransport.UpdateSource")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -9001,45 +8698,32 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{source.name=organizations/*/sources/*}",
-                    "body": "source",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_source(request, metadata)
-            pb_request = securitycenter_service.UpdateSourceRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseUpdateSource._get_http_options()
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            request, metadata = self._interceptor.pre_update_source(request, metadata)
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateSource._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseSecurityCenterRestTransport._BaseUpdateSource._get_request_body_json(
+                transcoded_request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseUpdateSource._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._UpdateSource._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9055,19 +8739,37 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             resp = self._interceptor.post_update_source(resp)
             return resp
 
-    class _ValidateEventThreatDetectionCustomModule(SecurityCenterRestStub):
+    class _ValidateEventThreatDetectionCustomModule(
+        _BaseSecurityCenterRestTransport._BaseValidateEventThreatDetectionCustomModule,
+        SecurityCenterRestStub,
+    ):
         def __hash__(self):
-            return hash("ValidateEventThreatDetectionCustomModule")
+            return hash(
+                "SecurityCenterRestTransport.ValidateEventThreatDetectionCustomModule"
+            )
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
 
         def __call__(
             self,
@@ -9097,62 +8799,37 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
 
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=organizations/*/eventThreatDetectionSettings}:validateCustomModule",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=folders/*/eventThreatDetectionSettings}:validateCustomModule",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/eventThreatDetectionSettings}:validateCustomModule",
-                    "body": "*",
-                },
-            ]
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseValidateEventThreatDetectionCustomModule._get_http_options()
+            )
             (
                 request,
                 metadata,
             ) = self._interceptor.pre_validate_event_threat_detection_custom_module(
                 request, metadata
             )
-            pb_request = securitycenter_service.ValidateEventThreatDetectionCustomModuleRequest.pb(
-                request
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseValidateEventThreatDetectionCustomModule._get_transcoded_request(
+                http_options, request
             )
-            transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+            body = _BaseSecurityCenterRestTransport._BaseValidateEventThreatDetectionCustomModule._get_request_body_json(
+                transcoded_request
             )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
 
             # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
+            query_params = _BaseSecurityCenterRestTransport._BaseValidateEventThreatDetectionCustomModule._get_query_params_json(
+                transcoded_request
             )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
+            response = SecurityCenterRestTransport._ValidateEventThreatDetectionCustomModule._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9834,7 +9511,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(SecurityCenterRestStub):
+    class _CancelOperation(
+        _BaseSecurityCenterRestTransport._BaseCancelOperation, SecurityCenterRestStub
+    ):
+        def __hash__(self):
+            return hash("SecurityCenterRestTransport.CancelOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.CancelOperationRequest,
@@ -9855,34 +9559,29 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{name=organizations/*/operations/*}:cancel",
-                },
-            ]
-
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseCancelOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseCancelOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseSecurityCenterRestTransport._BaseCancelOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = SecurityCenterRestTransport._CancelOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9896,7 +9595,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(SecurityCenterRestStub):
+    class _DeleteOperation(
+        _BaseSecurityCenterRestTransport._BaseDeleteOperation, SecurityCenterRestStub
+    ):
+        def __hash__(self):
+            return hash("SecurityCenterRestTransport.DeleteOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.DeleteOperationRequest,
@@ -9917,34 +9643,29 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                     sent along with the request as metadata.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1/{name=organizations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseDeleteOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
             )
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseDeleteOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseSecurityCenterRestTransport._BaseDeleteOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = SecurityCenterRestTransport._DeleteOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9958,7 +9679,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(SecurityCenterRestStub):
+    class _GetOperation(
+        _BaseSecurityCenterRestTransport._BaseGetOperation, SecurityCenterRestStub
+    ):
+        def __hash__(self):
+            return hash("SecurityCenterRestTransport.GetOperation")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -9982,32 +9730,27 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/operations/*}",
-                },
-            ]
-
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseGetOperation._get_http_options()
+            )
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGetOperation._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseSecurityCenterRestTransport._BaseGetOperation._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = SecurityCenterRestTransport._GetOperation._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10015,8 +9758,9 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.Operation()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
             return resp
 
@@ -10024,7 +9768,34 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(SecurityCenterRestStub):
+    class _ListOperations(
+        _BaseSecurityCenterRestTransport._BaseListOperations, SecurityCenterRestStub
+    ):
+        def __hash__(self):
+            return hash("SecurityCenterRestTransport.ListOperations")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -10048,32 +9819,27 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=organizations/*/operations}",
-                },
-            ]
-
+            http_options = (
+                _BaseSecurityCenterRestTransport._BaseListOperations._get_http_options()
+            )
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            request_kwargs = json_format.MessageToDict(request)
-            transcoded_request = path_template.transcode(http_options, **request_kwargs)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListOperations._get_transcoded_request(
+                http_options, request
+            )
 
             # Jsonify the query params
-            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+            query_params = _BaseSecurityCenterRestTransport._BaseListOperations._get_query_params_json(
+                transcoded_request
+            )
 
             # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params),
+            response = SecurityCenterRestTransport._ListOperations._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10081,8 +9847,9 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+            content = response.content.decode("utf-8")
             resp = operations_pb2.ListOperationsResponse()
-            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
             return resp
 

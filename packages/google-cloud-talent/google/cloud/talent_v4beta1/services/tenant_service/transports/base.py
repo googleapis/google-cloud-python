@@ -190,6 +190,11 @@ class TenantServiceTransport(abc.ABC):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
+            self.get_operation: gapic_v1.method.wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):

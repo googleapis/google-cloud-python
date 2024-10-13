@@ -22,20 +22,12 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import Iterable
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import api_core_version, client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
-import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.oauth2 import service_account
+from google.api_core import api_core_version
 from google.protobuf import json_format
-from google.type import postal_address_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -43,6 +35,23 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
+
+try:
+    from google.auth.aio import credentials as ga_credentials_async
+
+    HAS_GOOGLE_AUTH_AIO = True
+except ImportError:  # pragma: NO COVER
+    HAS_GOOGLE_AUTH_AIO = False
+
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import client_options
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+import google.auth
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.oauth2 import service_account
+from google.type import postal_address_pb2  # type: ignore
 
 from google.maps.addressvalidation_v1.services.address_validation import (
     AddressValidationAsyncClient,
@@ -52,8 +61,22 @@ from google.maps.addressvalidation_v1.services.address_validation import (
 from google.maps.addressvalidation_v1.types import address_validation_service
 
 
+async def mock_async_gen(data, chunk_size=1):
+    for i in range(0, len(data)):  # pragma: NO COVER
+        chunk = data[i : i + chunk_size]
+        yield chunk.encode("utf-8")
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# TODO: use async auth anon credentials by default once the minimum version of google-auth is upgraded.
+# See related issue: https://github.com/googleapis/gapic-generator-python/issues/2107.
+def async_anonymous_credentials():
+    if HAS_GOOGLE_AUTH_AIO:
+        return ga_credentials_async.AnonymousCredentials()
+    return ga_credentials.AnonymousCredentials()
 
 
 # If default endpoint is localhost, then default mtls endpoint will be the same.
@@ -1191,25 +1214,6 @@ def test_validate_address(request_type, transport: str = "grpc"):
     assert response.response_id == "response_id_value"
 
 
-def test_validate_address_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AddressValidationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.validate_address), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.validate_address()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == address_validation_service.ValidateAddressRequest()
-
-
 def test_validate_address_non_empty_request_with_auto_populated_field():
     # This test is a coverage failsafe to make sure that UUID4 fields are
     # automatically populated, according to AIP-4235, with non-empty requests.
@@ -1278,29 +1282,6 @@ def test_validate_address_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_validate_address_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AddressValidationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.validate_address), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            address_validation_service.ValidateAddressResponse(
-                response_id="response_id_value",
-            )
-        )
-        response = await client.validate_address()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == address_validation_service.ValidateAddressRequest()
-
-
-@pytest.mark.asyncio
 async def test_validate_address_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1308,7 +1289,7 @@ async def test_validate_address_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AddressValidationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1348,7 +1329,7 @@ async def test_validate_address_async(
     request_type=address_validation_service.ValidateAddressRequest,
 ):
     client = AddressValidationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1419,27 +1400,6 @@ def test_provide_validation_feedback(request_type, transport: str = "grpc"):
     assert isinstance(
         response, address_validation_service.ProvideValidationFeedbackResponse
     )
-
-
-def test_provide_validation_feedback_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AddressValidationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.provide_validation_feedback), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client.provide_validation_feedback()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == address_validation_service.ProvideValidationFeedbackRequest()
 
 
 def test_provide_validation_feedback_non_empty_request_with_auto_populated_field():
@@ -1513,29 +1473,6 @@ def test_provide_validation_feedback_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_provide_validation_feedback_empty_call_async():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = AddressValidationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.provide_validation_feedback), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            address_validation_service.ProvideValidationFeedbackResponse()
-        )
-        response = await client.provide_validation_feedback()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == address_validation_service.ProvideValidationFeedbackRequest()
-
-
-@pytest.mark.asyncio
 async def test_provide_validation_feedback_async_use_cached_wrapped_rpc(
     transport: str = "grpc_asyncio",
 ):
@@ -1543,7 +1480,7 @@ async def test_provide_validation_feedback_async_use_cached_wrapped_rpc(
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
         client = AddressValidationAsyncClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=async_anonymous_credentials(),
             transport=transport,
         )
 
@@ -1583,7 +1520,7 @@ async def test_provide_validation_feedback_async(
     request_type=address_validation_service.ProvideValidationFeedbackRequest,
 ):
     client = AddressValidationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=async_anonymous_credentials(),
         transport=transport,
     )
 
@@ -1616,48 +1553,6 @@ async def test_provide_validation_feedback_async(
 @pytest.mark.asyncio
 async def test_provide_validation_feedback_async_from_dict():
     await test_provide_validation_feedback_async(request_type=dict)
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        address_validation_service.ValidateAddressRequest,
-        dict,
-    ],
-)
-def test_validate_address_rest(request_type):
-    client = AddressValidationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = address_validation_service.ValidateAddressResponse(
-            response_id="response_id_value",
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = address_validation_service.ValidateAddressResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.validate_address(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, address_validation_service.ValidateAddressResponse)
-    assert response.response_id == "response_id_value"
 
 
 def test_validate_address_rest_use_cached_wrapped_rpc():
@@ -1777,137 +1672,6 @@ def test_validate_address_rest_unset_required_fields():
 
     unset_fields = transport.validate_address._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("address",)))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_validate_address_rest_interceptors(null_interceptor):
-    transport = transports.AddressValidationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AddressValidationRestInterceptor(),
-    )
-    client = AddressValidationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AddressValidationRestInterceptor, "post_validate_address"
-    ) as post, mock.patch.object(
-        transports.AddressValidationRestInterceptor, "pre_validate_address"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = address_validation_service.ValidateAddressRequest.pb(
-            address_validation_service.ValidateAddressRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            address_validation_service.ValidateAddressResponse.to_json(
-                address_validation_service.ValidateAddressResponse()
-            )
-        )
-
-        request = address_validation_service.ValidateAddressRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = address_validation_service.ValidateAddressResponse()
-
-        client.validate_address(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_validate_address_rest_bad_request(
-    transport: str = "rest",
-    request_type=address_validation_service.ValidateAddressRequest,
-):
-    client = AddressValidationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.validate_address(request)
-
-
-def test_validate_address_rest_error():
-    client = AddressValidationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
-@pytest.mark.parametrize(
-    "request_type",
-    [
-        address_validation_service.ProvideValidationFeedbackRequest,
-        dict,
-    ],
-)
-def test_provide_validation_feedback_rest(request_type):
-    client = AddressValidationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), "request") as req:
-        # Designate an appropriate value for the returned response.
-        return_value = address_validation_service.ProvideValidationFeedbackResponse()
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        # Convert return value to protobuf type
-        return_value = address_validation_service.ProvideValidationFeedbackResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(return_value)
-
-        response_value._content = json_return_value.encode("UTF-8")
-        req.return_value = response_value
-        response = client.provide_validation_feedback(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(
-        response, address_validation_service.ProvideValidationFeedbackResponse
-    )
 
 
 def test_provide_validation_feedback_rest_use_cached_wrapped_rpc():
@@ -2047,98 +1811,6 @@ def test_provide_validation_feedback_rest_unset_required_fields():
     )
 
 
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_provide_validation_feedback_rest_interceptors(null_interceptor):
-    transport = transports.AddressValidationRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AddressValidationRestInterceptor(),
-    )
-    client = AddressValidationClient(transport=transport)
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AddressValidationRestInterceptor, "post_provide_validation_feedback"
-    ) as post, mock.patch.object(
-        transports.AddressValidationRestInterceptor, "pre_provide_validation_feedback"
-    ) as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = address_validation_service.ProvideValidationFeedbackRequest.pb(
-            address_validation_service.ProvideValidationFeedbackRequest()
-        )
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = (
-            address_validation_service.ProvideValidationFeedbackResponse.to_json(
-                address_validation_service.ProvideValidationFeedbackResponse()
-            )
-        )
-
-        request = address_validation_service.ProvideValidationFeedbackRequest()
-        metadata = [
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = (
-            address_validation_service.ProvideValidationFeedbackResponse()
-        )
-
-        client.provide_validation_feedback(
-            request,
-            metadata=[
-                ("key", "val"),
-                ("cephalopod", "squid"),
-            ],
-        )
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_provide_validation_feedback_rest_bad_request(
-    transport: str = "rest",
-    request_type=address_validation_service.ProvideValidationFeedbackRequest,
-):
-    client = AddressValidationClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.provide_validation_feedback(request)
-
-
-def test_provide_validation_feedback_rest_error():
-    client = AddressValidationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-
-
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AddressValidationGrpcTransport(
@@ -2231,18 +1903,437 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+def test_transport_kind_grpc():
+    transport = AddressValidationClient.get_transport_class("grpc")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "grpc"
+
+
+def test_initialize_client_w_grpc():
+    client = AddressValidationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_validate_address_empty_call_grpc():
+    client = AddressValidationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.validate_address), "__call__") as call:
+        call.return_value = address_validation_service.ValidateAddressResponse()
+        client.validate_address(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = address_validation_service.ValidateAddressRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_provide_validation_feedback_empty_call_grpc():
+    client = AddressValidationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.provide_validation_feedback), "__call__"
+    ) as call:
+        call.return_value = (
+            address_validation_service.ProvideValidationFeedbackResponse()
+        )
+        client.provide_validation_feedback(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = address_validation_service.ProvideValidationFeedbackRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_grpc_asyncio():
+    transport = AddressValidationAsyncClient.get_transport_class("grpc_asyncio")(
+        credentials=async_anonymous_credentials()
+    )
+    assert transport.kind == "grpc_asyncio"
+
+
+def test_initialize_client_w_grpc_asyncio():
+    client = AddressValidationAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_validate_address_empty_call_grpc_asyncio():
+    client = AddressValidationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.validate_address), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            address_validation_service.ValidateAddressResponse(
+                response_id="response_id_value",
+            )
+        )
+        await client.validate_address(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = address_validation_service.ValidateAddressRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_provide_validation_feedback_empty_call_grpc_asyncio():
+    client = AddressValidationAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.provide_validation_feedback), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            address_validation_service.ProvideValidationFeedbackResponse()
+        )
+        await client.provide_validation_feedback(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = address_validation_service.ProvideValidationFeedbackRequest()
+
+        assert args[0] == request_msg
+
+
+def test_transport_kind_rest():
+    transport = AddressValidationClient.get_transport_class("rest")(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+    assert transport.kind == "rest"
+
+
+def test_validate_address_rest_bad_request(
+    request_type=address_validation_service.ValidateAddressRequest,
+):
+    client = AddressValidationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.validate_address(request)
+
+
 @pytest.mark.parametrize(
-    "transport_name",
+    "request_type",
     [
-        "grpc",
-        "rest",
+        address_validation_service.ValidateAddressRequest,
+        dict,
     ],
 )
-def test_transport_kind(transport_name):
-    transport = AddressValidationClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+def test_validate_address_rest_call_success(request_type):
+    client = AddressValidationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
-    assert transport.kind == transport_name
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = address_validation_service.ValidateAddressResponse(
+            response_id="response_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = address_validation_service.ValidateAddressResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.validate_address(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, address_validation_service.ValidateAddressResponse)
+    assert response.response_id == "response_id_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_validate_address_rest_interceptors(null_interceptor):
+    transport = transports.AddressValidationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AddressValidationRestInterceptor(),
+    )
+    client = AddressValidationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AddressValidationRestInterceptor, "post_validate_address"
+    ) as post, mock.patch.object(
+        transports.AddressValidationRestInterceptor, "pre_validate_address"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = address_validation_service.ValidateAddressRequest.pb(
+            address_validation_service.ValidateAddressRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = address_validation_service.ValidateAddressResponse.to_json(
+            address_validation_service.ValidateAddressResponse()
+        )
+        req.return_value.content = return_value
+
+        request = address_validation_service.ValidateAddressRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = address_validation_service.ValidateAddressResponse()
+
+        client.validate_address(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_provide_validation_feedback_rest_bad_request(
+    request_type=address_validation_service.ProvideValidationFeedbackRequest,
+):
+    client = AddressValidationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        client.provide_validation_feedback(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        address_validation_service.ProvideValidationFeedbackRequest,
+        dict,
+    ],
+)
+def test_provide_validation_feedback_rest_call_success(request_type):
+    client = AddressValidationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = address_validation_service.ProvideValidationFeedbackResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = address_validation_service.ProvideValidationFeedbackResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.provide_validation_feedback(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(
+        response, address_validation_service.ProvideValidationFeedbackResponse
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_provide_validation_feedback_rest_interceptors(null_interceptor):
+    transport = transports.AddressValidationRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AddressValidationRestInterceptor(),
+    )
+    client = AddressValidationClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AddressValidationRestInterceptor, "post_provide_validation_feedback"
+    ) as post, mock.patch.object(
+        transports.AddressValidationRestInterceptor, "pre_provide_validation_feedback"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = address_validation_service.ProvideValidationFeedbackRequest.pb(
+            address_validation_service.ProvideValidationFeedbackRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        return_value = (
+            address_validation_service.ProvideValidationFeedbackResponse.to_json(
+                address_validation_service.ProvideValidationFeedbackResponse()
+            )
+        )
+        req.return_value.content = return_value
+
+        request = address_validation_service.ProvideValidationFeedbackRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            address_validation_service.ProvideValidationFeedbackResponse()
+        )
+
+        client.provide_validation_feedback(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_initialize_client_w_rest():
+    client = AddressValidationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    assert client is not None
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_validate_address_empty_call_rest():
+    client = AddressValidationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.validate_address), "__call__") as call:
+        client.validate_address(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = address_validation_service.ValidateAddressRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_provide_validation_feedback_empty_call_rest():
+    client = AddressValidationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.provide_validation_feedback), "__call__"
+    ) as call:
+        client.provide_validation_feedback(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = address_validation_service.ProvideValidationFeedbackRequest()
+
+        assert args[0] == request_msg
 
 
 def test_transport_grpc_default():
@@ -2798,36 +2889,41 @@ def test_client_with_default_client_info():
         prep.assert_called_once_with(client_info)
 
 
-@pytest.mark.asyncio
-async def test_transport_close_async():
-    client = AddressValidationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="grpc_asyncio",
+def test_transport_close_grpc():
+    client = AddressValidationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
     )
     with mock.patch.object(
-        type(getattr(client.transport, "grpc_channel")), "close"
+        type(getattr(client.transport, "_grpc_channel")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_transport_close_grpc_asyncio():
+    client = AddressValidationAsyncClient(
+        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_grpc_channel")), "close"
     ) as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
-def test_transport_close():
-    transports = {
-        "rest": "_session",
-        "grpc": "_grpc_channel",
-    }
-
-    for transport, close_name in transports.items():
-        client = AddressValidationClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
-        with mock.patch.object(
-            type(getattr(client.transport, close_name)), "close"
-        ) as close:
-            with client:
-                close.assert_not_called()
-            close.assert_called_once()
+def test_transport_close_rest():
+    client = AddressValidationClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    with mock.patch.object(
+        type(getattr(client.transport, "_session")), "close"
+    ) as close:
+        with client:
+            close.assert_not_called()
+        close.assert_called_once()
 
 
 def test_client_ctx():
