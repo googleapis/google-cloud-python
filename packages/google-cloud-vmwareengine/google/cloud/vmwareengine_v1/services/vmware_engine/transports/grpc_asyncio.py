@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import inspect
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
@@ -231,6 +232,9 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
             )
 
         # Wrap messages. This must be done after self._grpc_channel exists
+        self._wrap_with_kind = (
+            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
+        )
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -2559,7 +2563,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
-            self.list_private_clouds: gapic_v1.method_async.wrap_method(
+            self.list_private_clouds: self._wrap_method(
                 self.list_private_clouds,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2573,7 +2577,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.get_private_cloud: gapic_v1.method_async.wrap_method(
+            self.get_private_cloud: self._wrap_method(
                 self.get_private_cloud,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2587,27 +2591,27 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.create_private_cloud: gapic_v1.method_async.wrap_method(
+            self.create_private_cloud: self._wrap_method(
                 self.create_private_cloud,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_private_cloud: gapic_v1.method_async.wrap_method(
+            self.update_private_cloud: self._wrap_method(
                 self.update_private_cloud,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_private_cloud: gapic_v1.method_async.wrap_method(
+            self.delete_private_cloud: self._wrap_method(
                 self.delete_private_cloud,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.undelete_private_cloud: gapic_v1.method_async.wrap_method(
+            self.undelete_private_cloud: self._wrap_method(
                 self.undelete_private_cloud,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_clusters: gapic_v1.method_async.wrap_method(
+            self.list_clusters: self._wrap_method(
                 self.list_clusters,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2621,7 +2625,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.get_cluster: gapic_v1.method_async.wrap_method(
+            self.get_cluster: self._wrap_method(
                 self.get_cluster,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2635,22 +2639,22 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.create_cluster: gapic_v1.method_async.wrap_method(
+            self.create_cluster: self._wrap_method(
                 self.create_cluster,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_cluster: gapic_v1.method_async.wrap_method(
+            self.update_cluster: self._wrap_method(
                 self.update_cluster,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_cluster: gapic_v1.method_async.wrap_method(
+            self.delete_cluster: self._wrap_method(
                 self.delete_cluster,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_nodes: gapic_v1.method_async.wrap_method(
+            self.list_nodes: self._wrap_method(
                 self.list_nodes,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2664,7 +2668,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.get_node: gapic_v1.method_async.wrap_method(
+            self.get_node: self._wrap_method(
                 self.get_node,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2678,7 +2682,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.list_external_addresses: gapic_v1.method_async.wrap_method(
+            self.list_external_addresses: self._wrap_method(
                 self.list_external_addresses,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2692,12 +2696,12 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.fetch_network_policy_external_addresses: gapic_v1.method_async.wrap_method(
+            self.fetch_network_policy_external_addresses: self._wrap_method(
                 self.fetch_network_policy_external_addresses,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_external_address: gapic_v1.method_async.wrap_method(
+            self.get_external_address: self._wrap_method(
                 self.get_external_address,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2711,22 +2715,22 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.create_external_address: gapic_v1.method_async.wrap_method(
+            self.create_external_address: self._wrap_method(
                 self.create_external_address,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_external_address: gapic_v1.method_async.wrap_method(
+            self.update_external_address: self._wrap_method(
                 self.update_external_address,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_external_address: gapic_v1.method_async.wrap_method(
+            self.delete_external_address: self._wrap_method(
                 self.delete_external_address,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_subnets: gapic_v1.method_async.wrap_method(
+            self.list_subnets: self._wrap_method(
                 self.list_subnets,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2740,7 +2744,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.get_subnet: gapic_v1.method_async.wrap_method(
+            self.get_subnet: self._wrap_method(
                 self.get_subnet,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2754,12 +2758,12 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.update_subnet: gapic_v1.method_async.wrap_method(
+            self.update_subnet: self._wrap_method(
                 self.update_subnet,
                 default_timeout=60.0,
                 client_info=client_info,
             ),
-            self.list_external_access_rules: gapic_v1.method_async.wrap_method(
+            self.list_external_access_rules: self._wrap_method(
                 self.list_external_access_rules,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2773,7 +2777,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.get_external_access_rule: gapic_v1.method_async.wrap_method(
+            self.get_external_access_rule: self._wrap_method(
                 self.get_external_access_rule,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2787,22 +2791,22 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.create_external_access_rule: gapic_v1.method_async.wrap_method(
+            self.create_external_access_rule: self._wrap_method(
                 self.create_external_access_rule,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_external_access_rule: gapic_v1.method_async.wrap_method(
+            self.update_external_access_rule: self._wrap_method(
                 self.update_external_access_rule,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_external_access_rule: gapic_v1.method_async.wrap_method(
+            self.delete_external_access_rule: self._wrap_method(
                 self.delete_external_access_rule,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_logging_servers: gapic_v1.method_async.wrap_method(
+            self.list_logging_servers: self._wrap_method(
                 self.list_logging_servers,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2816,7 +2820,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.get_logging_server: gapic_v1.method_async.wrap_method(
+            self.get_logging_server: self._wrap_method(
                 self.get_logging_server,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2830,22 +2834,22 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.create_logging_server: gapic_v1.method_async.wrap_method(
+            self.create_logging_server: self._wrap_method(
                 self.create_logging_server,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_logging_server: gapic_v1.method_async.wrap_method(
+            self.update_logging_server: self._wrap_method(
                 self.update_logging_server,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_logging_server: gapic_v1.method_async.wrap_method(
+            self.delete_logging_server: self._wrap_method(
                 self.delete_logging_server,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_node_types: gapic_v1.method_async.wrap_method(
+            self.list_node_types: self._wrap_method(
                 self.list_node_types,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2859,7 +2863,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.get_node_type: gapic_v1.method_async.wrap_method(
+            self.get_node_type: self._wrap_method(
                 self.get_node_type,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2873,7 +2877,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.show_nsx_credentials: gapic_v1.method_async.wrap_method(
+            self.show_nsx_credentials: self._wrap_method(
                 self.show_nsx_credentials,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2887,7 +2891,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.show_vcenter_credentials: gapic_v1.method_async.wrap_method(
+            self.show_vcenter_credentials: self._wrap_method(
                 self.show_vcenter_credentials,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2901,17 +2905,17 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.reset_nsx_credentials: gapic_v1.method_async.wrap_method(
+            self.reset_nsx_credentials: self._wrap_method(
                 self.reset_nsx_credentials,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.reset_vcenter_credentials: gapic_v1.method_async.wrap_method(
+            self.reset_vcenter_credentials: self._wrap_method(
                 self.reset_vcenter_credentials,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_dns_forwarding: gapic_v1.method_async.wrap_method(
+            self.get_dns_forwarding: self._wrap_method(
                 self.get_dns_forwarding,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2925,12 +2929,12 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.update_dns_forwarding: gapic_v1.method_async.wrap_method(
+            self.update_dns_forwarding: self._wrap_method(
                 self.update_dns_forwarding,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_network_peering: gapic_v1.method_async.wrap_method(
+            self.get_network_peering: self._wrap_method(
                 self.get_network_peering,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2944,7 +2948,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.list_network_peerings: gapic_v1.method_async.wrap_method(
+            self.list_network_peerings: self._wrap_method(
                 self.list_network_peerings,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2958,22 +2962,22 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.create_network_peering: gapic_v1.method_async.wrap_method(
+            self.create_network_peering: self._wrap_method(
                 self.create_network_peering,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_network_peering: gapic_v1.method_async.wrap_method(
+            self.delete_network_peering: self._wrap_method(
                 self.delete_network_peering,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_network_peering: gapic_v1.method_async.wrap_method(
+            self.update_network_peering: self._wrap_method(
                 self.update_network_peering,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_peering_routes: gapic_v1.method_async.wrap_method(
+            self.list_peering_routes: self._wrap_method(
                 self.list_peering_routes,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -2987,12 +2991,12 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.create_hcx_activation_key: gapic_v1.method_async.wrap_method(
+            self.create_hcx_activation_key: self._wrap_method(
                 self.create_hcx_activation_key,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_hcx_activation_keys: gapic_v1.method_async.wrap_method(
+            self.list_hcx_activation_keys: self._wrap_method(
                 self.list_hcx_activation_keys,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3006,7 +3010,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.get_hcx_activation_key: gapic_v1.method_async.wrap_method(
+            self.get_hcx_activation_key: self._wrap_method(
                 self.get_hcx_activation_key,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3020,7 +3024,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.get_network_policy: gapic_v1.method_async.wrap_method(
+            self.get_network_policy: self._wrap_method(
                 self.get_network_policy,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3034,7 +3038,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.list_network_policies: gapic_v1.method_async.wrap_method(
+            self.list_network_policies: self._wrap_method(
                 self.list_network_policies,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3048,22 +3052,22 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.create_network_policy: gapic_v1.method_async.wrap_method(
+            self.create_network_policy: self._wrap_method(
                 self.create_network_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_network_policy: gapic_v1.method_async.wrap_method(
+            self.update_network_policy: self._wrap_method(
                 self.update_network_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_network_policy: gapic_v1.method_async.wrap_method(
+            self.delete_network_policy: self._wrap_method(
                 self.delete_network_policy,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_management_dns_zone_bindings: gapic_v1.method_async.wrap_method(
+            self.list_management_dns_zone_bindings: self._wrap_method(
                 self.list_management_dns_zone_bindings,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3077,7 +3081,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.get_management_dns_zone_binding: gapic_v1.method_async.wrap_method(
+            self.get_management_dns_zone_binding: self._wrap_method(
                 self.get_management_dns_zone_binding,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3091,42 +3095,42 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.create_management_dns_zone_binding: gapic_v1.method_async.wrap_method(
+            self.create_management_dns_zone_binding: self._wrap_method(
                 self.create_management_dns_zone_binding,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_management_dns_zone_binding: gapic_v1.method_async.wrap_method(
+            self.update_management_dns_zone_binding: self._wrap_method(
                 self.update_management_dns_zone_binding,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_management_dns_zone_binding: gapic_v1.method_async.wrap_method(
+            self.delete_management_dns_zone_binding: self._wrap_method(
                 self.delete_management_dns_zone_binding,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.repair_management_dns_zone_binding: gapic_v1.method_async.wrap_method(
+            self.repair_management_dns_zone_binding: self._wrap_method(
                 self.repair_management_dns_zone_binding,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_vmware_engine_network: gapic_v1.method_async.wrap_method(
+            self.create_vmware_engine_network: self._wrap_method(
                 self.create_vmware_engine_network,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.update_vmware_engine_network: gapic_v1.method_async.wrap_method(
+            self.update_vmware_engine_network: self._wrap_method(
                 self.update_vmware_engine_network,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_vmware_engine_network: gapic_v1.method_async.wrap_method(
+            self.delete_vmware_engine_network: self._wrap_method(
                 self.delete_vmware_engine_network,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_vmware_engine_network: gapic_v1.method_async.wrap_method(
+            self.get_vmware_engine_network: self._wrap_method(
                 self.get_vmware_engine_network,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3140,7 +3144,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.list_vmware_engine_networks: gapic_v1.method_async.wrap_method(
+            self.list_vmware_engine_networks: self._wrap_method(
                 self.list_vmware_engine_networks,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3154,12 +3158,12 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.create_private_connection: gapic_v1.method_async.wrap_method(
+            self.create_private_connection: self._wrap_method(
                 self.create_private_connection,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_private_connection: gapic_v1.method_async.wrap_method(
+            self.get_private_connection: self._wrap_method(
                 self.get_private_connection,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3173,7 +3177,7 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.list_private_connections: gapic_v1.method_async.wrap_method(
+            self.list_private_connections: self._wrap_method(
                 self.list_private_connections,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3187,17 +3191,17 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.update_private_connection: gapic_v1.method_async.wrap_method(
+            self.update_private_connection: self._wrap_method(
                 self.update_private_connection,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_private_connection: gapic_v1.method_async.wrap_method(
+            self.delete_private_connection: self._wrap_method(
                 self.delete_private_connection,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.list_private_connection_peering_routes: gapic_v1.method_async.wrap_method(
+            self.list_private_connection_peering_routes: self._wrap_method(
                 self.list_private_connection_peering_routes,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3211,12 +3215,12 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.grant_dns_bind_permission: gapic_v1.method_async.wrap_method(
+            self.grant_dns_bind_permission: self._wrap_method(
                 self.grant_dns_bind_permission,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_dns_bind_permission: gapic_v1.method_async.wrap_method(
+            self.get_dns_bind_permission: self._wrap_method(
                 self.get_dns_bind_permission,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
@@ -3230,15 +3234,64 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.revoke_dns_bind_permission: gapic_v1.method_async.wrap_method(
+            self.revoke_dns_bind_permission: self._wrap_method(
                 self.revoke_dns_bind_permission,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_iam_policy: self._wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: self._wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: self._wrap_method(
+                self.test_iam_permissions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: self._wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: self._wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: self._wrap_method(
+                self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),
         }
 
+    def _wrap_method(self, func, *args, **kwargs):
+        if self._wrap_with_kind:  # pragma: NO COVER
+            kwargs["kind"] = self.kind
+        return gapic_v1.method_async.wrap_method(func, *args, **kwargs)
+
     def close(self):
         return self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc_asyncio"
 
     @property
     def delete_operation(
